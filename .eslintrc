@@ -1,0 +1,29 @@
+{
+    "env": {
+        "node": true
+    },
+
+    "rules": {
+        "block-scoped-var": 1,
+        "brace-style": [1, "1tbs"],
+        "camelcase": 0,
+        "curly": [1, "all"],
+        "eqeqeq": 1,
+        "func-style": [1, "declaration"],
+        "guard-for-in": 1,
+        "max-len": [1, "80", "4"],
+        "no-bitwise": 0,
+        "no-caller": 1,
+        "no-empty": 1,
+        "no-plusplus": 1,
+        "no-space-before-semi": 1,
+        "no-spaced-func": 1,
+        "no-undef": 1,
+        "no-use-before-define":  [1, "nofunc"],
+        "no-unused-vars": [1, "all"],
+        "one-var": 0,
+        "quotes": [1, "double"],
+        "space-in-brackets": [1, "never"],
+        "wrap-iife": 1
+    }
+}
