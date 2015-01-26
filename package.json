@@ -3,7 +3,7 @@
     "description": "Personal trading algorithm using OANDA API",
     "version": "1.0.0",
     "main": "?",
-    "repository": "?",
+    "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
         "trading"
     ],
