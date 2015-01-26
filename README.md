@@ -10,7 +10,7 @@ References
 ----------
 
 - [OANDA on GitHub](https://github.com/oanda)
-- [OANDA Rest APis](http://developer.oanda.com/rest-live/introduction/)
+- [OANDA Rest APIs](http://developer.oanda.com/rest-live/introduction/)
 - [OANDA Adapter](https://github.com/Cloud9Trader/oanda-adapter)
 - [R Adapter](https://github.com/albertosantini/node-rio)
 
