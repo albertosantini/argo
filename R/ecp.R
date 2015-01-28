@@ -1,7 +1,7 @@
 library(tseries)
 library(ecp)
 
-x <- read.csv("../dump/2015-01-22-EUR-USD-M5.csv", header = FALSE)
+x <- read.csv("../dump/dump-EUR_USD.csv", header = FALSE)
 names(x) <- c("datetime", "open", "high", "low", "close", "volume")
 
 x <- as.matrix(x$close, ncol = 1)

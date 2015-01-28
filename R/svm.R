@@ -1,6 +1,7 @@
 require(kernlab)
+# require(e1071)
 
-x <- read.csv("../dump/2015-01-22-EUR-USD-M5.csv", header = FALSE)
+x <- read.csv("../dump/dump-EUR_USD.csv", header = FALSE)
 names(x) <- c("datetime", "open", "high", "low", "close", "volume")
 
 pip <- 0.0001
@@ -9,8 +10,8 @@ x.train <- x[1:400, ]
 x.test <- x[401:500, ]
 x.n <- NROW(x.test)
 
-fit <- ksvm(close ~ open + high + low + volume, data = x.train,
-    type = "nu-svr", kernel = "vanilladot")
+fit <- ksvm(close ~ open + high + low, data = x.train, type = "nu-svr", kernel = "vanilladot")
+# fit <- svm(close ~ open + high + low, data = x.train, epsilon = 0.1, nu = 0.2, type = "nu-regression", kernel = "linear")
 fit
 
 forecast <- as.numeric(predict(fit, x.test))
