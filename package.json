@@ -5,12 +5,13 @@
     "main": "?",
     "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
-        "trading"
+        "trading",
+        "forex"
     ],
     "author": "Alberto Santini",
     "license": "MIT",
     "engines": {
-        "node": "~0.10.x"
+        "node": "~0.12.x"
     },
     "dependencies": {
         "request": "~2.53.0",
@@ -22,7 +23,7 @@
     "devDependencies": {
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
-        "grunt-eslint": "~5.2.0",
+        "grunt-eslint": "~6.0.0",
         "grunt-vows-runner": "~0.6.0",
         "vows": "~0.9.0-rc2"
     }
