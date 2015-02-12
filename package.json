@@ -1,8 +1,8 @@
 {
     "name": "algo",
-    "description": "Personal trading algorithm using OANDA API",
+    "description": "HTML5 interface for the OANDA platform",
     "version": "1.0.0",
-    "main": "?",
+    "main": "server.js",
     "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
         "trading",
@@ -15,7 +15,8 @@
     },
     "dependencies": {
         "request": "~2.53.0",
-        "node-svm": "~2.1.3"
+        "node-svm": "~2.1.3",
+        "express": "~4.11.2"
     },
     "scripts": {
         "test": "grunt"

@@ -23,3 +23,6 @@ rules:
     spaced-line-comment: [2, "always", { exceptions: ["-"]}]
     strict: [2, "global"]
     wrap-iife: 2
+
+globals:
+    angular: false

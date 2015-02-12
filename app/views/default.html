@@ -1,0 +1,70 @@
+<md-tabs md-selected="default.tabSelectedIndex">
+    <md-tab id="tab1" aria-controls="tab1-content">Trades</md-tab>
+    <md-tab id="tab2" aria-controls="tab2-content">Orders</md-tab>
+    <md-tab id="tab3" aria-controls="tab3-content">Positions</md-tab>
+    <md-tab id="tab4" aria-controls="tab3-content">Exposure</md-tab>
+    <md-tab id="tab5" aria-controls="tab3-content">Activity</md-tab>
+    <md-tab id="tab6" aria-controls="tab3-content">News</md-tab>
+</md-tabs>
+<ng-switch on="default.tabSelectedIndex" class="tabpanel-container">
+    <div role="tabpanel"
+         id="tab1-content"
+         aria-labelledby="tab1"
+         ng-switch-when="0"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         Trades tab content.
+    </div>
+    <div role="tabpanel"
+         id="tab2-content"
+         aria-labelledby="tab2"
+         ng-switch-when="1"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         Orders tab content.
+    </div>
+    <div role="tabpanel"
+         id="tab3-content"
+         aria-labelledby="tab3"
+         ng-switch-when="2"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         Positions tab content.
+    </div>
+    <div role="tabpanel"
+         id="tab4-content"
+         aria-labelledby="tab4"
+         ng-switch-when="3"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         Exposure tab content.
+    </div>
+    <div role="tabpanel"
+         id="tab5-content"
+         aria-labelledby="tab5"
+         ng-switch-when="4"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         Activity tab content.
+    </div>
+    <div role="tabpanel"
+         id="tab6-content"
+         aria-labelledby="tab6"
+         ng-switch-when="5"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+         News tab content.
+    </div>
+</ng-switch>
+
+<md-grid-list md-cols="12" md-row-height="1:1" md-gutter="8px">
+    <md-grid-tile md-rowspan="2" md-colspan="4">
+        <md-grid-tile-footer> <h3>Account</h3> </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile md-rowspan="4" md-colspan="8">
+        <md-grid-tile-footer> <h3>Charts</h3> </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile md-rowspan="2" md-colspan="4">
+        <md-grid-tile-footer> <h3>Quotes</h3> </md-grid-tile-footer>
+    </md-grid-tile>
+</md-grid-list>
