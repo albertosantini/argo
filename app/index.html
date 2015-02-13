@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="argo">
+<html lang="en" ng-app="argo">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +11,7 @@
 </head>
 
 <body>
-    <header data-ng-include="'views/header.html'"></header>
-
-    <div data-ui-view="default"></div>
+    <div ui-view></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular-animate.min.js"></script>
