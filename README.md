@@ -17,11 +17,12 @@ $ cd argo
 $ npm install
 
 $ node server.js
+Listening on http://localhost:8000
 ```
 
 Then in `lib` folder there are a few scripts, wrapping OANDA APIs.
 
-Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.0-rc1.
+Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 
 UI Views details
 ----------------
