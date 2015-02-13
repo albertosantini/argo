@@ -9,22 +9,44 @@
     config.$inject = ["$stateProvider", "$urlRouterProvider"];
     function config($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state("index", {
+            .state("default", {
                 abstract: true,
                 url: "/",
-                views: {
-                    "default": {
-                        templateUrl: "views/default.html",
-                        controller: "DefaultCtrl",
-                        controllerAs: "default"
-                    }
-                }
+                templateUrl: "views/default.html",
+                controller: "DefaultCtrl",
+                controllerAs: "default"
             })
-            .state("index.subs", {
-                url: "",
+            .state("default.subs", {
                 views: {
-                    "account@index": {
+                    "header": {
+                        templateUrl: "views/header.html"
+                    },
+                    "trades": {
+                        templateUrl: "views/trades.html"
+                    },
+                    "orders": {
+                        templateUrl: "views/orders.html"
+                    },
+                    "positions": {
+                        templateUrl: "views/positions.html"
+                    },
+                    "exposure": {
+                        templateUrl: "views/exposure.html"
+                    },
+                    "activity": {
+                        templateUrl: "views/activity.html"
+                    },
+                    "news": {
+                        templateUrl: "views/news.html"
+                    },
+                    "account": {
                         templateUrl: "views/account.html"
+                    },
+                    "quotes": {
+                        templateUrl: "views/quotes.html"
+                    },
+                    "charts": {
+                        templateUrl: "views/charts.html"
                     }
                 }
             });
@@ -34,7 +56,7 @@
 
     setup.$inject = ["$state"];
     function setup($state) {
-        $state.transitionTo("index.subs");
+        $state.transitionTo("default.subs");
     }
 
 }());
