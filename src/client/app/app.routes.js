@@ -13,7 +13,7 @@
                 abstract: true,
                 url: "/",
                 templateUrl: "app/layout/default.html",
-                controller: "DefaultCtrl",
+                controller: "Default",
                 controllerAs: "default"
             })
             .state("default.subs", {

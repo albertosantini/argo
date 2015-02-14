@@ -3,9 +3,9 @@
 (function () {
     angular
         .module("argo")
-        .controller("DefaultCtrl", DefaultCtrl);
+        .controller("Default", Default);
 
-    function DefaultCtrl() {
+    function Default() {
         var vm = this;
 
         vm.name = "This is the default controller.";
