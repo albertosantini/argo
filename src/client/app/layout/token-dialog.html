@@ -1,0 +1,19 @@
+<md-dialog aria-label="Token Dialog">
+    <md-content>
+        <md-subheader class="md-sticky-no-effect">Insert token</md-subheader>
+        <md-input-container>
+            <label>Token</label>
+            <input ng-model="token">
+        </md-input-container>
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="dialog.answer()">
+            Cancel
+        </md-button>
+        <md-button ng-click="dialog.answer(token)" class="md-primary">
+            Ok
+        </md-button>
+    </div>
+</md-dialog>

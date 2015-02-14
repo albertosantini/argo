@@ -5,10 +5,12 @@
         .module("argo")
         .controller("Default", Default);
 
-    function Default() {
+    Default.$inject = ["$mdDialog"];
+    function Default($mdDialog) {
         var vm = this;
 
-        vm.name = "This is the default controller.";
+        vm.token = null;
+
         vm.tabSelectedIndex = 0;
 
         vm.next = function() {
@@ -16,6 +18,17 @@
         };
         vm.previous = function() {
             vm.tabSelectedIndex = Math.max(vm.tabSelectedIndex - 1, 0);
+        };
+
+        vm.openTokenDialog = function(ev) {
+            $mdDialog.show({
+                controller: "TokenDialog",
+                controllerAs: "dialog",
+                templateUrl: "app/layout/token-dialog.html",
+                targetEvent: ev
+            }).then(function(token) {
+                vm.token = token;
+            });
         };
     }
 }());
