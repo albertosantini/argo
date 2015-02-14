@@ -12,41 +12,41 @@
             .state("default", {
                 abstract: true,
                 url: "/",
-                templateUrl: "views/default.html",
+                templateUrl: "app/layout/default.html",
                 controller: "DefaultCtrl",
                 controllerAs: "default"
             })
             .state("default.subs", {
                 views: {
                     "header": {
-                        templateUrl: "views/header.html"
+                        templateUrl: "app/layout/header.html"
                     },
                     "trades": {
-                        templateUrl: "views/trades.html"
+                        templateUrl: "app/trades/trades.html"
                     },
                     "orders": {
-                        templateUrl: "views/orders.html"
+                        templateUrl: "app/orders/orders.html"
                     },
                     "positions": {
-                        templateUrl: "views/positions.html"
+                        templateUrl: "app/positions/positions.html"
                     },
                     "exposure": {
-                        templateUrl: "views/exposure.html"
+                        templateUrl: "app/exposure/exposure.html"
                     },
                     "activity": {
-                        templateUrl: "views/activity.html"
+                        templateUrl: "app/activity/activity.html"
                     },
                     "news": {
-                        templateUrl: "views/news.html"
+                        templateUrl: "app/news/news.html"
                     },
                     "account": {
-                        templateUrl: "views/account.html"
+                        templateUrl: "app/account/account.html"
                     },
                     "quotes": {
-                        templateUrl: "views/quotes.html"
+                        templateUrl: "app/quotes/quotes.html"
                     },
                     "charts": {
-                        templateUrl: "views/charts.html"
+                        templateUrl: "app/charts/charts.html"
                     }
                 }
             });

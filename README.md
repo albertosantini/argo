@@ -15,9 +15,10 @@ For Argo working in progress interface:
 $ git clone git@github.com:albertosantini/argo.git
 $ cd argo
 $ npm install
+...
 
-$ node server.js
-Listening on http://localhost:8000
+$ npm start
+Argo listening on http://localhost:8000
 ```
 
 Then in `lib` folder there are a few scripts, wrapping OANDA APIs.

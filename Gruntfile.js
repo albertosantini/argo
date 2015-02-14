@@ -8,9 +8,8 @@ module.exports = function (grunt) {
             },
             src: [
                 "Gruntfile.js",
-                "server.js",
                 "lib/**/*.js",
-                "app/**/*.js"
+                "src/**/*.js"
             ]
         },
 
