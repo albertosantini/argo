@@ -1,10 +1,16 @@
 <md-dialog aria-label="Token Dialog">
     <md-content>
-        <md-subheader class="md-sticky-no-effect">Insert token</md-subheader>
+        <md-subheader class="md-sticky-no-effect">Token Dialog</md-subheader>
+
         <md-input-container>
             <label>Token</label>
             <input ng-model="token">
         </md-input-container>
+
+        <md-radio-group ng-model="environment">
+            <md-radio-button value="live">Live</md-radio-button>
+            <md-radio-button value="practice">Practice</md-radio-button>
+        </md-radio-group>
     </md-content>
 
     <div class="md-actions" layout="row">
@@ -12,7 +18,7 @@
         <md-button ng-click="dialog.answer()">
             Cancel
         </md-button>
-        <md-button ng-click="dialog.answer(token)" class="md-primary">
+        <md-button ng-click="dialog.answer(token + '@' + environment)" class="md-primary">
             Ok
         </md-button>
     </div>
