@@ -11,11 +11,14 @@
             getAccounts: function(data) {
                 var environment = data.environment,
                     token = data.token,
+                    accountId = data.accountId,
+                    url = accountId ?
+                        "/v1/accounts" + "/" + accountId : "/v1/accounts",
                     request = environmentService.getRequest(environment, token,
-                        "api", "/v1/accounts");
+                        "api", url);
 
                 return $http(request).then(function (response) {
-                    return response.data.accounts;
+                    return response.data.accounts || response.data;
                 }, function (response) {
                     throw response.data.message;
                 });

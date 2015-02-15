@@ -42,7 +42,7 @@
                     "account": {
                         templateUrl: "app/account/account.html",
                         controller: "Account",
-                        controllerAs: "account"
+                        controllerAs: "ctrl"
                     },
                     "quotes": {
                         templateUrl: "app/quotes/quotes.html"

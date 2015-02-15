@@ -5,8 +5,10 @@
         .module("argo")
         .controller("Default", Default);
 
-    Default.$inject = ["$mdDialog", "$mdBottomSheet", "accountsService"];
-    function Default($mdDialog, $mdBottomSheet, accountsService) {
+    Default.$inject = ["$rootScope", "$mdDialog",
+        "$mdBottomSheet", "accountsService"];
+
+    function Default($rootScope, $mdDialog, $mdBottomSheet, accountsService) {
         var vm = this;
 
         vm.tabSelectedIndex = 0;
@@ -44,8 +46,17 @@
                         templateUrl: "app/account/accounts-bottomsheet.html",
                         locals: {accounts: accounts},
                         targetEvent: event
-                    }).then(function (account) {
-                        vm.accountId = account.accountId;
+                    }).then(function (accountSelected) {
+                        vm.accountId = accountSelected.accountId;
+
+                        accountsService.getAccounts({
+                            environment: vm.environment,
+                            token: vm.token,
+                            accountId: vm.accountId
+                        }).then(function (account) {
+                            vm.account = account;
+                            $rootScope.$broadcast("accountChange", account);
+                        });
                     });
                 });
             });
