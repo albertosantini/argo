@@ -7,7 +7,7 @@
 
     function environmentService() {
         return {
-            getUrl: function(environment, type, url) {
+            getRequest: function(environment, token, type, url) {
                 var endpoints = {
                     live: {
                         stream: "https://stream-fxtrade.oanda.com",
@@ -23,7 +23,12 @@
                     }
                 };
 
-                return endpoints[environment][type] + url;
+                return {
+                    url: endpoints[environment][type] + url,
+                    "headers": {
+                        "Authorization": "Bearer " + token
+                    }
+                };
             }
         };
     }
