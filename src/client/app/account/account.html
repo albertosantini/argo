@@ -1,1 +1,15 @@
-This is the account tile.
+<md-content>
+    <md-list layout="column"  layout-align="start start">
+        <md-item>Account Id: {{ account.accountId }}</md-item>
+        <md-item>Account Name: {{ account.accountName }}</md-item>
+        <md-item>Balance: {{ account.balance }}</md-item>
+        <md-item>Unrealized P/L: {{ account.unrealizedPl }}</md-item>
+        <md-item>Realized P/L: {{ account.realizedPl }}</md-item>
+        <md-item>Margin Used: {{ account.marginUsed }}</md-item>
+        <md-item>Margin Available: {{ account.marginAvail }}</md-item>
+        <md-item>Open Trades: {{ account.openTrades }}</md-item>
+        <md-item>Open Orders: {{ account.openOrders }}</md-item>
+        <md-item> Margin Rate: {{ account.marginRate }}</md-item>
+        <md-item>Account Currency: {{ account.accountCurrency }}</md-item>
+    </md-list>
+</md-content>

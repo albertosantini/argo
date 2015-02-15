@@ -40,7 +40,9 @@
                         templateUrl: "app/news/news.html"
                     },
                     "account": {
-                        templateUrl: "app/account/account.html"
+                        templateUrl: "app/account/account.html",
+                        controller: "Account",
+                        controllerAs: "account"
                     },
                     "quotes": {
                         templateUrl: "app/quotes/quotes.html"
