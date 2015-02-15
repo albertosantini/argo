@@ -1,0 +1,13 @@
+<md-bottom-sheet class="md-list md-has-header">
+    <md-subheader>Accounts list</md-subheader>
+    <md-list>
+        <md-item ng-repeat="account in sheet.accounts">
+            <md-button aria-label="{{account.accountName}}"
+                ng-click="sheet.onAccountClick($index)">
+                <span>{{ account.accountName }}</span>
+                <span>{{ account.accountId }}</span>
+                <span>{{ account.accountCurrency }}</span>
+            </md-button>
+        </md-item>
+    </md-list>
+</md-bottom-sheet>

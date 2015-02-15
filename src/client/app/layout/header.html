@@ -3,6 +3,9 @@
     <div ng-show="default.token">
         Active environment: {{ default.environment }}
     </div>
+    <div ng-show="default.accountId">
+        Account Id: {{ default.accountId }}
+    </div>
     <md-button class="md-raised" ng-click="default.openTokenDialog($event)">
         Token
     </md-button>
