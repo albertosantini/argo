@@ -10,6 +10,7 @@
         var vm = this;
 
         vm.token = null;
+        vm.environment = null;
 
         vm.tabSelectedIndex = 0;
 
@@ -26,8 +27,10 @@
                 controllerAs: "dialog",
                 templateUrl: "app/layout/token-dialog.html",
                 targetEvent: ev
-            }).then(function(token) {
-                vm.token = token;
+            }).then(function(tokenInfo) {
+
+                vm.token = tokenInfo.token;
+                vm.environment = tokenInfo.environment;
             });
         };
     }

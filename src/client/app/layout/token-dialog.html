@@ -7,18 +7,18 @@
             <input ng-model="token">
         </md-input-container>
 
-        <md-radio-group ng-model="environment">
-            <md-radio-button value="live">Live</md-radio-button>
+        <md-radio-group layout="row" ng-model="environment">
             <md-radio-button value="practice">Practice</md-radio-button>
+            <md-radio-button value="live">Live</md-radio-button>
         </md-radio-group>
     </md-content>
 
     <div class="md-actions" layout="row">
         <span flex></span>
         <md-button ng-click="dialog.answer()">
-            Cancel
+            Reset
         </md-button>
-        <md-button ng-click="dialog.answer(token + '@' + environment)" class="md-primary">
+        <md-button ng-click="dialog.answer({'environment': environment, 'token': token})" class="md-primary">
             Ok
         </md-button>
     </div>

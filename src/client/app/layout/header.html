@@ -1,6 +1,9 @@
-<md-toolbar layout-align="center end">
+<md-toolbar layout="row" layout-align="space-between center">
     Argo Interface for OANDA Trading Platform
+    <div ng-show="default.token">
+        Active environment: {{ default.environment }}
+    </div>
     <md-button class="md-raised" ng-click="default.openTokenDialog($event)">
-        {{ default.token }} Token
+        Token
     </md-button>
 </md-toolbar>
