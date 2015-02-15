@@ -25,8 +25,14 @@
                 templateUrl: "app/layout/token-dialog.html",
                 targetEvent: event
             }).then(function(tokenInfo) {
-                vm.environment = tokenInfo.environment;
-                vm.token = tokenInfo.token;
+                if (tokenInfo) {
+                    vm.environment = tokenInfo.environment;
+                    vm.token = tokenInfo.token;
+                } else {
+                    vm.environment = "";
+                    vm.token = "";
+                    vm.accountId = "";
+                }
 
                 accountsService.getAccounts({
                     environment: vm.environment,
