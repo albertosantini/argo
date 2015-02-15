@@ -5,10 +5,10 @@
         .module("argo")
         .controller("Default", Default);
 
-    Default.$inject = ["$rootScope", "$mdDialog", "$mdToast",
+    Default.$inject = ["$rootScope", "$mdDialog",
         "$mdBottomSheet", "accountsService"];
 
-    function Default($rootScope, $mdDialog, $mdBottomSheet, $mdToast,
+    function Default($rootScope, $mdDialog, $mdBottomSheet,
         accountsService) {
         var vm = this;
 
@@ -63,14 +63,14 @@
             });
         };
 
-        vm.showCustomToast = function () {
-            $mdToast.show({
-                controller: "MyToast",
-                controllerAs: "toast",
-                templateUrl: "app/layout/toast.html",
-                hideDelay: 6000,
-                position: "bottom right"
-            });
-        };
+        // vm.showCustomToast = function () {
+        //     $mdToast.show({
+        //         controller: "MyToast",
+        //         controllerAs: "toast",
+        //         templateUrl: "app/layout/toast.html",
+        //         hideDelay: 6000,
+        //         position: "bottom right"
+        //     });
+        // };
     }
 }());
