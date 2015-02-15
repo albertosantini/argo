@@ -17,7 +17,7 @@
                 return $http(request).then(function (response) {
                     return response.data.accounts;
                 }, function (response) {
-                    return response.data.message;
+                    throw response.data.message;
                 });
             }
         };

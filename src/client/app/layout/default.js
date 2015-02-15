@@ -44,11 +44,9 @@
                         templateUrl: "app/account/accounts-bottomsheet.html",
                         locals: {accounts: accounts},
                         targetEvent: event
-                    }).then(function(account) {
+                    }).then(function (account) {
                         vm.accountId = account.accountId;
                     });
-                }, function (err) {
-                    console.log(err);
                 });
             });
         };
