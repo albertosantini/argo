@@ -5,11 +5,9 @@
         .module("argo")
         .controller("Default", Default);
 
-    Default.$inject = ["$rootScope", "$mdDialog",
-        "$mdBottomSheet", "accountsService"];
+    Default.$inject = ["$mdDialog", "$mdBottomSheet", "accountsService"];
 
-    function Default($rootScope, $mdDialog, $mdBottomSheet,
-        accountsService) {
+    function Default($mdDialog, $mdBottomSheet, accountsService) {
         var vm = this;
 
         vm.tabSelectedIndex = 0;
@@ -56,7 +54,6 @@
                             accountId: vm.accountId
                         }).then(function (account) {
                             vm.account = account;
-                            $rootScope.$broadcast("accountChange", account);
                         });
                     });
                 });
