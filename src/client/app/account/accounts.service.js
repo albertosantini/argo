@@ -20,8 +20,8 @@
                 accountId = data.accountId,
                 url = accountId ?
                     "/v1/accounts" + "/" + accountId : "/v1/accounts",
-                request = environmentService.getRequest(environment, token,
-                    "api", url);
+                request = environmentService.getRequest(environment, "api",
+                    token, url);
 
             return $http(request).then(function (response) {
                 var accounts = response.data.accounts || response.data;
