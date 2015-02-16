@@ -5,13 +5,11 @@
         .module("argo")
         .controller("Account", Account);
 
-    Account.$inject = ["$rootScope"];
-    function Account($rootScope) {
+    Account.$inject = ["accountsService"];
+    function Account(accountService) {
         var vm = this;
 
-        $rootScope.$on("accountChange", function ($scope, account) {
-            vm.account = account;
-        });
+        vm.account = accountService.activeAccount;
     }
 
 }());
