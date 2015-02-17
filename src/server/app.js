@@ -8,6 +8,8 @@ var app = express(),
 
 app.use(staticFiles("./src/client/"));
 
+app.use("/api", require("./routes"));
+
 app.get("/ping", function(req, res) {
     res.send("pong");
 });
