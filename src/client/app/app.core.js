@@ -3,7 +3,8 @@
 (function () {
     angular
         .module("argo")
-        .config(config);
+        .config(config)
+        .run(setup);
 
     // config.$inject = ["$httpProvider", "$injector"];
     // function config($httpProvider, $injector) {
@@ -32,5 +33,11 @@
             };
         }]);
     }
+
+    setup.$inject = ["pricesService"];
+    function setup(pricesService) {
+        pricesService.getPricesStream();
+    }
+
 
 }());

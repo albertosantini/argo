@@ -3,5 +3,6 @@
 angular
     .module("argo", [
         "ngMaterial",
-        "ui.router"
+        "ui.router",
+        "ngSocket"
     ]);
