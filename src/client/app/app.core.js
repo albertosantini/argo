@@ -8,8 +8,8 @@
 
     // config.$inject = ["$httpProvider", "$injector"];
     // function config($httpProvider, $injector) {
-    config.$inject = ["$httpProvider"];
-    function config($httpProvider) {
+    config.$inject = ["$httpProvider", "$locationProvider"];
+    function config($httpProvider, $locationProvider) {
         var interceptors = $httpProvider.interceptors;
 
         interceptors.push(["$q", function($q) {
@@ -32,6 +32,8 @@
                 }
             };
         }]);
+
+        $locationProvider.html5Mode(true);
     }
 
     setup.$inject = ["pricesService"];
