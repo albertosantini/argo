@@ -8,7 +8,7 @@
     <md-tab id="tab5" aria-controls="tab5-content">Activity</md-tab>
     <md-tab id="tab6" aria-controls="tab6-content">News</md-tab>
 </md-tabs>
-<ng-switch on="default.tabSelectedIndex" class="tabpanel-container">
+<ng-switch on="default.tabSelectedIndex" class="tabpanel-container" layout-margin>
     <div role="tabpanel"
          id="tab1-content"
          aria-labelledby="tab1"
@@ -71,22 +71,16 @@
 
 </ng-switch>
 
-<md-grid-list md-cols="12" md-row-height="1:1" md-gutter="8px">
-    <md-grid-tile md-rowspan="2" md-colspan="4">
-
+<div layout="row" layout-margin layout-fill layout-padding layout-wrap>
+    <div flex="20" class="flex-content">
         <div ui-view="account"></div>
-        <md-grid-tile-footer>Account</md-grid-tile-footer>
-    </md-grid-tile>
-
-    <md-grid-tile md-rowspan="4" md-colspan="8">
-
+    </div>
+    <div flex class="flex-content">
         <div ui-view="charts"></div>
-        <md-grid-tile-footer>Charts</md-grid-tile-footer>
-    </md-grid-tile>
-
-    <md-grid-tile md-rowspan="2" md-colspan="4">
-
+    </div>
+</div>
+<div layout="row" layout-margin layout-fill layout-padding layout-wrap>
+    <div flex="20" class="flex-content">
         <div ui-view="quotes"></div>
-        <md-grid-tile-footer>Quotes</md-grid-tile-footer>
-    </md-grid-tile>
-</md-grid-list>
+    </div>
+</div>
