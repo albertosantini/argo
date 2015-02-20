@@ -23,9 +23,8 @@
 
                         return $q.reject(response);
                     } else {
-                        console.log(response);
-
                         // $mdToast.showSimple(message);
+                        console.log(response);
 
                         return $q.reject(response);
                     }
