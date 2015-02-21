@@ -28,6 +28,12 @@
 
                 if (!accounts.length) {
                     angular.extend(service.activeAccount, response.data);
+
+                    $http.post("/api/startstream", {
+                        environment: environment,
+                        accessToken: token,
+                        accountId: accountId
+                    });
                 }
 
                 return accounts;

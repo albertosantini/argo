@@ -8,6 +8,10 @@ var app = express(),
     staticFiles = express.static,
     apiUrl = routes.config.apiUrl;
 
+process.on("uncaughtException", function (err) {
+    console.log(err);
+});
+
 app.use(staticFiles(routes.config.staticFiles));
 app.use(apiUrl, routes.apis);
 
