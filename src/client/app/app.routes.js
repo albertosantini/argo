@@ -19,7 +19,9 @@
             .state("default.subs", {
                 views: {
                     "header": {
-                        templateUrl: "app/layout/header.html"
+                        templateUrl: "app/header/header.html",
+                        controller: "Header",
+                        controllerAs: "ctrl"
                     },
                     "trades": {
                         templateUrl: "app/trades/trades.html"

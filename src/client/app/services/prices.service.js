@@ -20,9 +20,6 @@
             ws.onMessage(function (event) {
                 console.log(event);
             });
-
-            console.log("Initialized prices streaming");
-            ws.send("go");
         }
     }
 
