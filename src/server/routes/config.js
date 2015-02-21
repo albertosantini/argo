@@ -33,7 +33,7 @@ function getUrl(environment, type) {
             api: "https://api-fxtrade.oanda.com"
         },
         practice: {
-            stream: "http://stream-fxpractice.oanda.com",
+            stream: "https://stream-fxpractice.oanda.com",
             api: "https://api-fxpractice.oanda.com"
         },
         sandbox: {

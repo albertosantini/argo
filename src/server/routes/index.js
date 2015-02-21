@@ -14,6 +14,10 @@ exports.stream = stream;
 
 router.post("/startstream", jsonParser, startStream);
 
-function startStream(req) {
+function startStream(req, res) {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+
     stream.start(req.body);
 }

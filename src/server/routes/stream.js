@@ -15,28 +15,29 @@ function start(options) {
         accessToken = options && options.accessToken || config.accessToken,
         accountId = options && options.accountId || config.accountId,
         sessionId = options && options.sessionId || config.sessionId,
-        instruments = options && options.instruments || config.instruments;
+        instruments = options && options.instruments || config.instruments,
+        pricesUrl = config.getUrl(environment, "stream") + "/v1/prices",
+        eventsUrl = config.getUrl(environment, "stream") + "/v1/events",
+        authHeader = {
+            "Authorization": "Bearer " + accessToken
+        };
 
     request({
-        "url": config.getUrl(environment, "stream") + "/v1/prices",
+        "url": pricesUrl,
         "qs": {
             accountId: accountId,
             sessionId: sessionId,
             instruments: instruments
         },
-        "headers": {
-            "Authorization": "Bearer " + accessToken
-        }
+        "headers": authHeader
     }).on("data", processChunk);
 
     request({
-        "url": config.getUrl(environment, "stream") + "/v1/events",
+        "url": eventsUrl,
         "qs": {
             accountIds: accountId
         },
-        "headers": {
-            "Authorization": "Bearer " + accessToken
-        }
+        "headers": authHeader
     }).on("data", processChunk);
 
     console.log("Argo streaming prices and events on http://localhost:" + port +
@@ -50,7 +51,7 @@ function processChunk(chunk) {
         try {
             processData(JSON.parse(el));
         } catch(e) {
-            console.log("ERROR", chunk.toString());
+            console.log("ARGO [processChunk]", chunk.toString());
         }
     });
 }
