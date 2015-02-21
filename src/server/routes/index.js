@@ -1,15 +1,19 @@
 "use strict";
 
-var router = require("express").Router();
+var express = require("express"),
+    config = require("./config"),
+    stream = require("./stream");
 
-module.exports = router;
+var router = express.Router();
 
-router.get("/test", getTest);
+exports.apis = router;
+exports.config = config;
+exports.stream = stream;
 
-function getTest(req, res) {
-    var data = {
-        test: "foo"
-    };
+router.post("/startstream", startStream);
 
-    res.json(data);
+function startStream(req) {
+    var options = req;
+
+    stream.start(options);
 }
