@@ -1,0 +1,12 @@
+# Activity
+
+- TICKET
+- TYPE
+- MARKET
+- UNITS
+- PRICE
+- PROFIT (USD)
+- PROFIT (PIPS)
+- PROFIT (%)
+- BALANCE
+- DATE/TIME

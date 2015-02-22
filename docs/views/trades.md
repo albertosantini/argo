@@ -1,0 +1,15 @@
+# Trades
+
+- TYPE
+- TICKET
+- MARKET
+- UNITS
+- S/L
+- T/P
+- T/S
+- PRICECURRENT
+- PROFIT
+- PROFIT (USD)
+- PROFIT (PIPS)
+- PROFIT (%)
+- DATE

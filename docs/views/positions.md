@@ -1,0 +1,12 @@
+# Positions
+
+- TYPE
+- MARKET
+- UNITS
+- EXPOSURE (USD)
+- AVG. PRICE
+- CURRENT
+- PROFIT
+- PROFIT (USD)
+- PROFIT (PIPS)
+- PROFIT (%)

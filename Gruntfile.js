@@ -8,7 +8,7 @@ module.exports = function (grunt) {
             },
             src: [
                 "Gruntfile.js",
-                "lib/**/*.js",
+                "labs/**/*.js",
                 "src/**/*.js"
             ]
         },
@@ -28,6 +28,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-vows-runner");
 
     grunt.registerTask("default", [
-        "eslint"
+        "eslint",
+        "vows"
     ]);
 };
