@@ -6,6 +6,9 @@
     <div ng-show="ctrl.accountId">
         Account Id: {{ ctrl.accountId }}
     </div>
+    <div ng-hide="ctrl.token">
+        Please, insert the access token.
+    </div>
     <md-button class="md-raised" ng-click="ctrl.openTokenDialog($event)">
         Token
     </md-button>

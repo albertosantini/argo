@@ -1,15 +1,48 @@
-<md-content>
-    <md-list layout="column" layout-align="start start">
-        <md-item>Account Id: {{ ctrl.account.accountId }}</md-item>
-        <md-item>Account Name: {{ ctrl.account.accountName }}</md-item>
-        <md-item>Balance: {{ ctrl.account.balance }}</md-item>
-        <md-item>Unrealized P/L: {{ ctrl.account.unrealizedPl }}</md-item>
-        <md-item>Realized P/L: {{ ctrl.account.realizedPl }}</md-item>
-        <md-item>Margin Used: {{ ctrl.account.marginUsed }}</md-item>
-        <md-item>Margin Available: {{ ctrl.account.marginAvail }}</md-item>
-        <md-item>Open Trades: {{ ctrl.account.openTrades }}</md-item>
-        <md-item>Open Orders: {{ ctrl.account.openOrders }}</md-item>
-        <md-item>Margin Rate: {{ ctrl.account.marginRate }}</md-item>
-        <md-item>Account Currency: {{ ctrl.account.accountCurrency }}</md-item>
+<md-content ng-show="ctrl.account.accountId">
+    <md-list layout="column">
+        <md-item layout="row" layout-align="space-between end">
+            <b>Account Id:</b>
+            <span>{{ ctrl.account.accountId }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Account Name:</b>
+            <span>{{ ctrl.account.accountName }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Balance:</b>
+            <span>{{ ctrl.account.balance }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Unrealized P/L:</b>
+            <span>{{ ctrl.account.unrealizedPl }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Realized P/L:</b>
+            <span>{{ ctrl.account.realizedPl }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Margin Used:</b>
+            <span>{{ ctrl.account.marginUsed }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Margin Available:</b>
+            <span>{{ ctrl.account.marginAvail }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Open Trades:</b>
+            <span>{{ ctrl.account.openTrades }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Open Orders:</b>
+            <span>{{ ctrl.account.openOrders }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Margin Rate:</b>
+            <span>{{ ctrl.account.marginRate }}</span>
+        </md-item>
+        <md-item layout="row" layout-align="space-between end">
+            <b>Account Currency:</b>
+            <span>{{ ctrl.account.accountCurrency }}</span>
+        </md-item>
     </md-list>
 </md-content>

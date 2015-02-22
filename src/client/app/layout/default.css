@@ -1,8 +1,4 @@
 .tabpanel-container {
-    background: white;
     display: block;
-    height: 200px;
     margin-top: 20px;
-    overflow: hidden;
-    position: relative;
 }
