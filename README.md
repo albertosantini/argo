@@ -25,7 +25,7 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 
 ## [Documentation](docs/)
 
-## [Contributing](contributing.md)
+## [Contributing](CONTRIBUTING.md)
 
 ## Disclaimer
 
