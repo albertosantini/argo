@@ -11,9 +11,9 @@
     function config($httpProvider, $locationProvider) {
         var interceptors = $httpProvider.interceptors;
 
-        interceptors.push(["$q", function($q) {
+        interceptors.push(["$q", function ($q) {
             return {
-                "responseError": function(response) {
+                "responseError": function (response) {
                     // var $mdToast = $injector.get("$mdToast");
 
                     if (response.status === 401) {

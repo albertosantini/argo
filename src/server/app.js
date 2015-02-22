@@ -18,6 +18,6 @@ app.use(apiUrl, routes.apis);
 app.listen(port, function () {
     console.log("Argo listening on http://localhost:" + port);
     console.log("Argo listening apis on http://localhost:" + port + apiUrl);
-}).on("upgrade", function(request, socket, body) {
+}).on("upgrade", function (request, socket, body) {
     routes.stream.run(request, socket, body);
 });

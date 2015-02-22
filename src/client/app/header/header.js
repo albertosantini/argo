@@ -16,7 +16,7 @@
                 controllerAs: "dialog",
                 templateUrl: "app/header/token-dialog.html",
                 targetEvent: event
-            }).then(function(tokenInfo) {
+            }).then(function (tokenInfo) {
                 if (tokenInfo) {
                     vm.environment = tokenInfo.environment;
                     vm.token = tokenInfo.token;

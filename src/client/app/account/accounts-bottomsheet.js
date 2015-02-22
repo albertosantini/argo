@@ -11,7 +11,7 @@
 
         vm.accounts = accounts;
 
-        vm.onAccountClick = function($index) {
+        vm.onAccountClick = function ($index) {
             var account = accounts[$index];
 
             $mdBottomSheet.hide(account);

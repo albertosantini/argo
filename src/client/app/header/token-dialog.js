@@ -9,15 +9,15 @@
     function TokenDialog($mdDialog) {
         var vm = this;
 
-        vm.hide = function() {
+        vm.hide = function () {
             $mdDialog.hide();
         };
 
-        vm.cancel = function() {
+        vm.cancel = function () {
             $mdDialog.cancel();
         };
 
-        vm.answer = function(token) {
+        vm.answer = function (token) {
             $mdDialog.hide(token);
         };
     }

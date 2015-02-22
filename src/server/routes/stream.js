@@ -74,7 +74,7 @@ function run(req, socket, body) {
     if (url === streamUrl && WebSocket.isWebSocket(req)) {
         ws = new WebSocket(req, socket, body);
 
-        ws.on("close", function() {
+        ws.on("close", function () {
             ws = null;
         });
 
