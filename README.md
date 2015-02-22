@@ -25,6 +25,8 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 
 ## [Documentation](docs/)
 
+## [Contributing](contributing.md)
+
 ## Disclaimer
 
 NOT INVESTMENT ADVICE AND WILL LOSE LOTS OF MONEY SO PROCEED WITH CAUTION.
