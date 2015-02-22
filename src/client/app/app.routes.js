@@ -47,7 +47,9 @@
                         controllerAs: "ctrl"
                     },
                     "quotes": {
-                        templateUrl: "app/quotes/quotes.html"
+                        templateUrl: "app/quotes/quotes.html",
+                        controller: "Quotes",
+                        controllerAs: "ctrl"
                     },
                     "charts": {
                         templateUrl: "app/charts/charts.html"

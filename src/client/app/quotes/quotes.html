@@ -1,1 +1,9 @@
-This is the quotes tile.
+<md-content>
+    <md-list layout="column" layout-align="start start">
+        <md-item ng-repeat="(instrument, quote) in ctrl.service.quotes">
+            <span>{{ instrument }}</span>
+            <span>{{ quote.bid }}</span>
+            <span>{{ quote.ask }}</span>
+        </md-item>
+    </md-list>
+</md-content>

@@ -5,8 +5,8 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["ngSocket"];
-    function streamService(ngSocket) {
+    streamService.$inject = ["ngSocket", "quotesService"];
+    function streamService(ngSocket, quotesService) {
         var service = {
             prices: {},
             getStream: getStream
@@ -18,9 +18,14 @@
             var ws = ngSocket("ws://localhost:8000/stream");
 
             ws.onMessage(function (event) {
-                var data = JSON.parse(event.data);
+                var data = JSON.parse(event.data),
+                    tick = data.tick;
 
                 console.log(data);
+
+                if (tick) {
+                    quotesService.updateTick(tick);
+                }
             });
         }
     }
