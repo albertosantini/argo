@@ -22,7 +22,7 @@ exports.instruments = [
     "USD_CAD",
     "AUD_USD",
     "GBP_JPY"
-].join(",");
+];
 
 exports.getUrl = getUrl;
 

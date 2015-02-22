@@ -3,22 +3,24 @@
 (function () {
     angular
         .module("argo")
-        .factory("pricesService", pricesService);
+        .factory("streamService", streamService);
 
-    pricesService.$inject = ["ngSocket"];
-    function pricesService(ngSocket) {
+    streamService.$inject = ["ngSocket"];
+    function streamService(ngSocket) {
         var service = {
             prices: {},
-            getPricesStream: getPricesStream
+            getStream: getStream
         };
 
         return service;
 
-        function getPricesStream() {
+        function getStream() {
             var ws = ngSocket("ws://localhost:8000/stream");
 
             ws.onMessage(function (event) {
-                console.log(event);
+                var data = JSON.parse(event.data);
+
+                console.log(data);
             });
         }
     }

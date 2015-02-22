@@ -19,5 +19,13 @@ function startStream(req, res) {
         return res.sendStatus(400);
     }
 
-    stream.start(req.body);
+    stream.start(req.body, function (err, instruments) {
+        if (!err) {
+            console.log("Argo streaming prices and events on ws://localhost:" +
+                config.port + config.streamUrl);
+
+            return res.json(instruments);
+        }
+    });
+
 }

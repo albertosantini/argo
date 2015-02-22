@@ -9,9 +9,8 @@ var WebSocket = require("faye-websocket"),
 
 var wss = [];
 
-function start(options) {
-    var port = config.port,
-        environment = options && options.environment || config.environment,
+function start(options, callback) {
+    var environment = options && options.environment || config.environment,
         accessToken = options && options.accessToken || config.accessToken,
         accountId = options && options.accountId || config.accountId,
         sessionId = options && options.sessionId || config.sessionId,
@@ -27,21 +26,20 @@ function start(options) {
         "qs": {
             accountId: accountId,
             sessionId: sessionId,
-            instruments: instruments
+            instruments: instruments.join(",")
         },
         "headers": authHeader
+    }).on("response", function () {
+        request({
+            "url": eventsUrl,
+            "qs": {
+                accountIds: accountId
+            },
+            "headers": authHeader
+        }).on("response", function () {
+            callback(null, instruments);
+        }).on("data", processChunk);
     }).on("data", processChunk);
-
-    request({
-        "url": eventsUrl,
-        "qs": {
-            accountIds: accountId
-        },
-        "headers": authHeader
-    }).on("data", processChunk);
-
-    console.log("Argo streaming prices and events on http://localhost:" + port +
-        config.streamUrl);
 }
 
 function processChunk(chunk) {
@@ -49,17 +47,13 @@ function processChunk(chunk) {
 
     data.forEach(function (el) {
         try {
-            processData(JSON.parse(el));
+            wss.forEach(function (ws) {
+                if (ws) {
+                    ws.send(el);
+                }
+            });
         } catch(e) {
             console.log("ARGO [processChunk]", chunk.toString());
-        }
-    });
-}
-
-function processData(data) {
-    wss.forEach(function (ws) {
-        if (ws) {
-            ws.send(data);
         }
     });
 }

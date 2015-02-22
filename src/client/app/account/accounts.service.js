@@ -5,8 +5,8 @@
         .module("argo")
         .factory("accountsService", accountsService);
 
-    accountsService.$inject = ["$http", "environmentService"];
-    function accountsService($http, environmentService) {
+    accountsService.$inject = ["$http", "environmentService", "streamService"];
+    function accountsService($http, environmentService, streamService) {
         var service = {
             activeAccount: {},
             getAccounts: getAccounts
@@ -33,6 +33,9 @@
                         environment: environment,
                         accessToken: token,
                         accountId: accountId
+                    }).success(function (instruments) {
+                        console.log(instruments);
+                        streamService.getStream();
                     });
                 }
 
