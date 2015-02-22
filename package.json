@@ -6,7 +6,9 @@
     "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
         "trading",
-        "forex"
+        "forex",
+        "fxtrade",
+        "oanda"
     ],
     "author": "Alberto Santini",
     "license": "MIT",
