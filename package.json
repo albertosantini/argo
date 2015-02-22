@@ -1,7 +1,7 @@
 {
     "name": "argo",
     "description": "HTML5 interface for the OANDA platform",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "main": "src/server/app.js",
     "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
