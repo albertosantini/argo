@@ -1,5 +1,8 @@
 # ARGO
 
+[![Build Status](https://travis-ci.org/albertosantini/argo.png)](https://travis-ci.org/albertosantini/argo)
+[![NGN Dependencies](https://david-dm.org/albertosantini/argo.png)](https://david-dm.org/albertosantini/argo)
+
 Argo is an open source trading platform, connecting directly with [OANDA][]
 through the powerful [API][] to develop trading strategies.
 
