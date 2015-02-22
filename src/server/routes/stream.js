@@ -7,7 +7,8 @@ var WebSocket = require("faye-websocket"),
     request = require("request"),
     config = require("./config");
 
-var wss = [];
+var wss = [],
+    undeliveredMessages = [];
 
 function start(options, callback) {
     var environment = options && options.environment || config.environment,
@@ -46,15 +47,22 @@ function processChunk(chunk) {
     var data = chunk.toString().split("\r\n").slice(0, -1);
 
     data.forEach(function (el) {
-        try {
-            wss.forEach(function (ws) {
-                if (ws) {
-                    ws.send(el);
-                }
-            });
-        } catch(e) {
-            console.log("ARGO [processChunk]", chunk.toString());
+        if (!wss.length) {
+            undeliveredMessages.push(el);
         }
+
+        wss.forEach(function (ws) {
+            if (ws) {
+                if (undeliveredMessages.length) {
+                    undeliveredMessages.forEach(function (message) {
+                        ws.send(message);
+                    });
+                    undeliveredMessages = [];
+                }
+
+                ws.send(el);
+            }
+        });
     });
 }
 
