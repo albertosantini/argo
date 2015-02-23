@@ -27,6 +27,30 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 
 ## [Contributing](CONTRIBUTING.md)
 
+## Roadmap
+
+- 1.0.0 Initial release
+    - [X] Project skeleton
+
+- 1.1.x - 1.8.x Basic features
+    - [X] App layout (1.1.0)
+    - [X] Token dialog (1.2.0)
+    - [X] Account view (1.2.0)
+    - [X] Quotes view (1.3.0)
+    - [ ] Charts view
+    - [ ] Buy/Sell view
+    - [ ] Trades view
+    - [ ] Orders view
+    - [ ] Positions view
+    - [ ] Exposure view
+    - [ ] Activity view
+    - [ ] News view
+
+- 1.9.x Improve docs and tests
+
+- 2.x Executing trading strategies
+    - [ ] To be defined
+
 ## Disclaimer
 
 NOT INVESTMENT ADVICE AND WILL LOSE LOTS OF MONEY SO PROCEED WITH CAUTION.
