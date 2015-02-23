@@ -21,8 +21,6 @@
                 var data = JSON.parse(event.data),
                     tick = data.tick;
 
-                console.log(data);
-
                 if (tick) {
                     quotesService.updateTick(tick);
                 }

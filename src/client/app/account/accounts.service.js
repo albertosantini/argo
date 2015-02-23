@@ -34,7 +34,6 @@
                         accessToken: token,
                         accountId: accountId
                     }).success(function (instruments) {
-                        console.log(instruments);
                         streamService.getStream();
                     });
                 }
