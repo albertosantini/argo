@@ -1,6 +1,3 @@
-env:
-    node: true
-
 rules:
     brace-style: [2, "1tbs"]
     comma-style: [2, "last"]
@@ -24,6 +21,3 @@ rules:
     spaced-line-comment: [2, "always", { exceptions: ["-"]}]
     strict: [2, "global"]
     wrap-iife: 2
-
-globals:
-    angular: false
