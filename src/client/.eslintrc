@@ -1,0 +1,8 @@
+env:
+    browser: true
+
+globals:
+    angular: false
+
+plugins:
+  - angular
