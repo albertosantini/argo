@@ -9,6 +9,16 @@ The frontend is based on [AngularJS][] and [Material Design][].
 
 The frontend follows [Papa's AngularJS style guide][].
 
+The application structure follows LIFT Principle, a Folders-by-Feature
+structure.
+
+`src/client/app/index.html` loads the scripts and the stylesheets.
+`src/client/app/layout` contains the default view.
+`src/client/app/services` contains the common services.
+`src/client/app/components` contains the directives.
+
+The other folders contain the implementation of each feature.
+
 `labs` folder contains experimental source code.
 
 In `labs/lib` folder there are a few scripts, wrapping [OANDA Rest APIs][], as
