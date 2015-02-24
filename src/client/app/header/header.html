@@ -1,15 +1,15 @@
 <md-toolbar layout="row" layout-align="space-between center" layout-padding>
     Argo Interface for OANDA Trading Platform
-    <div ng-show="ctrl.token">
-        Active environment: {{ ctrl.environment }}
+    <div ng-show="vm.token">
+        Active environment: {{ vm.environment }}
     </div>
-    <div ng-show="ctrl.accountId">
-        Account Id: {{ ctrl.accountId }}
+    <div ng-show="vm.accountId">
+        Account Id: {{ vm.accountId }}
     </div>
-    <div ng-hide="ctrl.token">
+    <div ng-hide="vm.token">
         Please, insert the access token.
     </div>
-    <md-button class="md-raised" ng-click="ctrl.openTokenDialog($event)">
+    <md-button class="md-raised" ng-click="vm.openTokenDialog($event)">
         Token
     </md-button>
 </md-toolbar>

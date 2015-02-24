@@ -21,7 +21,7 @@
                     "header": {
                         templateUrl: "app/header/header.html",
                         controller: "Header",
-                        controllerAs: "ctrl"
+                        controllerAs: "vm"
                     },
                     "trades": {
                         templateUrl: "app/trades/trades.html"
@@ -44,12 +44,12 @@
                     "account": {
                         templateUrl: "app/account/account.html",
                         controller: "Account",
-                        controllerAs: "ctrl"
+                        controllerAs: "vm"
                     },
                     "quotes": {
                         templateUrl: "app/quotes/quotes.html",
                         controller: "Quotes",
-                        controllerAs: "ctrl"
+                        controllerAs: "vm"
                     },
                     "charts": {
                         templateUrl: "app/charts/charts.html"
