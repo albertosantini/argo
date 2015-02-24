@@ -9,7 +9,7 @@
     function Quotes(quotesService) {
         var vm = this;
 
-        vm.service = quotesService;
+        vm.quotes = quotesService.getQuotes();
     }
 
 }());
