@@ -18,7 +18,7 @@
             var ws = ngSocket("ws://localhost:8000/stream");
 
             ws.onMessage(function (event) {
-                var data = JSON.parse(event.data),
+                var data = angular.fromJson(event.data),
                     tick = data.tick;
 
                 if (tick) {
