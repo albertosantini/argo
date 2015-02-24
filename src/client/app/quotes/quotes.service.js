@@ -7,17 +7,22 @@
 
     quotesService.$inject = [];
     function quotesService() {
-        var service = {
-            quotes: {},
-            updateTick: updateTick
-        };
+        var quotes = {},
+            service = {
+                getQuotes: getQuotes,
+                updateTick: updateTick
+            };
 
         return service;
+
+        function getQuotes() {
+            return quotes;
+        }
 
         function updateTick(tick) {
             var instrument = tick.instrument;
 
-            service.quotes[instrument] = {
+            quotes[instrument] = {
                 time: tick.time,
                 ask: tick.ask,
                 bid: tick.bid
