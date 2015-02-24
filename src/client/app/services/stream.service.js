@@ -8,7 +8,6 @@
     streamService.$inject = ["ngSocket", "quotesService"];
     function streamService(ngSocket, quotesService) {
         var service = {
-            prices: {},
             getStream: getStream
         };
 
