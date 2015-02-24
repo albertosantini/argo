@@ -1,3 +1,6 @@
+env:
+    node: true
+
 rules:
     brace-style: [2, "1tbs"]
     comma-style: [2, "last"]
