@@ -1,6 +1,6 @@
 <md-content>
     <md-list layout="column">
-        <md-item ng-repeat="(instrument, quote) in ctrl.service.quotes"
+        <md-item ng-repeat="(instrument, quote) in ctrl.quotes"
             layout="row" layout-align="space-between end">
             <b>{{ instrument }}</b>
             <span>{{ quote.bid }}</span>
