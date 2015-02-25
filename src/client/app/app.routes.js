@@ -52,7 +52,9 @@
                         controllerAs: "vm"
                     },
                     "charts": {
-                        templateUrl: "app/charts/charts.html"
+                        templateUrl: "app/charts/charts.html",
+                        controller: "Charts",
+                        controllerAs: "vm"
                     }
                 }
             });
