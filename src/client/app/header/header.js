@@ -5,9 +5,11 @@
         .module("argo")
         .controller("Header", Header);
 
-    Header.$inject = ["$mdDialog", "$mdBottomSheet", "accountsService"];
+    Header.$inject = ["$mdDialog", "$mdBottomSheet",
+        "accountsService", "sessionService"];
 
-    function Header($mdDialog, $mdBottomSheet, accountsService) {
+    function Header($mdDialog, $mdBottomSheet,
+                    accountsService, sessionService) {
         var vm = this;
 
         vm.openTokenDialog = function (event) {
@@ -38,6 +40,12 @@
                         targetEvent: event
                     }).then(function (accountSelected) {
                         vm.accountId = accountSelected.accountId;
+
+                        sessionService.set({
+                            environment: vm.environment,
+                            token: vm.token,
+                            accountId: vm.accountId
+                        });
 
                         accountsService.getAccounts({
                             environment: vm.environment,
