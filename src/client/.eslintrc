@@ -3,6 +3,8 @@ env:
 
 globals:
     angular: false
+    d3: false
+    techan: false
 
 plugins:
   - angular
