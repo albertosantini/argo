@@ -23,7 +23,7 @@
                         return $q.reject(response);
                     } else {
                         // $mdToast.showSimple(message);
-                        console.log(response);
+                        console.log("Error:", response.status, response.data);
 
                         return $q.reject(response);
                     }

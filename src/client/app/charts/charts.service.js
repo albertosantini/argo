@@ -17,26 +17,23 @@
         return service;
 
         function getHistQuotes(opt) {
-            var session = sessionService.get(),
-                instrument = opt.instrument || "EUR_USD",
-                granularity = opt.granularity || "M5",
-                count = opt.count,
-                candleFormat = opt.candleFormat || "midpoint",
-                alignmentTimezone = opt.alignmentTimezone || "America/New_York",
-                dailyAlignment = opt.dailyAlignment || "0";
+            var instrument = opt && opt.instrument || "EUR_USD",
+                granularity = opt && opt.granularity || "M5",
+                count = opt && opt.count,
+                candleFormat = opt && opt.candleFormat || "midpoint",
+                alignmentTimezone = opt && opt.alignmentTimezone
+                    || "America/New_York",
+                dailyAlignment = opt && opt.dailyAlignment || "0";
 
-            $http.post("/api/candles", {
-                environment: session.environment,
-                accessToken: session.token,
-                accountId: session.accountId,
+            return $http.post("/api/candles", {
+                environment: sessionService.environment,
+                token: sessionService.token,
                 instrument: instrument,
                 granularity: granularity,
                 cound: count,
                 candleFormat: candleFormat,
                 alignmentTimezone: alignmentTimezone,
                 dailyAlignment: dailyAlignment
-            }).success(function (candles) {
-                console.log(candles);
             });
         }
 

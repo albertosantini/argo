@@ -33,6 +33,10 @@ function startStream(req, res) {
 }
 
 function getCandles(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
     request({
         "url": config.getUrl(req.body.environment, "api") + "/v1/candles",
         "qs": {
@@ -47,12 +51,13 @@ function getCandles(req, response) {
         }
     }, function (err, res, body) {
         var candles,
-            lines = "";
+            lines = "Date,Open,High,Low,Close,Volume\n";
 
         body = JSON.parse(body);
         if (!err && !body.code) {
             candles = body.candles;
 
+            candles = candles.reverse();
             candles.forEach(function (candle) {
                 lines += candle.time + "," +
                         candle.openMid + "," +

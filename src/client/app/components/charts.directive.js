@@ -8,32 +8,36 @@
     argoCharts.$inject = [];
     function argoCharts() {
         var directive = {
-            link: link,
-            restrict: "EA"
+            restrict: "E",
+            scope: {
+                data: "=",
+                feed: "="
+            },
+            link: link
         };
 
         return directive;
 
-        function link(scope, element, attrs) {
-            scope.$watch(attrs.argoCharts, function (value) {
-                if (value) {
-                    initChart();
-                }
+        function link(scope, element) {
+            scope.$watch("data", function (data) {
+                drawChart(element[0], data);
             });
         }
     }
 
-    function initChart() {
+    function drawChart(el, data) {
         var margin = {
                 top: 20,
                 right: 20,
                 bottom: 30,
                 left: 50
             },
-            width = 900 - margin.left - margin.right,
+            width = 950 - margin.left - margin.right,
             height = 450 - margin.top - margin.bottom;
 
-        var parseDate = d3.time.format("%d-%b-%y").parse;
+        if (!data || data.length === 0) {
+            return;
+        }
 
         var x = techan.scale.financetime()
                 .range([0, width]);
@@ -100,7 +104,7 @@
                 .xAnnotation(timeAnnotation)
                 .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
-        var svg = d3.select("#charts").append("svg")
+        var svg = d3.select(el).append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom);
 
@@ -149,7 +153,7 @@
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Price ($)");
+                .text("Price (EUR_USD)");
 
         svg.append("g")
             .attr("class", "volume axis");
@@ -157,35 +161,33 @@
         svg.append("g")
             .attr("class", "crosshair ohlc");
 
-        var data, feed;
+        var feed;
 
-        d3.csv("app/charts/data.csv", function (error, csv) {
-            var accessor = ohlc.accessor();
-
-            feed = csv.map(function (d) {
-                return {
-                    date: parseDate(d.Date),
-                    open: +d.Open,
-                    high: +d.High,
-                    low: +d.Low,
-                    close: +d.Close,
-                    volume: +d.Volume
-                };
-            }).sort(function (a, b) {
-                return d3.ascending(accessor.d(a), accessor.d(b));
-            });
-
-            // The removed becomes the initial data,
-            // the remaining becomes the feed
-            data = feed.splice(0, 163);
-
-            svg.select("g.candlestick").datum(data);
-            svg.select("g.sma.ma-0").datum(sma0Calculator(data));
-            svg.select("g.sma.ma-1").datum(sma1Calculator(data));
-            svg.select("g.volume").datum(data);
-
-            redraw();
+        var csv = d3.csv.parse(data);
+        feed = csv.map(function (d) {
+            return {
+                date: new Date(d.Date),
+                open: +d.Open,
+                high: +d.High,
+                low: +d.Low,
+                close: +d.Close,
+                volume: +d.Volume
+            };
         });
+        // .sort(function (a, b) {
+        //     return d3.descending(accessor.d(a), accessor.d(b));
+        // });
+
+        // The removed becomes the initial data,
+        // the remaining becomes the feed
+        data = feed.splice(0, 163);
+
+        svg.select("g.candlestick").datum(data);
+        svg.select("g.sma.ma-0").datum(sma0Calculator(data));
+        svg.select("g.sma.ma-1").datum(sma1Calculator(data));
+        svg.select("g.volume").datum(data);
+
+        redraw();
 
         function refreshIndicator(selection, indicator, data2) {
             var datum = selection.datum();
@@ -225,20 +227,20 @@
             svg.select("g.crosshair.ohlc").call(crosshair);
 
             // Set next timer expiry
-            setTimeout(function () {
-                if (feed.length) {
-                    // Simulate a daily feed
-                    data.push(feed.shift());
-                } else {
-                    // Simulate intra day updates when no feed is left
-                    var last = data[data.length - 1];
-                    // Last must be between high and low
-                    last.close = Math.round(((last.high - last.low) *
-                        Math.random()) * 10) / 10 + last.low;
-                }
+            // setTimeout(function () {
+            //     if (feed.length) {
+            //         // Simulate a daily feed
+            //         data.push(feed.shift());
+            //     } else {
+            //         // Simulate intra day updates when no feed is left
+            //         var last = data[data.length - 1];
+            //         // Last must be between high and low
+            //         last.close = Math.round(((last.high - last.low) *
+            //             Math.random()) * 10) / 10 + last.low;
+            //     }
 
-                redraw();
-            }, (Math.random() * 1000) + 400);
+            //     redraw();
+            // }, (Math.random() * 1000) + 400);
             // Randomly pick an interval to update the chart
         }
 
