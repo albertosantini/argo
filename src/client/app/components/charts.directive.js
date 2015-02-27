@@ -20,97 +20,101 @@
 
         function link(scope, element) {
             scope.$watch("data", function (data) {
-                drawChart(element[0], data);
+                if (data.length > 0) {
+                    drawChart(element[0], data);
+                }
             });
         }
     }
 
     function drawChart(el, data) {
         var margin = {
-                top: 20,
+                top: 0,
                 right: 20,
                 bottom: 30,
-                left: 50
+                left: 75
             },
-            width = 950 - margin.left - margin.right,
-            height = 450 - margin.top - margin.bottom;
-
-        if (!data || data.length === 0) {
-            return;
-        }
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
 
         var x = techan.scale.financetime()
-                .range([0, width]);
+            .range([0, width]);
 
         var y = d3.scale.linear()
-                .range([height, 0]);
+            .range([height, 0]);
 
         var yVolume = d3.scale.linear()
-                .range([y(0), y(0.2)]);
+            .range([y(0), y(0.2)]);
 
         var ohlc = techan.plot.ohlc()
-                .xScale(x)
-                .yScale(y);
+            .xScale(x)
+            .yScale(y);
 
         var sma0 = techan.plot.sma()
-                .xScale(x)
-                .yScale(y);
+            .xScale(x)
+            .yScale(y);
 
         var sma0Calculator = techan.indicator.sma()
-                .period(10);
+            .period(10);
 
         var sma1 = techan.plot.sma()
-                .xScale(x)
-                .yScale(y);
+            .xScale(x)
+            .yScale(y);
 
         var sma1Calculator = techan.indicator.sma()
-                .period(20);
+            .period(20);
 
         var volume = techan.plot.volume()
-            // Set the accessor to a ohlc accessor so we get highlighted bars
-                .accessor(ohlc.accessor())
-                .xScale(x)
-                .yScale(yVolume);
+            .accessor(ohlc.accessor())
+            .xScale(x)
+            .yScale(yVolume);
 
         var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
+            .scale(x)
+            .orient("bottom");
 
         var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
+            .scale(y)
+            .orient("left");
 
         var volumeAxis = d3.svg.axis()
-                .scale(yVolume)
-                .orient("right")
-                .ticks(3)
-                .tickFormat(d3.format(",.3s"));
+            .scale(yVolume)
+            .orient("right")
+            .ticks(3)
+            .tickFormat(d3.format(",.3s"));
 
         var timeAnnotation = techan.plot.axisannotation()
-                .axis(xAxis)
-                .format(d3.time.format("%Y-%m-%d"))
-                .width(65)
-                .translate([0, height]);
+            .axis(xAxis)
+            .format(d3.time.format("%Y-%m-%d %H:%M"))
+            .width(80)
+            .translate([0, height]);
 
         var ohlcAnnotation = techan.plot.axisannotation()
-                .axis(yAxis)
-                .format(d3.format(",.2fs"));
+            .axis(yAxis)
+            .format(d3.format(",.4fs"));
 
         var volumeAnnotation = techan.plot.axisannotation()
-                .axis(volumeAxis)
-                .width(35);
+            .axis(volumeAxis)
+            .width(35);
 
         var crosshair = techan.plot.crosshair()
-                .xAnnotation(timeAnnotation)
-                .yAnnotation([ohlcAnnotation, volumeAnnotation]);
+            .xScale(x)
+            .yScale(y)
+            .xAnnotation(timeAnnotation)
+            .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
         var svg = d3.select(el).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom);
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
 
         var defs = svg.append("defs");
 
-        defs.append("clipPath")
+        svg = svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        defs
+            .append("clipPath")
                 .attr("id", "ohlcClip")
             .append("rect")
                 .attr("x", 0)
@@ -118,42 +122,39 @@
                 .attr("width", width)
                 .attr("height", height);
 
-        svg = svg.append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
-
         var ohlcSelection = svg.append("g")
-                .attr("class", "ohlc")
-                .attr("transform", "translate(0,0)");
+            .attr("class", "ohlc")
+            .attr("transform", "translate(0,0)");
 
         ohlcSelection.append("g")
-                .attr("class", "volume")
-                .attr("clip-path", "url(#ohlcClip)");
+            .attr("class", "volume")
+            .attr("clip-path", "url(#ohlcClip)");
 
         ohlcSelection.append("g")
-                .attr("class", "candlestick")
-                .attr("clip-path", "url(#ohlcClip)");
+            .attr("class", "candlestick")
+            .attr("clip-path", "url(#ohlcClip)");
 
         ohlcSelection.append("g")
-                .attr("class", "indicator sma ma-0")
-                .attr("clip-path", "url(#ohlcClip)");
+            .attr("class", "indicator sma ma-0")
+            .attr("clip-path", "url(#ohlcClip)");
 
         ohlcSelection.append("g")
-                .attr("class", "indicator sma ma-1")
-                .attr("clip-path", "url(#ohlcClip)");
+            .attr("class", "indicator sma ma-1")
+            .attr("clip-path", "url(#ohlcClip)");
 
         svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")");
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")");
 
-        svg.append("g")
+        svg
+            .append("g")
                 .attr("class", "y axis")
             .append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Price (EUR_USD)");
+                .text("Price (EUR_USD / M5)");
 
         svg.append("g")
             .attr("class", "volume axis");
@@ -161,10 +162,7 @@
         svg.append("g")
             .attr("class", "crosshair ohlc");
 
-        var feed;
-
-        var csv = d3.csv.parse(data);
-        feed = csv.map(function (d) {
+        data = d3.csv.parse(data).map(function (d) {
             return {
                 date: new Date(d.Date),
                 open: +d.Open,
@@ -174,13 +172,6 @@
                 volume: +d.Volume
             };
         });
-        // .sort(function (a, b) {
-        //     return d3.descending(accessor.d(a), accessor.d(b));
-        // });
-
-        // The removed becomes the initial data,
-        // the remaining becomes the feed
-        data = feed.splice(0, 163);
 
         svg.select("g.candlestick").datum(data);
         svg.select("g.sma.ma-0").datum(sma0Calculator(data));
@@ -191,6 +182,7 @@
 
         function refreshIndicator(selection, indicator, data2) {
             var datum = selection.datum();
+
             // Some trickery to remove old and insert new without changing array
             // reference, so no need to update __data__ in the DOM
             datum.splice.apply(datum, [0, datum.length].concat(data2));
