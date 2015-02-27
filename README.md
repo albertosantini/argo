@@ -40,8 +40,8 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [ ] Add checkboxes to select instruments.
     - [X] Account view (1.2.0)
     - [X] Quotes view (1.3.0)
-          [ ] Add spreads?
-          [ ] Change to a directive including a sparkline?
+        - [ ] Add spreads?
+        - [ ] Change to a directive including a sparkline?
     - [X] Charts view (1.4.0)
         - [ ] Add instruments select box.
         - [ ] Add stream feed.
