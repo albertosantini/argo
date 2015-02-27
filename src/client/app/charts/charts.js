@@ -5,8 +5,9 @@
         .module("argo")
         .controller("Charts", Charts);
 
-    Charts.$inject = ["$scope", "sessionService", "chartsService"];
-    function Charts($scope, sessionService, chartsService) {
+    Charts.$inject = ["$scope", "sessionService",
+        "chartsService", "quotesService"];
+    function Charts($scope, sessionService, chartsService, quotesService) {
         var vm = this;
 
         vm.data = [];
@@ -25,7 +26,7 @@
                 vm.data = res.data;
             });
 
-            // vm.feed = chartsService.getQuotes();
+            vm.feed = quotesService.getQuotes();
         }
     }
 
