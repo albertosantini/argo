@@ -19,11 +19,42 @@
         return directive;
 
         function link(scope, element) {
+            var lastHistUpdate;
+
             scope.$watch("data", function (data) {
                 if (data.length > 0) {
                     drawChart(element[0], data);
+
+                    lastHistUpdate = getLastHistUpdate("M5");
+                    console.log("last update", new Date());
                 }
             });
+
+            scope.$watch("feed", function (feed) {
+                var tick = feed.EUR_USD,
+                    nextHistUpdate = getLastHistUpdate("M5", tick);
+
+                if (tick && lastHistUpdate !== nextHistUpdate) {
+                    console.log("need update", new Date());
+                    lastHistUpdate = nextHistUpdate;
+                }
+
+                // console.log(feed);
+            }, true);
+
+            function getLastHistUpdate(granularity, tick) {
+                var time = tick && tick.time,
+                    now = time ? new Date(time) : new Date(),
+                    value;
+
+                if (granularity === "M5") {
+                    value = Math.floor(now.getMinutes() / 5);
+                }
+
+                return value;
+            }
+
+
         }
     }
 
