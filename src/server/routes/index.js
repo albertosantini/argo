@@ -42,6 +42,7 @@ function getCandles(req, response) {
         "qs": {
             instrument: req.body.instrument,
             granularity: req.body.granularity,
+            count: req.body.count,
             candleFormat: req.body.candleFormat,
             alignmentTimezone: req.body.alignmentTimezone,
             dailyAlignment: req.body.dailyAlignment
@@ -57,7 +58,6 @@ function getCandles(req, response) {
         if (!err && !body.code) {
             candles = body.candles;
 
-            candles = candles.reverse();
             candles.forEach(function (candle) {
                 lines += candle.time + "," +
                         candle.openMid + "," +
