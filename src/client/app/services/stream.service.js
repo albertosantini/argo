@@ -17,11 +17,17 @@
             var ws = ngSocket("ws://localhost:8000/stream");
 
             ws.onMessage(function (event) {
-                var data = angular.fromJson(event.data),
-                    tick = data.tick;
+                var data,
+                    tick;
 
-                if (tick) {
-                    quotesService.updateTick(tick);
+                try {
+                    data = angular.fromJson(event.data);
+                    tick = data.tick;
+                    if (tick) {
+                        quotesService.updateTick(tick);
+                    }
+                } catch (e) {
+                    // Discard "incomplete" json
                 }
             });
         }
