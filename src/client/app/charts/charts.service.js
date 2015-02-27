@@ -19,7 +19,7 @@
         function getHistQuotes(opt) {
             var instrument = opt && opt.instrument || "EUR_USD",
                 granularity = opt && opt.granularity || "M5",
-                count = opt && opt.count,
+                count = opt && opt.count || 251,
                 candleFormat = opt && opt.candleFormat || "midpoint",
                 alignmentTimezone = opt && opt.alignmentTimezone
                     || "America/New_York",
@@ -30,7 +30,7 @@
                 token: sessionService.token,
                 instrument: instrument,
                 granularity: granularity,
-                cound: count,
+                count: count,
                 candleFormat: candleFormat,
                 alignmentTimezone: alignmentTimezone,
                 dailyAlignment: dailyAlignment
