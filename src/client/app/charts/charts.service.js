@@ -7,11 +7,8 @@
 
     chartsService.$inject = ["$http", "sessionService"];
     function chartsService($http, sessionService) {
-        var quotes = {},
-            service = {
-                getHistQuotes: getHistQuotes,
-                getQuotes: getQuotes,
-                updateTick: updateTick
+        var service = {
+                getHistQuotes: getHistQuotes
             };
 
         return service;
@@ -37,19 +34,6 @@
             });
         }
 
-        function getQuotes() {
-            return quotes;
-        }
-
-        function updateTick(tick) {
-            var instrument = tick.instrument;
-
-            quotes[instrument] = {
-                time: tick.time,
-                ask: tick.ask,
-                bid: tick.bid
-            };
-        }
     }
 
 }());
