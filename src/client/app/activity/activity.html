@@ -1,1 +1,19 @@
-This is Activity tab content.
+<md-content class="md-padding">
+    <md-card ng-repeat="activity in vm.activities">
+
+        <div layout="row" layout-align="space-between center">
+            <span flex="20">{{ activity.type }}</span>
+            <span flex="10">{{ activity.market }}</span>
+            <span flex="10">Units {{ activity.units }}</span>
+            <span flex="10">@ {{ activity.price }}</span>
+            <span flex="10">{{ activity.ticket }}</span>
+            <span flex="20">{{ activity.datetime }}</span>
+            <span>{{ activity.balance }}</span>
+        </div>
+
+    </md-card>
+
+    <md-card ng-if="!activities.length">
+        No activities.
+    </md-card>
+</md-content>

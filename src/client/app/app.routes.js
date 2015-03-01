@@ -36,7 +36,9 @@
                         templateUrl: "app/exposure/exposure.html"
                     },
                     "activity": {
-                        templateUrl: "app/activity/activity.html"
+                        templateUrl: "app/activity/activity.html",
+                        controller: "Activity",
+                        controllerAs: "vm"
                     },
                     "news": {
                         templateUrl: "app/news/news.html"

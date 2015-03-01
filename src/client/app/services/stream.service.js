@@ -5,8 +5,8 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["ngSocket", "quotesService"];
-    function streamService(ngSocket, quotesService) {
+    streamService.$inject = ["ngSocket", "quotesService", "activityService"];
+    function streamService(ngSocket, quotesService, activityService) {
         var service = {
             getStream: getStream
         };
@@ -18,13 +18,18 @@
 
             ws.onMessage(function (event) {
                 var data,
-                    tick;
+                    tick,
+                    transaction;
 
                 try {
                     data = angular.fromJson(event.data);
                     tick = data.tick;
+                    transaction = data.transaction;
                     if (tick) {
                         quotesService.updateTick(tick);
+                    }
+                    if (transaction) {
+                        activityService.addActivity(transaction);
                     }
                 } catch (e) {
                     // Discard "incomplete" json
