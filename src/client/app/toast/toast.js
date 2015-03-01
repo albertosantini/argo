@@ -3,11 +3,13 @@
 (function () {
     angular
         .module("argo")
-        .controller("MyToast", MyToast);
+        .controller("Toast", Toast);
 
-    MyToast.$inject = ["$mdToast"];
-    function MyToast($mdToast) {
+    Toast.$inject = ["$mdToast", "message"];
+    function Toast($mdToast, message) {
         var vm = this;
+
+        vm. message = message;
 
         vm.closeToast = function () {
             $mdToast.hide();

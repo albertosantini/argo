@@ -5,10 +5,10 @@
         .module("argo")
         .controller("Header", Header);
 
-    Header.$inject = ["$mdDialog", "$mdBottomSheet",
+    Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
         "accountsService", "sessionService"];
 
-    function Header($mdDialog, $mdBottomSheet,
+    function Header($mdDialog, $mdBottomSheet, toastService,
                     accountsService, sessionService) {
         var vm = this;
 
@@ -53,6 +53,8 @@
                             vm.account = account;
                         });
                     });
+                }, function (err) {
+                    toastService.show(err);
                 });
             });
         };
