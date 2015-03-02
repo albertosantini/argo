@@ -1,10 +1,9 @@
 <md-content>
     <md-list layout="column">
-        <md-item ng-repeat="(instrument, quote) in vm.quotes"
-            layout="row" layout-align="space-between end">
-            <b>{{ instrument }}</b>
-            <span>{{ quote.bid }}</span>
-            <span>{{ quote.ask }}</span>
+        <md-item ng-repeat="(instrument, quote) in vm.quotes" layout="row">
+            <b flex="40">{{ instrument }}</b>
+            <span flex="30">{{ quote.bid }}</span>
+            <span flex="30">{{ quote.ask }}</span>
         </md-item>
     </md-list>
 </md-content>
