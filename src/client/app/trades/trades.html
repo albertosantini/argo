@@ -1,4 +1,17 @@
 <md-content class="md-padding">
+    <md-card ng-repeat="trade in vm.trades">
+
+        <div layout="row" layout-align="space-between center">
+            <span flex="20">{{ trade.type }}</span>
+            <span flex="10">{{ trade.market }}</span>
+            <span flex="10">Units {{ trade.units }}</span>
+            <span flex="10">@ {{ trade.price }}</span>
+            <span flex="10">{{ trade.ticket }}</span>
+            <span flex="20">{{ trade.datetime }}</span>
+            <span>{{ trade.balance }}</span>
+        </div>
+
+    </md-card>
 
     <md-card ng-show="!vm.trades.length">
         No trades.
