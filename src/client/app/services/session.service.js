@@ -8,20 +8,27 @@
     sessionService.$inject = ["$q"];
     function sessionService($q) {
         var deferred = $q.defer(),
-            service = {
+            credentials = {
                 environment: null,
                 token: null,
-                accountId: null,
+                accountId: null
+            },
+            service = {
+                getCredentials: getCredentials,
                 setCredentials: setCredentials,
                 isLogged: isLogged
             };
 
         return service;
 
+        function getCredentials() {
+            return credentials;
+        }
+
         function setCredentials(session) {
-            service.environment = session.environment;
-            service.token = session.token;
-            service.accountId = session.accountId;
+            credentials.environment = session.environment;
+            credentials.token = session.token;
+            credentials.accountId = session.accountId;
 
             deferred.resolve();
         }

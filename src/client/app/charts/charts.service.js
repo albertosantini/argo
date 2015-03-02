@@ -17,7 +17,8 @@
             var deferred = $q.defer();
 
             sessionService.isLogged().then(function () {
-                var instrument = opt && opt.instrument || "EUR_USD",
+                var credentials = sessionService.getCredentials(),
+                    instrument = opt && opt.instrument || "EUR_USD",
                     granularity = opt && opt.granularity || "M5",
                     count = opt && opt.count || 251,
                     candleFormat = opt && opt.candleFormat || "midpoint",
@@ -26,8 +27,8 @@
                     dailyAlignment = opt && opt.dailyAlignment || "0";
 
                 $http.post("/api/candles", {
-                    environment: sessionService.environment,
-                    token: sessionService.token,
+                    environment: credentials.environment,
+                    token: credentials.token,
                     instrument: instrument,
                     granularity: granularity,
                     count: count,
