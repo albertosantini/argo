@@ -22,7 +22,7 @@
             var lastHistUpdate;
 
             scope.$watch("data", function (data) {
-                if (data.length > 0) {
+                if (data && data.length > 0) {
                     drawChart(element[0], data);
 
                     lastHistUpdate = getLastHistUpdate("M5");
