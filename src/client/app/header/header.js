@@ -41,9 +41,11 @@
                     }).then(function (accountSelected) {
                         vm.accountId = accountSelected.accountId;
 
-                        sessionService.environment = vm.environment;
-                        sessionService.token = vm.token;
-                        sessionService.accountId = vm.accountId;
+                        sessionService.setCredentials({
+                            environment: vm.environment,
+                            token: vm.token,
+                            accountId: vm.accountId
+                        });
 
                         accountsService.getAccounts({
                             environment: vm.environment,

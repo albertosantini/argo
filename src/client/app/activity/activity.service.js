@@ -5,8 +5,8 @@
         .module("argo")
         .factory("activityService", activityService);
 
-    activityService.$inject = [];
-    function activityService() {
+    activityService.$inject = ["$q", "sessionService"];
+    function activityService($q, sessionService) {
         var activities = [],
             service = {
                 getActivities: getActivities,
@@ -16,7 +16,13 @@
         return service;
 
         function getActivities() {
-            return activities;
+            var deferred = $q.defer();
+
+            sessionService.isLogged().then(function () {
+                deferred.resolve(activities);
+            });
+
+            return deferred.promise;
         }
 
         function addActivity(activity) {
