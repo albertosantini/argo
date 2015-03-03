@@ -2,8 +2,8 @@
     <md-list layout="column">
         <md-item ng-repeat="(instrument, quote) in vm.quotes" layout="row">
             <b flex="40">{{ instrument }}</b>
-            <span flex="30">{{ quote.bid }}</span>
-            <span flex="30">{{ quote.ask }}</span>
+            <span flex="30" argo-highlighter="quote.bid">{{ quote.bid }}</span>
+            <span flex="30" argo-highlighter="quote.ask">{{ quote.ask }}</span>
         </md-item>
     </md-list>
 </md-content>
