@@ -33,7 +33,7 @@
         }
 
         function addActivity(activity) {
-            activities.push({
+            activities.splice(0, 0, {
                 id: activity.id,
                 type: activity.type,
                 instrument: activity.instrument,
