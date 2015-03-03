@@ -51,7 +51,7 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
     - [ ] Positions view
     - [ ] Exposure view
     - [X] Activity view (1.5.0)
-    - [X] News view (suspended)
+    - [ ] News view
 
 - 1.9.x Improve docs and tests
 
