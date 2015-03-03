@@ -16,9 +16,7 @@
         function getTrades() {
             var deferred = $q.defer();
 
-            sessionService.isLogged().then(function () {
-                var credentials = sessionService.getCredentials();
-
+            sessionService.isLogged().then(function (credentials) {
                 $http.post("/api/trades", {
                     environment: credentials.environment,
                     token: credentials.token,

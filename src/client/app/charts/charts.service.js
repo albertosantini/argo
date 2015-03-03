@@ -16,9 +16,8 @@
         function getHistQuotes(opt) {
             var deferred = $q.defer();
 
-            sessionService.isLogged().then(function () {
-                var credentials = sessionService.getCredentials(),
-                    instrument = opt && opt.instrument || "EUR_USD",
+            sessionService.isLogged().then(function (credentials) {
+                var instrument = opt && opt.instrument || "EUR_USD",
                     granularity = opt && opt.granularity || "M5",
                     count = opt && opt.count || 251,
                     candleFormat = opt && opt.candleFormat || "midpoint",

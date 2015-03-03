@@ -82,8 +82,8 @@ function getTrades(req, response) {
     }
 
     request({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/candles" +
-            req.body.accountId + "/positions",
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId + "/trades",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }

@@ -14,23 +14,18 @@
                 accountId: null
             },
             service = {
-                getCredentials: getCredentials,
                 setCredentials: setCredentials,
                 isLogged: isLogged
             };
 
         return service;
 
-        function getCredentials() {
-            return credentials;
-        }
-
         function setCredentials(session) {
             credentials.environment = session.environment;
             credentials.token = session.token;
             credentials.accountId = session.accountId;
 
-            deferred.resolve();
+            deferred.resolve(credentials);
         }
 
         function isLogged() {
