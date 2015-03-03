@@ -35,7 +35,7 @@
                     alignmentTimezone: alignmentTimezone,
                     dailyAlignment: dailyAlignment
                 }).then(function (candles) {
-                    deferred.resolve(candles);
+                    deferred.resolve(candles.data);
                 });
             });
 

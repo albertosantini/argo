@@ -10,7 +10,7 @@
         var vm = this;
 
         chartsService.getHistQuotes().then(function (candles) {
-            vm.data = candles.data;
+            vm.data = candles;
         });
 
         vm.feed = quotesService.getQuotes();

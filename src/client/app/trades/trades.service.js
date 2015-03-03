@@ -22,7 +22,7 @@
                     token: credentials.token,
                     accountId: credentials.accountId
                 }).then(function (trades) {
-                    deferred.resolve(trades);
+                    deferred.resolve(trades.data);
                 });
             });
 
