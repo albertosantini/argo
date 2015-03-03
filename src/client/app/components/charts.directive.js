@@ -66,7 +66,7 @@
                 left: 75
             },
             width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 450 - margin.top - margin.bottom;
 
         var x = techan.scale.financetime()
             .range([0, width]);
