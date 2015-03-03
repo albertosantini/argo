@@ -233,7 +233,8 @@
             yVolume.domain(techan.scale.plot.volume(
                 data.slice(data.length - 130, data.length)).domain());
 
-            svg.select("g.x.axis").call(xAxis);
+            // FIX: no idea because throws sometimes an exception (about date)
+            // svg.select("g.x.axis").call(xAxis);
             svg.select("g.y.axis").call(yAxis);
             svg.select("g.volume.axis").call(volumeAxis);
 
