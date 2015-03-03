@@ -1,3 +1,10 @@
+1.5.0 / 2015-03-03
+==================
+
+* Added toast for general messages to the user.
+* Added activity view.
+* Added trades view.
+
 1.4.0 / 2015-02-27
 ==================
 

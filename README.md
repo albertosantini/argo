@@ -35,7 +35,7 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 - 1.1.x - 1.8.x Basic features
     - [X] App layout (1.1.0)
         - [ ] Add a few colors and review stylesheets. :)
-        - [ ] Add toast for general messages.
+        - [X] Add toast for general messages.
     - [X] Token dialog (1.2.0)
         - [ ] Add checkboxes to select instruments.
     - [X] Account view (1.2.0)
@@ -46,11 +46,11 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [ ] Add instruments select box.
         - [ ] Add stream feed.
     - [ ] Buy/Sell view
-    - [ ] Trades view
+    - [X] Trades view (1.5.0)
     - [ ] Orders view
     - [ ] Positions view
     - [ ] Exposure view
-    - [ ] Activity view
+    - [X] Activity view (1.5.0)
     - [ ] News view
 
 - 1.9.x Improve docs and tests
