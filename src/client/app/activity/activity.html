@@ -1,14 +1,26 @@
 <md-content class="md-padding">
+    <div ng-show="vm.activities.length" layout="row">
+        <b flex="30">Type</b>
+        <b flex="10">Market</b>
+        <b flex="5">Units</b>
+        <b flex="10">Price</b>
+        <b flex="5">Profit</b>
+        <b flex="10">Ticket</b>
+        <b flex="20">Datetime</b>
+        <b flex="10">Balance</b>
+    </div>
+
     <md-card ng-repeat="activity in vm.activities">
 
-        <div layout="row" layout-align="space-between center">
-            <span flex="20">{{ activity.type }}</span>
-            <span flex="10">{{ activity.market }}</span>
-            <span flex="10">Units {{ activity.units }}</span>
-            <span flex="10">@ {{ activity.price }}</span>
-            <span flex="10">{{ activity.ticket }}</span>
-            <span flex="20">{{ activity.datetime }}</span>
-            <span>{{ activity.balance }}</span>
+        <div layout="row">
+            <span flex="30">{{ activity.type }}</span>
+            <span flex="10">{{ activity.instrument }}</span>
+            <span flex="5">{{ activity.units }}</span>
+            <span flex="10">{{ activity.price }}</span>
+            <span flex="5">{{ activity.pl }}</span>
+            <span flex="10">{{ activity.id }}</span>
+            <span flex="20">{{ activity.time }}</span>
+            <span flex="10">{{ activity.accountBalance }}</span>
         </div>
 
     </md-card>

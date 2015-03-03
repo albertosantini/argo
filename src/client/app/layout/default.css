@@ -2,3 +2,7 @@
     display: block;
     margin-top: 20px;
 }
+
+.tabpanel-container md-content {
+    height: 150px;
+}

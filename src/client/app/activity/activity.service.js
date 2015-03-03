@@ -5,8 +5,8 @@
         .module("argo")
         .factory("activityService", activityService);
 
-    activityService.$inject = ["$q", "sessionService"];
-    function activityService($q, sessionService) {
+    activityService.$inject = ["$http", "$q", "sessionService"];
+    function activityService($http, $q, sessionService) {
         var activities = [],
             service = {
                 getActivities: getActivities,
@@ -18,8 +18,15 @@
         function getActivities() {
             var deferred = $q.defer();
 
-            sessionService.isLogged().then(function () {
-                deferred.resolve(activities);
+            sessionService.isLogged().then(function (credentials) {
+                $http.post("/api/transactions", {
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                }).then(function (transactions) {
+                    activities = transactions.data;
+                    deferred.resolve(activities);
+                });
             });
 
             return deferred.promise;
@@ -27,16 +34,16 @@
 
         function addActivity(activity) {
             activities.push({
-                ticket: activity.id,
+                id: activity.id,
                 type: activity.type,
-                market: activity.instrument,
+                instrument: activity.instrument,
                 units: activity.units,
                 price: activity.price,
-                profitUSD: activity.pl,
+                pl: activity.pl,
                 // PROFIT (PIPS)
                 // PROFIT (%)
-                balance: activity.accountBalance,
-                datetime: activity.time
+                accountBalance: activity.accountBalance,
+                time: activity.time
             });
         }
     }
