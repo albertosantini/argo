@@ -1,13 +1,14 @@
 .highlight-red {
-    background-color: red;
+    color: red;
 }
 
 .highlight-green {
-    background-color: green;
+    color: green;
 }
 
 span {
-    -webkit-transition: 0.5s linear all;
-    transition: 0.5s linear all;
-    background-color: clear;
+    -webkit-animation: 0.5s linear all;
+       -moz-animation: 0.5s linear all;
+         -o-animation: 0.5s linear all;
+            animation: 0.5s linear all;
 }
