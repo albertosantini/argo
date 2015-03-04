@@ -1,26 +1,26 @@
 <md-content class="md-padding">
     <div ng-show="vm.activities.length" layout="row">
+        <b flex="10">Ticket</b>
         <b flex="30">Type</b>
         <b flex="10">Market</b>
         <b flex="5">Units</b>
         <b flex="10">Price</b>
-        <b flex="5">Profit</b>
-        <b flex="10">Ticket</b>
-        <b flex="20">Datetime</b>
+        <b flex="10">Profit</b>
         <b flex="10">Balance</b>
+        <b flex="10">Date/Time</b>
     </div>
 
     <md-card ng-repeat="activity in vm.activities">
 
         <div layout="row">
+            <span flex="10">{{ activity.id }}</span>
             <span flex="30">{{ activity.type }}</span>
             <span flex="10">{{ activity.instrument }}</span>
             <span flex="5">{{ activity.units }}</span>
             <span flex="10">{{ activity.price }}</span>
-            <span flex="5">{{ activity.pl }}</span>
-            <span flex="10">{{ activity.id }}</span>
-            <span flex="20">{{ activity.time }}</span>
-            <span flex="10">{{ activity.accountBalance }}</span>
+            <span flex="10">{{ activity.pl | number:4 }}</span>
+            <span flex="10">{{ activity.accountBalance | number:2 }}</span>
+            <span flex="10">{{ activity.time | date:"MMM d, HH:mm" }}</span>
         </div>
 
     </md-card>
