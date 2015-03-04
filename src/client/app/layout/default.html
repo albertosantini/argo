@@ -71,16 +71,12 @@
 
 </ng-switch>
 
-<div layout="row" layout-margin layout-fill layout-padding layout-wrap>
-    <div layout="column">
-        <div class="flex-content">
-            <div ui-view="account"></div>
-        </div>
-        <div class="flex-content">
-            <div ui-view="quotes"></div>
-        </div>
+<div layout="row" layout-padding>
+    <div layout="column" flex="20">
+        <div ui-view="account"></div>
+        <div ui-view="quotes"></div>
     </div>
-    <div class="flex-content">
+    <div layout="column" flex="80">
         <div ui-view="charts"></div>
     </div>
 </div>
