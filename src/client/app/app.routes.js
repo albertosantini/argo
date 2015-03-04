@@ -29,7 +29,9 @@
                         controllerAs: "vm"
                     },
                     "orders": {
-                        templateUrl: "app/orders/orders.html"
+                        templateUrl: "app/orders/orders.html",
+                        controller: "Orders",
+                        controllerAs: "vm"
                     },
                     "positions": {
                         templateUrl: "app/positions/positions.html"

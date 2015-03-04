@@ -16,6 +16,7 @@ exports.stream = stream;
 router.post("/startstream", jsonParser, startStream);
 router.post("/candles", jsonParser, getCandles);
 router.post("/trades", jsonParser, getTrades);
+router.post("/orders", jsonParser, getOrders);
 router.post("/transactions", jsonParser, getTransactions);
 
 function startStream(req, res) {
@@ -96,6 +97,31 @@ function getTrades(req, response) {
             trades = body.trades;
 
             return response.json(trades);
+        } else {
+            console.log("ERROR", body.code, body.message);
+        }
+    });
+}
+
+function getOrders(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId + "/orders",
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var orders;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            orders = body.orders;
+
+            return response.json(orders);
         } else {
             console.log("ERROR", body.code, body.message);
         }
