@@ -5,12 +5,14 @@
         .module("argo")
         .factory("accountsService", accountsService);
 
-    accountsService.$inject = ["$http", "environmentService", "streamService"];
-    function accountsService($http, environmentService, streamService) {
+    accountsService.$inject = ["$http", "$q",
+        "environmentService", "streamService"];
+    function accountsService($http, $q, environmentService, streamService) {
         var service = {
-            activeAccount: {},
-            getAccounts: getAccounts
-        };
+            getAccounts: getAccounts,
+            getActiveAccount: getActiveAccount
+        }, deferredAccount = $q.defer();
+
 
         return service;
 
@@ -24,10 +26,12 @@
                     token, url);
 
             return $http(request).then(function (response) {
-                var accounts = response.data.accounts || response.data;
+                var accounts = response.data.accounts || response.data,
+                    activeAccount = {};
 
                 if (!accounts.length) {
-                    angular.extend(service.activeAccount, response.data);
+                    angular.extend(activeAccount, response.data);
+                    deferredAccount.resolve(activeAccount);
 
                     $http.post("/api/startstream", {
                         environment: environment,
@@ -44,6 +48,10 @@
             }, function (response) {
                 throw response.data.message;
             });
+        }
+
+        function getActiveAccount() {
+            return deferredAccount.promise;
         }
     }
 

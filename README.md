@@ -39,6 +39,7 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
     - [X] Token dialog (1.2.0)
         - [ ] Add checkboxes to select instruments.
     - [X] Account view (1.2.0)
+        - [ ] Update view w.r.t. trades p/l.
     - [X] Quotes view (1.3.0)
         - [ ] Add spreads?
         - [ ] Add a sparkline?
