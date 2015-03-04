@@ -34,7 +34,9 @@
                         controllerAs: "vm"
                     },
                     "positions": {
-                        templateUrl: "app/positions/positions.html"
+                        templateUrl: "app/positions/positions.html",
+                        controller: "Positions",
+                        controllerAs: "vm"
                     },
                     "exposure": {
                         templateUrl: "app/exposure/exposure.html"
