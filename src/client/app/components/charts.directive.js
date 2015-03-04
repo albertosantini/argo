@@ -42,7 +42,7 @@
                     nextHistUpdate = getLastHistUpdate("M5", tick),
                     midPrice;
 
-                if (tick && lastHistUpdate !== nextHistUpdate) {
+                if (tick && data && lastHistUpdate !== nextHistUpdate) {
                     data.shift();
                     midPrice = (tick.bid + tick.ask) / 2;
                     feedVolume = 0;
@@ -58,7 +58,7 @@
                     lastHistUpdate = nextHistUpdate;
                 }
 
-                if (tick) {
+                if (tick && data) {
 
                     if (lastData.close !== lastClose) {
                         feedVolume += 1;
