@@ -1,4 +1,4 @@
-<md-content class="md-padding">
+<md-content>
     <div ng-show="vm.positions.length" layout="row">
         <b flex="5">Type</b>
         <b flex="10">Market</b>
@@ -12,7 +12,7 @@
         <div layout="row">
             <span flex="5">{{ position.side }}</span>
             <span flex="10">{{ position.instrument }}</span>
-            <span flex="10">{{ position.units }}</span>
+            <span flex="10">{{ position.units | number }}</span>
             <span flex="10">{{ position.avgPrice }}</span>
         </div>
 

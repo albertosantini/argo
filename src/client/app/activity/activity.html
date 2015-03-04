@@ -1,4 +1,4 @@
-<md-content class="md-padding">
+<md-content>
     <div ng-show="vm.activities.length" layout="row">
         <b flex="10">Ticket</b>
         <b flex="30">Type</b>
@@ -16,7 +16,7 @@
             <span flex="10">{{ activity.id }}</span>
             <span flex="30">{{ activity.type }}</span>
             <span flex="10">{{ activity.instrument }}</span>
-            <span flex="5">{{ activity.units }}</span>
+            <span flex="5">{{ activity.units | number }}</span>
             <span flex="10">{{ activity.price }}</span>
             <span flex="10">{{ activity.pl | number:4 }}</span>
             <span flex="10">{{ activity.accountBalance | number:2 }}</span>
