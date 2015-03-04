@@ -1,3 +1,10 @@
+1.6.0 / 2015-03-04
+==================
+
+* Added positions view.
+* Added orders view.
+* Added highlighter to quotes view.
+
 1.5.0 / 2015-03-03
 ==================
 

@@ -48,8 +48,8 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [X] Add stream feed.
     - [ ] Buy/Sell view
     - [X] Trades view (1.5.0)
-    - [ ] Orders view
-    - [ ] Positions view
+    - [X] Orders view (1.6.0)
+    - [X] Positions view (1.6.0)
     - [ ] Exposure view
     - [X] Activity view (1.5.0)
     - [ ] News view
