@@ -1,28 +1,28 @@
 <md-content class="md-padding">
     <div ng-show="vm.trades.length" layout="row">
-        <b flex="5">Side</b>
+        <b flex="5">Type</b>
+        <b flex="10">Ticket</b>
         <b flex="10">Market</b>
         <b flex="10">Units</b>
         <b flex="10">S/L</b>
         <b flex="10">T/P</b>
         <b flex="10">T/S</b>
         <b flex="10">Price</b>
-        <b flex="10">Ticket</b>
-        <b flex="20">Datetime</b>
+        <!-- <b flex="10">Current</b> -->
+        <!-- <b flex="10">Profit (PIPS)</b> -->
     </div>
 
     <md-card ng-repeat="trade in vm.trades">
 
         <div layout="row">
             <span flex="5">{{ trade.side }}</span>
+            <span flex="10">{{ trade.id }}</span>
             <span flex="10">{{ trade.instrument }}</span>
             <span flex="10">{{ trade.units }}</span>
             <span flex="10">{{ trade.stopLoss }}</span>
             <span flex="10">{{ trade.takeProfit }}</span>
             <span flex="10">{{ trade.trailingStop }}</span>
             <span flex="10">{{ trade.price }}</span>
-            <span flex="10">{{ trade.id }}</span>
-            <span flex="20">{{ trade.time }}</span>
         </div>
 
     </md-card>
