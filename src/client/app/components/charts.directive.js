@@ -270,8 +270,14 @@
                     yVolume.domain(techan.scale.plot.volume(
                         data.slice(data.length - 130, data.length)).domain());
 
-                    // FIXME
-                    // svg.select("g.x.axis").call(xAxis);
+                    // workaround about finance time scale with midnight
+                    // https://github.com/andredumas/techan.js/issues/58
+                    try {
+                        svg.select("g.x.axis").call(xAxis);
+                    } catch (e) {
+
+                    }
+
                     svg.select("g.y.axis").call(yAxis);
                     svg.select("g.volume.axis").call(volumeAxis);
 
