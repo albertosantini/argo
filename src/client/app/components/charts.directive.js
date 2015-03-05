@@ -10,6 +10,8 @@
         var directive = {
             restrict: "E",
             scope: {
+                instrument: "=",
+                granularity: "=",
                 data: "=",
                 feed: "="
             },
@@ -19,12 +21,22 @@
         return directive;
 
         function link(scope, element) {
-            var data,
+            var myInstrument,
+                myGranularity,
+                data,
                 refreshChart,
                 lastHistUpdate,
                 lastData,
                 lastClose,
                 feedVolume = 0;
+
+            scope.$watch("instrument", function (selectedInstrument) {
+                myInstrument = selectedInstrument;
+            });
+
+            scope.$watch("granularity", function (selectedGranularity) {
+                myGranularity = selectedGranularity;
+            });
 
             scope.$watch("data", function (csv) {
                 if (csv && csv.length > 0) {
@@ -33,13 +45,13 @@
                     lastData = data && data[data.length - 1];
                     lastClose = lastData.close;
                     feedVolume = lastData.volume;
-                    lastHistUpdate = getLastHistUpdate("M5");
+                    lastHistUpdate = getLastHistUpdate(myGranularity);
                 }
             });
 
             scope.$watch("feed", function (feed) {
-                var tick = feed.EUR_USD,
-                    nextHistUpdate = getLastHistUpdate("M5", tick),
+                var tick = feed[myInstrument],
+                    nextHistUpdate = getLastHistUpdate(myGranularity, tick),
                     midPrice;
 
                 if (tick && data && lastHistUpdate !== nextHistUpdate) {
@@ -89,8 +101,47 @@
                     now = time ? new Date(time) : new Date(),
                     value;
 
-                if (granularity === "M5") {
+                if (granularity === "S5") {
+                    value = Math.floor(now.getSeconds() / 5);
+                } else if (granularity === "S10") {
+                    value = Math.floor(now.getSeconds() / 10);
+                } else if (granularity === "S15") {
+                    value = Math.floor(now.getSeconds() / 15);
+                } else if (granularity === "S30") {
+                    value = Math.floor(now.getSeconds() / 30);
+                } else if (granularity === "M1") {
+                    value = Math.floor(now.getMinutes() / 1);
+                } else if (granularity === "M2") {
+                    value = Math.floor(now.getMinutes() / 2);
+                } else if (granularity === "M3") {
+                    value = Math.floor(now.getMinutes() / 3);
+                } else if (granularity === "M4") {
+                    value = Math.floor(now.getMinutes() / 4);
+                } else if (granularity === "M5") {
                     value = Math.floor(now.getMinutes() / 5);
+                } else if (granularity === "M10") {
+                    value = Math.floor(now.getMinutes() / 10);
+                } else if (granularity === "M15") {
+                    value = Math.floor(now.getMinutes() / 15);
+                } else if (granularity === "M30") {
+                    value = Math.floor(now.getMinutes() / 30);
+                } else if (granularity === "H1") {
+                    value = Math.floor(now.getHours() / 1);
+                } else if (granularity === "H2") {
+                    value = Math.floor(now.getHours() / 2);
+                } else if (granularity === "H3") {
+                    value = Math.floor(now.getHours() / 3);
+                } else if (granularity === "H4") {
+                    value = Math.floor(now.getHours() / 4);
+                } else if (granularity === "H6") {
+                    value = Math.floor(now.getHours() / 6);
+                } else if (granularity === "H8") {
+                    value = Math.floor(now.getHours() / 8);
+                } else if (granularity === "H12") {
+                    value = Math.floor(now.getHours() / 12);
+                } else {
+                    // for D / W / M
+                    value = Math.floor(now.getMinutes() / 12);
                 }
 
                 return value;
@@ -104,7 +155,7 @@
                         left: 75
                     },
                     width = 960 - margin.left - margin.right,
-                    height = 450 - margin.top - margin.bottom;
+                    height = 400 - margin.top - margin.bottom;
 
                 var x = techan.scale.financetime()
                     .range([0, width]);
@@ -172,6 +223,8 @@
                     .xAnnotation(timeAnnotation)
                     .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
+                d3.select(el).select("svg").remove();
+
                 var svg = d3.select(el).append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom);
@@ -223,7 +276,8 @@
                         .attr("y", 6)
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
-                        .text("Price (EUR_USD / M5)");
+                        .text("Price (" +
+                            myInstrument + " / " + myGranularity + ")");
 
                 svg.append("g")
                     .attr("class", "volume axis");
@@ -275,7 +329,7 @@
                     try {
                         svg.select("g.x.axis").call(xAxis);
                     } catch (e) {
-
+                        svg.select("g.x.axis").remove();
                     }
 
                     svg.select("g.y.axis").call(yAxis);

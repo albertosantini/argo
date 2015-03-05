@@ -31,16 +31,16 @@
 
                 if (!accounts.length) {
                     angular.extend(activeAccount, response.data);
-                    deferredAccount.resolve(activeAccount);
 
                     $http.post("/api/startstream", {
                         environment: environment,
                         accessToken: token,
                         accountId: accountId
                     }).success(function (instruments) {
-                        // TODO: Add instruments dialog
-                        console.log(instruments);
+                        activeAccount.instruments = instruments;
                         streamService.getStream();
+
+                        deferredAccount.resolve(activeAccount);
                     });
                 }
 

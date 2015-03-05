@@ -1,1 +1,38 @@
-<argo-charts data="vm.data" feed="vm.feed"></argo-charts>
+<md-content ng-show="vm.instruments">
+
+    <div layout="row" layout-align="space-around start">
+        <md-select ng-model="vm.selectedInstrument"
+            ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
+            <md-option ng-value="instrument"
+                ng-selected="instrument == vm.selectedInstrument"
+                ng-repeat="instrument in vm.instruments">
+                {{ instrument }}
+            </md-option>
+        </md-select>
+
+        <md-select ng-model="vm.selectedGranularity"
+            ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
+            <md-option ng-value="granularity"
+                ng-repeat="granularity in vm.granularities">
+                {{ granularity }}
+            </md-option>
+        </md-select>
+
+        <md-button class="md-raised">
+            <md-tooltip>To be implemented</md-tooltip>
+            Buy
+        </md-button>
+        <md-button class="md-raised">
+            <md-tooltip>To be implemented</md-tooltip>
+            Sell
+        </md-button>
+    </div>
+
+    <argo-charts
+        instrument="vm.selectedInstrument"
+        granularity="vm.selectedGranularity"
+        data="vm.data"
+        feed="vm.feed">
+    </argo-charts>
+
+</md-content>

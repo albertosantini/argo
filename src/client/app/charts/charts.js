@@ -5,15 +5,53 @@
         .module("argo")
         .controller("Charts", Charts);
 
-    Charts.$inject = ["chartsService", "quotesService"];
-    function Charts(chartsService, quotesService) {
+    Charts.$inject = ["accountsService", "chartsService", "quotesService"];
+    function Charts(accountsService, chartsService, quotesService) {
         var vm = this;
 
-        chartsService.getHistQuotes().then(function (candles) {
-            vm.data = candles;
+        accountsService.getActiveAccount().then(function (account) {
+            vm.instruments = account.instruments;
+            vm.selectedInstrument = vm.instruments[0];
         });
 
+        vm.granularities = [
+            "S5",
+            "S10",
+            "S15",
+            "S30",
+            "M1",
+            "M2",
+            "M3",
+            "M4",
+            "M5",
+            "M10",
+            "M15",
+            "M30",
+            "H1",
+            "H2",
+            "H3",
+            "H4",
+            "H6",
+            "H8",
+            "H12",
+            "D",
+            "W",
+            "M"
+        ];
+        vm.selectedGranularity = "M5";
+
         vm.feed = quotesService.getQuotes();
+
+        vm.changeChart = function (instrument, granularity) {
+            chartsService.getHistQuotes({
+                instrument: instrument,
+                granularity: granularity
+            }).then(function (candles) {
+                vm.data = candles;
+            });
+        };
+
+        vm.changeChart("EUR_USD", "M5");
     }
 
 }());
