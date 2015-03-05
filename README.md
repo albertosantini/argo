@@ -44,8 +44,8 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [ ] Add spreads?
         - [ ] Add a sparkline?
     - [X] Charts view (1.4.0)
-        - [ ] Add instruments select box.
-        - [X] Add stream feed.
+        - [X] Add instruments select box. (1.6.1)
+        - [X] Add stream feed. (1.6.0)
     - [ ] Buy/Sell view
     - [X] Trades view (1.5.0)
     - [X] Orders view (1.6.0)

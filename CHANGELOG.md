@@ -1,3 +1,10 @@
+1.6.1 / 2015-03-06
+==================
+
+* Added change chart by instrument and granularity.
+* Reviewed views style.
+* Added Arimo font.
+
 1.6.0 / 2015-03-04
 ==================
 
