@@ -13,6 +13,7 @@
             vm.instruments = account.instruments;
             vm.selectedInstrument = vm.instruments[0];
         });
+        vm.selectedInstrument = "EUR_USD";
 
         vm.granularities = [
             "S5",
@@ -51,7 +52,7 @@
             });
         };
 
-        vm.changeChart("EUR_USD", "M5");
+        vm.changeChart(vm.selectedInstrument, vm.selectedGranularity);
     }
 
 }());
