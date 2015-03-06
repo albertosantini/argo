@@ -30,16 +30,12 @@
                 lastClose,
                 feedVolume = 0;
 
-            scope.$watch("instrument", function (selectedInstrument) {
-                myInstrument = selectedInstrument;
-            });
-
-            scope.$watch("granularity", function (selectedGranularity) {
-                myGranularity = selectedGranularity;
-            });
 
             scope.$watch("data", function (csv) {
                 if (csv && csv.length > 0) {
+                    myInstrument = scope.instrument;
+                    myGranularity = scope.granularity;
+
                     refreshChart = drawChart(element[0], csv);
 
                     lastData = data && data[data.length - 1];
