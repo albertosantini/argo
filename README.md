@@ -36,19 +36,22 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
     - [X] App layout (1.1.0)
         - [ ] Add a few colors and review stylesheets. :)
         - [X] Add toast for general messages. (1.5.0)
+        - [ ] Spinner mask when loading view.
     - [X] Token dialog (1.2.0)
         - [ ] Add checkboxes to select instruments.
     - [X] Account view (1.2.0)
-        - [ ] Update view w.r.t. trades p/l.
+        - [ ] Update view w.r.t. trades P&L.
     - [X] Quotes view (1.3.0)
         - [ ] Add spreads?
         - [ ] Add a sparkline?
     - [X] Charts view (1.4.0)
         - [X] Add instruments select box. (1.6.1)
         - [X] Add stream feed. (1.6.0)
-    - [ ] Buy/Sell view
+        - [ ] Buy/Sell (market/limit order) dialogs
     - [X] Trades view (1.5.0)
+        - [ ] Add current price.
     - [X] Orders view (1.6.0)
+        - [ ] Add current price.
     - [X] Positions view (1.6.0)
     - [ ] Exposure view
     - [X] Activity view (1.5.0)
