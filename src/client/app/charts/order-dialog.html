@@ -1,0 +1,102 @@
+<md-dialog aria-label="Order Dialog">
+
+    <md-content>
+        <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
+
+        <div layout="row">
+            <div flex="50">
+
+                <md-radio-group ng-model="vm.type" layout layout-align="space-between center">
+                      <md-radio-button value="market">Market Order</md-radio-button>
+                      <md-radio-button value="limit">Limit Order</md-radio-button>
+                </md-radio-group>
+
+                <md-radio-group ng-model="vm.side" layout layout-align="space-between center">
+                      <md-radio-button value="buy">Buy</md-radio-button>
+                      <md-radio-button value="sell">Sell</md-radio-button>
+                </md-radio-group>
+
+                <md-select ng-model="vm.selectedInstrument" placeholder="Market"
+                    layout layout-align="center center">
+                    <md-option ng-value="instrument" ng-repeat="instrument in vm.instruments">
+                        {{ instrument }}
+                    </md-option>
+                </md-select>
+
+                <md-input-container layout layout-align="center center">
+                    <label flex="10">Units</label>
+                    <input ng-model="vm.units" flex="30">
+                </md-input-container>
+
+                <div layout layout-align="space-between center">
+                    <span>Quote</span>
+                    <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'market'"
+                        flex="30" aria-label="lower" aria-controls="quote-slider">
+                </div>
+
+                <md-select ng-show="vm.type == 'limit'" ng-model="vm.selectedExpire" placeholder="Expires"
+                    layout layout-align="center center">
+                    <md-option ng-value="expire" ng-repeat="expire in vm.expires">
+                        {{ expire }}
+                    </md-option>
+                </md-select>
+
+            </div>
+            <div flex="50">
+
+                <md-radio-group ng-model="vm.measure" layout layout-align="space-between center">
+                      <md-radio-button value="price">Price</md-radio-button>
+                      <md-radio-button value="pips">PIPS</md-radio-button>
+                </md-radio-group>
+
+                <div layout layout-align="space-between center">
+                    <md-checkbox md-no-ink aria-label="Lower Bound" ng-model="vm.isLowerBound" class="md-primary">
+                        Lower Bound
+                    </md-checkbox>
+                    <input type="number" ng-model="vm.lowerBound" ng-disabled="!vm.isLowerBound"
+                        aria-label="lower" aria-controls="lower-slider" flex="30">
+                </div>
+                <div layout layout-align="space-between center">
+                    <md-checkbox md-no-ink aria-label="Upper Bound" ng-model="vm.isUpperBound" class="md-primary">
+                        Upper Bound
+                    </md-checkbox>
+                    <input type="number" ng-model="vm.upperBound" ng-disabled="!vm.isUpperBound"
+                        aria-label="upper" aria-controls="upper-slider"flex="30">
+                </div>
+                <div layout layout-align="space-between center">
+                    <md-checkbox md-no-ink aria-label="Take Profit" ng-model="vm.isTakeProfit" class="md-primary">
+                        Take Profit
+                    </md-checkbox>
+                    <input type="number" ng-model="vm.takeProfit" ng-disabled="!vm.isTakeProfit"
+                        aria-label="take" aria-controls="take-slider" flex="30">
+                </div>
+                <div layout layout-align="space-between center">
+                    <md-checkbox md-no-ink aria-label="Stop Loss" ng-model="vm.isStopLoss" class="md-primary">
+                        Stop Loss
+                    </md-checkbox>
+                    <input type="number" ng-model="vm.stopLoss" ng-disabled="!vm.isStopLoss"
+                        aria-label="stop" aria-controls="stop-slider" flex="30">
+                </div>
+                <div layout layout-align="space-between center">
+                    <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="vm.isTralingStop" class="md-primary">
+                        Trailing Stop
+                    </md-checkbox>
+                    <input type="number" ng-model="vm.trailingStop" ng-disabled="!vm.isTralingStop"
+                        aria-label="trailing" aria-controls="trailing-slider" flex="30">
+                </div>
+
+            </div>
+        </div>
+
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="vm.answer(vm)" class="md-primary">
+            Submit
+        </md-button>
+        <md-button ng-click="vm.answer()">
+            Close
+        </md-button>
+    </div>
+</md-dialog>

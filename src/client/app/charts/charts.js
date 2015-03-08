@@ -5,8 +5,9 @@
         .module("argo")
         .controller("Charts", Charts);
 
-    Charts.$inject = ["accountsService", "chartsService", "quotesService"];
-    function Charts(accountsService, chartsService, quotesService) {
+    Charts.$inject = ["$mdDialog", "accountsService",
+        "chartsService", "quotesService"];
+    function Charts($mdDialog, accountsService, chartsService, quotesService) {
         var vm = this;
 
         accountsService.getActiveAccount().then(function (account) {
@@ -53,6 +54,26 @@
         };
 
         vm.changeChart(vm.selectedInstrument, vm.selectedGranularity);
+
+        vm.openOrderDialog = function (event, side) {
+            $mdDialog.show({
+                controller: "OrderDialog",
+                controllerAs: "vm",
+                templateUrl: "app/charts/order-dialog.html",
+                locals: {
+                    params: {
+                        side: side,
+                        selectedInstrument: vm.selectedInstrument,
+                        selectedExpire: "1 Week",
+                        instruments: vm.instruments
+                    }
+                },
+                targetEvent: event
+            }).then(function (order) {
+                console.log(order);
+            });
+        };
+
     }
 
 }());
