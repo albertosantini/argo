@@ -47,7 +47,9 @@
                         controllerAs: "vm"
                     },
                     "news": {
-                        templateUrl: "app/news/news.html"
+                        templateUrl: "app/news/news.html",
+                        controller: "News",
+                        controllerAs: "vm"
                     },
                     "account": {
                         templateUrl: "app/account/account.html",
