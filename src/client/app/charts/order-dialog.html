@@ -17,6 +17,7 @@
                 </md-radio-group>
 
                 <md-select ng-model="vm.selectedInstrument" placeholder="Market"
+                    ng-change="vm.changeMarket(vm.selectedInstrument)"
                     layout layout-align="center center">
                     <md-option ng-value="instrument" ng-repeat="instrument in vm.instruments">
                         {{ instrument }}
@@ -30,8 +31,8 @@
 
                 <div layout layout-align="space-between center">
                     <span>Quote</span>
-                    <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'market'"
-                        flex="30" aria-label="lower" aria-controls="quote-slider">
+                    <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'market'" flex="30"
+                        step="{{ vm.pip }}" aria-label="lower" aria-controls="quote-slider">
                 </div>
 
                 <md-select ng-show="vm.type == 'limit'" ng-model="vm.selectedExpire" placeholder="Expires"
@@ -44,7 +45,9 @@
             </div>
             <div flex="50">
 
-                <md-radio-group ng-model="vm.measure" layout layout-align="space-between center">
+                <md-radio-group ng-model="vm.measure"
+                    ng-change="vm.changeMeasure(vm.measure)"
+                    layout layout-align="space-between center">
                       <md-radio-button value="price">Price</md-radio-button>
                       <md-radio-button value="pips">PIPS</md-radio-button>
                 </md-radio-group>
@@ -54,35 +57,35 @@
                         Lower Bound
                     </md-checkbox>
                     <input type="number" ng-model="vm.lowerBound" ng-disabled="!vm.isLowerBound"
-                        aria-label="lower" aria-controls="lower-slider" flex="30">
+                        step="{{ vm.step }}" aria-label="lower" aria-controls="lower-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Upper Bound" ng-model="vm.isUpperBound" class="md-primary">
                         Upper Bound
                     </md-checkbox>
                     <input type="number" ng-model="vm.upperBound" ng-disabled="!vm.isUpperBound"
-                        aria-label="upper" aria-controls="upper-slider"flex="30">
+                        step="{{ vm.step }}" aria-label="upper" aria-controls="upper-slider"flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Take Profit" ng-model="vm.isTakeProfit" class="md-primary">
                         Take Profit
                     </md-checkbox>
                     <input type="number" ng-model="vm.takeProfit" ng-disabled="!vm.isTakeProfit"
-                        aria-label="take" aria-controls="take-slider" flex="30">
+                        step="{{ vm.step }}" aria-label="take" aria-controls="take-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Stop Loss" ng-model="vm.isStopLoss" class="md-primary">
                         Stop Loss
                     </md-checkbox>
                     <input type="number" ng-model="vm.stopLoss" ng-disabled="!vm.isStopLoss"
-                        aria-label="stop" aria-controls="stop-slider" flex="30">
+                        step="{{ vm.step }}" aria-label="stop" aria-controls="stop-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="vm.isTralingStop" class="md-primary">
                         Trailing Stop
                     </md-checkbox>
                     <input type="number" ng-model="vm.trailingStop" ng-disabled="!vm.isTralingStop"
-                        aria-label="trailing" aria-controls="trailing-slider" flex="30">
+                        step="{{ vm.step }}" aria-label="trailing" aria-controls="trailing-slider" flex="30">
                 </div>
 
             </div>
