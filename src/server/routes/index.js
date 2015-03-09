@@ -20,6 +20,7 @@ router.post("/orders", jsonParser, getOrders);
 router.post("/positions", jsonParser, getPositions);
 router.post("/transactions", jsonParser, getTransactions);
 router.post("/calendar", jsonParser, getCalendar);
+router.post("/order", jsonParser, putOrder);
 
 function startStream(req, res) {
     if (!req.body) {
@@ -202,6 +203,45 @@ function getCalendar(req, response) {
             calendar = body;
 
             return response.json(calendar);
+        } else {
+            console.log("ERROR", body.code, body.message);
+        }
+    });
+}
+
+function putOrder(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "method": "POST",
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId + "/orders",
+        "form": {
+            instrument: req.body.instrument,
+            units: req.body.units,
+            side: req.body.side,
+            type: req.body.type,
+            expiry: req.body.expiry,
+            price: req.body.price,
+            lowerBound: req.body.lowerBound,
+            upperBound: req.body.upperBound,
+            stopLoss: req.body.stopLoss,
+            takeProfit: req.body.takeProfit,
+            trailingStop: req.body.trailingStop
+        },
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var trade;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            trade = body;
+
+            return response.json(trade);
         } else {
             console.log("ERROR", body.code, body.message);
         }

@@ -69,8 +69,6 @@
                     }
                 },
                 targetEvent: event
-            }).then(function (order) {
-                console.log(order);
             });
         };
 
