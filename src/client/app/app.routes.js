@@ -39,7 +39,9 @@
                         controllerAs: "vm"
                     },
                     "exposure": {
-                        templateUrl: "app/exposure/exposure.html"
+                        templateUrl: "app/exposure/exposure.html",
+                        controller: "Exposure",
+                        controllerAs: "vm"
                     },
                     "activity": {
                         templateUrl: "app/activity/activity.html",
