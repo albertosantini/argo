@@ -2,7 +2,7 @@ env:
     browser: true
 
 rules:
-    angular/ng_controller_name: [2, /[A-Z].*$/]
+    angular/ng_controller_name: [2]
 
 globals:
     angular: false
