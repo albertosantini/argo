@@ -1,3 +1,10 @@
+1.7.0 / 2015-03-09
+==================
+
+* Added sending order.
+* Added exposure view.
+* Added news view.
+
 1.6.1 / 2015-03-06
 ==================
 
