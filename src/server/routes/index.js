@@ -19,6 +19,7 @@ router.post("/trades", jsonParser, getTrades);
 router.post("/orders", jsonParser, getOrders);
 router.post("/positions", jsonParser, getPositions);
 router.post("/transactions", jsonParser, getTransactions);
+router.post("/calendar", jsonParser, getCalendar);
 
 function startStream(req, res) {
     if (!req.body) {
@@ -173,6 +174,34 @@ function getTransactions(req, response) {
             transactions = body.transactions;
 
             return response.json(transactions);
+        } else {
+            console.log("ERROR", body.code, body.message);
+        }
+    });
+}
+
+function getCalendar(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "url": config.getUrl(req.body.environment, "api") + "/labs/v1/calendar",
+        qs: {
+            instrument: req.body.instrument || "EUR_USD",
+            period: req.body.period || 604800
+        },
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var calendar;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            calendar = body;
+
+            return response.json(calendar);
         } else {
             console.log("ERROR", body.code, body.message);
         }
