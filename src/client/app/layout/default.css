@@ -10,3 +10,7 @@ body {
 .tabpanel-container md-content {
     height: 130px;
 }
+
+[flex] {
+    text-align: right;
+}
