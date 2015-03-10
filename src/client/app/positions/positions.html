@@ -1,11 +1,12 @@
+<div ng-show="vm.positions.length" layout="row">
+    <b flex="5">Type</b>
+    <b flex="10">Market</b>
+    <b flex="10">Units</b>
+    <!-- <b flex="10">Exposure (USD)</b> -->
+    <b flex="10">Avg. Price</b>
+</div>
+
 <md-content>
-    <div ng-show="vm.positions.length" layout="row">
-        <b flex="5">Type</b>
-        <b flex="10">Market</b>
-        <b flex="10">Units</b>
-        <!-- <b flex="10">Exposure (USD)</b> -->
-        <b flex="10">Avg. Price</b>
-    </div>
 
     <md-card ng-repeat="position in vm.positions">
 
@@ -21,4 +22,5 @@
     <md-card ng-show="!vm.positions.length">
         No positions.
     </md-card>
+
 </md-content>

@@ -1,17 +1,18 @@
+<div ng-show="vm.orders.length" layout="row">
+    <b flex="5">Type</b>
+    <b flex="10">Ticket</b>
+    <b flex="10">Market</b>
+    <b flex="10">Units</b>
+    <b flex="10">S/L</b>
+    <b flex="10">T/P</b>
+    <b flex="10">T/S</b>
+    <b flex="10">Price</b>
+    <!-- <b flex="10">Current</b> -->
+    <!-- <b flex="10">Distance</b> -->
+    <b flex="20">Expiry</b>
+</div>
+
 <md-content>
-    <div ng-show="vm.orders.length" layout="row">
-        <b flex="5">Type</b>
-        <b flex="10">Ticket</b>
-        <b flex="10">Market</b>
-        <b flex="10">Units</b>
-        <b flex="10">S/L</b>
-        <b flex="10">T/P</b>
-        <b flex="10">T/S</b>
-        <b flex="10">Price</b>
-        <!-- <b flex="10">Current</b> -->
-        <!-- <b flex="10">Distance</b> -->
-        <b flex="20">Expiry</b>
-    </div>
 
     <md-card ng-repeat="trade in vm.orders">
 
@@ -32,4 +33,5 @@
     <md-card ng-show="!vm.orders.length">
         No orders.
     </md-card>
+
 </md-content>

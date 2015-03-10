@@ -1,10 +1,11 @@
+<div ng-show="vm.exposures.length" layout="row">
+    <b flex="5">Type</b>
+    <b flex="10">Market</b>
+    <b flex="10">Units</b>
+    <!-- <b flex="10">USD</b> -->
+</div>
+
 <md-content>
-    <div ng-show="vm.exposures.length" layout="row">
-        <b flex="5">Type</b>
-        <b flex="10">Market</b>
-        <b flex="10">Units</b>
-        <!-- <b flex="10">USD</b> -->
-    </div>
 
     <md-card ng-repeat="exposure in vm.exposures">
 
@@ -20,4 +21,5 @@
     <md-card ng-show="!vm.exposures.length">
         No Exposures.
     </md-card>
+
 </md-content>

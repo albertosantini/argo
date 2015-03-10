@@ -1,14 +1,15 @@
+<div ng-show="vm.activities.length" layout="row">
+    <b flex="10">Ticket</b>
+    <b flex="30">Type</b>
+    <b flex="10">Market</b>
+    <b flex="5">Units</b>
+    <b flex="10">Price</b>
+    <b flex="10">Profit</b>
+    <b flex="10">Balance</b>
+    <b flex="10">Date/Time</b>
+</div>
+
 <md-content>
-    <div ng-show="vm.activities.length" layout="row">
-        <b flex="10">Ticket</b>
-        <b flex="30">Type</b>
-        <b flex="10">Market</b>
-        <b flex="5">Units</b>
-        <b flex="10">Price</b>
-        <b flex="10">Profit</b>
-        <b flex="10">Balance</b>
-        <b flex="10">Date/Time</b>
-    </div>
 
     <md-card ng-repeat="activity in vm.activities">
 
@@ -28,4 +29,5 @@
     <md-card ng-show="!vm.activities.length">
         No activities.
     </md-card>
+
 </md-content>

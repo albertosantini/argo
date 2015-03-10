@@ -1,13 +1,14 @@
+<div ng-show="vm.news.length" layout="row">
+    <b flex="10">Date/Time</b>
+    <b flex="10">Market</b>
+    <b flex="30">Event</b>
+    <b flex="10">Previous</b>
+    <b flex="10">Forecast</b>
+    <b flex="10">Actual</b>
+    <b flex="10">Unit</b>
+</div>
+
 <md-content>
-    <div ng-show="vm.news.length" layout="row">
-        <b flex="10">Date/Time</b>
-        <b flex="10">Market</b>
-        <b flex="30">Event</b>
-        <b flex="10">Previous</b>
-        <b flex="10">Forecast</b>
-        <b flex="10">Actual</b>
-        <b flex="10">Unit</b>
-    </div>
 
     <md-card ng-repeat="news in vm.news">
 
@@ -26,4 +27,5 @@
     <md-card ng-show="!vm.news.length">
         No news.
     </md-card>
+
 </md-content>
