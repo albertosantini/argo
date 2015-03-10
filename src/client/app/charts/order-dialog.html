@@ -32,13 +32,13 @@
                 <div layout layout-align="space-between center">
                     <span>Quote</span>
                     <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'market'" flex="30"
-                        step="{{ vm.pip }}" aria-label="lower" aria-controls="quote-slider">
+                        step="{{ vm.step }}" aria-label="lower" aria-controls="quote-slider">
                 </div>
 
                 <md-select ng-show="vm.type == 'limit'" ng-model="vm.selectedExpire" placeholder="Expires"
                     layout layout-align="center center">
-                    <md-option ng-value="expire" ng-repeat="expire in vm.expires">
-                        {{ expire }}
+                    <md-option ng-value="expire.value" ng-repeat="expire in vm.expires">
+                        {{ expire.label }}
                     </md-option>
                 </md-select>
 
@@ -81,7 +81,7 @@
                         step="{{ vm.step }}" aria-label="stop" aria-controls="stop-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
-                    <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="vm.isTralingStop" class="md-primary">
+                    <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="vm.isTrailingStop" class="md-primary">
                         Trailing Stop
                     </md-checkbox>
                     <input type="number" ng-model="vm.trailingStop" ng-disabled="!vm.isTralingStop"
