@@ -64,7 +64,6 @@
                     params: {
                         side: side,
                         selectedInstrument: vm.selectedInstrument,
-                        selectedExpire: "1 Week",
                         instruments: vm.instruments
                     }
                 },
