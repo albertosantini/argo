@@ -99,7 +99,13 @@
                     takeProfit: vm.takeProfit.toFixed(4),
                     trailingStop: vm.trailingStop
                 }).then(function (trade) {
-                    toastService.show(trade);
+                    var message = trade.tradeOpened.side + " " +
+                        trade.instrument +
+                        " #" + trade.tradeOpened.id +
+                        " @" + trade.price +
+                        " for " + trade.tradeOpened.units;
+
+                    toastService.show(message);
                 });
             }
         };
