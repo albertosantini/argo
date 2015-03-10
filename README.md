@@ -37,7 +37,7 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [ ] Add a few colors and review stylesheets. :)
         - [X] Add toast for general messages. (1.5.0)
         - [ ] Spinner mask when loading view.
-        - [ ] Right alignment for numbers.
+        - [X] Right alignment for numbers. (1.7.1)
     - [X] Token dialog (1.2.0)
         - [ ] Add checkboxes to select instruments.
     - [X] Account view (1.2.0)
@@ -48,12 +48,14 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [X] Add instruments select box. (1.6.1)
         - [X] Add stream feed. (1.6.0)
         - [X] Buy/Sell (market/limit order) dialog. (1.7.0)
+        - [ ] Fix x axis scale for feeding values.
     - [X] Trades view (1.5.0)
         - [ ] Add current price.
         - [ ] Add closing trade.
     - [X] Orders view (1.6.0)
         - [ ] Add current price.
         - [ ] Add modifying order.
+        - [ ] Add send order errors.
     - [X] Positions view (1.6.0)
     - [X] Exposure view (1.7.0)
     - [X] Activity view (1.5.0)

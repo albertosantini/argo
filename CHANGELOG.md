@@ -1,3 +1,11 @@
+1.7.1 / 2015-03-10
+==================
+
+* Added sticky header to the tab views.
+* Added text alignment right to flex fields.
+* Fixed limit and market order send.
+* Added executed order message.
+
 1.7.0 / 2015-03-09
 ==================
 
