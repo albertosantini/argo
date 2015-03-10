@@ -20,29 +20,29 @@
         vm.selectedInstrument = params.selectedInstrument;
         vm.changeMarket(vm.selectedInstrument);
         vm.expires = [
-            "1 Hour",
-            "2 Hours",
-            "3 Hours",
-            "4 Hours",
-            "5 Hours",
-            "6 Hours",
-            "8 Hours",
-            "12 Hours",
-            "18 Hours",
-            "1 Day",
-            "2 Days",
-            "1 Week",
-            "1 Month",
-            "2 Months",
-            "3 Months"
+            {label: "1 Hour", value: 60 * 60 * 1000},
+            {label: "2 Hours", value: 2 * 60 * 60 * 1000},
+            {label: "3 Hours", value: 3 * 60 * 60 * 1000},
+            {label: "4 Hours", value: 4 * 60 * 60 * 1000},
+            {label: "5 Hours", value: 5 * 60 * 60 * 1000},
+            {label: "6 Hours", value: 6 * 60 * 60 * 1000},
+            {label: "8 Hours", value: 8 * 60 * 60 * 1000},
+            {label: "12 Hours", value: 12 * 60 * 60 * 1000},
+            {label: "18 Hours", value: 18 * 60 * 60 * 1000},
+            {label: "1 Day", value: 60 * 60 * 24 * 1000},
+            {label: "2 Days", value: 2 * 60 * 60 * 24 * 1000},
+            {label: "1 Week", value: 7 * 60 * 60 * 24 * 1000},
+            {label: "1 Month", value: 30 * 60 * 60 * 24 * 1000},
+            {label: "2 Months", value: 60 * 60 * 60 * 24 * 1000},
+            {label: "3 Months", value: 90 * 60 * 60 * 24 * 1000}
         ];
-        vm.selectedExpire = params.selectedExpire;
+        vm.selectedExpire = 604800000; // 1 week
         vm.measure = "price";
         vm.isLowerBound = false;
         vm.isUpperBound = false;
         vm.isTakeProfit = false;
         vm.isStopLoss = false;
-        vm.isTralingStop = false;
+        vm.isTrailingStop = false;
 
         function changeMarket(instrument) {
             var price = quotesService.getQuotes()[instrument];
@@ -84,26 +84,45 @@
         };
 
         vm.answer = function (action) {
+            var order = {};
+
             $mdDialog.hide(action);
+
+            order.instrument = vm.selectedInstrument;
+            order.units = vm.units;
+            order.side = vm.side;
+            order.type = vm.type;
+
+            if (order.type === "limit") {
+                order.price = vm.quote;
+                order.expiry = new Date(Date.now() + vm.selectedExpire);
+            }
+
+            if (vm.isLowerBound) {
+                order.lowerBound = vm.lowerBound.toFixed(4);
+            }
+            if (vm.isUpperBound) {
+                order.upperBound = vm.upperBound.toFixed(4);
+            }
+            if (vm.isStopLoss) {
+                order.stopLoss = vm.stopLoss.toFixed(4);
+            }
+            if (vm.isTakeProfit) {
+                order.takeProfit = vm.takeProfit.toFixed(4);
+            }
+            if (vm.isTrailingStop) {
+                order.trailingStop = vm.trailingStop;
+            }
+
             if (action === "submit") {
-                ordersService.putOrder({
-                    instrument: vm.selectedInstrument,
-                    units: vm.units,
-                    side: vm.side,
-                    type: vm.type,
-                    expiry: vm.expiry,
-                    price: vm.price,
-                    lowerBound: vm.lowerBound.toFixed(4),
-                    upperBound: vm.upperBound.toFixed(4),
-                    stopLoss: vm.stopLoss.toFixed(4),
-                    takeProfit: vm.takeProfit.toFixed(4),
-                    trailingStop: vm.trailingStop
-                }).then(function (trade) {
-                    var message = trade.tradeOpened.side + " " +
-                        trade.instrument +
-                        " #" + trade.tradeOpened.id +
-                        " @" + trade.price +
-                        " for " + trade.tradeOpened.units;
+                ordersService.putOrder(order).then(function (transaction) {
+                    var opened = transaction.tradeOpened ||
+                                transaction.orderOpened,
+                        message = opened.side + " " +
+                        transaction.instrument +
+                        " #" + opened.id +
+                        " @" + transaction.price +
+                        " for " + opened.units;
 
                     toastService.show(message);
                 });
