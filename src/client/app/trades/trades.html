@@ -17,7 +17,7 @@
 
         <div layout="row">
             <span flex="5">{{ trade.side }}</span>
-            <span flex="10">{{ trade.id }}</span>
+            <a flex="10" href="" ng-click="vm.closeTrade(trade.id)">{{ trade.id }}</a>
             <span flex="10">{{ trade.instrument }}</span>
             <span flex="10">{{ trade.units | number }}</span>
             <span flex="10">{{ trade.stopLoss }}</span>

@@ -22,6 +22,7 @@ router.post("/transactions", jsonParser, getTransactions);
 router.post("/calendar", jsonParser, getCalendar);
 router.post("/order", jsonParser, putOrder);
 router.post("/closeorder", jsonParser, closeOrder);
+router.post("/closetrade", jsonParser, closeTrade);
 
 function startStream(req, res) {
     if (!req.body) {
@@ -269,6 +270,32 @@ function closeOrder(req, response) {
             order = body;
 
             return response.json(order);
+        } else {
+            console.log("ERROR", body.code, body.message);
+        }
+    });
+}
+
+function closeTrade(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "method": "DELETE",
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId + "/trades/" + req.body.id,
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var trade;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            trade = body;
+
+            return response.json(trade);
         } else {
             console.log("ERROR", body.code, body.message);
         }
