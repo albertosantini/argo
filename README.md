@@ -9,18 +9,19 @@ through the powerful [API][] to develop trading strategies.
 ## Getting Started
 
 Don't forget the project is in an early state.
-You may give a try with the following steps:
+You may give a try with the following steps ([Node.js](https://nodejs.org/)
+required):
 
 ```
-$ git clone git@github.com:albertosantini/argo.git
-$ cd argo
-$ npm install
+$ npm install -g argo-trading
 ...
 
-$ npm start
+$ argo-trading
 Argo listening on http://localhost:8000
 ...
 ```
+Eventually point your web brower to `http://localhost:8000`.
+
 Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
 
 ## [Documentation](docs/)
