@@ -21,6 +21,7 @@ router.post("/positions", jsonParser, getPositions);
 router.post("/transactions", jsonParser, getTransactions);
 router.post("/calendar", jsonParser, getCalendar);
 router.post("/order", jsonParser, putOrder);
+router.post("/closeorder", jsonParser, closeOrder);
 
 function startStream(req, res) {
     if (!req.body) {
@@ -242,6 +243,32 @@ function putOrder(req, response) {
             trade = body;
 
             return response.json(trade);
+        } else {
+            console.log("ERROR", body.code, body.message);
+        }
+    });
+}
+
+function closeOrder(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "method": "DELETE",
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId + "/orders/" + req.body.id,
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var order;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            order = body;
+
+            return response.json(order);
         } else {
             console.log("ERROR", body.code, body.message);
         }

@@ -9,7 +9,8 @@
     function ordersService($http, $q, sessionService) {
         var service = {
             getOrders: getOrders,
-            putOrder: putOrder
+            putOrder: putOrder,
+            closeOrder: closeOrder
         };
 
         return service;
@@ -51,6 +52,23 @@
                     trailingStop: order.trailingStop
                 }).then(function (trade) {
                     deferred.resolve(trade.data);
+                });
+            });
+
+            return deferred.promise;
+        }
+
+        function closeOrder(id) {
+            var deferred = $q.defer();
+
+            sessionService.isLogged().then(function (credentials) {
+                $http.post("/api/closeorder", {
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    id: id
+                }).then(function (order) {
+                    deferred.resolve(order.data);
                 });
             });
 
