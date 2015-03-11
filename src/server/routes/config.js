@@ -1,8 +1,10 @@
 "use strict";
 
+var path = require("path");
+
 exports.port = process.env.ARGO_PORT || 8000;
 
-exports.staticFiles = "./src/client/";
+exports.staticFiles = path.resolve(__dirname, "../../client/");
 exports.apiUrl = "/api";
 exports.streamUrl = "/stream";
 
