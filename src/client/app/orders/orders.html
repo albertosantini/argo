@@ -14,18 +14,18 @@
 
 <md-content>
 
-    <md-card ng-repeat="trade in vm.orders">
+    <md-card ng-repeat="order in vm.orders">
 
         <div layout="row">
-            <span flex="5">{{ trade.side }}</span>
-            <a flex="10" href="" ng-click="vm.closeOrder(trade.id)">{{ trade.id }}</a>
-            <span flex="10">{{ trade.instrument }}</span>
-            <span flex="10">{{ trade.units | number }}</span>
-            <span flex="10">{{ trade.stopLoss }}</span>
-            <span flex="10">{{ trade.takeProfit }}</span>
-            <span flex="10">{{ trade.trailingStop }}</span>
-            <span flex="10">{{ trade.price }}</span>
-            <span flex="20">{{ trade.expiry | date:"MMM d, HH:mm" }}</span>
+            <span flex="5">{{ order.side }}</span>
+            <a flex="10" href="" ng-click="vm.closeOrder(order.id)">{{ order.id }}</a>
+            <span flex="10">{{ order.instrument }}</span>
+            <span flex="10">{{ order.units | number }}</span>
+            <span flex="10">{{ order.stopLoss }}</span>
+            <span flex="10">{{ order.takeProfit }}</span>
+            <span flex="10">{{ order.trailingStop }}</span>
+            <span flex="10">{{ order.price }}</span>
+            <span flex="20">{{ order.expiry | date:"MMM d, HH:mm" }}</span>
         </div>
 
     </md-card>
