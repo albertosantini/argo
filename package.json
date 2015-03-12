@@ -1,7 +1,7 @@
 {
     "name": "argo-trading",
     "description": "HTML5 interface for the OANDA platform",
-    "version": "1.7.3",
+    "version": "1.7.4",
     "main": "src/server/app.js",
     "bin": {
         "argo-trading": "./bin/argo-trading"
@@ -32,7 +32,7 @@
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~8.0.0",
-        "eslint": "~0.16.1",
+        "eslint": "~0.16.2",
         "eslint-plugin-angular": "~0.0.6",
         "grunt-vows-runner": "~0.6.0",
         "vows": "~0.9.0-rc2",

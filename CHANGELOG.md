@@ -1,3 +1,9 @@
+1.7.4 / 2015-03-12
+==================
+
+* Added closing order and trade.
+* Added error message for sending order.
+
 1.7.3 / 2015-03-11
 ==================
 

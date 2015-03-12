@@ -52,11 +52,12 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [ ] Fix x axis scale for feeding values.
     - [X] Trades view (1.5.0)
         - [ ] Add current price.
-        - [ ] Add closing trade.
+        - [X] Add closing trade. (1.7.4)
     - [X] Orders view (1.6.0)
         - [ ] Add current price.
+        - [X] Add closing order. (1.7.4)
         - [ ] Add modifying order.
-        - [ ] Add send order errors.
+        - [X] Add send order errors. (1.7.4)
     - [X] Positions view (1.6.0)
     - [X] Exposure view (1.7.0)
     - [X] Activity view (1.5.0)
