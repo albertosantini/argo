@@ -39,6 +39,7 @@
                 instrument: activity.instrument,
                 units: activity.units,
                 price: activity.price,
+                interest: activity.interest,
                 pl: activity.pl,
                 // PROFIT (PIPS)
                 // PROFIT (%)
