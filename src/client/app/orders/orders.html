@@ -18,7 +18,7 @@
 
         <div layout="row">
             <span flex="5">{{ order.side }}</span>
-            <a flex="10" href="" ng-click="vm.closeOrder(order.id)">{{ order.id }}</a>
+            <a flex="10" href="" ng-click="vm.closeOrder($event, order.id)">{{ order.id }}</a>
             <span flex="10">{{ order.instrument }}</span>
             <span flex="10">{{ order.units | number }}</span>
             <span flex="10">{{ order.stopLoss }}</span>
