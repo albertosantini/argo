@@ -116,15 +116,26 @@
 
             if (action === "submit") {
                 ordersService.putOrder(order).then(function (transaction) {
-                    var opened = transaction.tradeOpened ||
-                                transaction.orderOpened,
-                        message = opened.side + " " +
-                        transaction.instrument +
-                        " #" + opened.id +
-                        " @" + transaction.price +
-                        " for " + opened.units;
+                    var opened,
+                        message;
 
-                    toastService.show(message);
+                    if (transaction.code && transaction.message) {
+                        message = "ERROR " +
+                            transaction.code + " " +
+                            transaction.message;
+
+                        toastService.show(message);
+                    } else {
+                        opened = transaction.tradeOpened ||
+                            transaction.orderOpened;
+                        message = opened.side + " " +
+                            transaction.instrument +
+                            " #" + opened.id +
+                            " @" + transaction.price +
+                            " for " + opened.units;
+
+                        toastService.show(message);
+                    }
                 });
             }
         };
