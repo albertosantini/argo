@@ -246,6 +246,10 @@ function putOrder(req, response) {
             return response.json(trade);
         } else {
             console.log("ERROR", body.code, body.message);
+            return response.json({
+                code: body.code,
+                message: body.message
+            });
         }
     });
 }
