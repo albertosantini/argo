@@ -6,6 +6,7 @@
     "bin": {
         "argo-trading": "./bin/argo-trading"
     },
+    "preferGlobal": true,
     "repository": "git@github.com:albertosantini/argo.git",
     "keywords": [
         "trading",
