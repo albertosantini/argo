@@ -17,7 +17,7 @@
         return service;
 
         function getAccounts(data) {
-            var environment = data.environment,
+            var environment = data.environment || "practice",
                 token = data.token,
                 accountId = data.accountId,
                 url = accountId ?
