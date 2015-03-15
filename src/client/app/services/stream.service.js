@@ -5,8 +5,10 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["ngSocket", "quotesService", "activityService"];
-    function streamService(ngSocket, quotesService, activityService) {
+    streamService.$inject = ["ngSocket", "quotesService",
+                        "activityService", "tradesService"];
+    function streamService(ngSocket, quotesService,
+                        activityService, tradesService) {
         var service = {
             getStream: getStream
         };
@@ -27,6 +29,7 @@
                     transaction = data.transaction;
                     if (tick) {
                         quotesService.updateTick(tick);
+                        tradesService.updateTrades(tick);
                     }
                     if (transaction) {
                         activityService.addActivity(transaction);

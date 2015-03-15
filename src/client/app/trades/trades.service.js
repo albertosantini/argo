@@ -7,27 +7,28 @@
 
     tradesService.$inject = ["$http", "$q", "sessionService"];
     function tradesService($http, $q, sessionService) {
-        var service = {
-            getTrades: getTrades,
-            closeTrade: closeTrade
-        };
+        var trades = [],
+            service = {
+                getTrades: getTrades,
+                closeTrade: closeTrade,
+                updateTrades: updateTrades
+            };
 
         return service;
 
         function getTrades() {
-            var deferred = $q.defer();
-
             sessionService.isLogged().then(function (credentials) {
                 $http.post("/api/trades", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (trades) {
-                    deferred.resolve(trades.data);
+                }).then(function (res) {
+                    trades.length = 0;
+                    angular.extend(trades, res.data);
                 });
             });
 
-            return deferred.promise;
+            return trades;
         }
 
         function closeTrade(id) {
@@ -45,6 +46,24 @@
             });
 
             return deferred.promise;
+        }
+
+        function updateTrades(tick) {
+            trades.forEach(function (trade, index) {
+                var current;
+
+                if (trade.instrument === tick.instrument) {
+
+                    if (trade.side === "buy") {
+                        current = tick.ask;
+                    }
+                    if (trade.side === "sell") {
+                        current = tick.bid;
+                    }
+
+                    trades[index].current = current;
+                }
+            });
         }
 
     }

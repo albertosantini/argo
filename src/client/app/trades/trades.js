@@ -9,14 +9,8 @@
     function Trades($mdDialog, toastService, tradesService) {
         var vm = this;
 
-        vm.getTrades = getTrades;
         vm.closeTrade = closeTrade;
-
-        tradesService.getTrades().then(getTrades);
-
-        function getTrades(trades) {
-            vm.trades = trades;
-        }
+        vm.trades = tradesService.getTrades();
 
         function closeTrade(event, id) {
             var confirm = $mdDialog.confirm()
@@ -36,7 +30,7 @@
                         " P&L " + trade.profit;
 
                     toastService.show(message);
-                    tradesService.getTrades().then(getTrades);
+                    vm.trades = tradesService.getTrades();
                 });
             });
         }

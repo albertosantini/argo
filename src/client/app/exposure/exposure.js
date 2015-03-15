@@ -11,8 +11,11 @@
 
         vm.exposures = [];
 
-        tradesService.getTrades().then(function (trades) {
-            var exps = {};
+        activate();
+
+        function activate() {
+            var trades = tradesService.getTrades(),
+                exps = {};
 
             trades.forEach(function (trade) {
                 var legs = trade.instrument.split("_");
@@ -40,7 +43,7 @@
                     units: Math.abs(exps[exp])
                 });
             });
-        });
+        }
     }
 
 }());
