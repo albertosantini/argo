@@ -12,6 +12,12 @@
         vm.closeTrade = closeTrade;
         vm.trades = tradesService.getTrades();
 
+        activate();
+
+        function activate() {
+            tradesService.refresh();
+        }
+
         function closeTrade(event, id) {
             var confirm = $mdDialog.confirm()
                   .content("Are you sure to close the trade?")
@@ -30,7 +36,6 @@
                         " P&L " + trade.profit;
 
                     toastService.show(message);
-                    vm.trades = tradesService.getTrades();
                 });
             });
         }
