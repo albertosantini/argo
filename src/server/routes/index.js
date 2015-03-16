@@ -16,6 +16,7 @@ exports.stream = stream;
 router.post("/startstream", jsonParser, api.startStream);
 router.post("/accounts", jsonParser, api.getAccounts);
 router.post("/account", jsonParser, api.getAccount);
+router.post("/instruments", jsonParser, api.getInstruments);
 router.post("/candles", jsonParser, api.getCandles);
 router.post("/trades", jsonParser, api.getTrades);
 router.post("/orders", jsonParser, api.getOrders);

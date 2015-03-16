@@ -7,6 +7,7 @@ var request = require("request"),
 exports.startStream = startStream;
 exports.getAccounts = getAccounts;
 exports.getAccount = getAccount;
+exports.getInstruments = getInstruments;
 exports.getCandles = getCandles;
 exports.getTrades = getTrades;
 exports.getOrders = getOrders;
@@ -90,6 +91,33 @@ function getAccount(req, response) {
     });
 }
 
+function getInstruments(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "url": config.getUrl(req.body.environment, "api") + "/v1/instruments",
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var instruments;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            instruments = body.instruments;
+
+            return response.json(instruments);
+        } else {
+            console.log("ERROR", body.code, body.message);
+            return response.json({
+                code: body.code,
+                message: body.message
+            });
+        }
+    });
+}
 
 function getCandles(req, response) {
     if (!req.body) {
