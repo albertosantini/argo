@@ -55,10 +55,10 @@
                 if (trade.instrument === tick.instrument) {
 
                     if (trade.side === "buy") {
-                        current = tick.ask;
+                        current = tick.bid;
                     }
                     if (trade.side === "sell") {
-                        current = tick.bid;
+                        current = tick.ask;
                     }
 
                     trades[index].current = current;
