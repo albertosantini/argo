@@ -5,6 +5,8 @@ var request = require("request"),
     stream = require("./stream");
 
 exports.startStream = startStream;
+exports.getAccounts = getAccounts;
+exports.getAccount = getAccount;
 exports.getCandles = getCandles;
 exports.getTrades = getTrades;
 exports.getOrders = getOrders;
@@ -30,6 +32,64 @@ function startStream(req, res) {
     });
 
 }
+
+function getAccounts(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts",
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var accounts;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            accounts = body.accounts;
+
+            return response.json(accounts);
+        } else {
+            console.log("ERROR", body.code, body.message);
+            return response.json({
+                code: body.code,
+                message: body.message
+            });
+        }
+    });
+}
+
+function getAccount(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    request({
+        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+            req.body.accountId,
+        "headers": {
+            "Authorization": "Bearer " + req.body.token
+        }
+    }, function (err, res, body) {
+        var account;
+
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            account = body;
+
+            return response.json(account);
+        } else {
+            console.log("ERROR", body.code, body.message);
+            return response.json({
+                code: body.code,
+                message: body.message
+            });
+        }
+    });
+}
+
 
 function getCandles(req, response) {
     if (!req.body) {
