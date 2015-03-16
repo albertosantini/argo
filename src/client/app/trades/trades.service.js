@@ -56,14 +56,26 @@
 
                     if (trade.side === "buy") {
                         current = tick.bid;
+                        trades[index].profitPips =
+                            ((current - trade.price) / getPips(trade.price));
                     }
                     if (trade.side === "sell") {
                         current = tick.ask;
+                        trades[index].profitPips =
+                            ((trade.price - current) / getPips(trade.price));
                     }
 
                     trades[index].current = current;
                 }
             });
+        }
+
+        function getPips(n) {
+            var decimals = n.toString().split("."),
+                nDecimals = decimals[1].length,
+                pips = 1 / Math.pow(10, nDecimals - 1);
+
+            return pips;
         }
 
     }
