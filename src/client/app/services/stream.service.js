@@ -33,6 +33,7 @@
                     }
                     if (transaction) {
                         activityService.addActivity(transaction);
+                        tradesService.refresh();
                     }
                 } catch (e) {
                     // Discard "incomplete" json
