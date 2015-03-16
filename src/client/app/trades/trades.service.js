@@ -3,81 +3,43 @@
 (function () {
     angular
         .module("argo")
-        .factory("tradesService", tradesService);
+        .factory("streamService", streamService);
 
-    tradesService.$inject = ["$http", "$q", "sessionService"];
-    function tradesService($http, $q, sessionService) {
-        var trades = [],
-            service = {
-                getTrades: getTrades,
-                closeTrade: closeTrade,
-                updateTrades: updateTrades
-            };
+    streamService.$inject = ["ngSocket", "quotesService",
+                        "activityService", "tradesService"];
+    function streamService(ngSocket, quotesService,
+                        activityService, tradesService) {
+        var service = {
+            getStream: getStream
+        };
 
         return service;
 
-        function getTrades() {
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/trades", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId
-                }).then(function (res) {
-                    trades.length = 0;
-                    angular.extend(trades, res.data);
-                });
-            });
+        function getStream() {
+            var ws = ngSocket("ws://localhost:8000/stream");
 
-            return trades;
-        }
+            ws.onMessage(function (event) {
+                var data,
+                    tick,
+                    transaction;
 
-        function closeTrade(id) {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/closetrade", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId,
-                    id: id
-                }).then(function (order) {
-                    deferred.resolve(order.data);
-                });
-            });
-
-            return deferred.promise;
-        }
-
-        function updateTrades(tick) {
-            trades.forEach(function (trade, index) {
-                var current;
-
-                if (trade.instrument === tick.instrument) {
-
-                    if (trade.side === "buy") {
-                        current = tick.bid;
-                        trades[index].profitPips =
-                            ((current - trade.price) / getPips(trade.price));
+                try {
+                    data = angular.fromJson(event.data);
+                    tick = data.tick;
+                    transaction = data.transaction;
+                    if (tick) {
+                        quotesService.updateTick(tick);
+                        tradesService.updateTrades(tick);
                     }
-                    if (trade.side === "sell") {
-                        current = tick.ask;
-                        trades[index].profitPips =
-                            ((trade.price - current) / getPips(trade.price));
+                    if (transaction) {
+                        activityService.addActivity(transaction);
+                        tradesService.refresh();
                     }
-
-                    trades[index].current = current;
+                } catch (e) {
+                    // Discard "incomplete" json
                 }
             });
         }
-
-        function getPips(n) {
-            var decimals = n.toString().split("."),
-                nDecimals = decimals[1].length,
-                pips = 1 / Math.pow(10, nDecimals - 1);
-
-            return pips;
-        }
-
     }
 
 }());
