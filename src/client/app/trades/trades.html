@@ -8,7 +8,7 @@
     <b flex="10">T/S</b>
     <b flex="10">Price</b>
     <b flex="10">Current</b>
-    <!-- <b flex="10">Profit (PIPS)</b> -->
+    <b flex="5">Profit (PIPS)</b>
 </div>
 
 <md-content>
@@ -25,6 +25,7 @@
             <span flex="10">{{ trade.trailingStop }}</span>
             <span flex="10">{{ trade.price }}</span>
             <span flex="10">{{ trade.current }}</span>
+            <span flex="5">{{ trade.profitPips | number:1}}</span>
         </div>
 
     </md-card>
