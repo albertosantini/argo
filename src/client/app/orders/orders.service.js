@@ -7,28 +7,33 @@
 
     ordersService.$inject = ["$http", "$q", "sessionService"];
     function ordersService($http, $q, sessionService) {
-        var service = {
-            getOrders: getOrders,
-            putOrder: putOrder,
-            closeOrder: closeOrder
-        };
+        var orders = [],
+            service = {
+                getOrders: getOrders,
+                closeOrder: closeOrder,
+                putOrder: putOrder,
+                updateOrders: updateOrders,
+                refresh: refresh
+
+            };
 
         return service;
 
         function getOrders() {
-            var deferred = $q.defer();
+            return orders;
+        }
 
+        function refresh() {
             sessionService.isLogged().then(function (credentials) {
                 $http.post("/api/orders", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (orders) {
-                    deferred.resolve(orders.data);
+                }).then(function (res) {
+                    orders.length = 0;
+                    angular.extend(orders, res.data);
                 });
             });
-
-            return deferred.promise;
         }
 
         function putOrder(order) {
@@ -73,6 +78,34 @@
             });
 
             return deferred.promise;
+        }
+
+        function updateOrders(tick) {
+            orders.forEach(function (order, index) {
+                var current;
+
+                if (order.instrument === tick.instrument) {
+
+                    if (order.side === "buy") {
+                        current = tick.bid;
+                    }
+                    if (order.side === "sell") {
+                        current = tick.ask;
+                    }
+
+                    orders[index].current = current;
+                    orders[index].distance = (Math.abs(current - order.price) /
+                        getPips(current));
+                }
+            });
+        }
+
+        function getPips(n) {
+            var decimals = n.toString().split("."),
+                nDecimals = decimals[1].length,
+                pips = 1 / Math.pow(10, nDecimals - 1);
+
+            return pips;
         }
 
     }

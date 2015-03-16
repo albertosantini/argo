@@ -1,14 +1,14 @@
-<div ng-show="vm.orders.length" layout="row">
+<div ng-show="vm.orders.length" layout="row" layout-align="space-around center">
     <b flex="5">Type</b>
     <b flex="10">Ticket</b>
     <b flex="10">Market</b>
-    <b flex="10">Units</b>
-    <b flex="10">S/L</b>
-    <b flex="10">T/P</b>
-    <b flex="10">T/S</b>
+    <b flex="5">Units</b>
+    <b flex="5">S/L</b>
+    <b flex="5">T/P</b>
+    <b flex="5">T/S</b>
     <b flex="10">Price</b>
-    <!-- <b flex="10">Current</b> -->
-    <!-- <b flex="10">Distance</b> -->
+    <b flex="10">Current</b>
+    <b flex="5">Distance</b>
     <b flex="20">Expiry</b>
 </div>
 
@@ -16,15 +16,17 @@
 
     <md-card ng-repeat="order in vm.orders">
 
-        <div layout="row">
+        <div layout="row" layout-align="space-around center">
             <span flex="5">{{ order.side }}</span>
             <a flex="10" href="" ng-click="vm.closeOrder($event, order.id)">{{ order.id }}</a>
             <span flex="10">{{ order.instrument }}</span>
-            <span flex="10">{{ order.units | number }}</span>
-            <span flex="10">{{ order.stopLoss }}</span>
-            <span flex="10">{{ order.takeProfit }}</span>
-            <span flex="10">{{ order.trailingStop }}</span>
-            <span flex="10">{{ order.price }}</span>
+            <span flex="5">{{ order.units | number }}</span>
+            <span flex="5">{{ order.stopLoss }}</span>
+            <span flex="5">{{ order.takeProfit }}</span>
+            <span flex="5">{{ order.trailingStop }}</span>
+            <span flex="10">{{ order.price | number:4 }}</span>
+            <span flex="10">{{ order.current | number:4 }}</span>
+            <span flex="5">{{ order.distance | number:1 }}</span>
             <span flex="20">{{ order.expiry | date:"MMM d, HH:mm" }}</span>
         </div>
 

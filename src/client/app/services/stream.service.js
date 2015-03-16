@@ -5,10 +5,10 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["ngSocket", "quotesService",
-                        "activityService", "tradesService"];
-    function streamService(ngSocket, quotesService,
-                        activityService, tradesService) {
+    streamService.$inject = ["ngSocket", "quotesService", "activityService",
+                        "tradesService", "ordersService"];
+    function streamService(ngSocket, quotesService, activityService,
+                        tradesService, ordersService) {
         var service = {
             getStream: getStream
         };
@@ -30,10 +30,12 @@
                     if (tick) {
                         quotesService.updateTick(tick);
                         tradesService.updateTrades(tick);
+                        ordersService.updateOrders(tick);
                     }
                     if (transaction) {
                         activityService.addActivity(transaction);
                         tradesService.refresh();
+                        ordersService.refresh();
                     }
                 } catch (e) {
                     // Discard "incomplete" json

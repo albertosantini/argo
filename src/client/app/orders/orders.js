@@ -9,13 +9,13 @@
     function Orders($mdDialog, toastService, ordersService) {
         var vm = this;
 
-        vm.getOrders = getOrders;
         vm.closeOrder = closeOrder;
+        vm.orders = ordersService.getOrders();
 
-        ordersService.getOrders().then(getOrders);
+        activate();
 
-        function getOrders(orders) {
-            vm.orders = orders;
+        function activate() {
+            ordersService.refresh();
         }
 
         function closeOrder(event, id) {
@@ -36,7 +36,6 @@
                         " for " + order.units;
 
                     toastService.show(message);
-                    ordersService.getOrders().then(getOrders);
                 });
             });
         }
