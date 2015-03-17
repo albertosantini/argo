@@ -1,3 +1,10 @@
+1.7.5 / 2015-03-17
+==================
+
+* Fixed x axis scale for feeding values.
+* Added current price and distance in orders view.
+* Added current price and profit pips in trades view.
+
 1.7.4 / 2015-03-12
 ==================
 
@@ -7,7 +14,7 @@
 1.7.3 / 2015-03-11
 ==================
 
-* Fix path for static files.
+* Fixed path for static files.
 
 1.7.2 / 2015-03-11
 ==================

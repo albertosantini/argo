@@ -49,12 +49,12 @@ Tested locally with node 0.12.x, AngularJS 1.4.x and Material 0.8.x.
         - [X] Add instruments select box. (1.6.1)
         - [X] Add stream feed. (1.6.0)
         - [X] Buy/Sell (market/limit order) dialog. (1.7.0)
-        - [ ] Fix x axis scale for feeding values.
+        - [X] Fix x axis scale for feeding values. (1.7.5)
     - [X] Trades view (1.5.0)
-        - [ ] Add current price.
+        - [X] Add current price. (1.7.5)
         - [X] Add closing trade. (1.7.4)
     - [X] Orders view (1.6.0)
-        - [ ] Add current price.
+        - [X] Add current price. (1.7.5)
         - [X] Add closing order. (1.7.4)
         - [ ] Add modifying order.
         - [X] Add send order errors. (1.7.4)
