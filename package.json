@@ -22,7 +22,7 @@
     "dependencies": {
         "request": "~2.53.0",
         "express": "~4.12.2",
-        "body-parser": "~1.12.1",
+        "body-parser": "~1.12.2",
         "faye-websocket": "~0.9.4"
     },
     "scripts": {
