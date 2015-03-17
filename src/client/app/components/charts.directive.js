@@ -59,7 +59,7 @@
                         close: midPrice,
                         high: midPrice,
                         low: midPrice,
-                        date: new Date(),
+                        date: new Date(nextHistUpdate),
                         volume: feedVolume
                     });
 
@@ -95,52 +95,52 @@
             function getLastHistUpdate(granularity, tick) {
                 var time = tick && tick.time,
                     now = time ? new Date(time) : new Date(),
-                    value;
+                    coeff;
 
                 if (granularity === "S5") {
-                    value = Math.floor(now.getSeconds() / 5);
+                    coeff = 1000 * 5;
                 } else if (granularity === "S10") {
-                    value = Math.floor(now.getSeconds() / 10);
+                    coeff = 1000 * 10;
                 } else if (granularity === "S15") {
-                    value = Math.floor(now.getSeconds() / 15);
+                    coeff = 1000 * 15;
                 } else if (granularity === "S30") {
-                    value = Math.floor(now.getSeconds() / 30);
+                    coeff = 1000 * 30;
                 } else if (granularity === "M1") {
-                    value = Math.floor(now.getMinutes() / 1);
+                    coeff = 1000 * 60;
                 } else if (granularity === "M2") {
-                    value = Math.floor(now.getMinutes() / 2);
+                    coeff = 1000 * 60 * 2;
                 } else if (granularity === "M3") {
-                    value = Math.floor(now.getMinutes() / 3);
+                    coeff = 1000 * 60 * 3;
                 } else if (granularity === "M4") {
-                    value = Math.floor(now.getMinutes() / 4);
+                    coeff = 1000 * 60 * 4;
                 } else if (granularity === "M5") {
-                    value = Math.floor(now.getMinutes() / 5);
+                    coeff = 1000 * 60 * 5;
                 } else if (granularity === "M10") {
-                    value = Math.floor(now.getMinutes() / 10);
+                    coeff = 1000 * 60 * 10;
                 } else if (granularity === "M15") {
-                    value = Math.floor(now.getMinutes() / 15);
+                    coeff = 1000 * 60 * 15;
                 } else if (granularity === "M30") {
-                    value = Math.floor(now.getMinutes() / 30);
+                    coeff = 1000 * 60 * 30;
                 } else if (granularity === "H1") {
-                    value = Math.floor(now.getHours() / 1);
+                    coeff = 1000 * 60 * 60;
                 } else if (granularity === "H2") {
-                    value = Math.floor(now.getHours() / 2);
+                    coeff = 1000 * 60 * 60 * 2;
                 } else if (granularity === "H3") {
-                    value = Math.floor(now.getHours() / 3);
+                    coeff = 1000 * 60 * 60 * 3;
                 } else if (granularity === "H4") {
-                    value = Math.floor(now.getHours() / 4);
+                    coeff = 1000 * 60 * 60 * 4;
                 } else if (granularity === "H6") {
-                    value = Math.floor(now.getHours() / 6);
+                    coeff = 1000 * 60 * 60 * 6;
                 } else if (granularity === "H8") {
-                    value = Math.floor(now.getHours() / 8);
+                    coeff = 1000 * 60 * 60 * 8;
                 } else if (granularity === "H12") {
-                    value = Math.floor(now.getHours() / 12);
+                    coeff = 1000 * 60 * 60 * 12;
                 } else {
                     // for D / W / M
-                    value = Math.floor(now.getMinutes() / 12);
+                    coeff = 1000 * 60 * 60 * 12;
                 }
 
-                return value;
+                return Math.floor(now / (coeff)) * coeff;
             }
 
             function drawChart(el, csv) {
