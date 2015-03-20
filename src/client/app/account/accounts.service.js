@@ -5,16 +5,28 @@
         .module("argo")
         .factory("accountsService", accountsService);
 
-    accountsService.$inject = ["$http", "$q",
-        "environmentService", "streamService"];
-    function accountsService($http, $q, environmentService, streamService) {
-        var service = {
-            getAccounts: getAccounts,
-            getActiveAccount: getActiveAccount
-        }, deferredAccount = $q.defer();
+    accountsService.$inject = ["$http", "environmentService"];
+    function accountsService($http, environmentService) {
+        var account = {},
+            service = {
+                getAccount: getAccount,
+                getAccounts: getAccounts,
+                setInstruments: setInstruments,
+                refresh: refresh
+            };
 
 
         return service;
+
+        function getAccount() {
+            return account;
+        }
+
+        function refresh() {
+            getAccounts({
+                accountId: account.accountId
+            });
+        }
 
         function getAccounts(data) {
             var environment = data.environment || "practice",
@@ -26,22 +38,15 @@
                     token, url);
 
             return $http(request).then(function (response) {
-                var accounts = response.data.accounts || response.data,
-                    activeAccount = {};
+                var accounts = response.data.accounts || response.data;
 
                 if (!accounts.length) {
-                    angular.extend(activeAccount, response.data);
+                    angular.extend(account, response.data);
 
-                    $http.post("/api/startstream", {
-                        environment: environment,
-                        accessToken: token,
-                        accountId: accountId
-                    }).success(function (instruments) {
-                        activeAccount.instruments = instruments;
-                        streamService.getStream();
-
-                        deferredAccount.resolve(activeAccount);
-                    });
+                    account.unrealizedPlPerc =
+                        account.unrealizedPl / account.balance * 100;
+                    account.netAssetValue =
+                        account.balance + account.unrealizedPl;
                 }
 
                 return accounts;
@@ -50,9 +55,10 @@
             });
         }
 
-        function getActiveAccount() {
-            return deferredAccount.promise;
+        function setInstruments(instruments) {
+            account.instruments = instruments;
         }
+
     }
 
 }());

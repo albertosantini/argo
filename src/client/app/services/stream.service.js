@@ -6,9 +6,9 @@
         .factory("streamService", streamService);
 
     streamService.$inject = ["ngSocket", "quotesService", "activityService",
-                        "tradesService", "ordersService"];
+                        "tradesService", "ordersService", "accountsService"];
     function streamService(ngSocket, quotesService, activityService,
-                        tradesService, ordersService) {
+                        tradesService, ordersService, accountsService) {
         var service = {
             getStream: getStream
         };
@@ -36,6 +36,7 @@
                         activityService.addActivity(transaction);
                         tradesService.refresh();
                         ordersService.refresh();
+                        accountsService.refresh();
                     }
                 } catch (e) {
                     // Discard "incomplete" json

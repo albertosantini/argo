@@ -5,11 +5,10 @@
         .module("argo")
         .controller("Header", Header);
 
-    Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
-        "accountsService", "sessionService"];
-
-    function Header($mdDialog, $mdBottomSheet, toastService,
-                    accountsService, sessionService) {
+    Header.$inject = ["$mdDialog", "$mdBottomSheet", "$http", "toastService",
+                    "accountsService", "sessionService", "streamService"];
+    function Header($mdDialog, $mdBottomSheet, $http, toastService,
+                    accountsService, sessionService, streamService) {
         var vm = this;
 
         vm.openTokenDialog = function (event) {
@@ -51,8 +50,16 @@
                             environment: vm.environment,
                             token: vm.token,
                             accountId: vm.accountId
-                        }).then(function (account) {
-                            vm.account = account;
+                        }).then(function () {
+                            $http.post("/api/startstream", {
+                                environment: vm.environment,
+                                accessToken: vm.token,
+                                accountId: vm.accountId
+                            }).success(function (instruments) {
+                                accountsService.setInstruments(instruments);
+
+                                streamService.getStream();
+                            });
                         });
                     });
                 }, function (err) {

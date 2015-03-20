@@ -10,10 +10,8 @@
     function Charts($mdDialog, accountsService, chartsService, quotesService) {
         var vm = this;
 
-        accountsService.getActiveAccount().then(function (account) {
-            vm.instruments = account.instruments;
-            vm.selectedInstrument = vm.instruments[0];
-        });
+        vm.account = accountsService.getAccount();
+
         vm.selectedInstrument = "EUR_USD";
 
         vm.granularities = [
