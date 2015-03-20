@@ -15,7 +15,7 @@
         vm.openTokenDialog = function (event) {
             $mdDialog.show({
                 controller: "TokenDialog",
-                controllerAs: "dialog",
+                controllerAs: "vm",
                 templateUrl: "app/header/token-dialog.html",
                 targetEvent: event
             }).then(function (tokenInfo) {

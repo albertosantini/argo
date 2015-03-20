@@ -15,10 +15,10 @@
 
     <div class="md-actions" layout="row">
         <span flex></span>
-        <md-button ng-click="dialog.answer()">
+        <md-button ng-click="vm.answer()">
             Reset
         </md-button>
-        <md-button ng-click="dialog.answer({'environment': environment, 'token': token})" class="md-primary">
+        <md-button ng-click="vm.answer({'environment': environment, 'token': token})" class="md-primary">
             Ok
         </md-button>
     </div>
