@@ -34,7 +34,7 @@
                 }).then(function (accounts) {
                     $mdBottomSheet.show({
                         controller: "AccountsBottomSheet",
-                        controllerAs: "sheet",
+                        controllerAs: "vm",
                         templateUrl: "app/account/accounts-bottomsheet.html",
                         locals: {accounts: accounts},
                         targetEvent: event
