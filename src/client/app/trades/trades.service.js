@@ -45,7 +45,7 @@
                     id: id
                 }).then(function (order) {
                     if (order.data.code) {
-                        deferred.reject(order.data.message);
+                        deferred.reject(order.data);
                     } else {
                         deferred.resolve(order.data);
                     }

@@ -37,7 +37,11 @@
 
                     toastService.show(message);
                 }, function (err) {
-                    toastService.show(err);
+                    var message = "ERROR " +
+                        err.code + " " +
+                        err.message;
+
+                    toastService.show(message);
                 });
 
             });
