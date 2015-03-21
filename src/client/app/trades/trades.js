@@ -36,7 +36,10 @@
                         " P&L " + trade.profit;
 
                     toastService.show(message);
+                }, function (err) {
+                    toastService.show(err);
                 });
+
             });
         }
     }

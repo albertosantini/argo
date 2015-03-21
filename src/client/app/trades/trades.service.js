@@ -44,7 +44,13 @@
                     accountId: credentials.accountId,
                     id: id
                 }).then(function (order) {
-                    deferred.resolve(order.data);
+                    if (order.data.code) {
+                        deferred.reject(order.data.message);
+                    } else {
+                        deferred.resolve(order.data);
+                    }
+                }, function (err) {
+                    deferred.reject(err.data);
                 });
             });
 

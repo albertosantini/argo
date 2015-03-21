@@ -31,7 +31,6 @@ function startStream(req, res) {
             return res.json(instruments);
         }
     });
-
 }
 
 function getAccounts(req, response) {
@@ -355,6 +354,10 @@ function closeOrder(req, response) {
             return response.json(order);
         } else {
             console.log("ERROR", body.code, body.message);
+            return response.json({
+                code: body.code,
+                message: body.message
+            });
         }
     });
 }
@@ -378,9 +381,13 @@ function closeTrade(req, response) {
         if (!err && !body.code) {
             trade = body;
 
-            return response.json(trade);
+            response.json(trade);
         } else {
             console.log("ERROR", body.code, body.message);
+            response.json({
+                code: body.code,
+                message: body.message
+            });
         }
     });
 }
