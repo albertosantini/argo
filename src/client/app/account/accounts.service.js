@@ -5,8 +5,8 @@
         .module("argo")
         .factory("accountsService", accountsService);
 
-    accountsService.$inject = ["$http", "environmentService"];
-    function accountsService($http, environmentService) {
+    accountsService.$inject = ["$http", "environmentService", "sessionService"];
+    function accountsService($http, environmentService, sessionService) {
         var account = {},
             service = {
                 getAccount: getAccount,
@@ -23,8 +23,12 @@
         }
 
         function refresh() {
-            getAccounts({
-                accountId: account.accountId
+            sessionService.isLogged().then(function (credentials) {
+                getAccounts({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                });
             });
         }
 
