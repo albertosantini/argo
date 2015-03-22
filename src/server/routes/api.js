@@ -1,6 +1,7 @@
 "use strict";
 
-var request = require("request"),
+var util = require("util"),
+    request = require("request"),
     config = require("./config"),
     stream = require("./stream");
 
@@ -25,10 +26,10 @@ function startStream(req, res) {
 
     stream.start(req.body, function (err, instruments) {
         if (!err) {
-            console.log("Argo streaming prices and events on ws://localhost:" +
+            util.log("Argo streaming prices and events on ws://localhost:" +
                 config.port + config.streamUrl);
 
-            return res.json(instruments);
+            res.json(instruments);
         }
     });
 }
@@ -44,20 +45,7 @@ function getAccounts(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var accounts;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            accounts = body.accounts;
-
-            return response.json(accounts);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            return response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("getAccounts", err, body, response, "accounts");
     });
 }
 
@@ -73,20 +61,7 @@ function getAccount(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var account;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            account = body;
-
-            return response.json(account);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            return response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("getAccount", err, body, response);
     });
 }
 
@@ -101,20 +76,7 @@ function getInstruments(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var instruments;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            instruments = body.instruments;
-
-            return response.json(instruments);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            return response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("getInstruments", err, body, response, "instruments");
     });
 }
 
@@ -153,10 +115,11 @@ function getCandles(req, response) {
                         candle.volume + "\n";
             });
 
-            return response.send(lines);
+            response.send(lines);
 
         } else {
-            console.log("ERROR", body.code, body.message);
+            processApiError("getCandles",
+                err, body.code, body.message, response);
         }
     });
 }
@@ -173,16 +136,7 @@ function getTrades(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var trades;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            trades = body.trades;
-
-            return response.json(trades);
-        } else {
-            console.log("ERROR", body.code, body.message);
-        }
+        processApi("getTrades", err, body, response, "trades");
     });
 }
 
@@ -198,16 +152,7 @@ function getOrders(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var orders;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            orders = body.orders;
-
-            return response.json(orders);
-        } else {
-            console.log("ERROR", body.code, body.message);
-        }
+        processApi("getOrders", err, body, response, "orders");
     });
 }
 
@@ -223,16 +168,7 @@ function getPositions(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var positions;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            positions = body.positions;
-
-            return response.json(positions);
-        } else {
-            console.log("ERROR", body.code, body.message);
-        }
+        processApi("getPositions", err, body, response, "positions");
     });
 }
 
@@ -248,16 +184,7 @@ function getTransactions(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var transactions;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            transactions = body.transactions;
-
-            return response.json(transactions);
-        } else {
-            console.log("ERROR", body.code, body.message);
-        }
+        processApi("getTransactions", err, body, response, "transactions");
     });
 }
 
@@ -276,16 +203,7 @@ function getCalendar(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var calendar;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            calendar = body;
-
-            return response.json(calendar);
-        } else {
-            console.log("ERROR", body.code, body.message);
-        }
+        processApi("getCalendar", err, body, response);
     });
 }
 
@@ -315,20 +233,7 @@ function putOrder(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var trade;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            trade = body;
-
-            return response.json(trade);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            return response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("putOrder", err, body, response);
     });
 }
 
@@ -345,20 +250,7 @@ function closeOrder(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var order;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            order = body;
-
-            return response.json(order);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            return response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("closeOrder", err, body, response);
     });
 }
 
@@ -375,19 +267,39 @@ function closeTrade(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        var trade;
-
-        body = JSON.parse(body);
-        if (!err && !body.code) {
-            trade = body;
-
-            response.json(trade);
-        } else {
-            console.log("ERROR", body.code, body.message);
-            response.json({
-                code: body.code,
-                message: body.message
-            });
-        }
+        processApi("closeTrade", err, body, response);
     });
+}
+
+function processApi(apiName, err, body, response, property) {
+    var obj;
+
+    body = JSON.parse(body);
+    if (!err && !body.code) {
+        if (property) {
+            obj = body[property];
+        } else {
+            obj = body;
+        }
+
+        response.json(obj);
+    } else {
+        processApiError(apiName, err, body.code, body.message, response);
+    }
+}
+
+function processApiError(apiName, err, code, message, res) {
+    if (err) {
+        util.log("ERROR", apiName, err);
+        res.json({
+            code: "",
+            message: err
+        });
+    } else {
+        util.log("ERROR", apiName, code, message);
+        res.json({
+            code: code,
+            message: message
+        });
+    }
 }
