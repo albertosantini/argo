@@ -1,3 +1,9 @@
+1.8.0 / 2015-03-23
+==================
+
+* Added spinner when loading a view.
+* Added updating the summary account when there is an event.
+
 1.7.5 / 2015-03-17
 ==================
 
