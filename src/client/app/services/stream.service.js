@@ -6,9 +6,11 @@
         .factory("streamService", streamService);
 
     streamService.$inject = ["ngSocket", "quotesService", "activityService",
-                        "tradesService", "ordersService", "accountsService"];
+                        "tradesService", "ordersService", "accountsService",
+                        "$timeout"];
     function streamService(ngSocket, quotesService, activityService,
-                        tradesService, ordersService, accountsService) {
+                        tradesService, ordersService, accountsService,
+                        $timeout) {
         var service = {
             getStream: getStream
         };
@@ -34,9 +36,16 @@
                     }
                     if (transaction) {
                         activityService.addActivity(transaction);
-                        tradesService.refresh();
-                        ordersService.refresh();
-                        accountsService.refresh();
+
+                        $timeout(function () {
+                            tradesService.refresh();
+                            $timeout(function () {
+                                ordersService.refresh();
+                                $timeout(function () {
+                                    accountsService.refresh();
+                                }, 100);
+                            }, 100);
+                        }, 100);
                     }
                 } catch (e) {
                     // Discard "incomplete" json

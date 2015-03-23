@@ -7,6 +7,7 @@
     <md-tab id="tab4" aria-controls="tab4-content">Exposure</md-tab>
     <md-tab id="tab5" aria-controls="tab5-content">Activity</md-tab>
     <md-tab id="tab6" aria-controls="tab6-content">News</md-tab>
+    <md-progress-circular ng-show="isLoadingView" md-diameter="24" md-mode="indeterminate"></md-progress-circular>
 </md-tabs>
 <ng-switch on="default.tabSelectedIndex" class="tabpanel-container" layout-margin>
     <div role="tabpanel"

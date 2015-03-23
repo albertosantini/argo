@@ -9,15 +9,34 @@
     function config($httpProvider, $locationProvider) {
         var interceptors = $httpProvider.interceptors;
 
-        // Maybe later we use interceptors to inject sessionService.token
-        interceptors.push(["$q", function ($q) {
+        interceptors.push(["$q", "$rootScope", function ($q, $rootScope) {
+            var nLoadings = 0;
+
             return {
-                "responseError": function (response) {
-                    if (response.status === 401) {
-                        return $q.reject(response);
-                    } else {
-                        return $q.reject(response);
+                request: function (request) {
+                    nLoadings += 1;
+
+                    $rootScope.isLoadingView = true;
+
+                    return request;
+                },
+
+                "response": function (response) {
+                    nLoadings -= 1;
+                    if (nLoadings === 0) {
+                        $rootScope.isLoadingView = false;
                     }
+
+                    return response;
+                },
+
+                "responseError": function (response) {
+                    nLoadings -= 1;
+                    if (!nLoadings) {
+                        $rootScope.isLoadingView = false;
+                    }
+
+                    return $q.reject(response);
                 }
             };
         }]);
