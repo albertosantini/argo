@@ -23,7 +23,7 @@
         "body-parser": "~1.12.2",
         "express": "~4.12.2",
         "faye-websocket": "~0.9.4",
-        "request": "~2.53.0"
+        "request": "~2.54.0"
     },
     "scripts": {
         "test": "grunt",
