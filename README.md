@@ -8,7 +8,7 @@ through the powerful [API][] to develop trading strategies.
 
 ## Getting Started
 
-You may give a try with the following steps ([io.js](https://iojs.org/) or [Node.js](https://nodejs.org/)
+You may give a try with the following steps ([Node.js](https://nodejs.org/) or [io.js](https://iojs.org/)
 required):
 
 ```
@@ -30,7 +30,7 @@ Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Materi
 
 - [X] 1.0.0 Initial release.
 - [X] 1.1.x - 1.8.x [Basic features](docs/views).
-- [ ] 1.9.x Improve docs and tests
+- [ ] 1.9.x Improve docs and tests.
 - [ ] 2.x Executing trading strategies.
 
 ## Notes
