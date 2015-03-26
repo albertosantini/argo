@@ -87,10 +87,10 @@
                 if (order.instrument === tick.instrument) {
 
                     if (order.side === "buy") {
-                        current = tick.bid;
+                        current = tick.ask;
                     }
                     if (order.side === "sell") {
-                        current = tick.ask;
+                        current = tick.bid;
                     }
 
                     orders[index].current = current;
