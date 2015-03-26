@@ -1,5 +1,6 @@
 # Views
 
+## [Header](header.md)
 ## [Trades](trades.md)
 ## [Orders](orders.md)
 ## [Positions](positions.md)
