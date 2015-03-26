@@ -8,7 +8,7 @@ through the powerful [API][] to develop trading strategies.
 
 ## Getting Started
 
-You may give a try with the following steps ([Node.js](https://nodejs.org/)
+You may give a try with the following steps ([io.js](https://iojs.org/) or [Node.js](https://nodejs.org/)
 required):
 
 ```
@@ -20,7 +20,7 @@ $ argo-trading
 ```
 Eventually point your web brower to `http://localhost:8000`.
 
-Tested locally with Node.js 0.12.x, AngularJS 1.4.x and Material 0.8.x.
+Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Material 0.8.x.
 
 ## [Documentation](docs/)
 
