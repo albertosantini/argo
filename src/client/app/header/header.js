@@ -5,13 +5,25 @@
         .module("argo")
         .controller("Header", Header);
 
-    Header.$inject = ["$mdDialog", "$mdBottomSheet", "$http", "toastService",
+    Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
                     "accountsService", "sessionService", "streamService",
                     "localStorageService"];
-    function Header($mdDialog, $mdBottomSheet, $http, toastService,
+    function Header($mdDialog, $mdBottomSheet, toastService,
                     accountsService, sessionService, streamService,
                     localStorageService) {
-        var vm = this;
+        var vm = this,
+            instrs = localStorageService.get("instruments") || {
+               "EUR_USD": true,
+               "USD_JPY": true,
+               "GBP_USD": true,
+               "EUR_GBP": true,
+               "USD_CHF": true,
+               "EUR_JPY": true,
+               "EUR_CHF": true,
+               "USD_CAD": true,
+               "AUD_USD": true,
+               "GBP_JPY": true
+            };
 
         vm.openTokenDialog = openTokenDialog;
         vm.openSettingsDialog = openSettingsDialog;
@@ -56,14 +68,22 @@
                             token: vm.token,
                             accountId: vm.accountId
                         }).then(function () {
-                            $http.post("/api/startstream", {
+                            var instruments = Object.keys(instrs)
+                                .filter(function (el) {
+                                    if (instrs[el]) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                });
+
+                            accountsService.setInstruments(instruments);
+
+                            streamService.startStream({
                                 environment: vm.environment,
                                 accessToken: vm.token,
-                                accountId: vm.accountId
-                            }).success(function (instruments) {
-                                accountsService.setInstruments(instruments);
-
-                                streamService.getStream();
+                                accountId: vm.accountId,
+                                instruments: instruments
                             });
                         });
                     });
@@ -74,17 +94,16 @@
         }
 
         function openSettingsDialog(event) {
-            var instruments = localStorageService.get("instruments");
-
             $mdDialog.show({
                 controller: "SettingsDialog",
                 controllerAs: "vm",
                 templateUrl: "app/header/settings-dialog.html",
-                locals: {instruments: instruments},
+                locals: {instruments: instrs},
                 targetEvent: event
             }).then(function (settingsInfo) {
-                console.log(instruments);
-                localStorageService.set("instruments", settingsInfo);
+                if (settingsInfo) {
+                    localStorageService.set("instruments", settingsInfo);
+                }
             });
         }
     }

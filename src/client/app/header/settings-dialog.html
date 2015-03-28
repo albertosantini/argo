@@ -2,16 +2,17 @@
     <md-content>
         <md-subheader class="md-sticky-no-effect">Settings Dialog</md-subheader>
 
-        <md-switch ng-model="instruments.EUR_USD" aria-label="EUR_USD">EUR_USD</md-switch>
-        <md-switch ng-model="instruments.GBP_USD" aria-label="GBP_USD">GBP_USD</md-switch>
+        <span ng-repeat="(instrument, value) in vm.instruments">
+            <md-switch ng-model="vm.instruments[instrument]" aria-label="instrument">{{ instrument }}</md-switch>
+        </span>
     </md-content>
 
     <div class="md-actions" layout="row">
         <span flex></span>
-        <md-button ng-click="vm.answer()">
+        <md-button ng-click="vm.cancel()">
             Cancel
         </md-button>
-        <md-button ng-click="vm.answer(instruments)" class="md-primary">
+        <md-button ng-click="vm.answer(vm.instruments)" class="md-primary">
             Ok
         </md-button>
     </div>

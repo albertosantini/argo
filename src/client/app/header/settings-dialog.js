@@ -5,9 +5,11 @@
         .module("argo")
         .controller("SettingsDialog", SettingsDialog);
 
-    SettingsDialog.$inject = ["$mdDialog"];
-    function SettingsDialog($mdDialog) {
+    SettingsDialog.$inject = ["$mdDialog", "instruments"];
+    function SettingsDialog($mdDialog, instruments) {
         var vm = this;
+
+        vm.instruments = instruments;
 
         vm.hide = function () {
             $mdDialog.hide();

@@ -5,17 +5,28 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["ngSocket", "quotesService", "activityService",
-                        "tradesService", "ordersService", "accountsService",
-                        "$timeout"];
-    function streamService(ngSocket, quotesService, activityService,
-                        tradesService, ordersService, accountsService,
-                        $timeout) {
+    streamService.$inject = ["$http", "$timeout", "ngSocket",
+                        "quotesService", "activityService",
+                        "tradesService", "ordersService", "accountsService"];
+    function streamService($http, $timeout, ngSocket,
+                        quotesService, activityService,
+                        tradesService, ordersService, accountsService) {
         var service = {
-            getStream: getStream
+            startStream: startStream
         };
 
         return service;
+
+        function startStream(data) {
+            $http.post("/api/startstream", {
+                environment: data.environment,
+                accessToken: data.token,
+                accountId: data.accountId,
+                instruments: data.instruments
+            }).success(function () {
+                getStream();
+            });
+        }
 
         function getStream() {
             var ws = ngSocket("ws://localhost:8000/stream");

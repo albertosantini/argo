@@ -12,7 +12,7 @@
 
         vm.account = accountsService.getAccount();
 
-        vm.selectedInstrument = "EUR_USD";
+        vm.selectedInstrument = "";
 
         vm.granularities = [
             "S5",
