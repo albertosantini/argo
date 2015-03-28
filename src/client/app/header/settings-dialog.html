@@ -1,0 +1,18 @@
+<md-dialog aria-label="Settings Dialog">
+    <md-content>
+        <md-subheader class="md-sticky-no-effect">Settings Dialog</md-subheader>
+
+        <md-switch ng-model="instruments.EUR_USD" aria-label="EUR_USD">EUR_USD</md-switch>
+        <md-switch ng-model="instruments.GBP_USD" aria-label="GBP_USD">GBP_USD</md-switch>
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="vm.answer()">
+            Cancel
+        </md-button>
+        <md-button ng-click="vm.answer(instruments)" class="md-primary">
+            Ok
+        </md-button>
+    </div>
+</md-dialog>

@@ -6,12 +6,17 @@
         .controller("Header", Header);
 
     Header.$inject = ["$mdDialog", "$mdBottomSheet", "$http", "toastService",
-                    "accountsService", "sessionService", "streamService"];
+                    "accountsService", "sessionService", "streamService",
+                    "localStorageService"];
     function Header($mdDialog, $mdBottomSheet, $http, toastService,
-                    accountsService, sessionService, streamService) {
+                    accountsService, sessionService, streamService,
+                    localStorageService) {
         var vm = this;
 
-        vm.openTokenDialog = function (event) {
+        vm.openTokenDialog = openTokenDialog;
+        vm.openSettingsDialog = openSettingsDialog;
+
+        function openTokenDialog(event) {
             $mdDialog.show({
                 controller: "TokenDialog",
                 controllerAs: "vm",
@@ -66,6 +71,21 @@
                     toastService.show(err);
                 });
             });
-        };
+        }
+
+        function openSettingsDialog(event) {
+            var instruments = localStorageService.get("instruments");
+
+            $mdDialog.show({
+                controller: "SettingsDialog",
+                controllerAs: "vm",
+                templateUrl: "app/header/settings-dialog.html",
+                locals: {instruments: instruments},
+                targetEvent: event
+            }).then(function (settingsInfo) {
+                console.log(instruments);
+                localStorageService.set("instruments", settingsInfo);
+            });
+        }
     }
 }());

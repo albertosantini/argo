@@ -5,8 +5,10 @@
         .module("argo")
         .config(config);
 
-    config.$inject = ["$httpProvider", "$locationProvider"];
-    function config($httpProvider, $locationProvider) {
+    config.$inject = ["$httpProvider", "$locationProvider",
+                    "localStorageServiceProvider"];
+    function config($httpProvider, $locationProvider,
+                    localStorageServiceProvider) {
         var interceptors = $httpProvider.interceptors;
 
         interceptors.push(["$q", "$rootScope", function ($q, $rootScope) {
@@ -42,6 +44,8 @@
         }]);
 
         $locationProvider.html5Mode(true);
+
+        localStorageServiceProvider.setPrefix("argo");
     }
 
 }());
