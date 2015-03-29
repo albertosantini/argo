@@ -94,16 +94,38 @@
         }
 
         function openSettingsDialog(event) {
-            $mdDialog.show({
-                controller: "SettingsDialog",
-                controllerAs: "vm",
-                templateUrl: "app/header/settings-dialog.html",
-                locals: {instruments: instrs},
-                targetEvent: event
-            }).then(function (settingsInfo) {
-                if (settingsInfo) {
-                    localStorageService.set("instruments", settingsInfo);
-                }
+            sessionService.isLogged().then(function (credentials) {
+                $mdDialog.show({
+                    controller: "SettingsDialog",
+                    controllerAs: "vm",
+                    templateUrl: "app/header/settings-dialog.html",
+                    locals: {instruments: instrs},
+                    targetEvent: event
+                }).then(function (settingsInfo) {
+                    var instruments;
+
+                    if (settingsInfo) {
+                        localStorageService.set("instruments", settingsInfo);
+
+                        instruments = Object.keys(settingsInfo)
+                            .filter(function (el) {
+                                if (instrs[el]) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            });
+
+                        accountsService.setInstruments(instruments);
+
+                        streamService.startStream({
+                            environment: credentials.environment,
+                            accessToken: credentials.token,
+                            accountId: credentials.accountId,
+                            instruments: instruments
+                        });
+                    }
+                });
             });
         }
     }
