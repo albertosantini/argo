@@ -60,6 +60,7 @@
                     }
                 } catch (e) {
                     // Discard "incomplete" json
+                    console.log(e);
                 }
             });
         }
