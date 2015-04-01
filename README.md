@@ -30,14 +30,8 @@ Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Materi
 
 - [X] 1.0.0 Initial release.
 - [X] 1.1.x - 1.8.x [Basic features](docs/views).
-- [ ] 1.9.x Improve docs and tests.
+- [ ] 1.9.x Improve docs, tests and graphics.
 - [ ] 2.x Executing trading strategies.
-
-## Notes
-
-- [ ] Add a few colors and review stylesheets. :)
-- [ ] Add instruments selection.
-- [ ] Add spread in quotes list.
 
 
 ## Disclaimer
