@@ -58,10 +58,11 @@
                             }, 100);
                         }, 100);
                     }
+                /*eslint-disable no-empty */
                 } catch (e) {
                     // Discard "incomplete" json
-                    console.log(e);
                 }
+                /*eslint-enable no-empty */
             });
         }
     }
