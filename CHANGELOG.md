@@ -1,3 +1,10 @@
+1.8.1 / 2015-04-01
+==================
+
+* Fixed pips calculation using real info.
+* Added settings view with instrument list.
+* Added header view doc.
+
 1.8.0 / 2015-03-23
 ==================
 

@@ -1,7 +1,7 @@
 {
     "name": "argo-trading",
     "description": "HTML5 interface for the OANDA platform",
-    "version": "1.8.0",
+    "version": "1.8.1",
     "main": "src/server/app.js",
     "bin": {
         "argo-trading": "./bin/argo-trading"
