@@ -5,8 +5,9 @@
         .module("argo")
         .factory("tradesService", tradesService);
 
-    tradesService.$inject = ["$http", "$q", "sessionService"];
-    function tradesService($http, $q, sessionService) {
+    tradesService.$inject = ["$http", "$q",
+        "sessionService", "accountsService"];
+    function tradesService($http, $q, sessionService, accountsService) {
         var trades = [],
             service = {
                 getTrades: getTrades,
@@ -58,6 +59,9 @@
         }
 
         function updateTrades(tick) {
+            var account = accountsService.getAccount(),
+                pips = account.pips;
+
             trades.forEach(function (trade, index) {
                 var current;
 
@@ -66,25 +70,17 @@
                     if (trade.side === "buy") {
                         current = tick.bid;
                         trades[index].profitPips =
-                            ((current - trade.price) / getPips(trade.price));
+                            ((current - trade.price) / pips[trade.instrument]);
                     }
                     if (trade.side === "sell") {
                         current = tick.ask;
                         trades[index].profitPips =
-                            ((trade.price - current) / getPips(trade.price));
+                            ((trade.price - current) / pips[trade.instrument]);
                     }
 
                     trades[index].current = current;
                 }
             });
-        }
-
-        function getPips(n) {
-            var decimals = n.toString().split("."),
-                nDecimals = decimals[1].length,
-                pips = 1 / Math.pow(10, nDecimals - 1);
-
-            return pips;
         }
 
     }

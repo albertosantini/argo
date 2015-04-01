@@ -5,8 +5,9 @@
         .module("argo")
         .factory("ordersService", ordersService);
 
-    ordersService.$inject = ["$http", "$q", "sessionService"];
-    function ordersService($http, $q, sessionService) {
+    ordersService.$inject = ["$http", "$q",
+        "sessionService", "accountsService"];
+    function ordersService($http, $q, sessionService, accountsService) {
         var orders = [],
             service = {
                 getOrders: getOrders,
@@ -81,6 +82,9 @@
         }
 
         function updateOrders(tick) {
+            var account = accountsService.getAccount(),
+                pips = account.pips;
+
             orders.forEach(function (order, index) {
                 var current;
 
@@ -95,17 +99,9 @@
 
                     orders[index].current = current;
                     orders[index].distance = (Math.abs(current - order.price) /
-                        getPips(current));
+                        pips[order.instrument]);
                 }
             });
-        }
-
-        function getPips(n) {
-            var decimals = n.toString().split("."),
-                nDecimals = decimals[1].length,
-                pips = 1 / Math.pow(10, nDecimals - 1);
-
-            return pips;
         }
 
     }

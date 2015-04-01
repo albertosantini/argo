@@ -56,6 +56,10 @@
                         accountId: accountId
                     }).then(function (instruments) {
                         account.instruments = instruments.data;
+                        account.pips = {};
+                        angular.forEach(account.instruments, function (inst) {
+                            account.pips[inst.instrument] = inst.pip;
+                        });
                     });
                 }
 
