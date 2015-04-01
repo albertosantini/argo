@@ -72,6 +72,9 @@ function getInstruments(req, response) {
 
     request({
         "url": config.getUrl(req.body.environment, "api") + "/v1/instruments",
+        "qs": {
+            accountId: req.body.accountId
+        },
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }

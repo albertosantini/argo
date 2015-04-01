@@ -11,10 +11,8 @@
             service = {
                 getAccount: getAccount,
                 getAccounts: getAccounts,
-                setInstruments: setInstruments,
                 refresh: refresh
             };
-
 
         return service;
 
@@ -51,16 +49,20 @@
                         account.unrealizedPl / account.balance * 100;
                     account.netAssetValue =
                         account.balance + account.unrealizedPl;
+
+                    $http.post("/api/instruments", {
+                        environment: environment,
+                        token: token,
+                        accountId: accountId
+                    }).then(function (instruments) {
+                        account.instruments = instruments.data;
+                    });
                 }
 
                 return accounts;
             }, function (response) {
                 throw response.data.message;
             });
-        }
-
-        function setInstruments(instruments) {
-            account.instruments = instruments;
         }
 
     }

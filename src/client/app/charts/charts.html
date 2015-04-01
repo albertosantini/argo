@@ -3,10 +3,10 @@
     <div layout="row" layout-align="space-around start">
         <md-select ng-model="vm.selectedInstrument"
             ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
-            <md-option ng-value="instrument"
-                ng-selected="$index == 0"
+            <md-option ng-value="instrument.instrument"
+                ng-selected="instrument.instrument == vm.selectedInstrument"
                 ng-repeat="instrument in vm.account.instruments">
-                {{ instrument }}
+                {{ instrument.instrument }}
             </md-option>
         </md-select>
 

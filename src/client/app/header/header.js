@@ -77,8 +77,6 @@
                                     }
                                 });
 
-                            accountsService.setInstruments(instruments);
-
                             streamService.startStream({
                                 environment: vm.environment,
                                 accessToken: vm.token,
@@ -95,6 +93,15 @@
 
         function openSettingsDialog(event) {
             sessionService.isLogged().then(function (credentials) {
+                var allInstrs = accountsService.getAccount().instruments;
+
+
+                angular.forEach(allInstrs, function (instrument) {
+                    if (!instrs.hasOwnProperty(instrument.instrument)) {
+                        instrs[instrument.instrument] = false;
+                    }
+                });
+
                 $mdDialog.show({
                     controller: "SettingsDialog",
                     controllerAs: "vm",
@@ -115,8 +122,6 @@
                                     return false;
                                 }
                             });
-
-                        accountsService.setInstruments(instruments);
 
                         streamService.startStream({
                             environment: credentials.environment,
