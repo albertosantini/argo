@@ -25,7 +25,7 @@
             <span flex="10">{{ trade.trailingStop }}</span>
             <span flex="10">{{ trade.price }}</span>
             <span flex="10">{{ trade.current }}</span>
-            <span flex="5">{{ trade.profitPips | number:1}}</span>
+            <span flex="5" argo-dual-color="trade.profitPips">{{ trade.profitPips | number:1}}</span>
         </div>
 
     </md-card>

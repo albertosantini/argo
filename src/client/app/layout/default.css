@@ -15,3 +15,18 @@ body {
 [flex] {
     text-align: right;
 }
+
+.highlight-red {
+    color: red;
+}
+
+.highlight-green {
+    color: green;
+}
+
+span {
+    -webkit-animation: 0.5s linear all;
+       -moz-animation: 0.5s linear all;
+         -o-animation: 0.5s linear all;
+            animation: 0.5s linear all;
+}
