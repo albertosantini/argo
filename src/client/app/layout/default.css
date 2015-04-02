@@ -12,7 +12,11 @@ body {
     height: 135px;
 }
 
-[flex] {
+div[ui-view="quotes"] md-content {
+    height: 250px;
+}
+
+span[flex], b[flex], a[flex] {
     text-align: right;
 }
 
