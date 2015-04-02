@@ -1,5 +1,5 @@
 <md-content ng-show="vm.account.accountId">
-    <b>Account Summary ({{ vm.account.accountCurrency }})</b>
+    <b>Account Summary ({{ vm.account.accountCurrency }}) {{ vm.account.timestamp | date:"MMM d, HH:mm:ss" }}</b>
 
     <md-list layout="column">
         <md-item layout="row" layout-align="space-between end">

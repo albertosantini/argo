@@ -45,6 +45,8 @@
                 if (!accounts.length) {
                     angular.merge(account, response.data);
 
+                    account.timestamp = new Date();
+
                     account.unrealizedPlPerc =
                         account.unrealizedPl / account.balance * 100;
                     account.netAssetValue =
