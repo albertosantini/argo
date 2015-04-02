@@ -10,7 +10,8 @@
         var quotes = {},
             service = {
                 getQuotes: getQuotes,
-                updateTick: updateTick
+                updateTick: updateTick,
+                reset: reset
             };
 
         return service;
@@ -30,6 +31,16 @@
                 bid: tick.bid,
                 spread: ((tick.ask - tick.bid) / pips[instrument]).toFixed(1)
             };
+        }
+
+        function reset() {
+            var key;
+
+            for (key in quotes) {
+                if (quotes.hasOwnProperty(key)) {
+                    delete quotes[key];
+                }
+            }
         }
     }
 

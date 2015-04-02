@@ -62,7 +62,7 @@
                     params: {
                         side: side,
                         selectedInstrument: vm.selectedInstrument,
-                        instruments: vm.account.instruments
+                        instruments: vm.account.streamingInstruments
                     }
                 },
                 targetEvent: event

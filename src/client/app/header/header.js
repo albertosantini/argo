@@ -6,11 +6,11 @@
         .controller("Header", Header);
 
     Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
-                    "accountsService", "sessionService", "streamService",
-                    "localStorageService"];
+                    "accountsService", "sessionService", "quotesService",
+                    "streamService", "localStorageService"];
     function Header($mdDialog, $mdBottomSheet, toastService,
-                    accountsService, sessionService, streamService,
-                    localStorageService) {
+                    accountsService, sessionService, quotesService,
+                    streamService, localStorageService) {
         var vm = this,
             instrs = localStorageService.get("instruments") || {
                "EUR_USD": true,
@@ -68,14 +68,8 @@
                             token: vm.token,
                             accountId: vm.accountId
                         }).then(function () {
-                            var instruments = Object.keys(instrs)
-                                .filter(function (el) {
-                                    if (instrs[el]) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                });
+                            var instruments = accountsService
+                                .setStreamingInstruments(instrs);
 
                             streamService.startStream({
                                 environment: vm.environment,
@@ -95,7 +89,6 @@
             sessionService.isLogged().then(function (credentials) {
                 var allInstrs = accountsService.getAccount().instruments;
 
-
                 angular.forEach(allInstrs, function (instrument) {
                     if (!instrs.hasOwnProperty(instrument.instrument)) {
                         instrs[instrument.instrument] = false;
@@ -113,15 +106,10 @@
 
                     if (settingsInfo) {
                         localStorageService.set("instruments", settingsInfo);
+                        instruments = accountsService
+                            .setStreamingInstruments(settingsInfo);
 
-                        instruments = Object.keys(settingsInfo)
-                            .filter(function (el) {
-                                if (instrs[el]) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            });
+                        quotesService.reset();
 
                         streamService.startStream({
                             environment: credentials.environment,

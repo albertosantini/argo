@@ -11,7 +11,8 @@
             service = {
                 getAccount: getAccount,
                 getAccounts: getAccounts,
-                refresh: refresh
+                refresh: refresh,
+                setStreamingInstruments: setStreamingInstruments
             };
 
         return service;
@@ -71,6 +72,19 @@
             }, function (response) {
                 throw response.data.message;
             });
+        }
+
+        function setStreamingInstruments(settings) {
+            account.streamingInstruments = Object.keys(settings)
+                .filter(function (el) {
+                    if (settings[el]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+
+            return account.streamingInstruments;
         }
 
     }
