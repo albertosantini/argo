@@ -43,24 +43,26 @@
                 var accounts = response.data.accounts || response.data;
 
                 if (!accounts.length) {
-                    angular.extend(account, response.data);
+                    angular.merge(account, response.data);
 
                     account.unrealizedPlPerc =
                         account.unrealizedPl / account.balance * 100;
                     account.netAssetValue =
                         account.balance + account.unrealizedPl;
 
-                    $http.post("/api/instruments", {
-                        environment: environment,
-                        token: token,
-                        accountId: accountId
-                    }).then(function (instruments) {
-                        account.instruments = instruments.data;
-                        account.pips = {};
-                        angular.forEach(account.instruments, function (inst) {
-                            account.pips[inst.instrument] = inst.pip;
+                    if (!account.instruments) {
+                        $http.post("/api/instruments", {
+                            environment: environment,
+                            token: token,
+                            accountId: accountId
+                        }).then(function (instruments) {
+                            account.instruments = instruments.data;
+                            account.pips = {};
+                            angular.forEach(account.instruments, function (i) {
+                                account.pips[i.instrument] = i.pip;
+                            });
                         });
-                    });
+                    }
                 }
 
                 return accounts;
