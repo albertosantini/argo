@@ -16,7 +16,10 @@
 
         vm.type = "market";
         vm.side = params.side;
-        vm.instruments = params.instruments;
+        vm.instruments = [];
+        angular.forEach(params.instruments, function (instrument) {
+            vm.instruments.push(instrument.instrument);
+        });
         vm.selectedInstrument = params.selectedInstrument;
         vm.changeMarket(vm.selectedInstrument);
         vm.expires = [
