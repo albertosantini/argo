@@ -54,9 +54,9 @@
                                 ordersService.refresh();
                                 $timeout(function () {
                                     accountsService.refresh();
-                                }, 500);
-                            }, 500);
-                        }, 500);
+                                }, 1000);
+                            }, 1000);
+                        }, 1000);
                     }
                 /*eslint-disable no-empty */
                 } catch (e) {
