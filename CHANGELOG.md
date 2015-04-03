@@ -1,3 +1,9 @@
+1.8.3 / 2015-04-04
+==================
+
+* Fixed order dialog pips.
+* Fixed access token param.
+
 1.8.2 / 2015-04-03
 ==================
 
