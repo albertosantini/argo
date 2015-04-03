@@ -1,3 +1,12 @@
+1.8.2 / 2015-04-03
+==================
+
+* Fixed rate limit error.
+* Added refresh timestamp to the account summary.
+* Fixed instruments list for quotes, charts views and order dialog.
+* Added color to trades profit.
+* Added spread to the quotes view.
+
 1.8.1 / 2015-04-01
 ==================
 
