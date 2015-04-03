@@ -20,7 +20,7 @@
         function startStream(data) {
             $http.post("/api/startstream", {
                 environment: data.environment,
-                accessToken: data.token,
+                accessToken: data.accessToken,
                 accountId: data.accountId,
                 instruments: data.instruments
             }).success(function () {
