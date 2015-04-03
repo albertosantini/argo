@@ -6,10 +6,13 @@
         .controller("OrderDialog", OrderDialog);
 
     OrderDialog.$inject = ["$mdDialog", "toastService", "params",
-        "quotesService", "ordersService"];
-    function OrderDialog($mdDialog, toastService,
-                        params, quotesService, ordersService) {
+                        "quotesService", "ordersService", "accountsService"];
+    function OrderDialog($mdDialog, toastService, params,
+                        quotesService, ordersService, accountsService) {
         var vm = this;
+
+        var account = accountsService.getAccount(),
+            pips = account.pips;
 
         vm.changeMarket = changeMarket;
         vm.changeMeasure = changeMeasure;
@@ -45,20 +48,25 @@
         vm.isTrailingStop = false;
 
         function changeMarket(instrument) {
-            var price = quotesService.getQuotes()[instrument];
+            var price = quotesService.getQuotes()[instrument],
+                fixed = (pips[vm.selectedInstrument].match(/0/g) || []).length;
 
-            vm.step = 0.0001;
+            vm.step = parseFloat(pips[vm.selectedInstrument]);
             if (vm.side === "buy") {
                 vm.quote = price && price.ask;
-                vm.takeProfit = vm.quote + vm.step * 10;
-                vm.stopLoss = vm.quote - vm.step * 10;
+                vm.takeProfit = parseFloat((vm.quote + vm.step * 10)
+                    .toFixed(fixed));
+                vm.stopLoss = parseFloat((vm.quote - vm.step * 10)
+                    .toFixed(fixed));
             } else {
                 vm.quote = price && price.bid;
-                vm.takeProfit = vm.quote - vm.step * 10;
-                vm.stopLoss = vm.quote + vm.step * 10;
+                vm.takeProfit = parseFloat((vm.quote - vm.step * 10)
+                    .toFixed(fixed));
+                vm.stopLoss = parseFloat((vm.quote + vm.step * 10)
+                    .toFixed(fixed));
             }
-            vm.lowerBound = vm.quote - vm.step;
-            vm.upperBound = vm.quote + vm.step;
+            vm.lowerBound = parseFloat((vm.quote - vm.step).toFixed(fixed));
+            vm.upperBound = parseFloat((vm.quote + vm.step).toFixed(fixed));
             vm.trailingStop = 25;
         }
 
@@ -99,16 +107,16 @@
             }
 
             if (vm.isLowerBound) {
-                order.lowerBound = vm.lowerBound.toFixed(4);
+                order.lowerBound = vm.lowerBound;
             }
             if (vm.isUpperBound) {
-                order.upperBound = vm.upperBound.toFixed(4);
+                order.upperBound = vm.upperBound;
             }
             if (vm.isStopLoss) {
-                order.stopLoss = vm.stopLoss.toFixed(4);
+                order.stopLoss = vm.stopLoss;
             }
             if (vm.isTakeProfit) {
-                order.takeProfit = vm.takeProfit.toFixed(4);
+                order.takeProfit = vm.takeProfit;
             }
             if (vm.isTrailingStop) {
                 order.trailingStop = vm.trailingStop;
