@@ -24,12 +24,9 @@ function startStream(req, res) {
         return res.sendStatus(400);
     }
 
-    stream.start(req.body, function (err, instruments) {
+    stream.start(req.body, function (err) {
         if (!err) {
-            util.log("Argo streaming prices and events on ws://localhost:" +
-                config.port + config.streamUrl);
-
-            res.json(instruments);
+            res.sendStatus(200);
         }
     });
 }

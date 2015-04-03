@@ -7,8 +7,9 @@ var WebSocket = require("faye-websocket"),
     request = require("request"),
     config = require("./config");
 
-var wss = [],
-    undeliveredMessages = [];
+var pricesStreaming,
+    eventsStreaming,
+    ws;
 
 function start(options, callback) {
     var environment = options && options.environment || config.environment,
@@ -22,7 +23,12 @@ function start(options, callback) {
             "Authorization": "Bearer " + accessToken
         };
 
-    request({
+    if (pricesStreaming && eventsStreaming) {
+        pricesStreaming.abort();
+        eventsStreaming.abort();
+    }
+
+    pricesStreaming = request({
         "url": pricesUrl,
         "qs": {
             accountId: accountId,
@@ -31,14 +37,14 @@ function start(options, callback) {
         },
         "headers": authHeader
     }).on("response", function () {
-        request({
+        eventsStreaming = request({
             "url": eventsUrl,
             "qs": {
                 accountIds: accountId
             },
             "headers": authHeader
         }).on("response", function () {
-            callback(null, instruments);
+            callback();
         }).on("data", processChunk);
     }).on("data", processChunk);
 }
@@ -46,38 +52,18 @@ function start(options, callback) {
 function processChunk(chunk) {
     var data = chunk.toString().split("\r\n").slice(0, -1);
 
-    data.forEach(function (el) {
-        if (!wss.length) {
-            undeliveredMessages.push(el);
-        }
-
-        wss.forEach(function (ws) {
-            if (ws) {
-                if (undeliveredMessages.length) {
-                    undeliveredMessages.forEach(function (message) {
-                        ws.send(message);
-                    });
-                    undeliveredMessages = [];
-                }
-
-                ws.send(el);
-            }
+    if (ws) {
+        data.forEach(function (el) {
+            ws.send(el);
         });
-    });
+    }
 }
 
 function run(req, socket, body) {
     var url = req.url,
-        streamUrl = config.streamUrl,
-        ws;
+        streamUrl = config.streamUrl;
 
     if (url === streamUrl && WebSocket.isWebSocket(req)) {
         ws = new WebSocket(req, socket, body);
-
-        ws.on("close", function () {
-            ws = null;
-        });
-
-        wss.push(ws);
     }
 }

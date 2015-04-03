@@ -4,7 +4,7 @@
         <md-select ng-model="vm.selectedInstrument"
             ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
             <md-option ng-value="instrument"
-                ng-selected="instrument == vm.selectedInstrument"
+                ng-selected="instrument == vm.selectedInstrument || $index == 0"
                 ng-repeat="instrument in vm.account.streamingInstruments">
                 {{ instrument }}
             </md-option>
