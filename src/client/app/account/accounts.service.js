@@ -5,8 +5,8 @@
         .module("argo")
         .factory("accountsService", accountsService);
 
-    accountsService.$inject = ["$http", "environmentService", "sessionService"];
-    function accountsService($http, environmentService, sessionService) {
+    accountsService.$inject = ["$http", "sessionService"];
+    function accountsService($http, sessionService) {
         var account = {},
             service = {
                 getAccount: getAccount,
@@ -35,13 +35,18 @@
             var environment = data.environment || "practice",
                 token = data.token,
                 accountId = data.accountId,
-                url = accountId ?
-                    "/v1/accounts" + "/" + accountId : "/v1/accounts",
-                request = environmentService.getRequest(environment, "api",
-                    token, url);
+                api = accountId ? "/api/account" : "/api/accounts";
 
-            return $http(request).then(function (response) {
+            return $http.post(api, {
+                environment: environment,
+                token: token,
+                accountId: accountId
+            }).then(function (response) {
                 var accounts = response.data.accounts || response.data;
+
+                if (response.data.message) {
+                    throw response.data.message;
+                }
 
                 if (!accounts.length) {
                     angular.merge(account, response.data);
@@ -69,8 +74,6 @@
                 }
 
                 return accounts;
-            }, function (response) {
-                throw response.data.message;
             });
         }
 
