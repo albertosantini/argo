@@ -1,0 +1,7 @@
+globals:
+    assert: false
+    beforeEach: false
+    describe: false
+    inject: false
+    it: false
+

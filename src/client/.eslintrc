@@ -5,7 +5,6 @@ rules:
     angular/ng_controller_name: [2]
 
 globals:
-    assert: false
     angular: false
     d3: false
     techan: false

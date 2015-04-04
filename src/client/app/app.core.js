@@ -49,10 +49,3 @@
     }
 
 }());
-
-/*eslint-disable no-unused-vars */
-function assert(condition, message) {
-    if (!condition) {
-        throw new TypeError(message || "assert failed");
-    }
-}

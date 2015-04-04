@@ -35,6 +35,13 @@
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~10.0.0",
+        "grunt-karma": "~0.10.1",
+        "mocha": "~2.2.1",
+        "chai": "~2.2.0",
+        "karma": "~0.12.31",
+        "karma-mocha": "~0.1.10",
+        "karma-chai": "~0.1.0",
+        "karma-phantomjs-launcher": "~0.1.4",
         "node-svm": "~2.1.4"
     }
 }
