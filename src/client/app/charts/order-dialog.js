@@ -96,6 +96,10 @@
 
             $mdDialog.hide(action);
 
+            if (vm.measure === "pips") {
+                changeMarket(vm.selectedInstrument);
+            }
+
             order.instrument = vm.selectedInstrument;
             order.units = vm.units;
             order.side = vm.side;
