@@ -131,10 +131,14 @@
                             vm.step * vm.stopLoss);
                     }
                 } else {
-                    order.takeProfit = parseFloat(vm.quote -
-                        vm.step * vm.takeProfit);
-                    order.stopLoss = parseFloat(vm.quote +
-                        vm.step * vm.stopLoss);
+                    if (vm.isTakeProfit) {
+                        order.takeProfit = parseFloat(vm.quote -
+                            vm.step * vm.takeProfit);
+                    }
+                    if (vm.isStopLoss) {
+                        order.stopLoss = parseFloat(vm.quote +
+                            vm.step * vm.stopLoss);
+                    }
                 }
             } else {
                 if (vm.isLowerBound) {
