@@ -56,35 +56,35 @@
                     <md-checkbox md-no-ink aria-label="Lower Bound" ng-model="vm.isLowerBound" class="md-primary">
                         Lower Bound
                     </md-checkbox>
-                    <input type="number" ng-model="vm.lowerBound" ng-disabled="!vm.isLowerBound"
+                    <input type="number" ng-model="vm.lowerBound" min="0" ng-disabled="!vm.isLowerBound"
                         step="{{ vm.step }}" aria-label="lower" aria-controls="lower-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Upper Bound" ng-model="vm.isUpperBound" class="md-primary">
                         Upper Bound
                     </md-checkbox>
-                    <input type="number" ng-model="vm.upperBound" ng-disabled="!vm.isUpperBound"
+                    <input type="number" ng-model="vm.upperBound" min="0" ng-disabled="!vm.isUpperBound"
                         step="{{ vm.step }}" aria-label="upper" aria-controls="upper-slider"flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Take Profit" ng-model="vm.isTakeProfit" class="md-primary">
                         Take Profit
                     </md-checkbox>
-                    <input type="number" ng-model="vm.takeProfit" ng-disabled="!vm.isTakeProfit"
+                    <input type="number" ng-model="vm.takeProfit" min="0" ng-disabled="!vm.isTakeProfit"
                         step="{{ vm.step }}" aria-label="take" aria-controls="take-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Stop Loss" ng-model="vm.isStopLoss" class="md-primary">
                         Stop Loss
                     </md-checkbox>
-                    <input type="number" ng-model="vm.stopLoss" ng-disabled="!vm.isStopLoss"
+                    <input type="number" ng-model="vm.stopLoss" min="0" ng-disabled="!vm.isStopLoss"
                         step="{{ vm.step }}" aria-label="stop" aria-controls="stop-slider" flex="30">
                 </div>
                 <div layout layout-align="space-between center">
                     <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="vm.isTrailingStop" class="md-primary">
                         Trailing Stop
                     </md-checkbox>
-                    <input type="number" ng-model="vm.trailingStop" ng-disabled="!vm.isTrailingStop"
+                    <input type="number" ng-model="vm.trailingStop" min="0" ng-disabled="!vm.isTrailingStop"
                         step="1" aria-label="trailing" aria-controls="trailing-slider" flex="30">
                 </div>
 
