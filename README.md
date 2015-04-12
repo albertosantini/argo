@@ -33,6 +33,20 @@ Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Materi
 - [ ] 1.9.x Improve docs, tests and graphics.
 - [ ] 2.x Executing trading strategies.
 
+## [Screenshot]( https://twitter.com/santinialberto/status/575004455504113664)
+
+## Features
+
+- Account summary
+- Quotes and spreads tick-by-tick list
+- Historical and tick-by-tick charts
+- Inserting market and limit orders
+- Trades list
+- Orders list
+- Positions summary
+- Expositions summary
+- Transactions history
+- Economic calendar
 
 ## Disclaimer
 
