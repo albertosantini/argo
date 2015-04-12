@@ -6,7 +6,9 @@ describe("Exposure", function () {
 
     beforeEach(module("argo"));
 
-    beforeEach(function () {
+    beforeEach(inject(function (_$controller_) {
+        $controller = _$controller_;
+
         tradesServiceMock = {
             getTrades: function () {
                 return [
@@ -25,10 +27,6 @@ describe("Exposure", function () {
                 ];
             }
         };
-    });
-
-    beforeEach(inject(function (_$controller_) {
-        $controller = _$controller_;
     }));
 
     describe("vm.exposures", function () {
@@ -46,17 +44,17 @@ describe("Exposure", function () {
 
             assert.lengthOf(exposures, 3);
 
-            assert.equal(exposures[0].market, "EUR");
-            assert.equal(exposures[0].units, "100");
-            assert.equal(exposures[0].type, "Long");
+            assert.equal("EUR", exposures[0].market);
+            assert.equal("100", exposures[0].units);
+            assert.equal("Long", exposures[0].type);
 
-            assert.equal(exposures[1].market, "USD");
-            assert.equal(exposures[1].units, "417.01");
-            assert.equal(exposures[1].type, "Short");
+            assert.equal("USD", exposures[1].market);
+            assert.equal("417.01", exposures[1].units);
+            assert.equal("Short", exposures[1].type);
 
-            assert.equal(exposures[2].market, "GPB");
-            assert.equal(exposures[2].units, "200");
-            assert.equal(exposures[2].type, "Long");
+            assert.equal("GPB", exposures[2].market);
+            assert.equal("200", exposures[2].units);
+            assert.equal("Long", exposures[2].type);
         });
     });
 });
