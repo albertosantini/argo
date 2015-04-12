@@ -1,4 +1,5 @@
 globals:
+    afterEach: false
     assert: false
     beforeEach: false
     describe: false
