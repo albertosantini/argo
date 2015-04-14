@@ -5,6 +5,7 @@
 * Added a screenshot and features list to the README.
 * Added test setup and initial specs.
 * Updated deps.
+* No negative values to bounds, profits and stops in the order dialog.
 * Fixed again filling order in PIPS mode (see [#2](https://github.com/albertosantini/argo/issues/2))
 
 1.8.3 / 2015-04-04
