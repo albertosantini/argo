@@ -33,7 +33,7 @@ Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Materi
 - [ ] 1.9.x Improve docs, tests and graphics.
 - [ ] 2.x Executing trading strategies.
 
-## [Screenshot]( https://twitter.com/santinialberto/status/575004455504113664)
+## [Screenshot](https://twitter.com/santinialberto/status/575004455504113664)
 
 ## Features
 
@@ -55,4 +55,3 @@ NOT INVESTMENT ADVICE AND WILL LOSE LOTS OF MONEY SO PROCEED WITH CAUTION.
 
 [OANDA]: http://fxtrade.oanda.co.uk/
 [API]: http://developer.oanda.com/
-
