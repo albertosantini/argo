@@ -37,16 +37,16 @@ Tested locally with Node.js 0.12.x (and io.js 1.6.x), AngularJS 1.4.x and Materi
 
 ## Features
 
-- Account summary
-- Quotes and spreads tick-by-tick list
-- Historical and tick-by-tick charts
-- Inserting market and limit orders
-- Trades list
-- Orders list
-- Positions summary
-- Expositions summary
-- Transactions history
-- Economic calendar
+- Account summary updated for each event.
+- Quotes and spreads list updated tick-by-tick.
+- Charts with different time frames updated tick-by-tick.
+- Market and limit orders with stop loss, take profit and trailing stop.
+- Trades list with current and profit updated tick-by-tick.
+- Orders list with distance updated tick-by-tick.
+- Positions summary.
+- Expositions summary.
+- Transactions history.
+- Economic calendar.
 
 ## Disclaimer
 
