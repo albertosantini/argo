@@ -20,8 +20,12 @@
             <span flex="10">{{ activity.instrument }}</span>
             <span flex="5">{{ activity.units | number }}</span>
             <span flex="10">{{ activity.price }}</span>
-            <span flex="10">{{ activity.interest }}</span>
-            <span flex="10">{{ activity.pl | number:4 }}</span>
+            <span flex="10" ng-class="activity.interest >= 0 ? 'highlight-green' : 'highlight-red'">
+                {{ activity.interest }}
+            </span>
+            <span flex="10" ng-class="activity.pl >= 0 ? 'highlight-green' : 'highlight-red'">
+                {{ activity.pl | number:4 }}
+            </span>
             <span flex="10">{{ activity.accountBalance | number:2 }}</span>
             <span flex="10">{{ activity.time | date:"MMM d, HH:mm" }}</span>
         </div>
