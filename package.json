@@ -37,7 +37,7 @@
         "grunt-eslint": "~12.0.0",
         "grunt-karma": "~0.10.1",
         "mocha": "~2.2.4",
-        "chai": "~2.2.0",
+        "chai": "~2.3.0",
         "karma": "~0.12.31",
         "karma-mocha": "~0.1.10",
         "karma-chai": "~0.1.0",
