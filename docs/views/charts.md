@@ -21,7 +21,7 @@ Clicking on the Buy/Sell button, you issue Market Orders or Limit Orders for
 either buy or sell trades from the Buy/Sell dialog. A Market Order is the
 default type.
 
-- **Market/Limit order**
+- **Market/Limit order** Types of Orders.
 
 - **Buy/Sell** Choose between buy (long) and sell (short).
 
@@ -65,5 +65,5 @@ before a specified expiry period.
 
 When you are ready, click the Submit button.
 
-The Trades and Activity views are updated and the aggregated effects from this
-new trade are reflected in the Positions and Exposure views.
+The Trades (or Orders) and Activity views are updated and the aggregated effects
+from this new trade are reflected in the Positions and Exposure views.
