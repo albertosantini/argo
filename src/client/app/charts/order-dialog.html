@@ -1,10 +1,10 @@
 <md-dialog aria-label="Order Dialog">
 
-    <md-content>
+    <md-content layout-padding>
         <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
 
         <div layout="row">
-            <div flex="50">
+            <div flex="45" layout-margin>
 
                 <md-radio-group ng-model="vm.type" layout layout-align="space-between center">
                       <md-radio-button value="market">Market Order</md-radio-button>
@@ -43,7 +43,7 @@
                 </md-select>
 
             </div>
-            <div flex="50">
+            <div flex="45" layout-margin>
 
                 <md-radio-group ng-model="vm.measure"
                     ng-change="vm.changeMeasure(vm.measure)"
