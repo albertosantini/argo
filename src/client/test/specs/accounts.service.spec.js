@@ -12,8 +12,7 @@ describe("accountsService", function () {
     beforeEach(inject(function ($injector) {
         var environment = "my environment",
             token = "my token",
-            accountId = "my account id",
-            when;
+            accountId = "my account id";
 
         $httpBackend = $injector.get("$httpBackend");
         accountsService = $injector.get("accountsService");
@@ -52,18 +51,7 @@ describe("accountsService", function () {
                 }
             ]);
 
-        when = $httpBackend.whenGET;
-        when("app/layout/default.html").respond(200);
-        when("app/header/header.html").respond(200);
-        when("app/trades/trades.html").respond(200);
-        when("app/orders/orders.html").respond(200);
-        when("app/positions/positions.html").respond(200);
-        when("app/exposure/exposure.html").respond(200);
-        when("app/activity/activity.html").respond(200);
-        when("app/news/news.html").respond(200);
-        when("app/account/account.html").respond(200);
-        when("app/quotes/quotes.html").respond(200);
-        when("app/charts/charts.html").respond(200);
+        $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
     afterEach(function () {
