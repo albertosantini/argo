@@ -1,3 +1,27 @@
+1.9.0 / 2015-05-05
+==================
+
+* Removed screenshot from README (see the site).
+* Update material 0.9.0.
+* Updated ui router 0.2.14.
+* Added specs.
+* Added a shadow below the toolbar.
+* Tuned again tabs refresh.
+* Added padding and margin to the dialogs.
+* Added details for view docs.
+* Updated chai 2.3.0.
+* Updated AngularJS 1.4.0-rc.1.
+* Updated eslint 0.20.0, grunt-eslint 12.0.0.
+* Added npm version badge.
+* Added color classes to profit, pl in activity view.
+* Added favicon.ico and argo logo.
+* Added md-dynamic-height to the tabs.
+* Updated body-parser 1.12.3.
+* Removed useless spaces and blank lines in README.
+* Updated features in README.
+* Moved spinner loading to the toolbar.
+* Updated README with io.js 1.8.x and material 0.9.x.
+
 1.8.4 / 2015-04-14
 ==================
 
