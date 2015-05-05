@@ -1,3 +1,8 @@
+1.9.1 / 2015-05-05
+==================
+
+* Removed experimental package node-svm due to compiling issues with io.js 2.0.0.
+
 1.9.0 / 2015-05-05
 ==================
 
