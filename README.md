@@ -21,7 +21,7 @@ $ argo-trading
 ```
 Eventually point your web brower to `http://localhost:8000`.
 
-Tested locally with Node.js 0.12.x (and io.js 1.8.x), AngularJS 1.4.x and Material 0.9.x.
+Tested locally with Node.js 0.12.x (and io.js 2.0.x), AngularJS 1.4.x and Material 0.9.x.
 
 ## [Documentation](docs/)
 
