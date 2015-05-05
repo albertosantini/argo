@@ -1,7 +1,7 @@
 <md-content ng-show="vm.account.streamingInstruments">
 
     <div layout="row" layout-align="space-around start">
-        <md-select ng-model="vm.selectedInstrument"
+        <md-select ng-model="vm.selectedInstrument" aria-label="Instrument"
             ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
             <md-option ng-value="instrument"
                 ng-selected="instrument == vm.selectedInstrument || $index == 0"
