@@ -34,8 +34,6 @@ Tested locally with Node.js 0.12.x (and io.js 1.8.x), AngularJS 1.4.x and Materi
 - [ ] 1.9.x Improve docs, tests and graphics.
 - [ ] 2.x Executing trading strategies.
 
-## [Screenshot](https://twitter.com/santinialberto/status/575004455504113664)
-
 ## Features
 
 - Account summary updated for each event.
