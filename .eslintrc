@@ -16,7 +16,7 @@ rules:
     no-undefined: 2
     no-use-before-define:  [2, "nofunc"]
     radix: 2
-    space-before-function-parentheses: [2, {"anonymous": "always", "named": "never"}]
+    space-before-function-paren: [2, {"anonymous": "always", "named": "never"}]
     space-after-keywords: [2, "always"]
     space-before-blocks: 2
     space-in-brackets: [2, "never"]
