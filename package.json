@@ -24,7 +24,7 @@
         "express": "~4.12.3",
         "faye-websocket": "~0.9.4",
         "request": "~2.55.0",
-        "seneca": "~0.6.1"
+        "flic": "~1.1.2"
     },
     "scripts": {
         "test": "grunt",
