@@ -2,7 +2,7 @@
 
 var util = require("util"),
     express = require("express"),
-    seneca = require("seneca"),
+    Bridge = require("flic").bridge,
     routes = require("./routes");
 
 
@@ -28,19 +28,6 @@ app.listen(port, function () {
         port + routes.config.streamUrl);
 });
 
-seneca = seneca();
-seneca.use("plugin/register.js");
-seneca.listen();
-
-seneca.ready(function (error) {
-    if (!error) {
-        seneca.act("role:plugin", {
-            cmd: "register",
-            name: "ready"
-        }, function (err, result) {
-            if (!err) {
-                util.log("Argo plugin:", result.value);
-            }
-        });
-    }
-});
+/*eslint-disable no-new */
+new Bridge();
+/*eslint-enable no-new */
