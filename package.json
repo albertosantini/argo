@@ -20,7 +20,7 @@
         "node": "~0.12.x"
     },
     "dependencies": {
-        "body-parser": "~1.12.3",
+        "body-parser": "~1.12.4",
         "express": "~4.12.3",
         "faye-websocket": "~0.9.4",
         "request": "~2.55.0",
@@ -37,7 +37,7 @@
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~13.0.0",
         "grunt-karma": "~0.10.1",
-        "mocha": "~2.2.4",
+        "mocha": "~2.2.5",
         "chai": "~2.3.0",
         "karma": "~0.12.31",
         "karma-mocha": "~0.1.10",
