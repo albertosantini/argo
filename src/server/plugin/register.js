@@ -1,13 +1,15 @@
-"use strict";
+// to be removed
 
-module.exports = function () {
-    var seneca = this;
+// "use strict";
 
-    seneca.add({role: "plugin", cmd: "register"}, register);
+// module.exports = function () {
+//     var seneca = this;
 
-    function register(args, done) {
-        var name = args.name;
+//     seneca.add({role: "plugin", cmd: "register"}, register);
 
-        done(null, {value: name});
-    }
-};
+//     function register(args, done) {
+//         var name = args.name;
+
+//         done(null, {value: name});
+//     }
+// };
