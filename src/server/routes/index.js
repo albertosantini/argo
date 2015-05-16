@@ -26,3 +26,4 @@ router.post("/calendar", jsonParser, api.getCalendar);
 router.post("/order", jsonParser, api.putOrder);
 router.post("/closeorder", jsonParser, api.closeOrder);
 router.post("/closetrade", jsonParser, api.closeTrade);
+router.post("/plugins", jsonParser, api.getPlugins);

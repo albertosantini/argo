@@ -1,10 +1,5 @@
 "use strict";
 
-var util = require("util"),
-    request = require("request"),
-    config = require("./config"),
-    stream = require("./stream");
-
 exports.startStream = startStream;
 exports.getAccounts = getAccounts;
 exports.getAccount = getAccount;
@@ -18,6 +13,13 @@ exports.getCalendar = getCalendar;
 exports.putOrder = putOrder;
 exports.closeOrder = closeOrder;
 exports.closeTrade = closeTrade;
+exports.getPlugins = getPlugins;
+
+var util = require("util"),
+    request = require("request"),
+    config = require("./config"),
+    stream = require("./stream"),
+    plugin = require("../plugin/plugin");
 
 function startStream(req, res) {
     if (!req.body) {
@@ -269,6 +271,10 @@ function closeTrade(req, response) {
     }, function (err, res, body) {
         processApi("closeTrade", err, body, response);
     });
+}
+
+function getPlugins(req, response) {
+    response.json(plugin.getPluginNames());
 }
 
 function processApi(apiName, err, body, response, property) {

@@ -53,6 +53,11 @@
                         controller: "News",
                         controllerAs: "vm"
                     },
+                    "plugins": {
+                        templateUrl: "app/plugins/plugins.html",
+                        controller: "Plugins",
+                        controllerAs: "vm"
+                    },
                     "account": {
                         templateUrl: "app/account/account.html",
                         controller: "Account",

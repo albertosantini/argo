@@ -1,0 +1,18 @@
+<md-content>
+    <b>To be implemented</b>
+
+    <md-card ng-repeat="plugin in vm.plugins">
+
+        <div layout="row">
+            <md-switch ng-model="vm.plugins[plugin]" aria-label="plugin">
+                {{ plugin }}
+            </md-switch>
+        </div>
+
+    </md-card>
+
+    <md-card ng-show="!vm.plugins.length">
+        No plugins.
+    </md-card>
+
+</md-content>

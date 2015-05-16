@@ -7,6 +7,7 @@
     <md-tab id="tab4" aria-controls="tab4-content">Exposure</md-tab>
     <md-tab id="tab5" aria-controls="tab5-content">Activity</md-tab>
     <md-tab id="tab6" aria-controls="tab6-content">News</md-tab>
+    <md-tab id="tab7" aria-controls="tab7-content">Plugins</md-tab>
 </md-tabs>
 <ng-switch on="default.tabSelectedIndex" class="tabpanel-container" layout-margin>
     <div role="tabpanel"
@@ -67,6 +68,16 @@
          md-swipe-right="previous()">
 
         <div ui-view="news"></div>
+    </div>
+
+    <div role="tabpanel"
+         id="tab7-content"
+         aria-labelledby="tab7"
+         ng-switch-when="6"
+         md-swipe-left="next()"
+         md-swipe-right="previous()">
+
+        <div ui-view="plugins"></div>
     </div>
 
 </ng-switch>
