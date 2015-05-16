@@ -3,23 +3,14 @@
 exports.start = start;
 exports.run = run;
 
-var util = require("util"),
-    WebSocket = require("faye-websocket"),
+var WebSocket = require("faye-websocket"),
     request = require("request"),
-    StreamingNode = require("flic").node,
-    config = require("./config");
+    config = require("./config"),
+    plugin = require("../plugin/plugin");
 
 var pricesStreaming,
     eventsStreaming,
     ws;
-
-var streamingNode = new StreamingNode(function (err) {
-    if (!err) {
-        util.log("Argo streaming node online");
-    } else {
-        util.log(err);
-    }
-});
 
 function start(options, callback) {
     var environment = options && options.environment || config.environment,
@@ -65,7 +56,7 @@ function processChunk(chunk) {
     if (ws) {
         data.forEach(function (el) {
             ws.send(el);
-            streamingNode.shout("argo.streaming", el);
+            plugin.shoutStreaming(el);
         });
     }
 }

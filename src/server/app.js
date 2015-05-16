@@ -2,9 +2,8 @@
 
 var util = require("util"),
     express = require("express"),
-    Bridge = require("flic").bridge,
-    routes = require("./routes");
-
+    routes = require("./routes"),
+    plugin = require("./plugin");
 
 var app = express(),
     port = routes.config.port,
@@ -28,6 +27,4 @@ app.listen(port, function () {
         port + routes.config.streamUrl);
 });
 
-/*eslint-disable no-new */
-new Bridge();
-/*eslint-enable no-new */
+plugin.startBridge();
