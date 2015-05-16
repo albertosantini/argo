@@ -23,6 +23,7 @@ describe("Module Routes", function () {
         $httpBackend.expectGET("app/exposure/exposure.html").respond(200);
         $httpBackend.expectGET("app/activity/activity.html").respond(200);
         $httpBackend.expectGET("app/news/news.html").respond(200);
+        $httpBackend.expectGET("app/plugins/plugins.html").respond(200);
         $httpBackend.expectGET("app/account/account.html").respond(200);
         $httpBackend.expectGET("app/quotes/quotes.html").respond(200);
         $httpBackend.expectGET("app/charts/charts.html").respond(200);
