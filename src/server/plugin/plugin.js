@@ -1,7 +1,7 @@
 "use strict";
 
-exports.start = start;
-exports.stop = stop;
+exports.enable = enable;
+exports.disable = disable;
 exports.shoutStreaming = shoutStreaming;
 exports.getPluginNames = getPluginNames;
 
@@ -36,12 +36,12 @@ masterNode.on("error", function (err) {
     util.log(err);
 });
 
-function start(name) {
-    masterNode.tell(name + ":argo.start");
+function enable(name) {
+    masterNode.tell(name + ":argo.enable");
 }
 
-function stop(name) {
-    masterNode.tell(name + ":argo.stop");
+function disable(name) {
+    masterNode.tell(name + ":argo.disable");
 }
 
 function shoutStreaming(data) {
