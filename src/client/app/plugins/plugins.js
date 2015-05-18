@@ -9,9 +9,19 @@
     function Plugins(pluginsService) {
         var vm = this;
 
-        pluginsService.getPlugins().then(function (plugins) {
-            vm.plugins = plugins;
-        });
+        vm.engage = engage;
+
+        activate();
+
+        function activate() {
+            pluginsService.getPlugins().then(function (plugins) {
+                vm.plugins = plugins;
+            });
+        }
+
+        function engage() {
+            console.log(vm.plugins);
+        }
     }
 
 }());

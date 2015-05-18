@@ -4,6 +4,7 @@ exports.enable = enable;
 exports.disable = disable;
 exports.shoutStreaming = shoutStreaming;
 exports.getPluginNames = getPluginNames;
+exports.getPlugins = getPlugins;
 
 var util = require("util"),
     flic = require("flic");
@@ -50,4 +51,14 @@ function shoutStreaming(data) {
 
 function getPluginNames() {
     return Object.keys(plugins);
+}
+
+function getPlugins() {
+    Object.keys(plugins).forEach(function (name) {
+        masterNode.tell(name + ":argo.status", name, function (err, status) {
+            if (!err) {
+                util.log(name, status);
+            }
+        });
+    });
 }

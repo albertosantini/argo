@@ -4,7 +4,7 @@
     <md-card ng-repeat="plugin in vm.plugins">
 
         <div layout="row">
-            <md-switch ng-model="vm.plugins[plugin]" aria-label="plugin">
+            <md-switch ng-model="vm.plugins[plugin]" ng-change="vm.engage()" aria-label="plugin">
                 {{ plugin }}
             </md-switch>
         </div>
