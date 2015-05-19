@@ -274,7 +274,11 @@ function closeTrade(req, response) {
 }
 
 function getPlugins(req, response) {
-    response.json(plugin.getPluginNames());
+    plugin.getPlugins(function (err, plugins) {
+        if (!err) {
+            response.json(Object.keys(plugins));
+        }
+    });
 }
 
 function processApi(apiName, err, body, response, property) {
