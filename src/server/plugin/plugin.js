@@ -3,11 +3,11 @@
 exports.enable = enable;
 exports.disable = disable;
 exports.shoutStreaming = shoutStreaming;
-exports.getPluginNames = getPluginNames;
 exports.getPlugins = getPlugins;
 
 var util = require("util"),
-    flic = require("flic");
+    flic = require("flic"),
+    async = require("async");
 
 var FlicNode = flic.node,
     nodeName = "master",
@@ -49,16 +49,24 @@ function shoutStreaming(data) {
     masterNode.shout("argo.streaming", data);
 }
 
-function getPluginNames() {
-    return Object.keys(plugins);
-}
+function getPlugins(callback) {
+    var pluginNames = Object.keys(plugins),
+        tellSeries = {};
 
-function getPlugins() {
-    Object.keys(plugins).forEach(function (name) {
-        masterNode.tell(name + ":argo.status", name, function (err, status) {
-            if (!err) {
-                util.log(name, status);
-            }
-        });
+    pluginNames.forEach(function (name) {
+        tellSeries[name] = function (done) {
+            var event = name + ":argo.status";
+            masterNode.tell(event, name, function (err, status) {
+                if (!err) {
+                    done(null, status);
+                }
+            });
+        };
+    });
+
+    async.series(tellSeries, function (err, res) {
+        if (!err) {
+            callback(err, res);
+        }
     });
 }
