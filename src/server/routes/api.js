@@ -14,6 +14,7 @@ exports.putOrder = putOrder;
 exports.closeOrder = closeOrder;
 exports.closeTrade = closeTrade;
 exports.getPlugins = getPlugins;
+exports.engagePlugins = engagePlugins;
 
 var util = require("util"),
     request = require("request"),
@@ -276,9 +277,19 @@ function closeTrade(req, response) {
 function getPlugins(req, response) {
     plugin.getPlugins(function (err, plugins) {
         if (!err) {
-            response.json(Object.keys(plugins));
+            response.json(plugins);
         }
     });
+}
+
+function engagePlugins(req, response) {
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    plugin.engagePlugins(req.body.plugins);
+
+    response.sendStatus(200);
 }
 
 function processApi(apiName, err, body, response, property) {
