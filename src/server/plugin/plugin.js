@@ -1,9 +1,8 @@
 "use strict";
 
-exports.enable = enable;
-exports.disable = disable;
 exports.shoutStreaming = shoutStreaming;
 exports.getPlugins = getPlugins;
+exports.engagePlugins = engagePlugins;
 
 var util = require("util"),
     flic = require("flic"),
@@ -37,12 +36,24 @@ masterNode.on("error", function (err) {
     util.log(err);
 });
 
-function enable(name) {
-    masterNode.tell(name + ":argo.enable");
+function enable(name, callback) {
+    var event = name + ":argo.enable";
+
+    masterNode.tell(event, name, function (err) {
+        if (!err) {
+            callback();
+        }
+    });
 }
 
-function disable(name) {
-    masterNode.tell(name + ":argo.disable");
+function disable(name, callback) {
+    var event = name + ":argo.disable";
+
+    masterNode.tell(event, name, function (err) {
+        if (!err) {
+            callback();
+        }
+    });
 }
 
 function shoutStreaming(data) {
@@ -69,4 +80,21 @@ function getPlugins(callback) {
             callback(err, res);
         }
     });
+}
+
+function engagePlugins(plugs) {
+    var pluginNames = Object.keys(plugs),
+        tellSeries = {};
+
+    pluginNames.forEach(function (name) {
+        tellSeries[name] = function (done) {
+            if (plugs[name]) {
+                enable(name, done);
+            } else {
+                disable(name, done);
+            }
+        };
+    });
+
+    async.series(tellSeries);
 }
