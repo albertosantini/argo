@@ -1,17 +1,13 @@
 <md-content>
-    <b>To be implemented</b>
+    <md-card ng-repeat="(plugin, value) in vm.plugins">
 
-    <md-card ng-repeat="plugin in vm.plugins">
-
-        <div layout="row">
-            <md-switch ng-model="vm.plugins[plugin]" ng-change="vm.engage()" aria-label="plugin">
-                {{ plugin }}
-            </md-switch>
-        </div>
+        <md-switch ng-model="vm.plugins[plugin]" ng-change="vm.engage()" aria-label="plugin">
+            {{ plugin }}
+        </md-switch>
 
     </md-card>
 
-    <md-card ng-show="!vm.plugins.length">
+    <md-card ng-show="vm.noPlugins">
         No plugins.
     </md-card>
 
