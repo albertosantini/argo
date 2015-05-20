@@ -16,11 +16,12 @@
         function activate() {
             pluginsService.getPlugins().then(function (plugins) {
                 vm.plugins = plugins;
+                vm.noPlugins = Object.keys(plugins).length === 0;
             });
         }
 
         function engage() {
-            console.log(vm.plugins);
+            pluginsService.engagePlugins(vm.plugins);
         }
     }
 
