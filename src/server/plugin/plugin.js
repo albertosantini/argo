@@ -6,7 +6,8 @@ exports.engagePlugins = engagePlugins;
 
 var util = require("util"),
     flic = require("flic"),
-    async = require("async");
+    async = require("async"),
+    routes = require("../routes");
 
 var FlicNode = flic.node,
     nodeName = "master",
@@ -23,7 +24,7 @@ var masterNode = new FlicNode(nodeName, function (err) {
 masterNode.on("argo.register", function (pluginName, done) {
     plugins[pluginName] = true;
     util.log("Argo plugin registered", pluginName);
-    done();
+    done(null, "http://localhost:" + routes.config.port);
 });
 
 masterNode.on("argo.unregister", function (pluginName, done) {
