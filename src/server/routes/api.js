@@ -22,6 +22,9 @@ var util = require("util"),
     stream = require("./stream"),
     plugin = require("../plugin/plugin");
 
+
+var credentials = {};
+
 function startStream(req, res) {
     if (!req.body) {
         return res.sendStatus(400);
@@ -54,6 +57,10 @@ function getAccount(req, response) {
         return response.sendStatus(400);
     }
 
+    credentials.environment = req.body.environment;
+    credentials.token = req.body.token;
+    credentials.accountId = req.body.accountId;
+
     request({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId,
@@ -84,12 +91,18 @@ function getInstruments(req, response) {
 }
 
 function getCandles(req, response) {
+    var environment,
+        token;
+
     if (!req.body) {
         return response.sendStatus(400);
     }
 
+    environment = req.body.environment || credentials.environment;
+    token = req.body.token || credentials.token;
+
     request({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/candles",
+        "url": config.getUrl(environment, "api") + "/v1/candles",
         "qs": {
             instrument: req.body.instrument,
             granularity: req.body.granularity,
@@ -99,7 +112,7 @@ function getCandles(req, response) {
             dailyAlignment: req.body.dailyAlignment
         },
         "headers": {
-            "Authorization": "Bearer " + req.body.token
+            "Authorization": "Bearer " + token
         }
     }, function (err, res, body) {
         var candles,
@@ -118,7 +131,11 @@ function getCandles(req, response) {
                         candle.volume + "\n";
             });
 
-            response.send(lines);
+            if (req.body.isPlugin) {
+                response.json(candles);
+            } else {
+                response.send(lines);
+            }
 
         } else {
             processApiError("getCandles",
@@ -211,14 +228,22 @@ function getCalendar(req, response) {
 }
 
 function putOrder(req, response) {
+    var environment,
+        token,
+        accountId;
+
     if (!req.body) {
         return response.sendStatus(400);
     }
 
+    environment = req.body.environment || credentials.environment;
+    token = req.body.token || credentials.token;
+    accountId = req.body.accountId || credentials.accountId;
+
     request({
         "method": "POST",
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/orders",
+        "url": config.getUrl(environment, "api") + "/v1/accounts/" +
+            accountId + "/orders",
         "form": {
             instrument: req.body.instrument,
             units: req.body.units,
@@ -233,7 +258,7 @@ function putOrder(req, response) {
             trailingStop: req.body.trailingStop
         },
         "headers": {
-            "Authorization": "Bearer " + req.body.token
+            "Authorization": "Bearer " + token
         }
     }, function (err, res, body) {
         processApi("putOrder", err, body, response);
