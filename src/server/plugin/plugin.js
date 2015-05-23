@@ -25,12 +25,14 @@ masterNode.on("argo.register", function (pluginName, done) {
     plugins[pluginName] = true;
     util.log("Argo plugin registered", pluginName);
     done(null, "http://localhost:" + routes.config.port);
+    refreshPlugins();
 });
 
 masterNode.on("argo.unregister", function (pluginName, done) {
     delete plugins[pluginName];
     util.log("Argo plugin unregistered", pluginName);
     done();
+    refreshPlugins();
 });
 
 masterNode.on("error", function (err) {
@@ -98,4 +100,8 @@ function engagePlugins(plugs) {
     });
 
     async.series(tellSeries);
+}
+
+function refreshPlugins() {
+    routes.stream.sendMessage(JSON.stringify({"refreshPlugins": true}));
 }

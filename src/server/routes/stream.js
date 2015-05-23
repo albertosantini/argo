@@ -2,6 +2,7 @@
 
 exports.start = start;
 exports.run = run;
+exports.sendMessage = sendMessage;
 
 var WebSocket = require("faye-websocket"),
     request = require("request"),
@@ -67,5 +68,11 @@ function run(req, socket, body) {
 
     if (url === streamUrl && WebSocket.isWebSocket(req)) {
         ws = new WebSocket(req, socket, body);
+    }
+}
+
+function sendMessage(message) {
+    if (ws && message) {
+        ws.send(message);
     }
 }

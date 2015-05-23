@@ -10,14 +10,13 @@
         var vm = this;
 
         vm.engage = engage;
+        vm.plugins = pluginsService.getPlugins();
+        vm.pluginsInfo = pluginsService.getPluginsInfo();
 
         activate();
 
         function activate() {
-            pluginsService.getPlugins().then(function (plugins) {
-                vm.plugins = plugins;
-                vm.noPlugins = Object.keys(plugins).length === 0;
-            });
+            pluginsService.refresh();
         }
 
         function engage() {

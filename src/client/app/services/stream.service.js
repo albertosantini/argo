@@ -7,10 +7,12 @@
 
     streamService.$inject = ["$http", "$timeout", "ngSocket",
                         "quotesService", "activityService",
-                        "tradesService", "ordersService", "accountsService"];
+                        "tradesService", "ordersService", "accountsService",
+                        "pluginsService"];
     function streamService($http, $timeout, ngSocket,
                         quotesService, activityService,
-                        tradesService, ordersService, accountsService) {
+                        tradesService, ordersService, accountsService,
+                        pluginsService) {
         var service = {
             startStream: startStream
         };
@@ -34,17 +36,22 @@
             ws.onMessage(function (event) {
                 var data,
                     tick,
-                    transaction;
+                    transaction,
+                    refreshPlugins;
 
                 try {
                     data = angular.fromJson(event.data);
+
                     tick = data.tick;
                     transaction = data.transaction;
+                    refreshPlugins = data.refreshPlugins;
+
                     if (tick) {
                         quotesService.updateTick(tick);
                         tradesService.updateTrades(tick);
                         ordersService.updateOrders(tick);
                     }
+
                     if (transaction) {
                         activityService.addActivity(transaction);
 
@@ -57,6 +64,10 @@
                                 }, 600);
                             }, 400);
                         }, 200);
+                    }
+
+                    if (refreshPlugins) {
+                        pluginsService.refresh();
                     }
                 /*eslint-disable no-empty */
                 } catch (e) {
