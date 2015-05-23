@@ -7,6 +7,7 @@
 ## [Exposure](exposure.md)
 ## [Activity](activity.md)
 ## [News](news.md)
+## [Plugins](plugins.md)
 ## [Account Summary](account.md)
 ## [Quotes List](quotes.md)
 ## [Charts](charts.md)
