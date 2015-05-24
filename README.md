@@ -21,20 +21,13 @@ $ argo-trading
 ```
 Eventually point your web brower to `http://localhost:8000`.
 
-Tested locally with Node.js 0.12.x (and io.js 2.0.x), AngularJS 1.4.x and Material 0.9.x.
+Tested locally with Node.js 0.12.x (and io.js 2.1.x), AngularJS 1.4.x and Material 0.9.x.
 
 ## [Documentation](docs/)
 
 ## [Contributing](CONTRIBUTING.md)
 
-## Roadmap
-
-- [X] 1.0.0 Initial release.
-- [X] 1.1.x - 1.8.x [Basic features](docs/views).
-- [X] 1.9.x Improve docs, tests and graphics.
-- [ ] 2.x Executing trading strategies.
-
-## Features
+## [Basic features](docs/views)
 
 - Account summary updated for each event.
 - Quotes and spreads list updated tick-by-tick.
@@ -46,6 +39,10 @@ Tested locally with Node.js 0.12.x (and io.js 2.0.x), AngularJS 1.4.x and Materi
 - Expositions summary.
 - Transactions history.
 - Economic calendar.
+
+## [Advanced features](https://github.com/albertosantini/argo-trading-plugin-seed)
+
+- Executing trading strategies.
 
 ## Disclaimer
 
