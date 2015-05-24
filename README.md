@@ -23,10 +23,6 @@ Eventually point your web brower to `http://localhost:8000`.
 
 Tested locally with Node.js 0.12.x (and io.js 2.1.x), AngularJS 1.4.x and Material 0.9.x.
 
-## [Documentation](docs/)
-
-## [Contributing](CONTRIBUTING.md)
-
 ## [Basic features](docs/views)
 
 - Account summary updated for each event.
@@ -43,6 +39,10 @@ Tested locally with Node.js 0.12.x (and io.js 2.1.x), AngularJS 1.4.x and Materi
 ## [Advanced features](https://github.com/albertosantini/argo-trading-plugin-seed)
 
 - Executing trading strategies.
+
+## [Documentation](docs/)
+
+## [Contributing](CONTRIBUTING.md)
 
 ## Disclaimer
 
