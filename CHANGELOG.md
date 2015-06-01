@@ -1,3 +1,11 @@
+2.0.1 / 2015-06-01
+==================
+
+* Updated AngularJS 1.4.0.
+* Updated Material 0.9.6.
+* Updated ui router 0.2.15.
+* Updated other deps.
+
 2.0.0 / 2015-05-25
 ==================
 
