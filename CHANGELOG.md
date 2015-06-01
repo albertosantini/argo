@@ -1,9 +1,9 @@
 2.0.0 / 2015-05-25
 ==================
 
-* Add support for plugins.
-* Fix eol for start script (see [#4](https://github.com/albertosantini/argo/issues/4)).
-* Update deps.
+* Added support for plugins.
+* Fixed eol for start script (see [#4](https://github.com/albertosantini/argo/issues/4)).
+* Updated deps.
 
 1.9.1 / 2015-05-05
 ==================
