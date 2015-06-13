@@ -312,7 +312,7 @@ function engagePlugins(req, response) {
         return response.sendStatus(400);
     }
 
-    plugin.engagePlugins(req.body.plugins);
+    plugin.engagePlugins(req.body.plugins, req.body.config);
 
     response.sendStatus(200);
 }

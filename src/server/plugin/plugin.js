@@ -39,10 +39,10 @@ masterNode.on("error", function (err) {
     util.log(err);
 });
 
-function enable(name, callback) {
+function enable(name, config, callback) {
     var event = name + ":argo.enable";
 
-    masterNode.tell(event, name, function (err) {
+    masterNode.tell(event, name, config, function (err) {
         if (!err) {
             callback();
         }
@@ -85,14 +85,14 @@ function getPlugins(callback) {
     });
 }
 
-function engagePlugins(plugs) {
+function engagePlugins(plugs, config) {
     var pluginNames = Object.keys(plugs),
         tellSeries = {};
 
     pluginNames.forEach(function (name) {
         tellSeries[name] = function (done) {
             if (plugs[name]) {
-                enable(name, done);
+                enable(name, config, done);
             } else {
                 disable(name, done);
             }

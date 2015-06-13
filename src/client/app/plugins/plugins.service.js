@@ -5,8 +5,8 @@
         .module("argo")
         .factory("pluginsService", pluginsService);
 
-    pluginsService.$inject = ["$http", "sessionService"];
-    function pluginsService($http, sessionService) {
+    pluginsService.$inject = ["$http", "sessionService", "accountsService"];
+    function pluginsService($http, sessionService, accountsService) {
         var plugins = {},
             pluginsInfo = {
                 count: 0
@@ -58,11 +58,16 @@
 
         function engagePlugins(plugs) {
             sessionService.isLogged().then(function (credentials) {
+                var account = accountsService.getAccount();
+
                 $http.post("/api/engageplugins", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
-                    plugins: plugs
+                    plugins: plugs,
+                    config: {
+                        pips: account.pips
+                    }
                 });
             });
         }
