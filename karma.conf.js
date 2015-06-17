@@ -19,7 +19,7 @@ module.exports = function (config) {
             "https://cdn.rawgit.com/mbostock/d3/master/d3.min.js",
             "https://cdn.rawgit.com/andredumas/techan.js/master/dist/techan.min.js",
 
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-mocks.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular-mocks.js",
 
             "src/client/app/app.module.js",
             "src/client/app/**/*.js",
