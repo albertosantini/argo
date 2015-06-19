@@ -32,11 +32,11 @@
         "start": "node src/server/app.js"
     },
     "devDependencies": {
-        "eslint-plugin-angular": "0.0.10",
+        "eslint-plugin-angular": "0.0.11",
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~15.0.0",
-        "grunt-karma": "~0.11.0",
+        "grunt-karma": "~0.11.1",
         "mocha": "~2.2.5",
         "chai": "~3.0.0",
         "karma": "~0.12.36",
