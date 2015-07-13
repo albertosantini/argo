@@ -1,3 +1,11 @@
+2.1.0 / 2015-07-13
+==================
+
+* Added pips info to plugin activation.
+* Updated AngularJS 1.4.2.
+* Updated Material 0.10.1-rc1.
+* Updated other deps.
+
 2.0.1 / 2015-06-01
 ==================
 
@@ -22,7 +30,7 @@
 ==================
 
 * Removed screenshot from README (see the site).
-* Update material 0.9.0.
+* Updated material 0.9.0.
 * Updated ui router 0.2.14.
 * Added specs.
 * Added a shadow below the toolbar.
