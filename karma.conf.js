@@ -52,5 +52,5 @@ module.exports = function (config) {
         autoWatch: true,
 
         singleRun: false
-  });
+    });
 };
