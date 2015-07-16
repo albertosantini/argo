@@ -2,6 +2,7 @@ env:
     node: true
 
 rules:
+    array-bracket-spacing: [2, "never"]
     brace-style: [2, "1tbs"]
     comma-style: [2, "last"]
     default-case: 2
@@ -15,12 +16,11 @@ rules:
     no-plusplus: 2
     no-undefined: 2
     no-use-before-define:  [2, "nofunc"]
+    object-curly-spacing: [2, "never"]
     radix: 2
     space-before-function-paren: [2, {"anonymous": "always", "named": "never"}]
     space-after-keywords: [2, "always"]
     space-before-blocks: 2
-    space-in-brackets: [2, "never"]
     space-in-parens: [2, "never"]
-    spaced-line-comment: [2, "always", { exceptions: ["-"]}]
     strict: [2, "global"]
     wrap-iife: 2
