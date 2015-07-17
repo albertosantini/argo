@@ -9,7 +9,6 @@ module.exports = function (grunt) {
             src: [
                 "Gruntfile.js",
                 "karma.conf.js",
-                "labs/**/*.js",
                 "src/**/*.js"
             ]
         },

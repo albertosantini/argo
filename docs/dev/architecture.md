@@ -19,19 +19,6 @@ structure.
 
 The other folders contain the implementation of each feature.
 
-`labs` folder contains experimental source code.
-
-In `labs/lib` folder there are a few scripts, wrapping [OANDA Rest APIs][], as
-proof-of-concept of API integration. A few examples of dummy trading strategies
-are contained in `lib/z-*` files.
-
-`labs/R` folder is a sort of double-check, reading dump files, to verify trading
-strategies with [R][] framework. Argo may integrate R statistical framework
-using [rio][].
-
-`labs/dump` folder contains a few dumps about forex sessions, used in R and js
-scripts.
-
 [Node.js]: http://nodejs.org/
 [AngularJS]: https://angularjs.org/
 [Material Design]: https://material.angularjs.org/
