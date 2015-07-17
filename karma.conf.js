@@ -22,15 +22,7 @@ module.exports = function (config) {
             "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-mocks.js",
 
             "src/client/app/app.module.js",
-            "src/client/app/app.routes.js",
-            "src/client/app/services/session.service.js",
-            "src/client/app/account/accounts.service.js",
-            "src/client/app/quotes/quotes.service.js",
-            "src/client/app/trades/trades.service.js",
-            "src/client/app/orders/orders.service.js",
-            "src/client/app/positions/positions.service.js",
-            "src/client/app/exposure/exposure.js",
-            "src/client/app/activity/activity.service.js",
+            "src/client/app/**/*.js",
 
             "src/client/test/**/*.spec.js"
         ],
