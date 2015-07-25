@@ -3,8 +3,8 @@ env:
 
 rules:
     angular/ng_controller_name:
-      - 2
-      - "/[A-Z].*$/"
+        - 2
+        - "/[A-Z].*$/"
 
 globals:
     angular: false
@@ -12,4 +12,4 @@ globals:
     techan: false
 
 plugins:
-  - angular
+    - angular
