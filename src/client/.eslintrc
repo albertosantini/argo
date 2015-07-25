@@ -5,8 +5,6 @@ rules:
     angular/ng_controller_name:
       - 2
       - "/[A-Z].*$/"
-    angular/ng_on_watch:
-      - 0
 
 globals:
     angular: false
