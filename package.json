@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "eslint": "0.24.1",
-        "eslint-plugin-angular": "0.1.2",
+        "eslint-plugin-angular": "0.2.0",
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~16.0.0",
