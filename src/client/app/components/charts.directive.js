@@ -271,6 +271,7 @@
                         .attr("transform", "rotate(-90)")
                         .attr("y", 6)
                         .attr("dy", ".71em")
+                        .style("font-weight", "bold")
                         .style("text-anchor", "end")
                         .text("Price (" +
                             myInstrument + " / " + myGranularity + ")");
