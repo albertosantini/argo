@@ -9,10 +9,9 @@
                         "quotesService", "activityService",
                         "tradesService", "ordersService", "accountsService",
                         "pluginsService"];
-    function streamService($http, $timeout, ngSocket,
-                        quotesService, activityService,
-                        tradesService, ordersService, accountsService,
-                        pluginsService) {
+    /*eslint-disable max-len */
+    function streamService($http, $timeout, ngSocket, quotesService, activityService, tradesService, ordersService, accountsService, pluginsService) {
+    /*eslint-enable */
         var service = {
             startStream: startStream
         };

@@ -7,8 +7,9 @@
 
     config.$inject = ["$httpProvider", "$locationProvider",
                     "localStorageServiceProvider"];
-    function config($httpProvider, $locationProvider,
-                    localStorageServiceProvider) {
+    /*eslint-disable max-len */
+    function config($httpProvider, $locationProvider, localStorageServiceProvider) {
+   /*eslint-enable */
         var interceptors = $httpProvider.interceptors;
 
         interceptors.push(["$q", "$rootScope", function ($q, $rootScope) {

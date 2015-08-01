@@ -8,21 +8,21 @@
     Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
                     "accountsService", "sessionService", "quotesService",
                     "streamService", "localStorageService"];
-    function Header($mdDialog, $mdBottomSheet, toastService,
-                    accountsService, sessionService, quotesService,
-                    streamService, localStorageService) {
+    /*eslint-disable max-len */
+    function Header($mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService, localStorageService) {
+    /*eslint-enable */
         var vm = this,
             instrs = localStorageService.get("instruments") || {
-               "EUR_USD": true,
-               "USD_JPY": true,
-               "GBP_USD": true,
-               "EUR_GBP": true,
-               "USD_CHF": true,
-               "EUR_JPY": true,
-               "EUR_CHF": true,
-               "USD_CAD": true,
-               "AUD_USD": true,
-               "GBP_JPY": true
+                "EUR_USD": true,
+                "USD_JPY": true,
+                "GBP_USD": true,
+                "EUR_GBP": true,
+                "USD_CHF": true,
+                "EUR_JPY": true,
+                "EUR_CHF": true,
+                "USD_CAD": true,
+                "AUD_USD": true,
+                "GBP_JPY": true
             };
 
         vm.openTokenDialog = openTokenDialog;

@@ -44,7 +44,7 @@ function enable(name, config, callback) {
 
     masterNode.tell(event, name, config, function (err) {
         if (!err) {
-            callback();
+            return callback();
         }
     });
 }
@@ -54,7 +54,7 @@ function disable(name, callback) {
 
     masterNode.tell(event, name, function (err) {
         if (!err) {
-            callback();
+            return callback();
         }
     });
 }
@@ -80,7 +80,7 @@ function getPlugins(callback) {
 
     async.series(tellSeries, function (err, res) {
         if (!err) {
-            callback(err, res);
+            return callback(err, res);
         }
     });
 }
