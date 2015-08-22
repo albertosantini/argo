@@ -8,8 +8,8 @@
     chartsService.$inject = ["$http", "$q", "sessionService"];
     function chartsService($http, $q, sessionService) {
         var service = {
-                getHistQuotes: getHistQuotes
-            };
+            getHistQuotes: getHistQuotes
+        };
 
         return service;
 
