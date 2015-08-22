@@ -1,3 +1,12 @@
+2.2.0 / 2015-08-22
+==================
+
+* Added bold style to price text in chart.
+* Removed labs folder (see argo-trading plugins in npmjs site).
+* Updated AngularJS 1.4.4, Material 0.10.1.
+* Updated other deps.
+* Fixed linter errors.
+
 2.1.1 / 2015-07-13
 ==================
 
