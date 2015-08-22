@@ -9,17 +9,17 @@ module.exports = function (config) {
 
         /*eslint-disable max-len */
         files: [
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-aria.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js",
             "https://cdn.rawgit.com/angular-ui/ui-router/0.2.15/release/angular-ui-router.min.js",
-            "https://cdn.rawgit.com/angular/bower-material/v0.10.1-rc5-master-69385ad/angular-material.min.js",
+            "https://cdn.rawgit.com/angular/bower-material/v0.10.1/angular-material.min.js",
             "https://cdn.rawgit.com/angular/ngSocket/master/dist/ngSocket.js",
             "https://cdn.rawgit.com/grevory/angular-local-storage/master/dist/angular-local-storage.min.js",
             "https://cdn.rawgit.com/mbostock/d3/master/d3.min.js",
             "https://cdn.rawgit.com/andredumas/techan.js/master/dist/techan.min.js",
 
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-mocks.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-mocks.js",
 
             "src/client/app/app.module.js",
             "src/client/app/**/*.js",
