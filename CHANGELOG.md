@@ -1,3 +1,8 @@
+2.2.1 / 2015-08-23
+==================
+
+* Fixed instrument and granularity select boxes in order dialog.
+
 2.2.0 / 2015-08-22
 ==================
 
