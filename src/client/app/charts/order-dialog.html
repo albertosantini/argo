@@ -16,13 +16,15 @@
                       <md-radio-button value="sell">Sell</md-radio-button>
                 </md-radio-group>
 
-                <md-select ng-model="vm.selectedInstrument" placeholder="Market"
-                    ng-change="vm.changeMarket(vm.selectedInstrument)"
-                    layout layout-align="center center">
-                    <md-option ng-value="instrument" ng-repeat="instrument in vm.instruments">
-                        {{ instrument }}
-                    </md-option>
-                </md-select>
+                <md-input-container layout-align="space-between center">
+                    <md-select ng-model="vm.selectedInstrument" placeholder="Market"
+                        ng-change="vm.changeMarket(vm.selectedInstrument)"
+                        layout layout-align="center center">
+                        <md-option ng-value="instrument" ng-repeat="instrument in vm.instruments">
+                            {{ instrument }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
 
                 <md-input-container layout layout-align="center center">
                     <label flex="10">Units</label>
@@ -35,12 +37,14 @@
                         step="{{ vm.step }}" aria-label="lower" aria-controls="quote-slider">
                 </div>
 
-                <md-select ng-show="vm.type == 'limit'" ng-model="vm.selectedExpire" placeholder="Expires"
-                    layout layout-align="center center">
-                    <md-option ng-value="expire.value" ng-repeat="expire in vm.expires">
-                        {{ expire.label }}
-                    </md-option>
-                </md-select>
+                <md-input-container layout-align="space-between center">
+                    <md-select ng-show="vm.type == 'limit'"
+                        ng-model="vm.selectedExpire" placeholder="Expires">
+                        <md-option ng-value="expire.value" ng-repeat="expire in vm.expires">
+                            {{ expire.label }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
 
             </div>
             <div flex="45" layout-margin>
