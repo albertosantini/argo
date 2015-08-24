@@ -25,6 +25,7 @@
         "express": "~4.13.3",
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
+        "limiter": "~1.0.5",
         "request": "~2.61.0"
     },
     "scripts": {

@@ -18,10 +18,20 @@ exports.engagePlugins = engagePlugins;
 
 var util = require("util"),
     request = require("request"),
+    RateLimiter = require("limiter").RateLimiter,
     config = require("./config"),
     stream = require("./stream"),
     plugin = require("../plugin/plugin");
 
+var limiter = new RateLimiter(1, 500); // at most 1 request every 500ms
+
+function throttledRequest() {
+    var requestArgs = arguments;
+
+    limiter.removeTokens(1, function () {
+        request.apply(null, requestArgs);
+    });
+}
 
 var credentials = {};
 
@@ -42,7 +52,7 @@ function getAccounts(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts",
         "headers": {
             "Authorization": "Bearer " + req.body.token
@@ -61,7 +71,7 @@ function getAccount(req, response) {
     credentials.token = req.body.token;
     credentials.accountId = req.body.accountId;
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId,
         "headers": {
@@ -77,7 +87,7 @@ function getInstruments(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/instruments",
         "qs": {
             accountId: req.body.accountId
@@ -101,7 +111,7 @@ function getCandles(req, response) {
     environment = req.body.environment || credentials.environment;
     token = req.body.token || credentials.token;
 
-    request({
+    throttledRequest({
         "url": config.getUrl(environment, "api") + "/v1/candles",
         "qs": {
             instrument: req.body.instrument,
@@ -149,7 +159,7 @@ function getTrades(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/trades",
         "headers": {
@@ -165,7 +175,7 @@ function getOrders(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/orders",
         "headers": {
@@ -181,7 +191,7 @@ function getPositions(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/positions",
         "headers": {
@@ -197,7 +207,7 @@ function getTransactions(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/transactions",
         "headers": {
@@ -213,7 +223,7 @@ function getCalendar(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "url": config.getUrl(req.body.environment, "api") + "/labs/v1/calendar",
         qs: {
             instrument: req.body.instrument || "EUR_USD",
@@ -240,7 +250,7 @@ function putOrder(req, response) {
     token = req.body.token || credentials.token;
     accountId = req.body.accountId || credentials.accountId;
 
-    request({
+    throttledRequest({
         "method": "POST",
         "url": config.getUrl(environment, "api") + "/v1/accounts/" +
             accountId + "/orders",
@@ -270,7 +280,7 @@ function closeOrder(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "method": "DELETE",
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/orders/" + req.body.id,
@@ -287,7 +297,7 @@ function closeTrade(req, response) {
         return response.sendStatus(400);
     }
 
-    request({
+    throttledRequest({
         "method": "DELETE",
         "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
             req.body.accountId + "/trades/" + req.body.id,

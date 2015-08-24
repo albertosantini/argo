@@ -5,12 +5,12 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["$http", "$timeout", "ngSocket",
+    streamService.$inject = ["$http", "ngSocket",
                         "quotesService", "activityService",
                         "tradesService", "ordersService", "accountsService",
                         "pluginsService"];
     /*eslint-disable max-len */
-    function streamService($http, $timeout, ngSocket, quotesService, activityService, tradesService, ordersService, accountsService, pluginsService) {
+    function streamService($http, ngSocket, quotesService, activityService, tradesService, ordersService, accountsService, pluginsService) {
     /*eslint-enable */
         var service = {
             startStream: startStream
@@ -54,15 +54,9 @@
                     if (transaction) {
                         activityService.addActivity(transaction);
 
-                        $timeout(function () {
-                            tradesService.refresh();
-                            $timeout(function () {
-                                ordersService.refresh();
-                                $timeout(function () {
-                                    accountsService.refresh();
-                                }, 600);
-                            }, 400);
-                        }, 200);
+                        tradesService.refresh();
+                        ordersService.refresh();
+                        accountsService.refresh();
                     }
 
                     if (refreshPlugins) {
