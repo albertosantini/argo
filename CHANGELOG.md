@@ -1,3 +1,9 @@
+2.3.0 / 2015-08-24
+==================
+
+* Added throttling (1 req / 500ms) to OANDA api requests.
+* Updated eslint-plugin-angular 0.7.0.
+
 2.2.1 / 2015-08-23
 ==================
 
