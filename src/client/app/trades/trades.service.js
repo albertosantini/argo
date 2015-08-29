@@ -51,8 +51,8 @@
                         deferred.resolve(order.data);
                     }
                 }, function (err) {
-                    deferred.reject(err.data);
-                });
+                        deferred.reject(err.data);
+                    });
             });
 
             return deferred.promise;

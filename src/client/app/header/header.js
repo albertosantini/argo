@@ -80,8 +80,8 @@
                         });
                     });
                 }, function (err) {
-                    toastService.show(err);
-                });
+                        toastService.show(err);
+                    });
             });
         }
 
