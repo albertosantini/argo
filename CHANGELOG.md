@@ -1,5 +1,5 @@
 <a name="2.4.0"></a>
-# [2.4.0](https://github.com/albertosantini/argo/compare/2.3.0...v2.4.0) (2015-09-05)
+# [2.4.0](https://github.com/albertosantini/argo/compare/2.3.0...2.4.0) (2015-09-05)
 
 
 ### Bug Fixes
