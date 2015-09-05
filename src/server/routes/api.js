@@ -10,6 +10,7 @@ exports.getOrders = getOrders;
 exports.getPositions = getPositions;
 exports.getTransactions = getTransactions;
 exports.getCalendar = getCalendar;
+exports.getOrderbook = getOrderbook;
 exports.putOrder = putOrder;
 exports.closeOrder = closeOrder;
 exports.closeTrade = closeTrade;
@@ -234,6 +235,32 @@ function getCalendar(req, response) {
         }
     }, function (err, res, body) {
         processApi("getCalendar", err, body, response);
+    });
+}
+
+function getOrderbook(req, response) {
+    var environment,
+        token;
+
+    if (!req.body) {
+        return response.sendStatus(400);
+    }
+
+    environment = req.body.environment || credentials.environment;
+    token = req.body.token || credentials.token;
+
+    throttledRequest({
+        "url": config.getUrl(environment, "api")
+            + "/labs/v1/orderbook_data",
+        qs: {
+            instrument: req.body.instrument || "EUR_USD",
+            period: req.body.period || 3600
+        },
+        "headers": {
+            "Authorization": "Bearer " + token
+        }
+    }, function (err, res, body) {
+        processApi("getOrderbook", err, body, response);
     });
 }
 

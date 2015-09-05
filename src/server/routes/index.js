@@ -23,6 +23,7 @@ router.post("/orders", jsonParser, api.getOrders);
 router.post("/positions", jsonParser, api.getPositions);
 router.post("/transactions", jsonParser, api.getTransactions);
 router.post("/calendar", jsonParser, api.getCalendar);
+router.post("/orderbook", jsonParser, api.getOrderbook);
 router.post("/order", jsonParser, api.putOrder);
 router.post("/closeorder", jsonParser, api.closeOrder);
 router.post("/closetrade", jsonParser, api.closeTrade);
