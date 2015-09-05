@@ -1,3 +1,13 @@
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/albertosantini/argo/compare/2.4.0...v2.4.1) (2015-09-05)
+
+
+### Bug Fixes
+
+* **CHANGELOG:** fix manually tag mismatch ([e9e5199](https://github.com/albertosantini/argo/commit/e9e5199))
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/albertosantini/argo/compare/2.3.0...2.4.0) (2015-09-05)
 
