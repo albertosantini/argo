@@ -22,12 +22,24 @@ module.exports = function (grunt) {
                 configFile: "karma.conf.js",
                 singleRun: true
             }
+        },
+
+        conventionalChangelog: {
+            options: {
+                changelogOpts: {
+                    preset: "angular"
+                }
+            },
+            release: {
+                src: "CHANGELOG.md"
+            }
         }
 
     });
 
     grunt.loadNpmTasks("grunt-eslint");
     grunt.loadNpmTasks("grunt-karma");
+    grunt.loadNpmTasks("grunt-conventional-changelog");
 
     grunt.registerTask("default", [
         "eslint",
