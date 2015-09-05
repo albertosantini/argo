@@ -11,7 +11,7 @@
 4. Bump version in `package.json`
 5. `grunt conventionalChangelog`
 6. Commit `package.json` and `CHANGELOG.md` files
-7. Tag
+7. Tag vX.Y.Z (don't forget `v` prefix)
 8. Push
 9. Publish
 
