@@ -1,3 +1,13 @@
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/albertosantini/argo/compare/v2.4.1...v2.5.0) (2015-09-05)
+
+
+### Features
+
+* **api:** add orderbook api ([cf41662](https://github.com/albertosantini/argo/commit/cf41662))
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/albertosantini/argo/compare/2.4.0...v2.4.1) (2015-09-05)
 
