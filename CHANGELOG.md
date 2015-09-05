@@ -1,3 +1,17 @@
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/albertosantini/argo/compare/2.3.0...v2.4.0) (2015-09-05)
+
+
+### Bug Fixes
+
+* **build:** fix grunt-conventional-changelog release ([da67af2](https://github.com/albertosantini/argo/commit/da67af2))
+
+### Features
+
+* **build:** add conventional-changelog ([9b042f4](https://github.com/albertosantini/argo/commit/9b042f4))
+
+
+
 2.3.0 / 2015-08-24
 ==================
 
