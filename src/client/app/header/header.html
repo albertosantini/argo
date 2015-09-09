@@ -19,15 +19,16 @@
             Please, insert the access token.
         </div>
 
-        <md-button ng-show="vm.accountId" class="md-raised"
+        <md-button ng-show="vm.accountId" class="md-raised md-accent"
             ng-click="vm.openSettingsDialog($event)">
             Settings
         </md-button>
 
-        <md-button class="md-raised" ng-click="vm.openTokenDialog($event)">
+        <md-button class="md-raised md-accent" ng-click="vm.openTokenDialog($event)">
             Token
         </md-button>
     </div>
+
 
     <div layout="row" layout-align="space-around center" flex="5">
         <md-progress-circular class="md-accent" ng-if="isLoadingView"
