@@ -9,8 +9,7 @@ through the powerful [API][] to develop trading strategies.
 
 ## Getting Started
 
-You may give a try with the following steps ([Node.js](https://nodejs.org/) or [io.js](https://iojs.org/)
-required):
+You may give a try with the following steps ([Node.js](https://nodejs.org/) required):
 
 ```
 $ npm install -g argo-trading
