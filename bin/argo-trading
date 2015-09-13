@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
+// Also you can start the app executing "npm start", after cloning the repo.
+
 require("../src/server/app");
