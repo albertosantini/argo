@@ -1,3 +1,21 @@
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/albertosantini/argo/compare/v2.5.0...v2.6.0) (2015-09-13)
+
+
+### Bug Fixes
+
+* **Material:** fix header buttons and progress ([7c6b94c](https://github.com/albertosantini/argo/commit/7c6b94c))
+* **start:** fix again start script ([04b89ef](https://github.com/albertosantini/argo/commit/04b89ef))
+* **start:** fix again start script after adding git attributes ([50695e8](https://github.com/albertosantini/argo/commit/50695e8))
+* **start:** fix again start script with LF eol ([ef285fb](https://github.com/albertosantini/argo/commit/ef285fb))
+* **start:** fix start script ([dbda41b](https://github.com/albertosantini/argo/commit/dbda41b))
+
+### Features
+
+* **deps:** update Material 0.11.0 ([ebb8d91](https://github.com/albertosantini/argo/commit/ebb8d91))
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/albertosantini/argo/compare/v2.4.1...v2.5.0) (2015-09-05)
 
