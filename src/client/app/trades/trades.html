@@ -1,14 +1,14 @@
 <div ng-show="vm.trades.length" layout="row">
-    <b flex="5">Type</b>
-    <b flex="10">Ticket</b>
-    <b flex="10">Market</b>
-    <b flex="10">Units</b>
-    <b flex="10">S/L</b>
-    <b flex="10">T/P</b>
-    <b flex="10">T/S</b>
-    <b flex="10">Price</b>
-    <b flex="10">Current</b>
-    <b flex="5">Profit (PIPS)</b>
+    <b flex="5" flex-sm="5">Type</b>
+    <b flex="10" flex-sm="30">Ticket</b>
+    <b flex="10" flex-sm="20">Market</b>
+    <b flex="10" flex-sm="10">Units</b>
+    <b flex="10" hide-sm>S/L</b>
+    <b flex="10" hide-sm>T/P</b>
+    <b flex="10" hide-sm>T/S</b>
+    <b flex="10" hide-sm>Price</b>
+    <b flex="10" flex-sm="20">Current</b>
+    <b flex="5" flex-sm="15">Profit (PIPS)</b>
 </div>
 
 <md-content>
@@ -16,16 +16,16 @@
     <md-card ng-repeat="trade in vm.trades">
 
         <div layout="row">
-            <span flex="5">{{ trade.side }}</span>
-            <a flex="10" href="" ng-click="vm.closeTrade($event, trade.id)">{{ trade.id }}</a>
-            <span flex="10">{{ trade.instrument }}</span>
-            <span flex="10">{{ trade.units | number }}</span>
-            <span flex="10">{{ trade.stopLoss }}</span>
-            <span flex="10">{{ trade.takeProfit }}</span>
-            <span flex="10">{{ trade.trailingStop }}</span>
-            <span flex="10">{{ trade.price }}</span>
-            <span flex="10">{{ trade.current }}</span>
-            <span flex="5" argo-dual-color="trade.profitPips">{{ trade.profitPips | number:1}}</span>
+            <span flex="5" flex-sm="5">{{ trade.side }}</span>
+            <a flex="10" flex-sm="30" href="" ng-click="vm.closeTrade($event, trade.id)">{{ trade.id }}</a>
+            <span flex="10" flex-sm="20">{{ trade.instrument }}</span>
+            <span flex="10" flex-sm="10">{{ trade.units | number }}</span>
+            <span flex="10" hide-sm>{{ trade.stopLoss }}</span>
+            <span flex="10" hide-sm>{{ trade.takeProfit }}</span>
+            <span flex="10" hide-sm>{{ trade.trailingStop }}</span>
+            <span flex="10" hide-sm>{{ trade.price }}</span>
+            <span flex="10" flex-sm="20">{{ trade.current }}</span>
+            <span flex="5" flex-sm="15" argo-dual-color="trade.profitPips">{{ trade.profitPips | number:1}}</span>
         </div>
 
     </md-card>

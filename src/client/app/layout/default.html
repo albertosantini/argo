@@ -82,12 +82,12 @@
 
 </ng-switch>
 
-<div layout="row" layout-padding>
-    <div layout="column" flex="25">
+<div layout="row" layout-sm="column" layout-md="column" layout-padding>
+    <div layout="column" flex-gt-md="25" flex-sm="95">
         <div ui-view="account"></div>
         <div ui-view="quotes"></div>
     </div>
-    <div layout="column" flex="75">
+    <div layout="column" flex-gt-md="75" hide-sm>
         <div ui-view="charts"></div>
     </div>
 </div>
