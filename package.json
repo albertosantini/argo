@@ -26,7 +26,7 @@
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
         "limiter": "~1.0.5",
-        "request": "~2.61.0"
+        "request": "~2.62.0"
     },
     "scripts": {
         "test": "grunt",
@@ -34,7 +34,7 @@
     },
     "devDependencies": {
         "eslint": "~1.4.1",
-        "eslint-plugin-angular": "~0.11.0",
+        "eslint-plugin-angular": "~0.12.0",
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-conventional-changelog": "~4.1.0",
