@@ -26,7 +26,7 @@
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
         "limiter": "~1.0.5",
-        "request": "~2.62.0"
+        "request": "~2.63.0"
     },
     "scripts": {
         "test": "grunt",
@@ -40,9 +40,9 @@
         "grunt-conventional-changelog": "~4.1.0",
         "grunt-eslint": "~17.1.0",
         "grunt-karma": "~0.12.1",
-        "mocha": "~2.3.2",
-        "chai": "~3.2.0",
-        "karma": "~0.13.9",
+        "mocha": "~2.3.3",
+        "chai": "~3.3.0",
+        "karma": "~0.13.10",
         "karma-mocha": "~0.2.0",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~0.2.1",
