@@ -26,7 +26,7 @@
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
         "limiter": "~1.0.5",
-        "request": "~2.63.0"
+        "request": "~2.64.0"
     },
     "scripts": {
         "test": "grunt",
