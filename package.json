@@ -33,7 +33,7 @@
         "start": "node src/server/app.js"
     },
     "devDependencies": {
-        "eslint": "~1.7.2",
+        "eslint": "~1.7.3",
         "eslint-config-eslint": "~1.0.1",
         "eslint-plugin-angular": "~0.12.0",
         "grunt": "~0.4.5",
@@ -43,7 +43,7 @@
         "grunt-karma": "~0.12.1",
         "mocha": "~2.3.3",
         "chai": "~3.4.0",
-        "karma": "~0.13.11",
+        "karma": "~0.13.12",
         "karma-mocha": "~0.2.0",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~0.2.1",
