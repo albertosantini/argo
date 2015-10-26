@@ -20,7 +20,7 @@
         "node": "~0.12.x"
     },
     "dependencies": {
-        "async": "~1.4.2",
+        "async": "~1.5.0",
         "body-parser": "~1.14.1",
         "express": "~4.13.3",
         "faye-websocket": "~0.10.0",
@@ -35,7 +35,7 @@
     "devDependencies": {
         "eslint": "~1.7.3",
         "eslint-config-eslint": "~1.0.1",
-        "eslint-plugin-angular": "~0.12.0",
+        "eslint-plugin-angular": "~0.13.0",
         "grunt": "~0.4.5",
         "grunt-cli": "~0.1.13",
         "grunt-conventional-changelog": "~5.0.0",
