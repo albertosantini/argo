@@ -1,6 +1,6 @@
 <div ui-view="header"></div>
 
-<md-tabs class="md-accent" md-dynamic-height md-center-tabs md-selected="default.tabSelectedIndex">
+<md-tabs class="md-accent" md-dynamic-height md-center-tabs md-selected="vm.tabSelectedIndex">
     <md-tab id="tab1" aria-controls="tab1-content">Trades</md-tab>
     <md-tab id="tab2" aria-controls="tab2-content">Orders</md-tab>
     <md-tab id="tab3" aria-controls="tab3-content">Positions</md-tab>
@@ -9,13 +9,13 @@
     <md-tab id="tab6" aria-controls="tab6-content">News</md-tab>
     <md-tab id="tab7" aria-controls="tab7-content">Plugins</md-tab>
 </md-tabs>
-<ng-switch on="default.tabSelectedIndex" class="tabpanel-container" layout-margin>
+<ng-switch on="vm.tabSelectedIndex" class="tabpanel-container" layout-margin>
     <div role="tabpanel"
          id="tab1-content"
          aria-labelledby="tab1"
          ng-switch-when="0"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="trades"></div>
     </div>
@@ -24,8 +24,8 @@
          id="tab2-content"
          aria-labelledby="tab2"
          ng-switch-when="1"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="orders"></div>
     </div>
@@ -34,8 +34,8 @@
          id="tab3-content"
          aria-labelledby="tab3"
          ng-switch-when="2"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="positions"></div>
     </div>
@@ -44,8 +44,8 @@
          id="tab4-content"
          aria-labelledby="tab4"
          ng-switch-when="3"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="exposure"></div>
     </div>
@@ -54,8 +54,8 @@
          id="tab5-content"
          aria-labelledby="tab5"
          ng-switch-when="4"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
          <div ui-view="activity"></div>
     </div>
@@ -64,8 +64,8 @@
          id="tab6-content"
          aria-labelledby="tab6"
          ng-switch-when="5"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="news"></div>
     </div>
@@ -74,8 +74,8 @@
          id="tab7-content"
          aria-labelledby="tab7"
          ng-switch-when="6"
-         md-swipe-left="next()"
-         md-swipe-right="previous()">
+         md-swipe-left="vm.next()"
+         md-swipe-right="vm.previous()">
 
         <div ui-view="plugins"></div>
     </div>

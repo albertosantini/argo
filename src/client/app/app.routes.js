@@ -14,7 +14,7 @@
                 url: "/",
                 templateUrl: "app/layout/default.html",
                 controller: "Default",
-                controllerAs: "default"
+                controllerAs: "vm"
             })
             .state("default.subs", {
                 views: {
