@@ -33,7 +33,7 @@
         "start": "node src/server/app.js"
     },
     "devDependencies": {
-        "eslint": "~1.7.3",
+        "eslint": "~1.8.0",
         "eslint-config-eslint": "~1.0.1",
         "eslint-plugin-angular": "~0.13.0",
         "grunt": "~0.4.5",
