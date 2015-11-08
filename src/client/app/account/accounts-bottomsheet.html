@@ -1,13 +1,13 @@
-<md-bottom-sheet class="md-list md-has-header">
+<md-bottom-sheet class="md-list md-has-header" ng-cloak>
     <md-subheader>Accounts list</md-subheader>
     <md-list>
-        <md-item ng-repeat="account in vm.accounts">
+        <md-list-item ng-repeat="account in vm.accounts">
             <md-button aria-label="{{account.accountName}}"
                 ng-click="vm.onAccountClick($index)">
                 <span>{{ account.accountName }}</span>
                 <span>{{ account.accountId }}</span>
                 <span>{{ account.accountCurrency }}</span>
             </md-button>
-        </md-item>
+        </md-list-item>
     </md-list>
 </md-bottom-sheet>
