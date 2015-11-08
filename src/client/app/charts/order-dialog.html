@@ -16,10 +16,9 @@
                       <md-radio-button value="sell">Sell</md-radio-button>
                 </md-radio-group>
 
-                <md-input-container layout-align="space-between center">
+                <md-input-container layout layout-align="center center">
                     <md-select ng-model="vm.selectedInstrument" placeholder="Market"
-                        ng-change="vm.changeMarket(vm.selectedInstrument)"
-                        layout layout-align="center center">
+                        ng-change="vm.changeMarket(vm.selectedInstrument)">
                         <md-option ng-value="instrument" ng-repeat="instrument in vm.instruments">
                             {{ instrument }}
                         </md-option>
@@ -37,7 +36,7 @@
                         step="{{ vm.step }}" aria-label="lower" aria-controls="quote-slider">
                 </div>
 
-                <md-input-container layout-align="space-between center">
+                <md-input-container layout layout-align="center center">
                     <md-select ng-show="vm.type == 'limit'"
                         ng-model="vm.selectedExpire" placeholder="Expires">
                         <md-option ng-value="expire.value" ng-repeat="expire in vm.expires">
