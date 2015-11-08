@@ -1,13 +1,13 @@
 <md-dialog aria-label="Settings Dialog">
-    <md-content>
+    <md-dialog-content>
         <md-subheader class="md-sticky-no-effect">Settings Dialog</md-subheader>
 
         <span ng-repeat="(instrument, value) in vm.instruments">
             <md-switch ng-model="vm.instruments[instrument]" aria-label="instrument">{{ instrument }}</md-switch>
         </span>
-    </md-content>
+    </md-dialog-content>
 
-    <div class="md-actions" layout="row">
+    <md-dialog-actions layout="row">
         <span flex></span>
         <md-button ng-click="vm.cancel()">
             Cancel
@@ -15,5 +15,5 @@
         <md-button ng-click="vm.answer(vm.instruments)" class="md-primary">
             Ok
         </md-button>
-    </div>
+    </md-dialog-actions>
 </md-dialog>

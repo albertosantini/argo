@@ -1,5 +1,5 @@
 <md-dialog aria-label="Token Dialog">
-    <md-content layout-margin layout-padding>
+    <md-dialog-content layout-margin layout-padding>
         <md-subheader class="md-sticky-no-effect">Token Dialog</md-subheader>
 
         <md-input-container>
@@ -11,9 +11,9 @@
             <md-radio-button value="practice">Practice</md-radio-button>
             <md-radio-button value="live">Live</md-radio-button>
         </md-radio-group>
-    </md-content>
+    </md-dialog-content>
 
-    <div class="md-actions" layout="row">
+    <md-dialog-actions layout="row">
         <span flex></span>
         <md-button ng-click="vm.answer()">
             Reset
@@ -21,5 +21,5 @@
         <md-button ng-click="vm.answer({'environment': environment, 'token': token})" class="md-primary">
             Ok
         </md-button>
-    </div>
+    </md-dialog-actions>
 </md-dialog>

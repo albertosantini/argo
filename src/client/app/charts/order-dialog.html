@@ -1,6 +1,6 @@
 <md-dialog aria-label="Order Dialog">
 
-    <md-content layout-padding>
+    <md-dialog-content layout-padding>
         <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
 
         <div layout="row">
@@ -95,9 +95,9 @@
             </div>
         </div>
 
-    </md-content>
+    </md-dialog-content>
 
-    <div class="md-actions" layout="row">
+    <md-dialog-actions layout="row">
         <span flex></span>
         <md-button ng-click="vm.answer('submit')" class="md-primary">
             Submit
@@ -105,5 +105,5 @@
         <md-button ng-click="vm.answer('close')">
             Close
         </md-button>
-    </div>
+    </md-dialog-actions>
 </md-dialog>
