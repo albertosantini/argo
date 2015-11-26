@@ -20,7 +20,7 @@
 
         function closeOrder(event, id) {
             var confirm = $mdDialog.confirm()
-                  .content("Are you sure to close the order?")
+                  .textContent("Are you sure to close the order?")
                   .ariaLabel("Order closing confirmation")
                   .ok("Ok")
                   .cancel("Cancel")
