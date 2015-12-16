@@ -2,11 +2,6 @@ body {
     font-family: "Arimo", serif;
 }
 
-md-progress-circular {
-    height: 64px;
-    width: 64px;
-}
-
 .logo {
     height: 64px;
 }
