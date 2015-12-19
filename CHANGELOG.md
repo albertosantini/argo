@@ -1,3 +1,18 @@
+<a name="2.7.1"></a>
+## [2.7.1](https://github.com/albertosantini/argo/compare/v2.7.0...v2.7.1) (2015-12-19)
+
+
+### Bug Fixes
+
+* **CHANGELOG:** remove wrong 2.6.0 tag ([70f84b5](https://github.com/albertosantini/argo/commit/70f84b5))
+* **charts:** fix selects position if scrolled ([fcee311](https://github.com/albertosantini/argo/commit/fcee311))
+
+### Features
+
+* **deps:** Material 1.0.1 ([62d9357](https://github.com/albertosantini/argo/commit/62d9357))
+
+
+
 <a name="2.7.0"></a>
 # [2.7.0](https://github.com/albertosantini/argo/compare/v2.6.0...v2.7.0) (2015-12-17)
 
