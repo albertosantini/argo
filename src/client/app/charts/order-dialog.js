@@ -24,7 +24,6 @@
         vm.selectedInstrument = params.selectedInstrument;
         vm.changeMarket(vm.selectedInstrument);
         vm.expires = [
-            {label: "1 Week", value: 7 * 60 * 60 * 24 * 1000}, // first due to https://github.com/angular/material/issues/5435
             {label: "1 Hour", value: 60 * 60 * 1000},
             {label: "2 Hours", value: 2 * 60 * 60 * 1000},
             {label: "3 Hours", value: 3 * 60 * 60 * 1000},
@@ -36,6 +35,7 @@
             {label: "18 Hours", value: 18 * 60 * 60 * 1000},
             {label: "1 Day", value: 60 * 60 * 24 * 1000},
             {label: "2 Days", value: 2 * 60 * 60 * 24 * 1000},
+            {label: "1 Week", value: 7 * 60 * 60 * 24 * 1000},
             {label: "1 Month", value: 30 * 60 * 60 * 24 * 1000},
             {label: "2 Months", value: 60 * 60 * 60 * 24 * 1000},
             {label: "3 Months", value: 90 * 60 * 60 * 24 * 1000}

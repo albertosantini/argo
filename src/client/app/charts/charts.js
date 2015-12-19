@@ -15,7 +15,6 @@
         vm.selectedInstrument = "EUR_USD";
 
         vm.granularities = [
-            "M5", // first due to https://github.com/angular/material/issues/5435
             "S5",
             "S10",
             "S15",
@@ -24,6 +23,7 @@
             "M2",
             "M3",
             "M4",
+            "M5",
             "M10",
             "M15",
             "M30",

@@ -16,7 +16,7 @@
             <md-select ng-model="vm.selectedGranularity" aria-label="Granularity"
                 ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
                 <md-option ng-value="granularity"
-                    ng-selected="granularity == vm.selectedGranularity || $index == 0"
+                    ng-selected="granularity == vm.selectedGranularity"
                     ng-repeat="granularity in vm.granularities">
                     {{ granularity }}
                 </md-option>
