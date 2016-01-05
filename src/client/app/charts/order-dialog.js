@@ -50,7 +50,13 @@
 
         function changeMarket(instrument) {
             var price = quotesService.getQuotes()[instrument],
-                fixed = (pips[vm.selectedInstrument].match(/0/g) || []).length;
+                fixed;
+
+            if (!pips) {
+                return;
+            }
+
+            fixed = (pips[vm.selectedInstrument].match(/0/g) || []).length;
 
             vm.measure = "price";
             vm.step = parseFloat(pips[vm.selectedInstrument]);
