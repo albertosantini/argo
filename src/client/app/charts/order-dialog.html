@@ -4,7 +4,7 @@
         <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
 
         <div layout="row">
-            <div flex="45" layout-margin>
+            <div flex="45" layout="column" layout-margin>
 
                 <md-radio-group ng-model="vm.type" layout layout-align="space-between center">
                       <md-radio-button value="market">Market Order</md-radio-button>
@@ -46,7 +46,7 @@
                 </md-input-container>
 
             </div>
-            <div flex="45" layout-margin>
+            <div flex="45" layout="column" layout-margin>
 
                 <md-radio-group ng-model="vm.measure"
                     ng-change="vm.changeMeasure(vm.measure)"
