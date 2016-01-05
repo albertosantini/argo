@@ -49,18 +49,40 @@ function startStream(req, res) {
 }
 
 function getAccounts(req, response) {
+    var url;
+
     if (!req.body) {
         return response.sendStatus(400);
     }
 
-    throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts",
-        "headers": {
-            "Authorization": "Bearer " + req.body.token
-        }
-    }, function (err, res, body) {
-        processApi("getAccounts", err, body, response, "accounts");
-    });
+    url = config.getUrl(req.body.environment, "api") + "/v1/accounts";
+
+    if (req.body.environment === "sandbox") {
+        throttledRequest({
+            "method": "POST",
+            "url": url
+        }, function (err, res, body) {
+            body = JSON.parse(body);
+            if (!err && !body.code) {
+                response.json([{
+                    accountId: body.accountId
+                }]);
+            } else {
+                processApiError("getAccounts", err,
+                    body.code, body.message, response);
+            }
+        });
+    } else {
+        throttledRequest({
+            "url": url,
+            "headers": {
+                "Authorization": "Bearer " + req.body.token
+            }
+        }, function (err, res, body) {
+            processApi("getAccounts", err, body, response, "accounts");
+        });
+    }
+
 }
 
 function getAccount(req, response) {

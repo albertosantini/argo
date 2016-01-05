@@ -7,7 +7,7 @@
 
         <span hide-sm>Argo Interface for OANDA Trading Platform</span>
 
-        <div ng-show="vm.token">
+        <div ng-show="vm.token || vm.environment">
             Active environment: {{ vm.environment }}
         </div>
 
@@ -15,7 +15,7 @@
             Account Id: {{ vm.accountId }}
         </div>
 
-        <div ng-hide="vm.token">
+        <div ng-hide="vm.token || vm.environment === 'sandbox'">
             Please, insert the access token.
         </div>
 

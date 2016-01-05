@@ -9,6 +9,8 @@
     function TokenDialog($mdDialog) {
         var vm = this;
 
+        vm.environment = "practice";
+
         vm.hide = function () {
             $mdDialog.hide();
         };
