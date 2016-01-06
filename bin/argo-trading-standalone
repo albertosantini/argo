@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+"use strict";
+
+var shell = require("shelljs");
+
+shell.cd(__dirname);
+shell.cd("..");
+
+shell.exec("npm run electron");

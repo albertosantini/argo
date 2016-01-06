@@ -2,9 +2,10 @@
     "name": "argo-trading",
     "description": "HTML5 interface for the OANDA platform",
     "version": "2.7.1",
-    "main": "src/server/app.js",
+    "main": "./main.js",
     "bin": {
-        "argo-trading": "./bin/argo-trading"
+        "argo-trading": "./bin/argo-trading",
+        "argo-trading-standalone": "./bin/argo-trading-standalone"
     },
     "preferGlobal": true,
     "repository": "git@github.com:albertosantini/argo.git",
@@ -22,15 +23,18 @@
     "dependencies": {
         "async": "~1.5.1",
         "body-parser": "~1.14.2",
+        "electron-prebuilt": "~0.36.2",
         "express": "~4.13.3",
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
         "limiter": "~1.1.0",
-        "request": "~2.67.0"
+        "request": "~2.67.0",
+        "shelljs": "~0.5.3"
     },
     "scripts": {
         "test": "grunt",
-        "start": "node src/server/app.js"
+        "start": "node src/server/app.js",
+        "electron": "electron ."
     },
     "devDependencies": {
         "eslint": "~1.10.3",
