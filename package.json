@@ -43,7 +43,7 @@
         "grunt-karma": "~0.12.1",
         "mocha": "~2.3.4",
         "chai": "~3.4.1",
-        "karma": "~0.13.18",
+        "karma": "~0.13.19",
         "karma-mocha": "~0.2.1",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~0.2.3",
