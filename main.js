@@ -11,6 +11,7 @@ app.on("ready", function () {
     mainWindow = new BrowserWindow({
         frame: false,
         height: 800,
+        icon: "src/client/favicon.ico",
         width: 1400
     });
 
