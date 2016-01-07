@@ -1,3 +1,19 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/albertosantini/argo/compare/v2.7.1...v3.0.0) (2016-01-07)
+
+
+### Bug Fixes
+
+* **order dlg:** check when pips are undefined ([5e8c5ab](https://github.com/albertosantini/argo/commit/5e8c5ab))
+* **order dlg:** fix layout margin for order dialog ([9b1ae34](https://github.com/albertosantini/argo/commit/9b1ae34))
+
+### Features
+
+* **env:** add sandbox environment ([c270ebe](https://github.com/albertosantini/argo/commit/c270ebe))
+* **env:** add standalone app ([f54b06d](https://github.com/albertosantini/argo/commit/f54b06d))
+
+
+
 <a name="2.7.1"></a>
 ## [2.7.1](https://github.com/albertosantini/argo/compare/v2.7.0...v2.7.1) (2015-12-19)
 
