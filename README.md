@@ -4,23 +4,31 @@
 [![NGN Dependencies](https://david-dm.org/albertosantini/argo.png)](https://david-dm.org/albertosantini/argo)
 [![Build Status](https://travis-ci.org/albertosantini/argo.png)](https://travis-ci.org/albertosantini/argo)
 
-Argo is an open source trading platform, connecting directly with [OANDA][]
+**Argo** is an open source trading platform, connecting directly with [OANDA][]
 through the powerful [API][] to develop trading strategies.
 
-## Getting Started
+## Installation
 
-You may give a try with the following steps ([Node.js](https://nodejs.org/) required):
+After installing [Node.js](https://nodejs.org/) (required), you can install **Argo**.
 
 ```
 $ npm install -g argo-trading
-...
+```
 
+## Starting Web App
+
+```
 $ argo-trading
-...
 ```
 Eventually point your web brower to `http://localhost:8000`.
 
-Tested locally with Node.js 4.x, AngularJS 1.4.x and Material 1.x.
+## Starting Standalone App
+
+```
+$ argo-trading-standalone
+```
+
+Tested locally with Node.js 5.x, AngularJS 1.5.x and Material 1.x.
 
 ## [Basic features](docs/views)
 
