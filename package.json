@@ -23,7 +23,7 @@
     "dependencies": {
         "async": "~1.5.2",
         "body-parser": "~1.14.2",
-        "electron-prebuilt": "~0.36.3",
+        "electron-prebuilt": "~0.36.4",
         "express": "~4.13.3",
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
