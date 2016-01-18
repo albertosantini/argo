@@ -32,19 +32,18 @@
         "shelljs": "~0.5.3"
     },
     "scripts": {
-        "test": "grunt",
+        "test": "npm run lint && npm run karma",
         "start": "node src/server/app.js",
-        "electron": "electron ."
+        "electron": "electron .",
+        "lint": "eslint Gruntfile.js karma.conf.js src/**/*.js",
+        "karma": "karma start --single-run",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w"
     },
     "devDependencies": {
-        "eslint": "~1.10.3",
-        "eslint-config-eslint": "~1.0.1",
+        "conventional-changelog": "~0.5.3",
+        "eslint": "~2.0.0-beta.1",
+        "eslint-config-eslint": "~2.0.0",
         "eslint-plugin-angular": "~0.15.0",
-        "grunt": "~0.4.5",
-        "grunt-cli": "~0.1.13",
-        "grunt-conventional-changelog": "~5.0.0",
-        "grunt-eslint": "~17.3.1",
-        "grunt-karma": "~0.12.1",
         "mocha": "~2.3.4",
         "chai": "~3.4.1",
         "karma": "~0.13.19",
