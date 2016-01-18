@@ -2,9 +2,9 @@
 
 "use strict";
 
-var shell = require("shelljs");
+var child = require("child_process");
+var path = require("path");
 
-shell.cd(__dirname);
-shell.cd("..");
-
-shell.exec("npm run electron");
+child.execSync("npm run electron", {
+    cwd: path.join(__dirname, "..")
+});
