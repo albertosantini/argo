@@ -35,7 +35,7 @@
         "test": "npm run lint && npm run karma",
         "start": "node src/server/app.js",
         "electron": "electron .",
-        "lint": "eslint main.js Gruntfile.js karma.conf.js src/**/*.js",
+        "lint": "eslint main.js karma.conf.js src/**/*.js",
         "karma": "karma start --single-run",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w"
     },
