@@ -28,8 +28,7 @@
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
         "limiter": "~1.1.0",
-        "request": "~2.67.0",
-        "shelljs": "~0.5.3"
+        "request": "~2.67.0"
     },
     "scripts": {
         "test": "npm run lint && npm run karma",
