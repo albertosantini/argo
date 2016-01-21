@@ -28,3 +28,5 @@ if (!Function.prototype.bind) {
     return fBound;
   };
 }
+
+/*eslint-enable */
