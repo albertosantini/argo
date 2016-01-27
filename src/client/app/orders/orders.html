@@ -1,4 +1,4 @@
-<div ng-show="vm.orders.length" layout="row" layout-align="space-around center">
+<div ng-show="$ctrl.orders.length" layout="row" layout-align="space-around center">
     <b flex="5">Type</b>
     <b flex="10">Ticket</b>
     <b flex="10">Market</b>
@@ -14,11 +14,11 @@
 
 <md-content>
 
-    <md-card ng-repeat="order in vm.orders">
+    <md-card ng-repeat="order in $ctrl.orders">
 
         <div layout="row" layout-align="space-around center">
             <span flex="5">{{ order.side }}</span>
-            <a flex="10" href="" ng-click="vm.closeOrder($event, order.id)">{{ order.id }}</a>
+            <a flex="10" href="" ng-click="$ctrl.closeOrder($event, order.id)">{{ order.id }}</a>
             <span flex="10">{{ order.instrument }}</span>
             <span flex="5">{{ order.units | number }}</span>
             <span flex="5">{{ order.stopLoss }}</span>
@@ -32,7 +32,7 @@
 
     </md-card>
 
-    <md-card ng-show="!vm.orders.length">
+    <md-card ng-show="!$ctrl.orders.length">
         No orders.
     </md-card>
 

@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Plugins", Plugins);
+        .component("plugins", {
+            controller: Plugins,
+            templateUrl: "app/plugins/plugins.html"
+        });
 
     Plugins.$inject = ["pluginsService"];
     function Plugins(pluginsService) {

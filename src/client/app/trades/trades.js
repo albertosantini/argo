@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Trades", Trades);
+        .component("trades", {
+            controller: Trades,
+            templateUrl: "app/trades/trades.html"
+        });
 
     Trades.$inject = ["$mdDialog", "toastService", "tradesService"];
     function Trades($mdDialog, toastService, tradesService) {

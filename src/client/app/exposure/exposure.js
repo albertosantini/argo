@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Exposure", Exposure);
+        .component("exposure", {
+            controller: Exposure,
+            templateUrl: "app/exposure/exposure.html"
+        });
 
     Exposure.$inject = ["tradesService"];
     function Exposure(tradesService) {

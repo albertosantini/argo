@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Charts", Charts);
+        .component("charts", {
+            controller: Charts,
+            templateUrl: "app/charts/charts.html"
+        });
 
     Charts.$inject = ["$mdDialog", "accountsService",
         "chartsService", "quotesService"];

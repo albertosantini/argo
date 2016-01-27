@@ -3,13 +3,16 @@
 (function () {
     angular
         .module("argo")
-        .controller("Header", Header);
+        .component("header", {
+            controller: Header,
+            templateUrl: "app/header/header.html"
+        });
 
-    Header.$inject = ["$mdDialog", "$mdBottomSheet", "toastService",
+    Header.$inject = ["$rootScope", "$mdDialog", "$mdBottomSheet", "toastService",
                     "accountsService", "sessionService", "quotesService",
                     "streamService", "localStorageService"];
     /*eslint-disable max-len */
-    function Header($mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService, localStorageService) {
+    function Header($rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService, localStorageService) {
     /*eslint-enable */
         var vm = this,
             instrs = localStorageService.get("instruments") || {
@@ -24,6 +27,10 @@
                 "AUD_USD": true,
                 "GBP_JPY": true
             };
+
+        $rootScope.$watch("isLoadingView", function () {
+            vm.isLoadingView = $rootScope.isLoadingView;
+        });
 
         vm.openTokenDialog = openTokenDialog;
         vm.openSettingsDialog = openSettingsDialog;

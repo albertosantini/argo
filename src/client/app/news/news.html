@@ -1,4 +1,4 @@
-<div ng-show="vm.news.length" layout="row">
+<div ng-show="$ctrl.news.length" layout="row">
     <b flex="10">Date/Time</b>
     <b flex="10">Market</b>
     <b flex="30">Event</b>
@@ -10,7 +10,7 @@
 
 <md-content>
 
-    <md-card ng-repeat="news in vm.news">
+    <md-card ng-repeat="news in $ctrl.news">
 
         <div layout="row">
             <span flex="10">{{ news.timestamp | date:"MMM d, HH:mm" }}</span>
@@ -24,7 +24,7 @@
 
     </md-card>
 
-    <md-card ng-show="!vm.news.length">
+    <md-card ng-show="!$ctrl.news.length">
         No news.
     </md-card>
 

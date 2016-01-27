@@ -12,66 +12,42 @@
             .state("default", {
                 abstract: true,
                 url: "/",
-                templateUrl: "app/layout/default.html",
-                controller: "Default",
-                controllerAs: "vm"
+                template: "<default></default>"
             })
             .state("default.subs", {
                 views: {
                     "header": {
-                        templateUrl: "app/header/header.html",
-                        controller: "Header",
-                        controllerAs: "vm"
+                        template: "<header></header>"
                     },
                     "trades": {
-                        templateUrl: "app/trades/trades.html",
-                        controller: "Trades",
-                        controllerAs: "vm"
+                        template: "<trades></trades>"
                     },
                     "orders": {
-                        templateUrl: "app/orders/orders.html",
-                        controller: "Orders",
-                        controllerAs: "vm"
+                        template: "<orders></orders>"
                     },
                     "positions": {
-                        templateUrl: "app/positions/positions.html",
-                        controller: "Positions",
-                        controllerAs: "vm"
+                        template: "<positions></positions>"
                     },
                     "exposure": {
-                        templateUrl: "app/exposure/exposure.html",
-                        controller: "Exposure",
-                        controllerAs: "vm"
+                        template: "<exposure></exposure>"
                     },
                     "activity": {
-                        templateUrl: "app/activity/activity.html",
-                        controller: "Activity",
-                        controllerAs: "vm"
+                        template: "<activity></activity>"
                     },
                     "news": {
-                        templateUrl: "app/news/news.html",
-                        controller: "News",
-                        controllerAs: "vm"
+                        template: "<news></news>"
                     },
                     "plugins": {
-                        templateUrl: "app/plugins/plugins.html",
-                        controller: "Plugins",
-                        controllerAs: "vm"
+                        template: "<plugins></plugins>"
                     },
                     "account": {
-                        templateUrl: "app/account/account.html",
-                        controller: "Account",
-                        controllerAs: "vm"
+                        template: "<account></account>"
                     },
                     "quotes": {
-                        templateUrl: "app/quotes/quotes.html",
-                        controller: "Quotes",
-                        controllerAs: "vm"
+                        template: "<quotes></quotes>"
                     },
                     "charts": {
-                        templateUrl: "app/charts/charts.html",
-                        controller: "Charts",
-                        controllerAs: "vm"
+                        template: "<charts></charts>"
                     }
                 }
             });

@@ -6,8 +6,8 @@ describe("Exposure", function () {
 
     beforeEach(module("argo"));
 
-    beforeEach(inject(function (_$controller_) {
-        $controller = _$controller_;
+    beforeEach(inject(function ($componentController) {
+        $controller = $componentController;
 
         tradesServiceMock = {
             getTrades: function () {
@@ -33,7 +33,7 @@ describe("Exposure", function () {
         var controller;
 
         beforeEach(function () {
-            controller = $controller("Exposure", {
+            controller = $controller("exposure", {
                 $scope: {},
                 tradesService: tradesServiceMock
             });

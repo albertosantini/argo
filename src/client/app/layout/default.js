@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Default", Default);
+        .component("default", {
+            controller: Default,
+            templateUrl: "app/layout/default.html"
+        });
 
     Default.$inject = [];
     function Default() {

@@ -1,4 +1,4 @@
-<div ng-show="vm.activities.length" layout="row">
+<div ng-show="$ctrl.activities.length" layout="row">
     <b flex="10">Ticket</b>
     <b flex="25">Type</b>
     <b flex="10">Market</b>
@@ -12,7 +12,7 @@
 
 <md-content>
 
-    <md-card ng-repeat="activity in vm.activities">
+    <md-card ng-repeat="activity in $ctrl.activities">
 
         <div layout="row">
             <span flex="10">{{ activity.id }}</span>
@@ -32,7 +32,7 @@
 
     </md-card>
 
-    <md-card ng-show="!vm.activities.length">
+    <md-card ng-show="!$ctrl.activities.length">
         No activities.
     </md-card>
 

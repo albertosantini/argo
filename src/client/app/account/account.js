@@ -3,7 +3,10 @@
 (function () {
     angular
         .module("argo")
-        .controller("Account", Account);
+        .component("account", {
+            controller: Account,
+            templateUrl: "app/account/account.html"
+        });
 
     Account.$inject = ["accountsService"];
     function Account(accountService) {

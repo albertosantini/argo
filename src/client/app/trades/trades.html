@@ -1,4 +1,4 @@
-<div ng-show="vm.trades.length" layout="row">
+<div ng-show="$ctrl.trades.length" layout="row">
     <b flex="5" flex-sm="5">Type</b>
     <b flex="10" flex-sm="30">Ticket</b>
     <b flex="10" flex-sm="20">Market</b>
@@ -13,11 +13,11 @@
 
 <md-content>
 
-    <md-card ng-repeat="trade in vm.trades">
+    <md-card ng-repeat="trade in $ctrl.trades">
 
         <div layout="row">
             <span flex="5" flex-sm="5">{{ trade.side }}</span>
-            <a flex="10" flex-sm="30" href="" ng-click="vm.closeTrade($event, trade.id)">{{ trade.id }}</a>
+            <a flex="10" flex-sm="30" href="" ng-click="$ctrl.closeTrade($event, trade.id)">{{ trade.id }}</a>
             <span flex="10" flex-sm="20">{{ trade.instrument }}</span>
             <span flex="10" flex-sm="10">{{ trade.units | number }}</span>
             <span flex="10" hide-sm>{{ trade.stopLoss }}</span>
@@ -30,7 +30,7 @@
 
     </md-card>
 
-    <md-card ng-show="!vm.trades.length">
+    <md-card ng-show="!$ctrl.trades.length">
         No trades.
     </md-card>
 

@@ -1,53 +1,53 @@
-<md-content ng-show="vm.account.accountId">
-    <b>Account Summary ({{ vm.account.accountCurrency }}) {{ vm.account.timestamp | date:"MMM d, HH:mm:ss" }}</b>
+<md-content ng-show="$ctrl.account.accountId">
+    <b>Account Summary ({{ $ctrl.account.accountCurrency }}) {{ $ctrl.account.timestamp | date:"MMM d, HH:mm:ss" }}</b>
 
     <md-list layout="column">
         <md-item layout="row" layout-align="space-between end">
             <b>Balance</b>
-            <span>{{ vm.account.balance | number: 2}}</span>
+            <span>{{ $ctrl.account.balance | number: 2}}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Unrealized P&amp;L</b>
-            <span>{{ vm.account.unrealizedPl | number: 2 }}</span>
+            <span>{{ $ctrl.account.unrealizedPl | number: 2 }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Unrealized P&amp;L (%)</b>
-            <span>{{ vm.account.unrealizedPlPerc | number: 2 }}</span>
+            <span>{{ $ctrl.account.unrealizedPlPerc | number: 2 }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Net Asset Value</b>
-            <span>{{ vm.account.netAssetValue | number: 2 }}</span>
+            <span>{{ $ctrl.account.netAssetValue | number: 2 }}</span>
         </md-item>
 <!--
         <md-item layout="row" layout-align="space-between end">
             <b>Margin Alert</b>
-            <span>{{ vm.account.marginAlert }}</span>
+            <span>{{ $ctrl.account.marginAlert }}</span>
         </md-item>
  -->
         <md-item layout="row" layout-align="space-between end">
             <b>Realized P&amp;L</b>
-            <span>{{ vm.account.realizedPl | number: 2 }}</span>
+            <span>{{ $ctrl.account.realizedPl | number: 2 }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Margin Used</b>
-            <span>{{ vm.account.marginUsed | number: 2 }}</span>
+            <span>{{ $ctrl.account.marginUsed | number: 2 }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Margin Available</b>
-            <span>{{ vm.account.marginAvail | number: 2 }}</span>
+            <span>{{ $ctrl.account.marginAvail | number: 2 }}</span>
         </md-item>
 <!--
         <md-item layout="row" layout-align="space-between end">
             <b>Margin Closeout Value</b>
-            <span>{{ vm.account.marginCloseoutValue }}</span>
+            <span>{{ $ctrl.account.marginCloseoutValue }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Margin Closeout Value (%)</b>
-            <span>{{ vm.account.marginCloseoutValuePerc }}</span>
+            <span>{{ $ctrl.account.marginCloseoutValuePerc }}</span>
         </md-item>
         <md-item layout="row" layout-align="space-between end">
             <b>Position Value</b>
-            <span>{{ vm.account.positionValue }}</span>
+            <span>{{ $ctrl.account.positionValue }}</span>
         </md-item>
  -->
     </md-list>

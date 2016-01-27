@@ -1,41 +1,41 @@
-<md-content ng-show="vm.account.streamingInstruments">
+<md-content ng-show="$ctrl.account.streamingInstruments">
 
     <div layout="row" layout-align="space-around start">
         <md-input-container>
-            <md-select ng-model="vm.selectedInstrument" aria-label="Instrument"
-                ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
+            <md-select ng-model="$ctrl.selectedInstrument" aria-label="Instrument"
+                ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)">
                 <md-option ng-value="instrument"
-                    ng-selected="instrument == vm.selectedInstrument || $index == 0"
-                    ng-repeat="instrument in vm.account.streamingInstruments">
+                    ng-selected="instrument == $ctrl.selectedInstrument || $index == 0"
+                    ng-repeat="instrument in $ctrl.account.streamingInstruments">
                     {{ instrument }}
                 </md-option>
             </md-select>
         </md-input-container>
 
         <md-input-container>
-            <md-select ng-model="vm.selectedGranularity" aria-label="Granularity"
-                ng-change="vm.changeChart(vm.selectedInstrument, vm.selectedGranularity)">
+            <md-select ng-model="$ctrl.selectedGranularity" aria-label="Granularity"
+                ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)">
                 <md-option ng-value="granularity"
-                    ng-selected="granularity == vm.selectedGranularity"
-                    ng-repeat="granularity in vm.granularities">
+                    ng-selected="granularity == $ctrl.selectedGranularity"
+                    ng-repeat="granularity in $ctrl.granularities">
                     {{ granularity }}
                 </md-option>
             </md-select>
         </md-input-container>
 
-        <md-button class="md-raised" ng-click="vm.openOrderDialog($event, 'buy')">
+        <md-button class="md-raised" ng-click="$ctrl.openOrderDialog($event, 'buy')">
             Buy
         </md-button>
-        <md-button class="md-raised" ng-click="vm.openOrderDialog($event, 'sell')">
+        <md-button class="md-raised" ng-click="$ctrl.openOrderDialog($event, 'sell')">
             Sell
         </md-button>
     </div>
 
     <argo-charts
-        instrument="vm.selectedInstrument"
-        granularity="vm.selectedGranularity"
-        data="vm.data"
-        feed="vm.feed">
+        instrument="$ctrl.selectedInstrument"
+        granularity="$ctrl.selectedGranularity"
+        data="$ctrl.data"
+        feed="$ctrl.feed">
     </argo-charts>
 
 </md-content>

@@ -1,6 +1,6 @@
 <md-content>
     <md-list layout="column">
-        <md-item ng-repeat="(instrument, quote) in vm.quotes" layout="row" layout-align="space-between center">
+        <md-item ng-repeat="(instrument, quote) in $ctrl.quotes" layout="row" layout-align="space-between center">
             <b flex="25">{{ instrument }}</b>
             <argo-sl flex="20" instrument="instrument" data="quote" length="100"></argo-sl>
             <span flex="20" argo-highlighter="quote.bid">{{ quote.bid }}</span>
