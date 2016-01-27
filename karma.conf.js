@@ -24,7 +24,6 @@ module.exports = function (config) {
             "src/client/app/app.module.js",
             "src/client/app/**/*.js",
 
-            "src/client/test/bind.polyfill.js",
             "src/client/test/**/*.spec.js"
         ],
         /*eslint-enable max-len */
