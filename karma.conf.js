@@ -9,9 +9,9 @@ module.exports = function (config) {
 
         /*eslint-disable max-len */
         files: [
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-animate.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-aria.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular-animate.min.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular-aria.min.js",
             "https://cdn.rawgit.com/angular-ui/ui-router/0.2.15/release/angular-ui-router.min.js",
             "https://cdn.rawgit.com/angular/bower-material/v1.0.3/angular-material.min.js",
             "https://cdn.rawgit.com/angular/ngSocket/master/dist/ngSocket.js",
@@ -19,7 +19,7 @@ module.exports = function (config) {
             "https://cdn.rawgit.com/mbostock/d3/master/d3.min.js",
             "https://cdn.rawgit.com/andredumas/techan.js/master/dist/techan.min.js",
 
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-mocks.js",
+            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular-mocks.js",
 
             "src/client/app/app.module.js",
             "src/client/app/**/*.js",
