@@ -44,7 +44,7 @@
         "eslint-config-eslint": "~2.0.0",
         "eslint-plugin-angular": "~0.15.0",
         "mocha": "~2.4.4",
-        "chai": "~3.4.1",
+        "chai": "~3.5.0",
         "karma": "~0.13.19",
         "karma-mocha": "~0.2.1",
         "karma-chai": "~0.1.0",
