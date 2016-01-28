@@ -3,6 +3,7 @@
 [![NPM version](https://badge.fury.io/js/argo-trading.png)](http://badge.fury.io/js/argo-trading)
 [![NGN Dependencies](https://david-dm.org/albertosantini/argo.png)](https://david-dm.org/albertosantini/argo)
 [![Build Status](https://travis-ci.org/albertosantini/argo.png)](https://travis-ci.org/albertosantini/argo)
+[![Known Vulnerabilities](https://snyk.io/test/npm/argo-trading/badge.svg)](https://snyk.io/test/npm/argo-trading)
 
 **Argo** is an open source trading platform, connecting directly with [OANDA][]
 through the powerful [API][] to develop trading strategies.
