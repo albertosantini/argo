@@ -23,7 +23,7 @@
     "dependencies": {
         "async": "~1.5.2",
         "body-parser": "~1.14.2",
-        "electron-prebuilt": "~0.36.6",
+        "electron-prebuilt": "~0.36.7",
         "express": "~4.13.4",
         "faye-websocket": "~0.10.0",
         "flic": "~1.1.2",
@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "conventional-changelog": "~0.5.3",
-        "eslint": "~2.0.0-beta.2",
+        "eslint": "~2.0.0-beta.3",
         "eslint-config-eslint": "~2.0.0",
         "eslint-plugin-angular": "~0.15.0",
         "mocha": "~2.4.5",
