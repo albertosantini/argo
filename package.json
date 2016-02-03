@@ -41,8 +41,8 @@
     },
     "devDependencies": {
         "conventional-changelog": "~0.5.3",
-        "eslint": "~2.0.0-beta.3",
-        "eslint-config-eslint": "~2.0.0",
+        "eslint": "~2.0.0-rc.0",
+        "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~0.15.0",
         "mocha": "~2.4.5",
         "chai": "~3.5.0",
