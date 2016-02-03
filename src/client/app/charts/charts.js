@@ -9,8 +9,10 @@
         });
 
     Charts.$inject = ["$mdDialog", "accountsService",
-        "chartsService", "quotesService"];
-    function Charts($mdDialog, accountsService, chartsService, quotesService) {
+        "chartsService", "quotesService", "tradesService"];
+    function Charts($mdDialog, accountsService,
+        chartsService, quotesService, tradesService) {
+
         var vm = this;
 
         vm.account = accountsService.getAccount();
@@ -44,6 +46,8 @@
         vm.selectedGranularity = "M5";
 
         vm.feed = quotesService.getQuotes();
+
+        vm.trades = tradesService.getTrades();
 
         vm.changeChart = function (instrument, granularity) {
             chartsService.getHistQuotes({

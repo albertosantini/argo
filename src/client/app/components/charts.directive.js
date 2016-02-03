@@ -13,7 +13,8 @@
                 instrument: "=",
                 granularity: "=",
                 data: "=",
-                feed: "="
+                feed: "=",
+                trades: "="
             },
             link: link
         };
@@ -23,6 +24,7 @@
         function link(scope, element) {
             var myInstrument,
                 myGranularity,
+                myTrades,
                 data,
                 refreshChart,
                 lastHistUpdate,
@@ -35,6 +37,7 @@
                 if (csv && csv.length > 0) {
                     myInstrument = scope.instrument;
                     myGranularity = scope.granularity;
+                    myTrades = scope.trades;
 
                     refreshChart = drawChart(element[0], csv);
 
@@ -86,6 +89,8 @@
                     if (lastData.close < lastData.low) {
                         lastData.low = lastData.close;
                     }
+
+                    myTrades = scope.trades;
 
                     refreshChart();
                 }
@@ -165,6 +170,15 @@
                 var ohlc = techan.plot.ohlc()
                     .xScale(x)
                     .yScale(y);
+
+                var tradearrow = techan.plot.tradearrow()
+                          .xScale(x)
+                          .yScale(y)
+                          .orient(function (d) {
+                              return d.type.startsWith("buy") ? "up" : "down";
+                          });
+                          // .on("mouseenter", enter)
+                          // .on("mouseout", out);
 
                 var sma0 = techan.plot.sma()
                     .xScale(x)
@@ -260,6 +274,9 @@
                     .attr("class", "indicator sma ma-1")
                     .attr("clip-path", "url(#ohlcClip)");
 
+                ohlcSelection.append("g")
+                    .attr("class", "tradearrow");
+
                 svg.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height + ")");
@@ -294,6 +311,13 @@
                 });
 
                 svg.select("g.candlestick").datum(data);
+                svg.select("g.tradearrow").datum(myTrades.map(function (trade) {
+                    return {
+                        date: new Date(trade.time),
+                        type: trade.side,
+                        price: trade.price
+                    };
+                }));
                 svg.select("g.sma.ma-0").datum(sma0Calculator(data));
                 svg.select("g.sma.ma-1").datum(sma1Calculator(data));
                 svg.select("g.volume").datum(data);
@@ -326,6 +350,19 @@
                     svg.select("g.volume.axis").call(volumeAxis);
 
                     svg.select("g.candlestick").call(ohlc);
+
+                    var datum = svg.select("g.tradearrow").datum();
+                    svg.select("g.tradearrow").datum()
+                        .splice.apply(datum, [0, datum.length].concat(
+                                myTrades.map(function (trade) {
+                                    return {
+                                        date: new Date(trade.time),
+                                        type: trade.side,
+                                        price: trade.price
+                                    };
+                                })));
+                    svg.select("g.tradearrow").call(tradearrow);
+
                     // Recalculate indicators and update the SAME array and
                     // redraw moving average
                     refreshIndicator(svg.select("g.sma.ma-0"), sma0,
