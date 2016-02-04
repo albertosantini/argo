@@ -22,6 +22,7 @@
 
         function updateTick(tick) {
             var account = accountsService.getAccount(),
+                streamingInstruments = account.streamingInstruments,
                 pips = account.pips,
                 instrument = tick.instrument;
 
@@ -31,6 +32,8 @@
                 bid: tick.bid,
                 spread: ((tick.ask - tick.bid) / pips[instrument]).toFixed(1)
             };
+
+            orderByInstrument(streamingInstruments);
         }
 
         function reset() {
@@ -40,6 +43,25 @@
                 if (quotes.hasOwnProperty(key)) {
                     delete quotes[key];
                 }
+            }
+        }
+
+        function orderByInstrument(streamingInstruments) {
+            if (!angular.equals(streamingInstruments, Object.keys(quotes))) {
+                streamingInstruments.forEach(function (key) {
+                    var tempKey = key + "__tmp";
+
+                    renameKey(quotes, key, tempKey);
+                    renameKey(quotes, tempKey, key);
+                });
+            }
+        }
+
+        function renameKey(o, oldKey, newKey) {
+            if (oldKey !== newKey) {
+                Object.defineProperty(o, newKey,
+                    Object.getOwnPropertyDescriptor(o, oldKey));
+                delete o[oldKey];
             }
         }
     }
