@@ -11,6 +11,7 @@ describe("quotesService", function () {
         accountsService = {
             getAccount: function () {
                 return {
+                    streamingInstruments: ["EUR_USD"],
                     pips: {
                         EUR_USD: 0.0001
                     }
