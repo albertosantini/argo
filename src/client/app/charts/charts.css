@@ -61,7 +61,7 @@ path.tradearrow {
     }
 
 path.tradearrow.buy {
-    fill: #0000FF;
+    fill: rgb(114, 213, 255);
 }
 
 path.tradearrow.buy-pending {
@@ -71,7 +71,7 @@ path.tradearrow.buy-pending {
 }
 
 path.tradearrow.sell {
-    fill: #9900FF;
+    fill: rgb(243, 198, 113);
 }
 
 .tradearrow path.highlight {

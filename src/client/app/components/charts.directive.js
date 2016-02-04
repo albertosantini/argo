@@ -37,7 +37,6 @@
                 if (csv && csv.length > 0) {
                     myInstrument = scope.instrument;
                     myGranularity = scope.granularity;
-                    myTrades = scope.trades;
 
                     refreshChart = drawChart(element[0], csv);
 
@@ -89,8 +88,6 @@
                     if (lastData.close < lastData.low) {
                         lastData.low = lastData.close;
                     }
-
-                    myTrades = scope.trades;
 
                     refreshChart();
                 }
@@ -311,13 +308,6 @@
                 });
 
                 svg.select("g.candlestick").datum(data);
-                svg.select("g.tradearrow").datum(myTrades.map(function (trade) {
-                    return {
-                        date: new Date(trade.time),
-                        type: trade.side,
-                        price: trade.price
-                    };
-                }));
                 svg.select("g.sma.ma-0").datum(sma0Calculator(data));
                 svg.select("g.sma.ma-1").datum(sma1Calculator(data));
                 svg.select("g.volume").datum(data);
@@ -351,17 +341,16 @@
 
                     svg.select("g.candlestick").call(ohlc);
 
-                    var datum = svg.select("g.tradearrow").datum();
-                    svg.select("g.tradearrow").datum()
-                        .splice.apply(datum, [0, datum.length].concat(
-                                myTrades.map(function (trade) {
-                                    return {
-                                        date: new Date(trade.time),
-                                        type: trade.side,
-                                        price: trade.price
-                                    };
-                                })));
-                    svg.select("g.tradearrow").call(tradearrow);
+                    svg.select("g.tradearrow").remove();
+                    svg.append("g").attr("class", "tradearrow");
+                    myTrades = scope.trades.map(function (trade) {
+                        return {
+                            date: new Date(trade.time),
+                            type: trade.side,
+                            price: trade.price
+                        };
+                    });
+                    svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
 
                     // Recalculate indicators and update the SAME array and
                     // redraw moving average
