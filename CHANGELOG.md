@@ -1,3 +1,22 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/albertosantini/argo/compare/v3.0.0...v3.1.0) (2016-02-04)
+
+
+### Bug Fixes
+
+* **charts:** fix trade arrows for current trades ([a485339](https://github.com/albertosantini/argo/commit/a485339))
+* **quotes:** fix the order of instruments list ([99878d1](https://github.com/albertosantini/argo/commit/99878d1))
+
+### Features
+
+* **build:** add snyk tool to test script ([28a7e82](https://github.com/albertosantini/argo/commit/28a7e82))
+* **build:** remove grunt ([094291c](https://github.com/albertosantini/argo/commit/094291c))
+* **charts:** add buy/sell arrows for trades ([f3238ec](https://github.com/albertosantini/argo/commit/f3238ec))
+* **quotes:** add sparkline to quotes view ([35774e5](https://github.com/albertosantini/argo/commit/35774e5))
+* **sparkline:** add sparkline directive ([83e394f](https://github.com/albertosantini/argo/commit/83e394f))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/albertosantini/argo/compare/v2.7.1...v3.0.0) (2016-01-07)
 
