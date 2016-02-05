@@ -13,7 +13,7 @@ module.exports = function (config) {
             "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular-animate.min.js",
             "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular-aria.min.js",
             "https://cdn.rawgit.com/angular-ui/ui-router/0.2.17/release/angular-ui-router.min.js",
-            "https://cdn.rawgit.com/angular/bower-material/v1.0.4/angular-material.min.js",
+            "https://cdn.rawgit.com/angular/bower-material/v1.0.5/angular-material.min.js",
             "https://cdn.rawgit.com/angular/ngSocket/master/dist/ngSocket.js",
             "https://cdn.rawgit.com/grevory/angular-local-storage/master/dist/angular-local-storage.min.js",
             "https://cdn.rawgit.com/mbostock/d3/master/d3.min.js",
