@@ -36,11 +36,11 @@
         "electron": "electron .",
         "lint": "eslint main.js karma.conf.js src/**/*.js",
         "karma": "karma start --single-run",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "snyk": "snyk --dev test"
     },
     "devDependencies": {
-        "conventional-changelog": "~0.5.3",
+        "conventional-changelog-cli": "~1.0.0",
         "eslint": "~2.0.0-rc.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~0.15.0",
