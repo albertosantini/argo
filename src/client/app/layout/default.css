@@ -37,7 +37,3 @@ span {
          -o-animation: 0.5s linear all;
             animation: 0.5s linear all;
 }
-
-.md-whiteframe-glow-z2 {
-  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2), 0 0 4px 3px rgba(0, 0, 0, 0.14), 0 0 8px 1px rgba(0, 0, 0, 0.12);
-}
