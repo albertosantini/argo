@@ -9,15 +9,17 @@ var util = require("util"),
     async = require("async"),
     routes = require("../routes");
 
-var FlicNode = flic.node,
-    nodeName = "master",
+var nodeName = "master",
     plugins = {};
 
-var masterNode = new FlicNode(nodeName, function (err) {
-    if (!err) {
-        util.log("Argo streaming node online");
-    } else {
-        util.log(err);
+var masterNode = flic.createNode({
+    id: nodeName,
+    connect_callback: function (err) {
+        if (!err) {
+            util.log("Argo streaming node online");
+        } else {
+            util.log(err);
+        }
     }
 });
 
