@@ -1,3 +1,13 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/albertosantini/argo/compare/v3.1.0...v3.2.0) (2016-02-15)
+
+
+### Features
+
+* **deps:** AngularJS 1.5.0 ([83c1304](https://github.com/albertosantini/argo/commit/83c1304))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/albertosantini/argo/compare/v3.0.0...v3.1.0) (2016-02-04)
 
