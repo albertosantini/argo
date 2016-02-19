@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "~1.1.1",
-        "eslint": "~2.1.0",
+        "eslint": "~2.2.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~0.15.0",
         "mocha": "~2.4.5",
@@ -51,6 +51,6 @@
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~1.0.0",
         "phantomjs-prebuilt": "~2.1.4",
-        "snyk": "~1.9.3"
+        "snyk": "~1.11.0"
     }
 }
