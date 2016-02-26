@@ -2,18 +2,19 @@
 
 ## Development
 
-1. Make changes (see also CONTRIBUTING doc)
-2. Commit those changes (see [Commit Conventions][])
-3. Make sure Travis turns green
+0. Make changes (see also CONTRIBUTING doc)
+0. Commit those changes (see [Commit Conventions][])
+0. Make sure Travis turns green
 
 ## New release
 
-4. Bump version in `package.json`
-5. `grunt conventionalChangelog`
-6. Commit `package.json` and `CHANGELOG.md` files
-7. Tag vX.Y.Z (don't forget `v` prefix)
-8. Push
-9. Publish
+0. Bump version in `package.json`
+0. `npm run changelog`
+0. Commit `CHANGELOG.md` with the message `docs(CHANGELOG): vX.Y.Z`
+0. Commit `package.json` with the message `chore(release): vX.Y.Z`
+0. Tag `vX.Y.Z` (don't forget `v` prefix)
+0. Push
+0. Publish
 
 
 [Commit Conventions]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.em2hiij8p46d
