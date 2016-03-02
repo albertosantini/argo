@@ -51,6 +51,6 @@
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~1.0.0",
         "phantomjs-prebuilt": "~2.1.4",
-        "snyk": "~1.11.1"
+        "snyk": "~1.11.3"
     }
 }
