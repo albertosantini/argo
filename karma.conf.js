@@ -9,17 +9,17 @@ module.exports = function (config) {
 
         /*eslint-disable max-len */
         files: [
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js",
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js",
-            "https://cdn.rawgit.com/angular-ui/ui-router/0.2.18/release/angular-ui-router.min.js",
-            "https://cdn.rawgit.com/angular/bower-material/v1.0.6/angular-material.min.js",
-            "https://cdn.rawgit.com/angular/ngSocket/master/dist/ngSocket.js",
-            "https://cdn.rawgit.com/grevory/angular-local-storage/master/dist/angular-local-storage.min.js",
-            "https://cdn.rawgit.com/mbostock/d3/master/d3.min.js",
-            "https://cdn.rawgit.com/andredumas/techan.js/master/dist/techan.min.js",
+            "node_modules/angular/angular.min.js",
+            "node_modules/angular-animate/angular-animate.min.js",
+            "node_modules/angular-aria/angular-aria.min.js",
+            "node_modules/angular-ui-router/release/angular-ui-router.min.js",
+            "node_modules/angular-material/angular-material.min.js",
+            "node_modules/ngSocket/dist/ngSocket.js",
+            "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
+            "node_modules/d3/d3.min.js",
+            "node_modules/techan/dist/techan.min.js",
 
-            "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-mocks.js",
+            "node_modules/angular-mocks/angular-mocks.js",
 
             "src/client/app/app.module.js",
             "src/client/app/**/*.js",

@@ -28,7 +28,19 @@
         "faye-websocket": "~0.11.0",
         "flic": "~1.2.3",
         "limiter": "~1.1.0",
-        "request": "~2.69.0"
+        "request": "~2.69.0",
+
+        "angular": "~1.5.0",
+        "angular-animate": "~1.5.0",
+        "angular-aria": "~1.5.0",
+        "angular-messages": "~1.5.0",
+        "angular-mocks": "~1.5.0",
+        "angular-ui-router": "~0.2.18",
+        "angular-material": "~1.0.6",
+        "ngSocket": "angular/ngSocket#v0.2.1",
+        "angular-local-storage": "grevory/angular-local-storage#0.2.5",
+        "d3": "~3.5.16",
+        "techan": "andredumas/techan.js#0.6.0"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",

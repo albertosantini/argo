@@ -5,6 +5,8 @@ var path = require("path");
 exports.port = process.env.ARGO_PORT || 8000;
 
 exports.staticFiles = path.resolve(__dirname, "../../client/");
+exports.vendorFiles = path.resolve(__dirname, "../../../node_modules/");
+
 exports.apiUrl = "/api";
 exports.streamUrl = "/stream";
 

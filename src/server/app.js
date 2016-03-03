@@ -15,6 +15,7 @@ process.on("uncaughtException", function (err) {
 });
 
 app.use(staticFiles(routes.config.staticFiles));
+app.use("/node_modules", staticFiles(routes.config.vendorFiles));
 app.use(apiUrl, routes.apis);
 
 app.listen(port, function () {
