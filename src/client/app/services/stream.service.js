@@ -5,13 +5,12 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["$http", "ngSocket",
-                        "quotesService", "activityService",
+    streamService.$inject = ["$http", "quotesService", "activityService",
                         "tradesService", "ordersService", "accountsService",
                         "pluginsService"];
-    /*eslint-disable max-len */
-    function streamService($http, ngSocket, quotesService, activityService, tradesService, ordersService, accountsService, pluginsService) {
-    /*eslint-enable */
+    function streamService($http, quotesService, activityService,
+            tradesService, ordersService, accountsService,
+            pluginsService) {
         var service = {
             startStream: startStream
         };
@@ -30,9 +29,9 @@
         }
 
         function getStream() {
-            var ws = ngSocket("ws://localhost:8000/stream");
+            var ws = new WebSocket("ws://localhost:8000/stream");
 
-            ws.onMessage(function (event) {
+            ws.onmessage = function (event) {
                 var data,
                     tick,
                     transaction,
@@ -67,7 +66,7 @@
                     // Discard "incomplete" json
                 }
                 /*eslint-enable no-empty */
-            });
+            };
         }
     }
 
