@@ -39,7 +39,7 @@
         "angular-material": "~1.0.6",
         "angular-local-storage": "~0.2.6",
         "d3": "~3.5.16",
-        "techan": "andredumas/techan.js#0.6.0"
+        "techan": "https://github.com/andredumas/techan.js.git#0.6.0"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
