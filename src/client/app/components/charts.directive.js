@@ -32,7 +32,6 @@
                 lastClose,
                 feedVolume = 0;
 
-
             scope.$watch("data", function (csv) {
                 if (csv && csv.length > 0) {
                     myInstrument = scope.instrument;
