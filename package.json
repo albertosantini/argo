@@ -30,11 +30,11 @@
         "limiter": "~1.1.0",
         "request": "~2.69.0",
 
-        "angular": "~1.5.1",
-        "angular-animate": "~1.5.1",
-        "angular-aria": "~1.5.1",
-        "angular-messages": "~1.5.1",
-        "angular-mocks": "~1.5.1",
+        "angular": "~1.5.2",
+        "angular-animate": "~1.5.2",
+        "angular-aria": "~1.5.2",
+        "angular-messages": "~1.5.2",
+        "angular-mocks": "~1.5.2",
         "angular-ui-router": "~0.2.18",
         "angular-material": "~1.0.6",
         "angular-local-storage": "~0.2.7",
@@ -62,7 +62,7 @@
         "karma-mocha": "~0.2.2",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~1.0.0",
-        "phantomjs-prebuilt": "~2.1.5",
-        "snyk": "~1.12.0"
+        "phantomjs-prebuilt": "~2.1.6",
+        "snyk": "~1.12.1"
     }
 }
