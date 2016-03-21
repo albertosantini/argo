@@ -1,3 +1,22 @@
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/albertosantini/argo/compare/v3.2.0...v3.3.0) (2016-03-21)
+
+
+### Bug Fixes
+
+* **bottomsheet:** add fixed position ([04cc4fb](https://github.com/albertosantini/argo/commit/04cc4fb))
+* **deps:** add again ngSocket dependency ([2bae8c5](https://github.com/albertosantini/argo/commit/2bae8c5))
+* **deps:** remove duplicate angular-local-storage ([d4d7f48](https://github.com/albertosantini/argo/commit/d4d7f48))
+* **docs:** fix workflow doc ([8f0af5d](https://github.com/albertosantini/argo/commit/8f0af5d))
+* **electron:** increase window width ([31f7784](https://github.com/albertosantini/argo/commit/31f7784))
+* **env:** remove sandbox ([236f4a2](https://github.com/albertosantini/argo/commit/236f4a2))
+
+### Features
+
+* **build:** use local resources for frontend deps ([0417d49](https://github.com/albertosantini/argo/commit/0417d49))
+
+
+
 <a name="3.2.0"></a>
 # [3.2.0](https://github.com/albertosantini/argo/compare/v3.1.0...v3.2.0) (2016-02-15)
 
