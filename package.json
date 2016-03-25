@@ -30,11 +30,11 @@
         "limiter": "~1.1.0",
         "request": "~2.69.0",
 
-        "angular": "~1.5.2",
-        "angular-animate": "~1.5.2",
-        "angular-aria": "~1.5.2",
-        "angular-messages": "~1.5.2",
-        "angular-mocks": "~1.5.2",
+        "angular": "~1.5.3",
+        "angular-animate": "~1.5.3",
+        "angular-aria": "~1.5.3",
+        "angular-messages": "~1.5.3",
+        "angular-mocks": "~1.5.3",
         "angular-ui-router": "~0.2.18",
         "angular-material": "~1.0.6",
         "angular-local-storage": "~0.2.7",
@@ -49,7 +49,7 @@
         "lint": "eslint main.js karma.conf.js src/**/*.js",
         "karma": "karma start --single-run",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-        "snyk": "snyk --dev test"
+        "snyk": "snyk test"
     },
     "devDependencies": {
         "conventional-changelog-cli": "~1.1.1",
@@ -62,7 +62,7 @@
         "karma-mocha": "~0.2.2",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~1.0.0",
-        "phantomjs-prebuilt": "~2.1.6",
+        "phantomjs-prebuilt": "~2.1.7",
         "snyk": "~1.13.1"
     }
 }
