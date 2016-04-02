@@ -36,7 +36,7 @@
         "angular-messages": "~1.5.3",
         "angular-mocks": "~1.5.3",
         "angular-ui-router": "~0.2.18",
-        "angular-material": "~1.0.6",
+        "angular-material": "~1.0.7",
         "angular-local-storage": "~0.2.7",
         "ngSocket": "https://github.com/angular/ngSocket#v0.2.1",
         "d3": "~3.5.16",
@@ -53,7 +53,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "~1.1.1",
-        "eslint": "^2.5.0",
+        "eslint": "^2.6.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~1.0.0",
         "mocha": "~2.4.5",
