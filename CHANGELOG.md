@@ -1,3 +1,9 @@
+<a name="3.3.4"></a>
+## [3.3.4](https://github.com/albertosantini/argo/compare/v3.3.3...v3.3.4) (2016-04-09)
+
+
+
+
 <a name="3.3.3"></a>
 ## [3.3.3](https://github.com/albertosantini/argo/compare/v3.3.2...v3.3.3) (2016-04-03)
 
