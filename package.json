@@ -39,7 +39,7 @@
         "angular-material": "~1.0.8",
         "angular-local-storage": "~0.2.7",
         "ngSocket": "https://github.com/angular/ngSocket#v0.2.1",
-        "d3": "~3.5.16",
+        "d3": "~3.5.17",
         "techan": "https://github.com/andredumas/techan.js.git#0.6.0"
     },
     "scripts": {
