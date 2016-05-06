@@ -1,4 +1,4 @@
-<div ui-view="header"></div>
+<header></header>
 
 <md-tabs class="md-accent" md-dynamic-height md-center-tabs md-whiteframe="1"
     md-selected="$ctrl.tabSelectedIndex">
@@ -18,7 +18,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="trades"></div>
+        <trades></trades>
     </div>
 
     <div role="tabpanel"
@@ -28,7 +28,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="orders"></div>
+        <orders></orders>
     </div>
 
     <div role="tabpanel"
@@ -38,7 +38,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="positions"></div>
+        <positions></positions>
     </div>
 
     <div role="tabpanel"
@@ -48,7 +48,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="exposure"></div>
+        <exposure></exposure>
     </div>
 
     <div role="tabpanel"
@@ -58,7 +58,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-         <div ui-view="activity"></div>
+         <activity></activity>
     </div>
 
     <div role="tabpanel"
@@ -68,7 +68,7 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="news"></div>
+        <news></news>
     </div>
 
     <div role="tabpanel"
@@ -78,17 +78,17 @@
          md-swipe-left="$ctrl.next()"
          md-swipe-right="$ctrl.previous()">
 
-        <div ui-view="plugins"></div>
+        <plugins></plugins>
     </div>
 
 </ng-switch>
 
 <div layout="row" layout-sm="column" layout-md="column" layout-padding>
     <div layout="column" flex-gt-md="25" flex-sm="95">
-        <div ui-view="account"></div>
-        <div ui-view="quotes"></div>
+        <account></account>
+        <quotes></quotes>
     </div>
     <div layout="column" flex-gt-md="75" hide-sm>
-        <div ui-view="charts"></div>
+        <charts></charts>
     </div>
 </div>
