@@ -12,7 +12,8 @@ app.on("ready", function () {
         frame: false,
         height: 800,
         icon: "src/client/favicon.ico",
-        width: 1450
+        width: 1450,
+        "node-integration": false
     });
 
     mainWindow.loadURL("http://localhost:8000");
