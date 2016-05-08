@@ -52,7 +52,7 @@
         "snyk": "snyk test"
     },
     "devDependencies": {
-        "conventional-changelog-cli": "~1.1.1",
+        "conventional-changelog-cli": "~1.2.0",
         "eslint": "^2.9.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~1.0.1",
