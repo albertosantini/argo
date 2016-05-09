@@ -1,3 +1,13 @@
+<a name="3.4.0"></a>
+# [3.4.0](https://github.com/albertosantini/argo/compare/v3.3.4...v3.4.0) (2016-05-09)
+
+
+### Bug Fixes
+
+* **d3:** fix d3 hack for electron env([e042465](https://github.com/albertosantini/argo/commit/e042465))
+
+
+
 <a name="3.3.4"></a>
 ## [3.3.4](https://github.com/albertosantini/argo/compare/v3.3.3...v3.3.4) (2016-04-09)
 
