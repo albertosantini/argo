@@ -1,20 +1,29 @@
 "use strict";
 
-var app = require("app");
-var BrowserWindow = require("browser-window");
+var electron = require("electron");
+var app = electron.app;
+var BrowserWindow = electron.BrowserWindow;
 
-var mainWindow = null;
+var mainWindow;
 
-require("./src/server/app");
-
-app.on("ready", function () {
+function createWindow() {
     mainWindow = new BrowserWindow({
         frame: false,
         height: 800,
         icon: "src/client/favicon.ico",
         width: 1450,
-        "node-integration": false
+        webPreferences: {
+            nodeIntegration: false
+        }
     });
 
     mainWindow.loadURL("http://localhost:8000");
-});
+
+    mainWindow.on("closed", function () {
+        mainWindow = null;
+    });
+}
+
+require("./src/server/app");
+
+app.on("ready", createWindow);
