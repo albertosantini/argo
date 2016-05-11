@@ -35,7 +35,6 @@
         "angular-aria": "~1.5.5",
         "angular-messages": "~1.5.5",
         "angular-mocks": "~1.5.5",
-        "angular-ui-router": "~0.2.18",
         "angular-material": "~1.0.8",
         "angular-local-storage": "~0.2.7",
         "ngSocket": "https://github.com/angular/ngSocket#v0.2.1",
