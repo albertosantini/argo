@@ -361,17 +361,22 @@ function engagePlugins(req, response) {
 function processApi(apiName, err, body, response, property) {
     var obj;
 
-    body = JSON.parse(body);
-    if (!err && !body.code) {
-        if (property) {
-            obj = body[property];
-        } else {
-            obj = body;
-        }
+    try {
+        body = JSON.parse(body);
+        if (!err && !body.code) {
+            if (property) {
+                obj = body[property];
+            } else {
+                obj = body;
+            }
 
-        response.json(obj);
-    } else {
-        processApiError(apiName, err, body.code, body.message, response);
+            response.json(obj);
+        } else {
+            processApiError(apiName, err, body.code, body.message, response);
+        }
+    } catch (e) {
+        // Discard "incomplete" json
+        console.log(e.name + ": " + e.message);
     }
 }
 

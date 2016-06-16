@@ -62,11 +62,10 @@
                     if (refreshPlugins) {
                         pluginsService.refresh();
                     }
-                /*eslint-disable no-empty */
                 } catch (e) {
                     // Discard "incomplete" json
+                    console.log(e.name + ": " + e.message);
                 }
-                /*eslint-enable no-empty */
             });
         }
     }
