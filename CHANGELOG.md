@@ -1,3 +1,13 @@
+<a name="3.8.0"></a>
+# [3.8.0](https://github.com/albertosantini/argo/compare/v3.7.0...v3.8.0) (2016-06-19)
+
+
+### Bug Fixes
+
+* **scripts:** Fix executable permissions([e1dcecb](https://github.com/albertosantini/argo/commit/e1dcecb)), closes [#6](https://github.com/albertosantini/argo/issues/6)
+
+
+
 <a name="3.7.0"></a>
 # [3.7.0](https://github.com/albertosantini/argo/compare/v3.6.0...v3.7.0) (2016-05-26)
 
