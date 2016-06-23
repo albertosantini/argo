@@ -5,13 +5,12 @@
         .module("argo")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["$http", "ngSocket",
-                        "quotesService", "activityService",
-                        "tradesService", "ordersService", "accountsService",
-                        "pluginsService"];
-    /*eslint-disable max-len */
-    function streamService($http, ngSocket, quotesService, activityService, tradesService, ordersService, accountsService, pluginsService) {
-    /*eslint-enable */
+    streamService.$inject = ["$timeout", "$http",
+                        "quotesService", "activityService", "tradesService",
+                        "ordersService", "accountsService", "pluginsService"];
+    function streamService($timeout, $http,
+            quotesService, activityService, tradesService,
+            ordersService, accountsService, pluginsService) {
         var service = {
             startStream: startStream
         };
@@ -30,43 +29,45 @@
         }
 
         function getStream() {
-            var ws = ngSocket("ws://localhost:8000/stream");
+            var ws = new WebSocket("ws://localhost:8000/stream");
 
-            ws.onMessage(function (event) {
+            ws.onmessage = function (event) {
                 var data,
                     tick,
                     transaction,
                     refreshPlugins;
 
-                try {
-                    data = angular.fromJson(event.data);
+                $timeout(function () {
+                    try {
+                        data = angular.fromJson(event.data);
 
-                    tick = data.tick;
-                    transaction = data.transaction;
-                    refreshPlugins = data.refreshPlugins;
+                        tick = data.tick;
+                        transaction = data.transaction;
+                        refreshPlugins = data.refreshPlugins;
 
-                    if (tick) {
-                        quotesService.updateTick(tick);
-                        tradesService.updateTrades(tick);
-                        ordersService.updateOrders(tick);
+                        if (tick) {
+                            quotesService.updateTick(tick);
+                            tradesService.updateTrades(tick);
+                            ordersService.updateOrders(tick);
+                        }
+
+                        if (transaction) {
+                            activityService.addActivity(transaction);
+
+                            tradesService.refresh();
+                            ordersService.refresh();
+                            accountsService.refresh();
+                        }
+
+                        if (refreshPlugins) {
+                            pluginsService.refresh();
+                        }
+                    } catch (e) {
+                        // Discard "incomplete" json
+                        console.log(e.name + ": " + e.message);
                     }
-
-                    if (transaction) {
-                        activityService.addActivity(transaction);
-
-                        tradesService.refresh();
-                        ordersService.refresh();
-                        accountsService.refresh();
-                    }
-
-                    if (refreshPlugins) {
-                        pluginsService.refresh();
-                    }
-                } catch (e) {
-                    // Discard "incomplete" json
-                    console.log(e.name + ": " + e.message);
-                }
-            });
+                });
+            };
         }
     }
 

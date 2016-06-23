@@ -13,7 +13,6 @@ module.exports = function (config) {
             "node_modules/angular-animate/angular-animate.min.js",
             "node_modules/angular-aria/angular-aria.min.js",
             "node_modules/angular-material/angular-material.min.js",
-            "node_modules/ngSocket/dist/ngSocket.js",
             "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
             "node_modules/d3/d3.min.js",
             "node_modules/techan/dist/techan.min.js",

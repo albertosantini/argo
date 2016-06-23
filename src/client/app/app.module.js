@@ -3,6 +3,5 @@
 angular
     .module("argo", [
         "ngMaterial",
-        "ngSocket",
         "LocalStorageModule"
     ]);
