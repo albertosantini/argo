@@ -58,21 +58,17 @@
                 } else {
                     node.style.stroke = "green";
                 }
+                node.style.height = h;
 
                 min = d3.min(data[instrument]);
                 max = d3.max(data[instrument]);
 
-                x = d3.scale.linear()
+                x = d3.scaleLinear()
                     .domain([0, data[instrument].length - 1]).range([0, w]);
-                y = d3.scale.linear()
+                y = d3.scaleLinear()
                     .domain([min, max]).range([h, 0]);
 
-                svg.attr({
-                    width: w,
-                    height: h
-                });
-
-                svg.append("path").data(data[instrument])
+                svg.append("path")
                     .attr("d", "M" + data[instrument].map(function (d, i) {
                         return [x(i), y(d)];
                     }).join("L"));

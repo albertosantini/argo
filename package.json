@@ -37,8 +37,7 @@
         "angular-mocks": "~1.5.7",
         "angular-material": "~1.0.9",
         "angular-local-storage": "~0.2.7",
-        "d3": "~3.5.17",
-        "techan": "https://github.com/andredumas/techan.js.git#0.6.0"
+        "d3": "~4.0.0"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",

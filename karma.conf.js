@@ -15,7 +15,6 @@ module.exports = function (config) {
             "node_modules/angular-material/angular-material.min.js",
             "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
             "node_modules/d3/d3.min.js",
-            "node_modules/techan/dist/techan.min.js",
 
             "node_modules/angular-mocks/angular-mocks.js",
 
