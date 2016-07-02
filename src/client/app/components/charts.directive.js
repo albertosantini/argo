@@ -76,6 +76,7 @@
                     });
 
                     lastHistUpdate = nextHistUpdate;
+                    refreshChart(true);
                 }
 
                 if (tick && data) {
@@ -99,7 +100,7 @@
                         lastData.l = lastData.c;
                     }
 
-                    refreshChart();
+                    refreshChart(false);
                 }
 
             }, true);
@@ -158,9 +159,9 @@
             function ohlcChart(el, myData) {
                 var margin = {
                         top: 0,
-                        right: 75,
+                        right: 60,
                         bottom: 30,
-                        left: 75
+                        left: 90
                     },
                     width = 960 - margin.left - margin.right,
                     height = 400 - margin.top - margin.bottom,
@@ -174,24 +175,27 @@
                     .attr("transform", "translate(" +
                         margin.left + "," + margin.top + ")");
 
-                redraw();
+                redraw(true);
 
-                function redraw() {
+                function redraw(isShiftingBars) {
                     var ocWidth = 3,
                         bars,
                         x,
-                        xTicks,
                         xAxis,
                         y,
                         yAxis;
 
-                    svg.selectAll("*").remove();
+                    svg.selectAll(".grid").remove();
+                    svg.selectAll(".x.axis").remove();
+                    svg.selectAll(".y.axis").remove();
+                    if (isShiftingBars) {
+                        svg.selectAll(".bar").remove();
+                    } else {
+                        svg.select(".lastBar").remove();
+                    }
 
                     x = d3.scaleLinear()
                             .range([0, width]).domain([0, myData.length]);
-                    xTicks = d3.scaleTime().range([0, width]).domain([
-                        myData[0].date, myData[myData.length - 1].date
-                    ]);
 
                     y = d3.scaleLinear().range([height, 0]).domain([
                         (d3.min(myData, function (d) {
@@ -203,6 +207,10 @@
                     ]);
 
                     xAxis = function () {
+                        var xTicks = d3.scaleTime().range([0, width]).domain([
+                            myData[0].date, myData[myData.length - 1].date
+                        ]);
+
                         return d3.axisBottom(xTicks);
                     };
 
@@ -225,31 +233,34 @@
                         .attr("transform", "translate(" + width + ", 0)")
                         .call(yAxis());
 
-                    bars = svg.selectAll(".bar")
-                        .data(myData).enter().append("g")
-                        .attr("class", function (d) {
-                            return "bar " + (d.c > d.o ? "green" : "red");
+                    bars = svg.selectAll(".bar").data(myData)
+                        .enter().append("g")
+                        .attr("class", function (d, i) {
+                            var lastBar = i === myData.length - 1,
+                                attr = "bar " + (d.c > d.o ? "green" : "red");
+
+                            attr += lastBar ? " lastBar" : "";
+
+                            return attr;
                         });
 
-                    bars.append("path").attr("class", "hl-line")
-                        .attr("d", function (d, ndx) {
-                            return "M" + x(ndx) + "," + y(d.h) +
-                                " L" + x(ndx) + "," + y(d.l);
+                    bars.append("path").attr("class", "path hl-line")
+                        .attr("d", function (d, i) {
+                            return "M" + x(i) + "," + y(d.h) +
+                                " L" + x(i) + "," + y(d.l);
                         });
 
-                    bars.append("path").attr("class", "c-tick")
-                        .attr("d", function (d, ndx) {
-                            return "M" + x(ndx) + "," + y(d.c) + " L" +
-                                (x(ndx) + ocWidth) + "," + y(d.c);
+                    bars.append("path").attr("class", "path c-tick")
+                        .attr("d", function (d, i) {
+                            return "M" + x(i) + "," + y(d.c) +
+                                " L" + (x(i) + ocWidth) + "," + y(d.c);
                         });
 
-                    bars.append("path").attr("class", "o-tick")
-                        .attr("d", function (d, ndx) {
-                            return "M" + (x(ndx) - ocWidth) + "," +
-                                y(d.o) + " L" + x(ndx) + "," + y(d.o);
+                    bars.append("path").attr("class", "path o-tick")
+                        .attr("d", function (d, i) {
+                            return "M" + (x(i) - ocWidth) + "," + y(d.o) +
+                                " L" + x(i) + "," + y(d.o);
                         });
-
-                    bars.exit().remove();
 
                     svg.append("g")
                             .attr("class", "y axis")
