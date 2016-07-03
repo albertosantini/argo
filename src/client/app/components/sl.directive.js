@@ -51,7 +51,9 @@
                     (parseFloat(quote.bid) +
                         parseFloat(quote.ask)) / 2);
 
-                data[instrument] = data[instrument].slice(-scope.length);
+                if (data[instrument].length > scope.length) {
+                    data[instrument].shift();
+                }
 
                 if (data[instrument][0] > data[instrument].slice(-1)) {
                     node.style.stroke = "red";
