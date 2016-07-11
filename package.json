@@ -37,7 +37,7 @@
         "angular-mocks": "~1.5.7",
         "angular-material": "~1.0.9",
         "angular-local-storage": "~0.2.7",
-        "d3": "~4.1.0"
+        "d3": "~4.1.1"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
