@@ -23,11 +23,11 @@
 
         function closeOrder(event, id) {
             var confirm = $mdDialog.confirm()
-                  .textContent("Are you sure to close the order?")
-                  .ariaLabel("Order closing confirmation")
-                  .ok("Ok")
-                  .cancel("Cancel")
-                  .targetEvent(event);
+                .textContent("Are you sure to close the order?")
+                .ariaLabel("Order closing confirmation")
+                .ok("Ok")
+                .cancel("Cancel")
+                .targetEvent(event);
 
             $mdDialog.show(confirm).then(function () {
                 ordersService.closeOrder(id).then(function (order) {

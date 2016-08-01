@@ -23,11 +23,11 @@
 
         function closeTrade(event, id) {
             var confirm = $mdDialog.confirm()
-                  .textContent("Are you sure to close the trade?")
-                  .ariaLabel("Trade closing confirmation")
-                  .ok("Ok")
-                  .cancel("Cancel")
-                  .targetEvent(event);
+                .textContent("Are you sure to close the trade?")
+                .ariaLabel("Trade closing confirmation")
+                .ok("Ok")
+                .cancel("Cancel")
+                .targetEvent(event);
 
             $mdDialog.show(confirm).then(function () {
                 tradesService.closeTrade(id).then(function (trade) {

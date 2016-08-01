@@ -195,7 +195,7 @@
                     }
 
                     x = d3.scaleLinear()
-                            .range([0, width]).domain([0, myData.length]);
+                        .range([0, width]).domain([0, myData.length]);
 
                     y = d3.scaleLinear().range([height, 0]).domain([
                         (d3.min(myData, function (d) {
@@ -263,15 +263,15 @@
                         });
 
                     svg.append("g")
-                            .attr("class", "y axis")
+                        .attr("class", "y axis")
                         .append("text")
-                            .attr("transform", "rotate(-90)")
-                            .attr("y", 6)
-                            .attr("dy", ".71em")
-                            .style("font-weight", "bold")
-                            .style("text-anchor", "end")
-                            .text("Price (" +
-                                myInstrument + " / " + myGranularity + ")");
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("font-weight", "bold")
+                        .style("text-anchor", "end")
+                        .text("Price (" +
+                            myInstrument + " / " + myGranularity + ")");
                 }
 
                 return redraw;
