@@ -5,11 +5,8 @@
         .module("argo")
         .config(config);
 
-    config.$inject = ["$httpProvider", "$locationProvider",
-                    "localStorageServiceProvider"];
-    /*eslint-disable max-len */
-    function config($httpProvider, $locationProvider, localStorageServiceProvider) {
-   /*eslint-enable */
+    config.$inject = ["$httpProvider", "$locationProvider"];
+    function config($httpProvider, $locationProvider) {
         var interceptors = $httpProvider.interceptors;
 
         interceptors.push(["$q", "$rootScope", function ($q, $rootScope) {
@@ -45,8 +42,6 @@
         }]);
 
         $locationProvider.html5Mode(true);
-
-        localStorageServiceProvider.setPrefix("argo");
     }
 
 }());

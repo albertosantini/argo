@@ -2,6 +2,5 @@
 
 angular
     .module("argo", [
-        "ngMaterial",
-        "LocalStorageModule"
+        "ngMaterial"
     ]);

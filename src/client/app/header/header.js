@@ -8,14 +8,15 @@
             templateUrl: "app/header/header.html"
         });
 
-    Header.$inject = ["$rootScope", "$mdDialog", "$mdBottomSheet", "toastService",
-                    "accountsService", "sessionService", "quotesService",
-                    "streamService", "localStorageService"];
+    Header.$inject = ["$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
+                    "toastService", "accountsService", "sessionService",
+                    "quotesService", "streamService"];
     /*eslint-disable max-len */
-    function Header($rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService, localStorageService) {
+    function Header($window, $rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService) {
     /*eslint-enable */
         var vm = this,
-            instrs = localStorageService.get("instruments") || {
+            instrsStorage = $window.localStorage.getItem("argo.instruments"),
+            instrs = JSON.parse(instrsStorage) || {
                 "EUR_USD": true,
                 "USD_JPY": true,
                 "GBP_USD": true,
@@ -112,7 +113,8 @@
                     var instruments;
 
                     if (settingsInfo) {
-                        localStorageService.set("instruments", settingsInfo);
+                        $window.localStorage.setItem("argo.instruments",
+                            JSON.stringify(settingsInfo));
                         instruments = accountsService
                             .setStreamingInstruments(settingsInfo);
 
