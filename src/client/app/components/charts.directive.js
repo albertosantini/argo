@@ -165,7 +165,67 @@
                     },
                     width = 960 - margin.left - margin.right,
                     height = 400 - margin.top - margin.bottom,
-                    svg;
+                    dates,
+                    svg,
+                    x,
+                    y;
+
+                function multiFormat(date) {
+                    var format,
+                        // formatMillisecond = d3.timeFormat(".%L"),
+                        // formatSecond = d3.timeFormat(":%S"),
+                        formatMinute = d3.timeFormat("%I:%M"),
+                        formatHour = d3.timeFormat("%b %d"),
+                        formatDay = d3.timeFormat("%b %d"),
+                        // formatWeek = d3.timeFormat("%b %d"),
+                        formatMonth = d3.timeFormat("%Y %b"),
+                        formatYear = d3.timeFormat("%Y %b");
+
+                    if (myGranularity === "S5") {
+                        format = formatMinute;
+                    } else if (myGranularity === "S10") {
+                        format = formatMinute;
+                    } else if (myGranularity === "S15") {
+                        format = formatMinute;
+                    } else if (myGranularity === "S30") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M1") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M2") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M3") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M4") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M5") {
+                        format = formatMinute;
+                    } else if (myGranularity === "M10") {
+                        format = formatHour;
+                    } else if (myGranularity === "M15") {
+                        format = formatHour;
+                    } else if (myGranularity === "M30") {
+                        format = formatHour;
+                    } else if (myGranularity === "H1") {
+                        format = formatDay;
+                    } else if (myGranularity === "H2") {
+                        format = formatDay;
+                    } else if (myGranularity === "H3") {
+                        format = formatDay;
+                    } else if (myGranularity === "H4") {
+                        format = formatDay;
+                    } else if (myGranularity === "H6") {
+                        format = formatDay;
+                    } else if (myGranularity === "H8") {
+                        format = formatDay;
+                    } else if (myGranularity === "H12") {
+                        format = formatMonth;
+                    } else {
+                        // for D / W / M
+                        format = formatYear;
+                    }
+
+                    return format(date);
+                }
 
                 d3.select(el).select("svg").remove();
                 svg = d3.select(el).append("svg")
@@ -175,14 +235,28 @@
                     .attr("transform", "translate(" +
                         margin.left + "," + margin.top + ")");
 
+                dates = myData.map(function (d) {
+                    return d.date;
+                });
+
+                x = d3.scaleLinear()
+                    .range([0, width]).domain([0, myData.length]);
+
+                y = d3.scaleLinear().range([height, 0]).domain([
+                    (d3.min(myData, function (d) {
+                        return d.l;
+                    })),
+                    (d3.max(myData, function (d) {
+                        return d.h;
+                    }))
+                ]);
+
                 redraw(true);
 
                 function redraw(isShiftingBars) {
                     var ocWidth = 3,
                         bars,
-                        x,
                         xAxis,
-                        y,
                         yAxis;
 
                     svg.selectAll(".grid").remove();
@@ -194,10 +268,9 @@
                         svg.select(".lastBar").remove();
                     }
 
-                    x = d3.scaleLinear()
-                        .range([0, width]).domain([0, myData.length]);
+                    x.range([0, width]).domain([0, myData.length]);
 
-                    y = d3.scaleLinear().range([height, 0]).domain([
+                    y.range([height, 0]).domain([
                         (d3.min(myData, function (d) {
                             return d.l;
                         })),
@@ -207,9 +280,16 @@
                     ]);
 
                     xAxis = function () {
-                        var xTicks = d3.scaleTime().range([0, width]).domain([
-                            myData[0].date, myData[myData.length - 1].date
-                        ]);
+                        var xTicks;
+
+                        if (isShiftingBars) {
+                            dates = myData.map(function (d) {
+                                return d.date;
+                            });
+                        }
+
+                        xTicks = d3.scalePoint()
+                            .range([0, width]).domain(dates);
 
                         return d3.axisBottom(xTicks);
                     };
@@ -224,7 +304,13 @@
                     svg.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0, " + height + ")")
-                        .call(xAxis());
+                        .call(xAxis().tickFormat(function (d, i) {
+                            if (!(i % 10)) {
+                                return multiFormat(d);
+                            }
+
+                            return "";
+                        }));
 
                     svg.append("g").attr("class", "grid")
                         .call(yAxis().tickSize(width, 0, 0).tickFormat(""));
