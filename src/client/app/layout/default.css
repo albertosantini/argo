@@ -2,10 +2,6 @@ body {
     font-family: "Arimo", serif;
 }
 
-.logo {
-    height: 64px;
-}
-
 .tabpanel-container {
     display: block;
     margin-top: 20px;
