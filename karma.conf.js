@@ -13,7 +13,6 @@ module.exports = function (config) {
             "node_modules/angular-animate/angular-animate.min.js",
             "node_modules/angular-aria/angular-aria.min.js",
             "node_modules/angular-material/angular-material.min.js",
-            "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
             "node_modules/d3/build/d3.min.js",
 
             "node_modules/angular-mocks/angular-mocks.js",
