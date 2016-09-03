@@ -35,7 +35,7 @@
         "angular-aria": "~1.5.8",
         "angular-messages": "~1.5.8",
         "angular-mocks": "~1.5.8",
-        "angular-material": "~1.1.0",
+        "angular-material": "~1.1.1",
         "d3": "~4.2.2"
     },
     "scripts": {
