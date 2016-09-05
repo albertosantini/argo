@@ -51,26 +51,28 @@
                     (parseFloat(quote.bid) +
                         parseFloat(quote.ask)) / 2);
 
-                if (data[instrument].length > scope.length) {
-                    data[instrument].shift();
-                }
+                data[instrument] = data[instrument].slice(-scope.length);
 
                 if (data[instrument][0] > data[instrument].slice(-1)) {
                     node.style.stroke = "red";
                 } else {
                     node.style.stroke = "green";
                 }
-                node.style.height = h;
 
                 min = d3.min(data[instrument]);
                 max = d3.max(data[instrument]);
 
-                x = d3.scaleLinear()
+                x = d3.scale.linear()
                     .domain([0, data[instrument].length - 1]).range([0, w]);
-                y = d3.scaleLinear()
+                y = d3.scale.linear()
                     .domain([min, max]).range([h, 0]);
 
-                svg.append("path")
+                svg.attr({
+                    width: w,
+                    height: h
+                });
+
+                svg.append("path").data(data[instrument])
                     .attr("d", "M" + data[instrument].map(function (d, i) {
                         return [x(i), y(d)];
                     }).join("L"));

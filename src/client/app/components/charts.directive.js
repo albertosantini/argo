@@ -24,35 +24,24 @@
         function link(scope, element) {
             var myInstrument,
                 myGranularity,
+                myTrades,
                 data,
+                refreshChart,
                 lastHistUpdate,
                 lastData,
                 lastClose,
-                feedVolume = 0,
-                refreshChart;
+                feedVolume = 0;
 
             scope.$watch("data", function (csv) {
                 if (csv && csv.length > 0) {
                     myInstrument = scope.instrument;
                     myGranularity = scope.granularity;
 
-                    data = d3.csvParse(csv).map(function (d) {
-                        return {
-                            date: new Date(d.Date),
-                            o: +d.Open,
-                            h: +d.High,
-                            l: +d.Low,
-                            c: +d.Close,
-                            v: +d.Volume
-                        };
-                    });
-                    data = data.slice(data.length - 130, data.length);
-
-                    refreshChart = ohlcChart(element[0], data);
+                    refreshChart = drawChart(element[0], csv);
 
                     lastData = data && data[data.length - 1];
-                    lastClose = lastData.c;
-                    feedVolume = lastData.v;
+                    lastClose = lastData.close;
+                    feedVolume = lastData.volume;
                     lastHistUpdate = getLastHistUpdate(myGranularity);
                 }
             });
@@ -67,40 +56,39 @@
                     midPrice = (tick.bid + tick.ask) / 2;
                     feedVolume = 0;
                     data.push({
-                        o: midPrice,
-                        c: midPrice,
-                        h: midPrice,
-                        l: midPrice,
+                        open: midPrice,
+                        close: midPrice,
+                        high: midPrice,
+                        low: midPrice,
                         date: new Date(nextHistUpdate),
-                        v: feedVolume
+                        volume: feedVolume
                     });
 
                     lastHistUpdate = nextHistUpdate;
-                    refreshChart(true);
                 }
 
                 if (tick && data) {
 
-                    if (lastData.c !== lastClose) {
+                    if (lastData.close !== lastClose) {
                         feedVolume += 1;
                     }
 
                     midPrice = (tick.bid + tick.ask) / 2;
 
                     lastData = data && data[data.length - 1];
-                    lastClose = lastData.c;
-                    lastData.c = midPrice;
-                    lastData.v = feedVolume;
+                    lastClose = lastData.close;
+                    lastData.close = midPrice;
+                    lastData.volume = feedVolume;
 
-                    if (lastData.c > lastData.h) {
-                        lastData.h = lastData.c;
+                    if (lastData.close > lastData.high) {
+                        lastData.high = lastData.close;
                     }
 
-                    if (lastData.c < lastData.l) {
-                        lastData.l = lastData.c;
+                    if (lastData.close < lastData.low) {
+                        lastData.low = lastData.close;
                     }
 
-                    refreshChart(false);
+                    refreshChart();
                 }
 
             }, true);
@@ -156,201 +144,143 @@
                 return Math.floor(now / (coeff)) * coeff;
             }
 
-            function ohlcChart(el, myData) {
+            function drawChart(el, csv) {
                 var margin = {
                         top: 0,
-                        right: 60,
+                        right: 20,
                         bottom: 30,
-                        left: 90
+                        left: 75
                     },
                     width = 960 - margin.left - margin.right,
-                    height = 400 - margin.top - margin.bottom,
-                    dates,
-                    svg,
-                    x,
-                    y;
+                    height = 400 - margin.top - margin.bottom;
 
-                function multiFormat(date) {
-                    var format,
-                        // formatMillisecond = d3.timeFormat(".%L"),
-                        // formatSecond = d3.timeFormat(":%S"),
-                        formatMinute = d3.timeFormat("%I:%M"),
-                        formatHour = d3.timeFormat("%b %d"),
-                        formatDay = d3.timeFormat("%b %d"),
-                        // formatWeek = d3.timeFormat("%b %d"),
-                        formatMonth = d3.timeFormat("%Y %b"),
-                        formatYear = d3.timeFormat("%Y %b");
+                var x = techan.scale.financetime()
+                    .range([0, width]);
 
-                    if (myGranularity === "S5") {
-                        format = formatMinute;
-                    } else if (myGranularity === "S10") {
-                        format = formatMinute;
-                    } else if (myGranularity === "S15") {
-                        format = formatMinute;
-                    } else if (myGranularity === "S30") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M1") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M2") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M3") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M4") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M5") {
-                        format = formatMinute;
-                    } else if (myGranularity === "M10") {
-                        format = formatHour;
-                    } else if (myGranularity === "M15") {
-                        format = formatHour;
-                    } else if (myGranularity === "M30") {
-                        format = formatHour;
-                    } else if (myGranularity === "H1") {
-                        format = formatDay;
-                    } else if (myGranularity === "H2") {
-                        format = formatDay;
-                    } else if (myGranularity === "H3") {
-                        format = formatDay;
-                    } else if (myGranularity === "H4") {
-                        format = formatDay;
-                    } else if (myGranularity === "H6") {
-                        format = formatDay;
-                    } else if (myGranularity === "H8") {
-                        format = formatDay;
-                    } else if (myGranularity === "H12") {
-                        format = formatMonth;
-                    } else {
-                        // for D / W / M
-                        format = formatYear;
-                    }
+                var y = d3.scale.linear()
+                    .range([height, 0]);
 
-                    return format(date);
-                }
+                var yVolume = d3.scale.linear()
+                    .range([y(0), y(0.2)]);
+
+                var ohlc = techan.plot.ohlc()
+                    .xScale(x)
+                    .yScale(y);
+
+                var tradearrow = techan.plot.tradearrow()
+                          .xScale(x)
+                          .yScale(y)
+                          .orient(function (d) {
+                              return d.type.startsWith("buy") ? "up" : "down";
+                          });
+                          // .on("mouseenter", enter)
+                          // .on("mouseout", out);
+
+                var sma0 = techan.plot.sma()
+                    .xScale(x)
+                    .yScale(y);
+
+                var sma0Calculator = techan.indicator.sma()
+                    .period(10);
+
+                var sma1 = techan.plot.sma()
+                    .xScale(x)
+                    .yScale(y);
+
+                var sma1Calculator = techan.indicator.sma()
+                    .period(20);
+
+                var volume = techan.plot.volume()
+                    .accessor(ohlc.accessor())
+                    .xScale(x)
+                    .yScale(yVolume);
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+
+                var volumeAxis = d3.svg.axis()
+                    .scale(yVolume)
+                    .orient("right")
+                    .ticks(3)
+                    .tickFormat(d3.format(",.3s"));
+
+                var timeAnnotation = techan.plot.axisannotation()
+                    .axis(xAxis)
+                    .format(d3.time.format("%Y-%m-%d %H:%M"))
+                    .width(80)
+                    .translate([0, height]);
+
+                var ohlcAnnotation = techan.plot.axisannotation()
+                    .axis(yAxis)
+                    .format(d3.format(",.4fs"));
+
+                var volumeAnnotation = techan.plot.axisannotation()
+                    .axis(volumeAxis)
+                    .width(35);
+
+                var crosshair = techan.plot.crosshair()
+                    .xScale(x)
+                    .yScale(y)
+                    .xAnnotation(timeAnnotation)
+                    .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
                 d3.select(el).select("svg").remove();
-                svg = d3.select(el).append("svg")
-                    .attr("height", height + margin.top + margin.bottom)
-                    .attr("width", width + margin.right + margin.left)
+
+                var svg = d3.select(el).append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom);
+
+                var defs = svg.append("defs");
+
+                svg = svg.append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+
+                defs
+                    .append("clipPath")
+                        .attr("id", "ohlcClip")
+                    .append("rect")
+                        .attr("x", 0)
+                        .attr("y", 0)
+                        .attr("width", width)
+                        .attr("height", height);
+
+                var ohlcSelection = svg.append("g")
+                    .attr("class", "ohlc")
+                    .attr("transform", "translate(0,0)");
+
+                ohlcSelection.append("g")
+                    .attr("class", "volume")
+                    .attr("clip-path", "url(#ohlcClip)");
+
+                ohlcSelection.append("g")
+                    .attr("class", "candlestick")
+                    .attr("clip-path", "url(#ohlcClip)");
+
+                ohlcSelection.append("g")
+                    .attr("class", "indicator sma ma-0")
+                    .attr("clip-path", "url(#ohlcClip)");
+
+                ohlcSelection.append("g")
+                    .attr("class", "indicator sma ma-1")
+                    .attr("clip-path", "url(#ohlcClip)");
+
+                ohlcSelection.append("g")
+                    .attr("class", "tradearrow");
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")");
+
+                svg
                     .append("g")
-                    .attr("transform", "translate(" +
-                        margin.left + "," + margin.top + ")");
-
-                dates = myData.map(function (d) {
-                    return d.date;
-                });
-
-                x = d3.scaleLinear()
-                    .range([0, width]).domain([0, myData.length]);
-
-                y = d3.scaleLinear().range([height, 0]).domain([
-                    (d3.min(myData, function (d) {
-                        return d.l;
-                    })),
-                    (d3.max(myData, function (d) {
-                        return d.h;
-                    }))
-                ]);
-
-                redraw(true);
-
-                function redraw(isShiftingBars) {
-                    var ocWidth = 3,
-                        bars,
-                        xAxis,
-                        yAxis;
-
-                    svg.selectAll(".grid").remove();
-                    svg.selectAll(".x.axis").remove();
-                    svg.selectAll(".y.axis").remove();
-                    if (isShiftingBars) {
-                        svg.selectAll(".bar").remove();
-                    } else {
-                        svg.select(".lastBar").remove();
-                    }
-
-                    x.range([0, width]).domain([0, myData.length]);
-
-                    y.range([height, 0]).domain([
-                        (d3.min(myData, function (d) {
-                            return d.l;
-                        })),
-                        (d3.max(myData, function (d) {
-                            return d.h;
-                        }))
-                    ]);
-
-                    xAxis = function () {
-                        var xTicks;
-
-                        if (isShiftingBars) {
-                            dates = myData.map(function (d) {
-                                return d.date;
-                            });
-                        }
-
-                        xTicks = d3.scalePoint()
-                            .range([0, width]).domain(dates);
-
-                        return d3.axisBottom(xTicks);
-                    };
-
-                    yAxis = function () {
-                        return d3.axisRight(y);
-                    };
-
-                    svg.append("g").attr("class", "grid")
-                        .call(xAxis().tickSize(height, 0, 0).tickFormat(""));
-
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0, " + height + ")")
-                        .call(xAxis().tickFormat(function (d, i) {
-                            if (!(i % 10)) {
-                                return multiFormat(d);
-                            }
-
-                            return "";
-                        }));
-
-                    svg.append("g").attr("class", "grid")
-                        .call(yAxis().tickSize(width, 0, 0).tickFormat(""));
-
-                    svg.append("g").attr("class", "y axis")
-                        .attr("transform", "translate(" + width + ", 0)")
-                        .call(yAxis());
-
-                    bars = svg.selectAll(".bar").data(myData)
-                        .enter().append("g")
-                        .attr("class", function (d, i) {
-                            var lastBar = i === myData.length - 1,
-                                attr = "bar " + (d.c > d.o ? "green" : "red");
-
-                            attr += lastBar ? " lastBar" : "";
-
-                            return attr;
-                        });
-
-                    bars.append("path").attr("class", "path hl-line")
-                        .attr("d", function (d, i) {
-                            return "M" + x(i) + "," + y(d.h) +
-                                " L" + x(i) + "," + y(d.l);
-                        });
-
-                    bars.append("path").attr("class", "path c-tick")
-                        .attr("d", function (d, i) {
-                            return "M" + x(i) + "," + y(d.c) +
-                                " L" + (x(i) + ocWidth) + "," + y(d.c);
-                        });
-
-                    bars.append("path").attr("class", "path o-tick")
-                        .attr("d", function (d, i) {
-                            return "M" + (x(i) - ocWidth) + "," + y(d.o) +
-                                " L" + x(i) + "," + y(d.o);
-                        });
-
-                    svg.append("g")
                         .attr("class", "y axis")
-                        .append("text")
+                    .append("text")
                         .attr("transform", "rotate(-90)")
                         .attr("y", 6)
                         .attr("dy", ".71em")
@@ -358,6 +288,79 @@
                         .style("text-anchor", "end")
                         .text("Price (" +
                             myInstrument + " / " + myGranularity + ")");
+
+                svg.append("g")
+                    .attr("class", "volume axis");
+
+                svg.append("g")
+                    .attr("class", "crosshair ohlc");
+
+                data = d3.csv.parse(csv).map(function (d) {
+                    return {
+                        date: new Date(d.Date),
+                        open: +d.Open,
+                        high: +d.High,
+                        low: +d.Low,
+                        close: +d.Close,
+                        volume: +d.Volume
+                    };
+                });
+
+                svg.select("g.candlestick").datum(data);
+                svg.select("g.sma.ma-0").datum(sma0Calculator(data));
+                svg.select("g.sma.ma-1").datum(sma1Calculator(data));
+                svg.select("g.volume").datum(data);
+
+                redraw();
+
+                function refreshIndicator(selection, indicator, data2) {
+                    var datum = selection.datum();
+
+                    // Some trickery to remove old and insert new without
+                    // changing array reference, so no need to update __data__
+                    // in the DOM
+                    datum.splice.apply(datum, [0, datum.length].concat(data2));
+                    selection.call(indicator);
+                }
+
+                function redraw() {
+                    var accessor = ohlc.accessor();
+
+                    x.domain(data.map(accessor.d));
+                    x.zoomable().domain([data.length - 130, data.length]);
+
+                    y.domain(techan.scale.plot.ohlc(
+                        data.slice(data.length - 130, data.length)).domain());
+                    yVolume.domain(techan.scale.plot.volume(
+                        data.slice(data.length - 130, data.length)).domain());
+
+                    svg.select("g.x.axis").call(xAxis);
+                    svg.select("g.y.axis").call(yAxis);
+                    svg.select("g.volume.axis").call(volumeAxis);
+
+                    svg.select("g.candlestick").call(ohlc);
+
+                    svg.select("g.tradearrow").remove();
+                    svg.append("g").attr("class", "tradearrow");
+                    myTrades = scope.trades.map(function (trade) {
+                        return {
+                            date: new Date(trade.time),
+                            type: trade.side,
+                            price: trade.price
+                        };
+                    });
+                    svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
+
+                    // Recalculate indicators and update the SAME array and
+                    // redraw moving average
+                    refreshIndicator(svg.select("g.sma.ma-0"), sma0,
+                        sma0Calculator(data));
+                    refreshIndicator(svg.select("g.sma.ma-1"), sma1,
+                        sma1Calculator(data));
+
+                    svg.select("g.volume").call(volume);
+
+                    svg.select("g.crosshair.ohlc").call(crosshair);
                 }
 
                 return redraw;

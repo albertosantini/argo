@@ -36,7 +36,8 @@
         "angular-messages": "~1.5.8",
         "angular-mocks": "~1.5.8",
         "angular-material": "~1.1.1",
-        "d3": "~4.2.2"
+        "d3": "~3.5.17",
+        "techan": "https://github.com/andredumas/techan.js.git#8aa0f87"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
