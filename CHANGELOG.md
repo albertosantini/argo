@@ -1,3 +1,22 @@
+<a name="3.9.0"></a>
+# [3.9.0](https://github.com/albertosantini/argo/compare/v3.8.0...v3.9.0) (2016-09-05)
+
+
+### Bug Fixes
+
+* **charts:** refresh only last bar in OHLC chart ([83375f5](https://github.com/albertosantini/argo/commit/83375f5))
+* **exposures:** fix no exposures text. ([80a00aa](https://github.com/albertosantini/argo/commit/80a00aa))
+* **index:** use minified d3 ([5bc1c25](https://github.com/albertosantini/argo/commit/5bc1c25))
+* **karma:** fix d3 path ([2e5e413](https://github.com/albertosantini/argo/commit/2e5e413))
+* **logo:** revert wrongly log class removed ([0f67fd0](https://github.com/albertosantini/argo/commit/0f67fd0))
+
+
+### Performance Improvements
+
+* **charts:** improve sparkline shifting data ([bef6240](https://github.com/albertosantini/argo/commit/bef6240))
+
+
+
 <a name="3.8.0"></a>
 # [3.8.0](https://github.com/albertosantini/argo/compare/v3.7.0...v3.8.0) (2016-06-19)
 
