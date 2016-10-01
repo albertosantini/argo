@@ -157,10 +157,10 @@
                 var x = techan.scale.financetime()
                     .range([0, width]);
 
-                var y = d3.scale.linear()
+                var y = d3.scaleLinear()
                     .range([height, 0]);
 
-                var yVolume = d3.scale.linear()
+                var yVolume = d3.scaleLinear()
                     .range([y(0), y(0.2)]);
 
                 var ohlc = techan.plot.ohlc()
@@ -195,32 +195,29 @@
                     .xScale(x)
                     .yScale(yVolume);
 
-                var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient("bottom");
+                var xAxis = d3.axisBottom(x);
 
-                var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .orient("left");
+                var yAxis = d3.axisLeft(y);
 
-                var volumeAxis = d3.svg.axis()
-                    .scale(yVolume)
-                    .orient("right")
+                var volumeAxis = d3.axisRight(yVolume)
                     .ticks(3)
                     .tickFormat(d3.format(",.3s"));
 
                 var timeAnnotation = techan.plot.axisannotation()
                     .axis(xAxis)
-                    .format(d3.time.format("%Y-%m-%d %H:%M"))
+                    .orient("bottom")
+                    .format(d3.timeFormat("%Y-%m-%d %H:%M"))
                     .width(80)
                     .translate([0, height]);
 
                 var ohlcAnnotation = techan.plot.axisannotation()
                     .axis(yAxis)
-                    .format(d3.format(",.4fs"));
+                    .orient("left")
+                    .format(d3.format(",.4f"));
 
                 var volumeAnnotation = techan.plot.axisannotation()
                     .axis(volumeAxis)
+                    .orient("right")
                     .width(35);
 
                 var crosshair = techan.plot.crosshair()
@@ -295,7 +292,7 @@
                 svg.append("g")
                     .attr("class", "crosshair ohlc");
 
-                data = d3.csv.parse(csv).map(function (d) {
+                data = d3.csvParse(csv).map(function (d) {
                     return {
                         date: new Date(d.Date),
                         open: +d.Open,
@@ -313,16 +310,6 @@
 
                 redraw();
 
-                function refreshIndicator(selection, indicator, data2) {
-                    var datum = selection.datum();
-
-                    // Some trickery to remove old and insert new without
-                    // changing array reference, so no need to update __data__
-                    // in the DOM
-                    datum.splice.apply(datum, [0, datum.length].concat(data2));
-                    selection.call(indicator);
-                }
-
                 function redraw() {
                     var accessor = ohlc.accessor();
 
@@ -338,7 +325,8 @@
                     svg.select("g.y.axis").call(yAxis);
                     svg.select("g.volume.axis").call(volumeAxis);
 
-                    svg.select("g.candlestick").call(ohlc);
+                    svg.select("g.candlestick").datum(data).call(ohlc);
+                    // svg.select("g.candlestick").call(ohlc);
 
                     svg.select("g.tradearrow").remove();
                     svg.append("g").attr("class", "tradearrow");
@@ -351,14 +339,11 @@
                     });
                     svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
 
-                    // Recalculate indicators and update the SAME array and
-                    // redraw moving average
-                    refreshIndicator(svg.select("g.sma.ma-0"), sma0,
-                        sma0Calculator(data));
-                    refreshIndicator(svg.select("g.sma.ma-1"), sma1,
-                        sma1Calculator(data));
+                    svg.select("g.sma.ma-0").datum(sma0Calculator(data)).call(sma0);
+                    svg.select("g.sma.ma-1").datum(sma1Calculator(data)).call(sma1);
 
-                    svg.select("g.volume").call(volume);
+                    svg.select("g.volume").datum(data).call(volume);
+                    // svg.select("g.volume").call(volume);
 
                     svg.select("g.crosshair.ohlc").call(crosshair);
                 }
