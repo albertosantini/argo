@@ -1,3 +1,13 @@
+<a name="3.10.0"></a>
+# [3.10.0](https://github.com/albertosantini/argo/compare/v3.9.0...v3.10.0) (2016-10-03)
+
+
+### Bug Fixes
+
+* **charts:** add css for label in candlestick ([c1e5b71](https://github.com/albertosantini/argo/commit/c1e5b71))
+
+
+
 <a name="3.9.0"></a>
 # [3.9.0](https://github.com/albertosantini/argo/compare/v3.8.0...v3.9.0) (2016-09-05)
 
