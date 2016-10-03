@@ -18,6 +18,10 @@ svg {
     shape-rendering: crispEdges;
 }
 
+text {
+    fill: #000;
+}
+
 path {
     fill: none;
     stroke-width: 1;
