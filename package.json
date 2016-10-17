@@ -21,7 +21,7 @@
         "node": ">=4"
     },
     "dependencies": {
-        "async": "~2.1.1",
+        "async": "~2.1.2",
         "body-parser": "~1.15.2",
         "electron": "~1.4.3",
         "express": "~4.14.0",
@@ -50,7 +50,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "~1.2.0",
-        "eslint": "^3.7.1",
+        "eslint": "^3.8.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~1.4.1",
         "mocha": "~3.1.2",
