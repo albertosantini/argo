@@ -6,7 +6,7 @@
         .controller("OrderDialog", OrderDialog);
 
     OrderDialog.$inject = ["$mdDialog", "toastService", "params",
-                        "quotesService", "ordersService", "accountsService"];
+        "quotesService", "ordersService", "accountsService"];
     /*eslint-disable max-len */
     function OrderDialog($mdDialog, toastService, params, quotesService, ordersService, accountsService) {
     /*eslint-enable */

@@ -6,8 +6,8 @@
         .factory("streamService", streamService);
 
     streamService.$inject = ["$timeout", "$http",
-                        "quotesService", "activityService", "tradesService",
-                        "ordersService", "accountsService", "pluginsService"];
+        "quotesService", "activityService", "tradesService",
+        "ordersService", "accountsService", "pluginsService"];
     function streamService($timeout, $http,
             quotesService, activityService, tradesService,
             ordersService, accountsService, pluginsService) {

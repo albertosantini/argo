@@ -9,8 +9,8 @@
         });
 
     Header.$inject = ["$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
-                    "toastService", "accountsService", "sessionService",
-                    "quotesService", "streamService"];
+        "toastService", "accountsService", "sessionService",
+        "quotesService", "streamService"];
     /*eslint-disable max-len */
     function Header($window, $rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService) {
     /*eslint-enable */
