@@ -36,7 +36,7 @@
         "angular-messages": "~1.5.8",
         "angular-mocks": "~1.5.8",
         "angular-material": "~1.1.1",
-        "d3": "~4.2.8",
+        "d3": "~4.3.0",
         "techan": "~0.8.0"
     },
     "scripts": {
