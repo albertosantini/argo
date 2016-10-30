@@ -48,7 +48,7 @@ Tested locally with Node.js 6.x, AngularJS 1.5.x and Material 1.x.
 
 - Executing trading strategies.
 
-## [Documentation](docs/)
+## [Documentation](http://argo.rtfd.io/)
 
 ## [Contributing](CONTRIBUTING.md)
 
