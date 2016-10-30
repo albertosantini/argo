@@ -8,3 +8,6 @@ repo_url: https://github.com/albertosantini/argo
 
 theme: readthedocs
 repo_name: GitHub
+
+extra_javascript:
+  - extra/extra.js
