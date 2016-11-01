@@ -28,21 +28,24 @@ describe("positionsService", function () {
             .respond([
                 {
                     "instrument": "EUR_USD",
-                    "units": 4741,
-                    "side": "buy",
-                    "avgPrice": 1.3626
+                    "long": {
+                        "units": 4741,
+                        "averagePrice": 1.3626
+                    }
                 },
                 {
                     "instrument": "USD_CAD",
-                    "units": 30,
-                    "side": "sell",
-                    "avgPrice": 1.11563
+                    "short": {
+                        "units": -30,
+                        "averagePrice": 1.11563
+                    }
                 },
                 {
                     "instrument": "USD_JPY",
-                    "units": 88,
-                    "side": "buy",
-                    "avgPrice": 102.455
+                    "long": {
+                        "units": 88,
+                        "averagePrice": 102.455
+                    }
                 }
             ]);
 
@@ -60,7 +63,7 @@ describe("positionsService", function () {
                 assert.lengthOf(positions, 3);
 
                 assert.equal("USD_CAD", positions[1].instrument);
-                assert.equal(30, positions[1].units);
+                assert.equal(-30, positions[1].units);
                 assert.equal("sell", positions[1].side);
                 assert.equal(1.11563, positions[1].avgPrice);
             });

@@ -11,16 +11,18 @@ var WebSocket = require("faye-websocket"),
 
 var pricesStreaming,
     eventsStreaming,
+    initialSnapshots = [],
     ws;
 
 function start(options, callback) {
     var environment = options && options.environment || config.environment,
         accessToken = options && options.accessToken || config.accessToken,
         accountId = options && options.accountId || config.accountId,
-        sessionId = options && options.sessionId || config.sessionId,
         instruments = options && options.instruments || config.instruments,
-        pricesUrl = config.getUrl(environment, "stream") + "/v1/prices",
-        eventsUrl = config.getUrl(environment, "stream") + "/v1/events",
+        pricesUrl = config.getUrl(environment, "stream") + "/v3/accounts/" +
+            accountId + "/pricing/stream",
+        eventsUrl = config.getUrl(environment, "stream") + "/v3/accounts/" +
+            accountId + "/transactions/stream",
         authHeader = {
             "Authorization": "Bearer " + accessToken
         };
@@ -33,17 +35,12 @@ function start(options, callback) {
     pricesStreaming = request({
         "url": pricesUrl,
         "qs": {
-            accountId: accountId,
-            sessionId: sessionId,
             instruments: instruments.join(",")
         },
         "headers": authHeader
     }).on("response", function () {
         eventsStreaming = request({
             "url": eventsUrl,
-            "qs": {
-                accountIds: accountId
-            },
             "headers": authHeader
         }).on("response", function () {
             callback();
@@ -52,13 +49,18 @@ function start(options, callback) {
 }
 
 function processChunk(chunk) {
-    var data = chunk.toString().split("\r\n").slice(0, -1);
+    var data = chunk.toString();
 
     if (ws) {
-        data.forEach(function (el) {
-            ws.send(el);
-            plugin.shoutStreaming(el);
-        });
+        if (initialSnapshots.length > 0) {
+            initialSnapshots.forEach(function () {
+                ws.send(initialSnapshots.pop());
+            });
+        }
+        ws.send(data);
+        plugin.shoutStreaming(data);
+    } else {
+        initialSnapshots.push(data);
     }
 }
 

@@ -18,7 +18,7 @@
         vm.changeMarket = changeMarket;
         vm.changeMeasure = changeMeasure;
 
-        vm.type = "market";
+        vm.type = "MARKET";
         vm.side = params.side;
         vm.instruments = params.instruments;
         vm.selectedInstrument = params.selectedInstrument;
@@ -56,18 +56,19 @@
                 return;
             }
 
-            fixed = (pips[vm.selectedInstrument].match(/0/g) || []).length;
+            fixed = ((pips[vm.selectedInstrument] + "")
+                .match(/0/g) || []).length;
 
             vm.measure = "price";
             vm.step = parseFloat(pips[vm.selectedInstrument]);
             if (vm.side === "buy") {
-                vm.quote = price && price.ask;
+                vm.quote = parseFloat(price && price.ask);
                 vm.takeProfit = parseFloat((vm.quote + vm.step * 10)
                     .toFixed(fixed));
                 vm.stopLoss = parseFloat((vm.quote - vm.step * 10)
                     .toFixed(fixed));
             } else {
-                vm.quote = price && price.bid;
+                vm.quote = parseFloat(price && price.bid);
                 vm.takeProfit = parseFloat((vm.quote - vm.step * 10)
                     .toFixed(fixed));
                 vm.stopLoss = parseFloat((vm.quote + vm.step * 10)
@@ -102,7 +103,10 @@
         vm.answer = function (action) {
             var order = {},
                 isBuy = vm.side === "buy",
-                isMeasurePips = vm.measure === "pips";
+                isMeasurePips = vm.measure === "pips",
+                fixed = ((pips[vm.selectedInstrument] + "")
+                    .match(/0/g) || []).length;
+
 
 
             $mdDialog.hide(action);
@@ -111,63 +115,81 @@
 
             order.instrument = vm.selectedInstrument;
             order.units = vm.units;
+            if (vm.units && !isBuy) {
+                order.units = "-" + order.units;
+            }
+
             order.side = vm.side;
             order.type = vm.type;
 
-            if (order.type === "limit") {
+            if (order.type === "LIMIT") {
                 order.price = vm.quote;
                 order.expiry = new Date(Date.now() + vm.selectedExpire);
             }
 
             if (isMeasurePips) {
                 if (vm.isLowerBound) {
-                    order.lowerBound = parseFloat(vm.quote -
-                        vm.step * vm.lowerBound);
+                    order.priceBound =
+                        parseFloat(vm.quote - vm.step * vm.lowerBound) + "";
                 }
                 if (vm.isUpperBound) {
-                    order.upperBound = parseFloat(vm.quote +
-                        vm.step * vm.lowerBound);
+                    order.priceBound =
+                        parseFloat(vm.quote + vm.step * vm.upperBound) + "";
                 }
                 if (isBuy) {
                     if (vm.isTakeProfit) {
-                        order.takeProfit = parseFloat(vm.quote +
-                            vm.step * vm.takeProfit);
+                        order.takeProfitOnFill = {};
+                        order.takeProfitOnFill.price =
+                            parseFloat(vm.quote + vm.step * vm.takeProfit) + "";
                     }
                     if (vm.isStopLoss) {
-                        order.stopLoss = parseFloat(vm.quote -
-                            vm.step * vm.stopLoss);
+                        order.stopLossOnFill = {};
+                        order.order.takeProfitOnFill.price =
+                            parseFloat(vm.quote - vm.step * vm.stopLoss) + "";
                     }
                 } else {
                     if (vm.isTakeProfit) {
-                        order.takeProfit = parseFloat(vm.quote -
-                            vm.step * vm.takeProfit);
+                        order.takeProfitOnFill = {};
+                        order.takeProfitOnFill.price =
+                            parseFloat(vm.quote - vm.step * vm.takeProfit) + "";
                     }
                     if (vm.isStopLoss) {
-                        order.stopLoss = parseFloat(vm.quote +
-                            vm.step * vm.stopLoss);
+                        order.stopLossOnFill = {};
+                        order.order.takeProfitOnFill.price =
+                            parseFloat(vm.quote + vm.step * vm.stopLoss) + "";
                     }
                 }
             } else {
                 if (vm.isLowerBound) {
-                    order.lowerBound = vm.lowerBound;
+                    order.priceBound = vm.lowerBound + "";
                 }
                 if (vm.isUpperBound) {
-                    order.upperBound = vm.upperBound;
+                    order.priceBound = vm.upperBound + "";
                 }
                 if (vm.isTakeProfit) {
-                    order.takeProfit = vm.takeProfit;
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price = vm.takeProfit + "";
                 }
                 if (vm.isStopLoss) {
-                    order.stopLoss = vm.stopLoss;
+                    order.stopLossOnFill = {};
+                    order.stopLossOnFill.price = vm.stopLoss + "";
                 }
             }
             if (vm.isTrailingStop) {
-                order.trailingStop = vm.trailingStop;
+                order.trailingStopLossOnFill = {};
+                if (isBuy) {
+                    order.trailingStopLossOnFill.distance =
+                        (vm.quote - vm.step * vm.trailingStop).toFixed(fixed);
+                } else {
+                    order.trailingStopLossOnFill.distance =
+                        (vm.quote + vm.step * vm.trailingStop).toFixed(fixed);
+                }
             }
 
             if (action === "submit") {
                 ordersService.putOrder(order).then(function (transaction) {
                     var opened,
+                        side,
                         message;
 
                     if (transaction.code && transaction.message) {
@@ -176,13 +198,18 @@
                             transaction.message;
 
                         toastService.show(message);
+                    } else if (transaction.errorMessage) {
+                        message = "ERROR " + transaction.errorMessage;
+
+                        toastService.show(message);
                     } else {
-                        opened = transaction.tradeOpened ||
-                            transaction.orderOpened;
-                        message = opened.side + " " +
-                            transaction.instrument +
+                        opened = transaction.orderFillTransaction ||
+                            transaction.orderFillTransaction;
+                        side = opened.units > 0 ? "buy" : "sell";
+                        message = side + " " +
+                            opened.instrument +
                             " #" + opened.id +
-                            " @" + transaction.price +
+                            " @" + opened.price +
                             " for " + opened.units;
 
                         toastService.show(message);

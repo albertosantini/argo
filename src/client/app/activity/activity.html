@@ -4,7 +4,6 @@
     <b flex="10">Market</b>
     <b flex="5">Units</b>
     <b flex="10">Price</b>
-    <b flex="10">Interest</b>
     <b flex="5">Profit</b>
     <b flex="10">Balance</b>
     <b flex="10">Date/Time</b>
@@ -20,9 +19,6 @@
             <span flex="10">{{ activity.instrument }}</span>
             <span flex="5">{{ activity.units | number }}</span>
             <span flex="10">{{ activity.price }}</span>
-            <span flex="10" ng-class="activity.interest >= 0 ? 'highlight-green' : 'highlight-red'">
-                {{ activity.interest }}
-            </span>
             <span flex="10" ng-class="activity.pl >= 0 ? 'highlight-green' : 'highlight-red'">
                 {{ activity.pl | number:4 }}
             </span>

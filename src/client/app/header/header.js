@@ -63,7 +63,7 @@
                         locals: {accounts: accounts},
                         targetEvent: event
                     }).then(function (accountSelected) {
-                        vm.accountId = accountSelected.accountId;
+                        vm.accountId = accountSelected.id;
 
                         sessionService.setCredentials({
                             environment: vm.environment,
@@ -98,8 +98,8 @@
                 var allInstrs = accountsService.getAccount().instruments;
 
                 angular.forEach(allInstrs, function (instrument) {
-                    if (!instrs.hasOwnProperty(instrument.instrument)) {
-                        instrs[instrument.instrument] = false;
+                    if (!instrs.hasOwnProperty(instrument.name)) {
+                        instrs[instrument.name] = false;
                     }
                 });
 

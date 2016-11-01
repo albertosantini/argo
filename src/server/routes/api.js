@@ -55,7 +55,7 @@ function getAccounts(req, response) {
         return response.sendStatus(400);
     }
 
-    url = config.getUrl(req.body.environment, "api") + "/v1/accounts";
+    url = config.getUrl(req.body.environment, "api") + "/v3/accounts";
 
     throttledRequest({
         "url": url,
@@ -77,7 +77,7 @@ function getAccount(req, response) {
     credentials.accountId = req.body.accountId;
 
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
             req.body.accountId,
         "headers": {
             "Authorization": "Bearer " + req.body.token
@@ -93,10 +93,8 @@ function getInstruments(req, response) {
     }
 
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/instruments",
-        "qs": {
-            accountId: req.body.accountId
-        },
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+              req.body.accountId + "/instruments",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
@@ -117,12 +115,11 @@ function getCandles(req, response) {
     token = req.body.token || credentials.token;
 
     throttledRequest({
-        "url": config.getUrl(environment, "api") + "/v1/candles",
+        "url": config.getUrl(environment, "api") + "/v3/instruments/" +
+            req.body.instrument + "/candles",
         "qs": {
-            instrument: req.body.instrument,
             granularity: req.body.granularity,
             count: req.body.count,
-            candleFormat: req.body.candleFormat,
             alignmentTimezone: req.body.alignmentTimezone,
             dailyAlignment: req.body.dailyAlignment
         },
@@ -139,10 +136,10 @@ function getCandles(req, response) {
 
             candles.forEach(function (candle) {
                 lines += candle.time + "," +
-                        candle.openMid + "," +
-                        candle.highMid + "," +
-                        candle.lowMid + "," +
-                        candle.closeMid + "," +
+                        candle.mid.o + "," +
+                        candle.mid.h + "," +
+                        candle.mid.l + "," +
+                        candle.mid.c + "," +
                         candle.volume + "\n";
             });
 
@@ -165,8 +162,8 @@ function getTrades(req, response) {
     }
 
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/trades",
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+            req.body.accountId + "/openTrades",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
@@ -181,7 +178,7 @@ function getOrders(req, response) {
     }
 
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
             req.body.accountId + "/orders",
         "headers": {
             "Authorization": "Bearer " + req.body.token
@@ -197,8 +194,8 @@ function getPositions(req, response) {
     }
 
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/positions",
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+            req.body.accountId + "/openPositions",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
@@ -208,13 +205,16 @@ function getPositions(req, response) {
 }
 
 function getTransactions(req, response) {
+    var id;
+
     if (!req.body) {
         return response.sendStatus(400);
     }
 
+    id = req.body.lastTransactionID > 32 ? req.body.lastTransactionID - 32 : 0;
     throttledRequest({
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/transactions",
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+            req.body.accountId + "/transactions/sinceid?id=" + id,
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
@@ -283,20 +283,23 @@ function putOrder(req, response) {
 
     throttledRequest({
         "method": "POST",
-        "url": config.getUrl(environment, "api") + "/v1/accounts/" +
+        "url": config.getUrl(environment, "api") + "/v3/accounts/" +
             accountId + "/orders",
-        "form": {
-            instrument: req.body.instrument,
-            units: req.body.units,
-            side: req.body.side,
-            type: req.body.type,
-            expiry: req.body.expiry,
-            price: req.body.price,
-            lowerBound: req.body.lowerBound,
-            upperBound: req.body.upperBound,
-            stopLoss: req.body.stopLoss,
-            takeProfit: req.body.takeProfit,
-            trailingStop: req.body.trailingStop
+        "json": true,
+        "body": {
+            order: {
+                instrument: req.body.instrument,
+                units: req.body.units,
+                side: req.body.side,
+                type: req.body.type,
+                expiry: req.body.expiry,
+                price: req.body.price,
+                lowerBound: req.body.lowerBound,
+                upperBound: req.body.upperBound,
+                stopLossOnFill: req.body.stopLossOnFill,
+                takeProfitOnFill: req.body.takeProfitOnFill,
+                trailingStop: req.body.trailingStop
+            }
         },
         "headers": {
             "Authorization": "Bearer " + token
@@ -312,9 +315,9 @@ function closeOrder(req, response) {
     }
 
     throttledRequest({
-        "method": "DELETE",
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/orders/" + req.body.id,
+        "method": "PUT",
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+            req.body.accountId + "/orders/" + req.body.id + "/cancel",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
@@ -329,14 +332,14 @@ function closeTrade(req, response) {
     }
 
     throttledRequest({
-        "method": "DELETE",
-        "url": config.getUrl(req.body.environment, "api") + "/v1/accounts/" +
-            req.body.accountId + "/trades/" + req.body.id,
+        "method": "PUT",
+        "url": config.getUrl(req.body.environment, "api") + "/v3/accounts/" +
+            req.body.accountId + "/trades/" + req.body.id + "/close",
         "headers": {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        processApi("closeTrade", err, body, response);
+        processApi("closeTrade", err, body, response, "orderFillTransaction");
     });
 }
 
@@ -362,8 +365,10 @@ function processApi(apiName, err, body, response, property) {
     var obj;
 
     try {
-        body = JSON.parse(body);
-        if (!err && !body.code) {
+        if (typeof body === "string") {
+            body = JSON.parse(body);
+        }
+        if (!err && !body.errorCode) {
             if (property) {
                 obj = body[property];
             } else {
@@ -372,7 +377,8 @@ function processApi(apiName, err, body, response, property) {
 
             response.json(obj);
         } else {
-            processApiError(apiName, err, body.code, body.message, response);
+            processApiError(apiName, err, body.errorCode,
+                body.errorMessage, response);
         }
     } catch (e) {
         // Discard "incomplete" json

@@ -32,11 +32,11 @@
             $mdDialog.show(confirm).then(function () {
                 tradesService.closeTrade(id).then(function (trade) {
                     var message = "Closed " +
-                        trade.side + " " +
+                        (trade.units > 0 ? "sell " : "buy ") +
                         trade.instrument +
                         " #" + trade.id +
                         " @" + trade.price +
-                        " P&L " + trade.profit;
+                        " P&L " + trade.pl;
 
                     toastService.show(message);
                 }, function (err) {

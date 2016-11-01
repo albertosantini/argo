@@ -19,10 +19,10 @@
             <span flex="5" flex-sm="5">{{ trade.side }}</span>
             <a flex="10" flex-sm="30" href="" ng-click="$ctrl.closeTrade($event, trade.id)">{{ trade.id }}</a>
             <span flex="10" flex-sm="20">{{ trade.instrument }}</span>
-            <span flex="10" flex-sm="10">{{ trade.units | number }}</span>
-            <span flex="10" hide-sm>{{ trade.stopLoss }}</span>
-            <span flex="10" hide-sm>{{ trade.takeProfit }}</span>
-            <span flex="10" hide-sm>{{ trade.trailingStop }}</span>
+            <span flex="10" flex-sm="10">{{ trade.currentUnits | number }}</span>
+            <span flex="10" hide-sm>{{ trade.stopLossOrder.price }}</span>
+            <span flex="10" hide-sm>{{ trade.takeProfitOrder.price }}</span>
+            <span flex="10" hide-sm>{{ trade.trailingStopLossOrder.distance }}</span>
             <span flex="10" hide-sm>{{ trade.price }}</span>
             <span flex="10" flex-sm="20">{{ trade.current }}</span>
             <span flex="5" flex-sm="15" argo-dual-color="trade.profitPips">{{ trade.profitPips | number:1}}</span>

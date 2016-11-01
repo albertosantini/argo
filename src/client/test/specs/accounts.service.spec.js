@@ -27,17 +27,15 @@ describe("accountsService", function () {
         $httpBackend
             .when("POST", api)
             .respond({
-                accountCurrency: "USD",
-                accountId: 7442890,
-                accountName: "Primary",
-                balance: 110410.5028,
-                marginAvail: 110394.9676,
-                marginRate: 0.05,
-                marginUsed: 18.1671,
-                openOrders: 0,
-                openTrades: 3,
-                realizedPl: -1983.78,
-                unrealizedPl: 2.6319
+                account: {
+                    currency: "USD",
+                    accountId: 7442890,
+                    balance: 110410.5028,
+                    marginAvailable: 110394.9676,
+                    marginCallMarginUsed: 18.1671,
+                    realizedPL: -1983.78,
+                    unrealizedPL: 2.6319
+                }
             });
 
         $httpBackend
@@ -45,9 +43,9 @@ describe("accountsService", function () {
             .respond([
                 {
                     displayName: "EUR/USD",
-                    instrument: "EUR_USD",
-                    maxTradeUnits: 10000000,
-                    pip: "0.0001"
+                    name: "EUR_USD",
+                    maximumOrderUnits: "100000000",
+                    pipLocation: -4
                 }
             ]);
 
@@ -68,20 +66,15 @@ describe("accountsService", function () {
             }).then(function () {
                 var account = accountsService.getAccount();
 
-                assert.equal("USD", account.accountCurrency);
+                assert.equal("USD", account.currency);
                 assert.equal("7442890", account.accountId);
-                assert.equal("Primary", account.accountName);
                 assert.equal(110410.5028, account.balance);
-                assert.equal(110394.9676, account.marginAvail);
-                assert.equal(0.05, account.marginRate);
-                assert.equal(18.1671, account.marginUsed);
-                assert.equal(0, account.openOrders);
-                assert.equal(3, account.openTrades);
-                assert.equal(-1983.78, account.realizedPl);
-                assert.equal(2.6319, account.unrealizedPl);
+                assert.equal(110394.9676, account.marginAvailable);
+                assert.equal(18.1671, account.marginCallMarginUsed);
+                assert.equal(-1983.78, account.realizedPL);
+                assert.equal(2.6319, account.unrealizedPL);
                 assert.isDefined(account.timestamp);
-                assert.equal(0.0023837406163863604, account.unrealizedPlPerc);
-                assert.equal(110413.1347, account.netAssetValue);
+                assert.equal(0.0023837406163863604, account.unrealizedPLPercent);
             });
             $httpBackend.flush();
         });

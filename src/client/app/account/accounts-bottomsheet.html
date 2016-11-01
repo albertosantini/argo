@@ -4,9 +4,9 @@
         <md-list-item ng-repeat="account in vm.accounts">
             <md-button aria-label="{{account.accountName}}"
                 ng-click="vm.onAccountClick($index)">
-                <span>{{ account.accountName }}</span>
-                <span>{{ account.accountId }}</span>
-                <span>{{ account.accountCurrency }}</span>
+                <!-- <span>{{ account.accountName }}</span> -->
+                <span>{{ account.id }}</span>
+                <!-- <span>{{ account.accountCurrency }}</span> -->
             </md-button>
         </md-list-item>
     </md-list>

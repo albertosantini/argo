@@ -63,16 +63,18 @@
                 pips = account.pips;
 
             trades.forEach(function (trade, index) {
-                var current;
+                var current,
+                    side;
 
                 if (trade.instrument === tick.instrument) {
+                    side = trade.currentUnits > 0 ? "buy" : "sell";
 
-                    if (trade.side === "buy") {
+                    if (side === "buy") {
                         current = tick.bid;
                         trades[index].profitPips =
                             ((current - trade.price) / pips[trade.instrument]);
                     }
-                    if (trade.side === "sell") {
+                    if (side === "sell") {
                         current = tick.ask;
                         trades[index].profitPips =
                             ((trade.price - current) / pips[trade.instrument]);

@@ -33,7 +33,9 @@
 
             ws.onmessage = function (event) {
                 var data,
+                    isTick,
                     tick,
+                    isTransaction,
                     transaction,
                     refreshPlugins;
 
@@ -41,17 +43,25 @@
                     try {
                         data = angular.fromJson(event.data);
 
-                        tick = data.tick;
-                        transaction = data.transaction;
+                        isTick = data.closeoutAsk && data.closeoutBid;
+                        isTransaction = data.accountBalance;
                         refreshPlugins = data.refreshPlugins;
 
-                        if (tick) {
+                        if (isTick) {
+                            tick = {
+                                time: data.time,
+                                instrument: data.instrument,
+                                ask: data.closeoutAsk,
+                                bid: data.closeoutBid
+                            };
+
                             quotesService.updateTick(tick);
                             tradesService.updateTrades(tick);
                             ordersService.updateOrders(tick);
                         }
 
-                        if (transaction) {
+                        if (isTransaction) {
+                            transaction = data;
                             activityService.addActivity(transaction);
 
                             tradesService.refresh();

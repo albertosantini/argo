@@ -26,15 +26,8 @@
                 exps[legs[0]] = exps[legs[0]] || 0;
                 exps[legs[1]] = exps[legs[1]] || 0;
 
-                if (trade.side === "buy") {
-                    exps[legs[0]] += trade.units;
-                    exps[legs[1]] -= trade.units * trade.price;
-                }
-                if (trade.side === "sell") {
-                    exps[legs[0]] -= trade.units;
-                    exps[legs[1]] += trade.units * trade.price;
-                }
-
+                exps[legs[0]] += parseInt(trade.currentUnits, 10);
+                exps[legs[1]] -= trade.currentUnits * trade.price;
             });
 
             Object.keys(exps).forEach(function (exp) {

@@ -51,11 +51,10 @@
                     type: order.type,
                     expiry: order.expiry,
                     price: order.price,
-                    lowerBound: order.lowerBound,
-                    upperBound: order.upperBound,
-                    stopLoss: order.stopLoss,
-                    takeProfit: order.takeProfit,
-                    trailingStop: order.trailingStop
+                    priceBound: order.lowerBound || order.upperBound,
+                    stopLossOnFill: order.stopLossOnFill,
+                    takeProfitOnFill: order.takeProfitOnFill,
+                    trailingStopLossOnFill: order.trailingStopLossOnFill
                 }).then(function (trade) {
                     deferred.resolve(trade.data);
                 });

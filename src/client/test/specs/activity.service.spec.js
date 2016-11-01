@@ -25,27 +25,25 @@ describe("activityService", function () {
 
         $httpBackend
             .when("POST", api)
-            .respond({
-                "data": [
-                    {
+            .respond([
+                {
+                    "id": 176403879,
+                    "accountId": 6765103,
+                    "time": "2014-04-07T18:31:05Z",
+                    "type": "MARKET_ORDER_CREATE",
+                    "instrument": "EUR_USD",
+                    "units": 2,
+                    "side": "buy",
+                    "price": 1.25325,
+                    "pl": 0,
+                    "interest": 0,
+                    "accountBalance": 100000,
+                    "tradeOpened": {
                         "id": 176403879,
-                        "accountId": 6765103,
-                        "time": "2014-04-07T18:31:05Z",
-                        "type": "MARKET_ORDER_CREATE",
-                        "instrument": "EUR_USD",
-                        "units": 2,
-                        "side": "buy",
-                        "price": 1.25325,
-                        "pl": 0,
-                        "interest": 0,
-                        "accountBalance": 100000,
-                        "tradeOpened": {
-                            "id": 176403879,
-                            "units": 2
-                        }
+                        "units": 2
                     }
-                ]
-            });
+                }
+            ]);
 
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
@@ -57,9 +55,7 @@ describe("activityService", function () {
 
     describe("getActivities", function () {
         it("test", function () {
-            activityService.getActivities().then(function (response) {
-                var activities = response.data;
-
+            activityService.getActivities().then(function (activities) {
                 assert.lengthOf(activities, 1);
 
                 assert.equal("176403879", activities[0].id);

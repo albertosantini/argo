@@ -14,14 +14,12 @@ describe("Exposure", function () {
                 return [
                     {
                         instrument: "EUR_USD",
-                        side: "buy",
-                        units: 100,
+                        currentUnits: 100,
                         price: 1.2345
                     },
                     {
                         instrument: "GPB_USD",
-                        side: "buy",
-                        units: 200,
+                        currentUnits: 200,
                         price: 1.4678
                     }
                 ];

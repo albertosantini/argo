@@ -53,6 +53,8 @@
 
                 if (tick && data && lastHistUpdate !== nextHistUpdate) {
                     data.shift();
+                    tick.bid = parseFloat(tick.bid);
+                    tick.ask = parseFloat(tick.ask);
                     midPrice = (tick.bid + tick.ask) / 2;
                     feedVolume = 0;
                     data.push({
@@ -73,6 +75,8 @@
                         feedVolume += 1;
                     }
 
+                    tick.bid = parseFloat(tick.bid);
+                    tick.ask = parseFloat(tick.ask);
                     midPrice = (tick.bid + tick.ask) / 2;
 
                     lastData = data && data[data.length - 1];
@@ -332,8 +336,8 @@
                     svg.append("g").attr("class", "tradearrow");
                     myTrades = scope.trades.map(function (trade) {
                         return {
-                            date: new Date(trade.time),
-                            type: trade.side,
+                            date: new Date(trade.openTime),
+                            type: trade.currentUnits > 0 ? "buy" : "sell",
                             price: trade.price
                         };
                     });

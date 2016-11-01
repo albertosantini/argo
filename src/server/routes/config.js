@@ -13,7 +13,6 @@ exports.streamUrl = "/stream";
 exports.environment = process.env.OANDA_ENVIRONMENT || "practice";
 exports.accessToken = process.env.OANDA_TOKEN || "ACCESS_TOKEN";
 exports.accountId = process.env.OANDA_ACCOUNTID || "1234567890";
-exports.sessionId = process.env.OANDA_SESSIONID || "1";
 
 exports.instruments = [
     "EUR_USD",

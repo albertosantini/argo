@@ -49,14 +49,12 @@
                 }
 
                 if (!accounts.length) {
-                    angular.merge(account, response.data);
+                    angular.merge(account, response.data.account);
 
                     account.timestamp = new Date();
 
-                    account.unrealizedPlPerc =
-                        account.unrealizedPl / account.balance * 100;
-                    account.netAssetValue =
-                        account.balance + account.unrealizedPl;
+                    account.unrealizedPLPercent =
+                        account.unrealizedPL / account.balance * 100;
 
                     if (!account.instruments) {
                         $http.post("/api/instruments", {
@@ -67,7 +65,8 @@
                             account.instruments = instruments.data;
                             account.pips = {};
                             angular.forEach(account.instruments, function (i) {
-                                account.pips[i.instrument] = i.pip;
+                                account.pips[i.name] =
+                                    Math.pow(10, i.pipLocation);
                             });
                         });
                     }
