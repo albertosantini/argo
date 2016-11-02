@@ -107,8 +107,6 @@
                 fixed = ((pips[vm.selectedInstrument] + "")
                     .match(/0/g) || []).length;
 
-
-
             $mdDialog.hide(action);
 
             vm.step = parseFloat(pips[vm.selectedInstrument]);
@@ -123,7 +121,7 @@
             order.type = vm.type;
 
             if (order.type === "LIMIT") {
-                order.price = vm.quote;
+                order.price = vm.quote + "";
                 order.expiry = new Date(Date.now() + vm.selectedExpire);
             }
 
