@@ -36,7 +36,7 @@
                         shortUnits = position.short &&
                             parseInt(position.short.units, 10);
                         units = longUnits || shortUnits;
-                        side = position.longUnits > 0 ? "buy" : "sell";
+                        side = units > 0 ? "buy" : "sell";
                         avgPrice = (longUnits && position.long.averagePrice)
                              || (shortUnits && position.short.averagePrice);
 
