@@ -31,6 +31,9 @@
                 }).then(function (res) {
                     trades.length = 0;
                     angular.extend(trades, res.data);
+                    trades.forEach(function (trade) {
+                        trade.side = trade.currentUnits > 0 ? "buy" : "sell";
+                    });
                 });
             });
         }
