@@ -7,8 +7,8 @@
             <div flex="45" layout="column" layout-margin>
 
                 <md-radio-group ng-model="vm.type" layout layout-align="space-between center">
-                      <md-radio-button value="market">Market Order</md-radio-button>
-                      <md-radio-button value="limit">Limit Order</md-radio-button>
+                      <md-radio-button value="MARKET">Market Order</md-radio-button>
+                      <md-radio-button value="LIMIT">Limit Order</md-radio-button>
                 </md-radio-group>
 
                 <md-radio-group ng-model="vm.side" layout layout-align="space-between center">
@@ -32,12 +32,12 @@
 
                 <div layout layout-align="space-between center">
                     <span>Quote</span>
-                    <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'market'" flex="30"
+                    <input type="number" ng-model="vm.quote" ng-disabled="vm.type == 'MARKET'" flex="30"
                         step="{{ vm.step }}" aria-label="lower" aria-controls="quote-slider">
                 </div>
 
                 <md-input-container layout layout-align="center center">
-                    <md-select ng-show="vm.type == 'limit'"
+                    <md-select ng-show="vm.type == 'LIMIT'"
                         ng-model="vm.selectedExpire" placeholder="Expires">
                         <md-option ng-value="expire.value" ng-repeat="expire in vm.expires">
                             {{ expire.label }}
