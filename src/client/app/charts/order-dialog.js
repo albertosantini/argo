@@ -103,9 +103,7 @@
         vm.answer = function (action) {
             var order = {},
                 isBuy = vm.side === "buy",
-                isMeasurePips = vm.measure === "pips",
-                fixed = ((pips[vm.selectedInstrument] + "")
-                    .match(/0/g) || []).length;
+                isMeasurePips = vm.measure === "pips";
 
             $mdDialog.hide(action);
 
@@ -175,13 +173,8 @@
             }
             if (vm.isTrailingStop) {
                 order.trailingStopLossOnFill = {};
-                if (isBuy) {
-                    order.trailingStopLossOnFill.distance =
-                        (vm.quote - vm.step * vm.trailingStop).toFixed(fixed);
-                } else {
-                    order.trailingStopLossOnFill.distance =
-                        (vm.quote + vm.step * vm.trailingStop).toFixed(fixed);
-                }
+                order.trailingStopLossOnFill.distance =
+                    vm.step * vm.trailingStop + "";
             }
 
             if (action === "submit") {
