@@ -1,3 +1,28 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/albertosantini/argo/compare/v3.10.0...v4.0.0) (2016-11-03)
+
+
+### Bug Fixes
+
+* **api:** fix trailing stop in putOrder ([85d3718](https://github.com/albertosantini/argo/commit/85d3718))
+* **docs:** add index.md to docs in the root ([e66b515](https://github.com/albertosantini/argo/commit/e66b515))
+* **docs:** fix search in the docs ([5390e73](https://github.com/albertosantini/argo/commit/5390e73))
+* **docs:** move README.md to index.md ([8c430dd](https://github.com/albertosantini/argo/commit/8c430dd))
+* **order dialog:** convert price to string ([7fb79ae](https://github.com/albertosantini/argo/commit/7fb79ae))
+* **order dialog:** fix MARKET and LIMIT values ([d331438](https://github.com/albertosantini/argo/commit/d331438))
+* **order dialog:** fix trailing stop option ([a5cfe62](https://github.com/albertosantini/argo/commit/a5cfe62))
+* **positions:** use units to get the side ([697406f](https://github.com/albertosantini/argo/commit/697406f))
+* **trades:** add side to the list of trades ([691de9f](https://github.com/albertosantini/argo/commit/691de9f))
+
+
+### Features
+
+* **docs:** add Read the Docs ([576feaa](https://github.com/albertosantini/argo/commit/576feaa))
+* **node:** Require Node.js 6.x ([d2b8432](https://github.com/albertosantini/argo/commit/d2b8432))
+* **v20:** support rest-v20 calls ([178db02](https://github.com/albertosantini/argo/commit/178db02))
+
+
+
 <a name="3.10.0"></a>
 # [3.10.0](https://github.com/albertosantini/argo/compare/v3.9.0...v3.10.0) (2016-10-03)
 
