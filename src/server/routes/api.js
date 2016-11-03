@@ -298,7 +298,7 @@ function putOrder(req, response) {
                 upperBound: req.body.upperBound,
                 stopLossOnFill: req.body.stopLossOnFill,
                 takeProfitOnFill: req.body.takeProfitOnFill,
-                trailingStop: req.body.trailingStop
+                trailingStopLossOnFill: req.body.trailingStopLossOnFill
             }
         },
         "headers": {
