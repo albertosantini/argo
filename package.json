@@ -42,6 +42,7 @@
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
         "start": "node src/server/app.js",
+        "debug": "node --inspect src/server/app.js",
         "electron": "electron .",
         "lint": "eslint main.js karma.conf.js src/**/*.js",
         "karma": "karma start --single-run",
