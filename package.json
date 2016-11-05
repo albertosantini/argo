@@ -39,7 +39,7 @@
         "techan": "~0.8.0"
     },
     "optionalDependencies": {
-        "electron": "~1.4.5",
+        "electron": "~1.4.5"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
