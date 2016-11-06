@@ -63,7 +63,12 @@ function getAccounts(req, response) {
             "Authorization": "Bearer " + req.body.token
         }
     }, function (err, res, body) {
-        processApi("getAccounts", err, body, response, "accounts");
+        if (res.statusCode !== 200) {
+            processApiError("getAccounts", null,
+                res.statusCode, res.statusMessage, response);
+        } else {
+            processApi("getAccounts", err, body, response, "accounts");
+        }
     });
 }
 
