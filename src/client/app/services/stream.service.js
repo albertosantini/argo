@@ -44,7 +44,7 @@
                         data = angular.fromJson(event.data);
 
                         isTick = data.closeoutAsk && data.closeoutBid;
-                        isTransaction = data.accountBalance;
+                        isTransaction = data.accountID;
                         refreshPlugins = data.refreshPlugins;
 
                         if (isTick) {
