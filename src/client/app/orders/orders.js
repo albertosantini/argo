@@ -32,11 +32,7 @@
             $mdDialog.show(confirm).then(function () {
                 ordersService.closeOrder(id).then(function (order) {
                     var message = "Closed " +
-                        order.side + " " +
-                        order.instrument +
-                        " #" + order.id +
-                        " @" + order.price +
-                        " for " + order.units;
+                        " #" + order.orderCancelTransaction.orderID;
 
                     toastService.show(message);
                 });
