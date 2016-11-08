@@ -299,8 +299,7 @@ function putOrder(req, response) {
                 type: req.body.type,
                 expiry: req.body.expiry,
                 price: req.body.price,
-                lowerBound: req.body.lowerBound,
-                upperBound: req.body.upperBound,
+                priceBound: req.body.priceBound,
                 stopLossOnFill: req.body.stopLossOnFill,
                 takeProfitOnFill: req.body.takeProfitOnFill,
                 trailingStopLossOnFill: req.body.trailingStopLossOnFill
