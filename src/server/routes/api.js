@@ -297,7 +297,7 @@ function putOrder(req, response) {
                 units: req.body.units,
                 side: req.body.side,
                 type: req.body.type,
-                expiry: req.body.expiry,
+                gtdTime: req.body.gtdTime,
                 price: req.body.price,
                 priceBound: req.body.priceBound,
                 stopLossOnFill: req.body.stopLossOnFill,
