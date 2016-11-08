@@ -21,9 +21,9 @@
             <a flex="10" href="" ng-click="$ctrl.closeOrder($event, order.id)">{{ order.id }}</a>
             <span flex="10">{{ order.instrument }}</span>
             <span flex="5">{{ order.units | number }}</span>
-            <span flex="5">{{ order.stopLoss }}</span>
-            <span flex="5">{{ order.takeProfit }}</span>
-            <span flex="5">{{ order.trailingStop }}</span>
+            <span flex="5">{{ order.stopLossOnFill.price || order.type }}</span>
+            <span flex="5">{{ order.takeProfitOnFill.price }}</span>
+            <span flex="5">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</span>
             <span flex="10">{{ order.price | number:4 }}</span>
             <span flex="10">{{ order.current | number:4 }}</span>
             <span flex="5">{{ order.distance | number:1 }}</span>

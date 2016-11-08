@@ -89,10 +89,10 @@
 
                 if (order.instrument === tick.instrument) {
 
-                    if (order.side === "buy") {
+                    if (order.units > 0) {
                         current = tick.ask;
                     }
-                    if (order.side === "sell") {
+                    if (order.units < 0) {
                         current = tick.bid;
                     }
 
