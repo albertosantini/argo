@@ -120,7 +120,7 @@
 
             if (order.type === "LIMIT") {
                 order.price = vm.quote + "";
-                order.expiry = new Date(Date.now() + vm.selectedExpire);
+                order.gtdTime = new Date(Date.now() + vm.selectedExpire);
             }
 
             if (isMeasurePips) {
@@ -195,7 +195,9 @@
                         toastService.show(message);
                     } else {
                         opened = transaction.orderFillTransaction ||
-                            transaction.orderFillTransaction;
+                            transaction.orderFillTransaction ||
+                            transaction.orderCreateTransaction;
+
                         side = opened.units > 0 ? "buy" : "sell";
                         message = side + " " +
                             opened.instrument +
