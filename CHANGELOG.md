@@ -1,3 +1,26 @@
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/albertosantini/argo/compare/v4.0.0...v4.1.0) (2016-11-08)
+
+
+### Bug Fixes
+
+* **api accounts:** fix wrong token ([11267c4](https://github.com/albertosantini/argo/commit/11267c4))
+* **electron:** move electron as optional dep ([5214532](https://github.com/albertosantini/argo/commit/5214532))
+* **order dialog:** fix limit order ([dfb3df0](https://github.com/albertosantini/argo/commit/dfb3df0))
+* **orders:** fix close message ([de1b716](https://github.com/albertosantini/argo/commit/de1b716))
+* **orders:** fix details of the orders view ([2b3b16d](https://github.com/albertosantini/argo/commit/2b3b16d))
+* **package.json:** fix electron dep ([bc4a2b0](https://github.com/albertosantini/argo/commit/bc4a2b0))
+* **putOrder:** remove lower and upper bound ([ee442ee](https://github.com/albertosantini/argo/commit/ee442ee))
+* **putOrder:** use gtdTime as expire time ([26dd654](https://github.com/albertosantini/argo/commit/26dd654))
+* **stream:** fix isTransaction condition ([3d8d409](https://github.com/albertosantini/argo/commit/3d8d409))
+
+
+### Features
+
+* **debug:** support devtools to debug the server ([417913d](https://github.com/albertosantini/argo/commit/417913d))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/albertosantini/argo/compare/v3.10.0...v4.0.0) (2016-11-03)
 
