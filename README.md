@@ -10,7 +10,7 @@ through the powerful [API][] to develop trading strategies.
 
 ## Installation
 
-[![NPM](https://nodei.co/npm/argo-trding.png?downloads=true&downloadRank=true)](https://nodei.co/npm/argo-trading/)
+[![NPM](https://nodei.co/npm/argo-trading.png?downloads=true&downloadRank=true)](https://nodei.co/npm/argo-trading/)
 [![NPM](https://nodei.co/npm-dl/argo-trading.png)](https://nodei.co/npm/argo-trading/)
 
 After installing [Node.js](https://nodejs.org/) (required), you can install **Argo**.
