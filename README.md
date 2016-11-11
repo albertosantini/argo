@@ -15,8 +15,8 @@ through the powerful [API][] to develop trading strategies.
 
 After installing [Node.js](https://nodejs.org/) (required), you can install **Argo**.
 
-Release 3.x for legacy accounts.
-Release 4.x (or higher) for v20 account.
+- Release 3.x for legacy accounts.
+- Release 4.x (or higher) for v20 accounts.
 
 ```
 $ npm install -g argo-trading
