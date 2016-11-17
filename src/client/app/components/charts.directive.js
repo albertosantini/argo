@@ -334,7 +334,9 @@
 
                     svg.select("g.tradearrow").remove();
                     svg.append("g").attr("class", "tradearrow");
-                    myTrades = scope.trades.map(function (trade) {
+                    myTrades = scope.trades.filter(function (trade) {
+                        return trade.instrument === myInstrument;
+                    }).map(function (trade) {
                         return {
                             date: new Date(trade.openTime),
                             type: trade.currentUnits > 0 ? "buy" : "sell",
