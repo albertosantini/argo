@@ -1,3 +1,14 @@
+<a name="4.1.1"></a>
+## [4.1.1](https://github.com/albertosantini/argo/compare/v4.1.0...v4.1.1) (2016-11-17)
+
+
+### Bug Fixes
+
+* **charts:** filter trades per chart ([afbb965](https://github.com/albertosantini/argo/commit/afbb965))
+* **README:** fix npm badges ([a842001](https://github.com/albertosantini/argo/commit/a842001))
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/albertosantini/argo/compare/v4.0.0...v4.1.0) (2016-11-08)
 
