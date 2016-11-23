@@ -21,7 +21,7 @@
         "node": ">=6"
     },
     "dependencies": {
-        "async": "~2.1.2",
+        "async": "~2.1.4",
         "body-parser": "~1.15.2",
         "express": "~4.14.0",
         "faye-websocket": "~0.11.0",
@@ -35,11 +35,11 @@
         "angular-messages": "~1.5.8",
         "angular-mocks": "~1.5.8",
         "angular-material": "~1.1.1",
-        "d3": "~4.3.0",
+        "d3": "~4.4.0",
         "techan": "~0.8.0"
     },
     "optionalDependencies": {
-        "electron": "~1.4.7"
+        "electron": "~1.4.8"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
