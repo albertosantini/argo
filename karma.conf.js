@@ -7,21 +7,14 @@ module.exports = function (config) {
 
         frameworks: ["mocha", "chai"],
 
-        /*eslint-disable max-len */
         files: [
-            "node_modules/angular/angular.min.js",
-            "node_modules/angular-animate/angular-animate.min.js",
-            "node_modules/angular-aria/angular-aria.min.js",
-            "node_modules/angular-material/angular-material.min.js",
+            "node_modules/angular/angular.js",
 
             "node_modules/angular-mocks/angular-mocks.js",
 
-            "src/client/app/app.module.js",
-            "src/client/app/**/*.js",
-
-            "src/client/test/**/*.spec.js"
+            "src/client/app/**/*.module.js",
+            "src/client/app/**/*.js"
         ],
-        /*eslint-enable max-len */
 
         exclude: [
         ],

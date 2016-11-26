@@ -1,5 +1,6 @@
 env:
     browser: true
+    mocha: true
 
 rules:
     angular/controller-name:
@@ -10,6 +11,9 @@ globals:
     angular: false
     d3: false
     techan: false
+
+    assert: false
+    inject: false
 
 plugins:
     - angular

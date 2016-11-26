@@ -1,0 +1,40 @@
+<md-toolbar layout="row" md-whiteframe="3">
+
+    <div layout="row" layout-sm="column" layout-align="space-around center" flex="95">
+        <a class="logo" href="http://argo.js.org/">
+            <img alt="Argo" src="img/logo.png">
+        </a>
+
+        <span hide-sm>Argo Interface for OANDA Trading Platform</span>
+
+        <div ng-show="$ctrl.token || $ctrl.environment">
+            Active environment: {{ $ctrl.environment }}
+        </div>
+
+        <div ng-show="$ctrl.accountId">
+            Account Id: {{ $ctrl.accountId }}
+        </div>
+
+        <div ng-hide="$ctrl.token">
+            Please, insert the access token.
+        </div>
+
+        <div layout-sm="row">
+            <md-button ng-show="$ctrl.accountId" class="md-raised md-accent"
+                ng-click="$ctrl.openSettingsDialog($event)">
+                Settings
+            </md-button>
+
+            <md-button class="md-raised md-accent" ng-click="$ctrl.openTokenDialog($event)">
+                Token
+            </md-button>
+        </div>
+    </div>
+
+
+    <div layout="row" layout-align="space-around center" flex="5">
+        <md-progress-circular class="md-accent" ng-if="$ctrl.isLoadingView"
+            md-diameter="32" md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+</md-toolbar>
