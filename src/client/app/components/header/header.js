@@ -96,7 +96,8 @@
 
         function openSettingsDialog(event) {
             sessionService.isLogged().then(function (credentials) {
-                var allInstrs = accountsService.getAccount().instruments;
+                var allInstrs = accountsService.getAccount().instruments,
+                    scope;
 
                 angular.forEach(allInstrs, function (instrument) {
                     if (!instrs.hasOwnProperty(instrument.name)) {
@@ -104,11 +105,14 @@
                     }
                 });
 
+                scope = angular.extend($rootScope.$new(true), {
+                    instruments: instrs
+                });
+
                 $mdDialog.show({
-                    controller: "SettingsDialog",
-                    controllerAs: "vm",
-                    templateUrl: "app/components/header/settings-dialog.html",
-                    locals: {instruments: instrs},
+                    template: "<settings-dialog aria-label='Settings Dialog' instruments='instruments'></settings-dialog>",
+                    scope: scope,
+                    preserveScope: true,
                     targetEvent: event
                 }).then(function (settingsInfo) {
                     var instruments;

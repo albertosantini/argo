@@ -18,6 +18,7 @@
             "components.positions",
             "components.quotes",
             "components.session",
+            "components.settings-dialog",
             "components.sparkline",
             "components.streaming",
             "components.toast",
