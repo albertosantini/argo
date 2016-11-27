@@ -38,9 +38,7 @@
 
         function openTokenDialog(event) {
             $mdDialog.show({
-                controller: "TokenDialog",
-                controllerAs: "vm",
-                templateUrl: "app/components/header/token-dialog.html",
+                template: "<token-dialog aria-label='Token Dialog'></token-dialog>",
                 targetEvent: event
             }).then(function (tokenInfo) {
                 if (tokenInfo) {

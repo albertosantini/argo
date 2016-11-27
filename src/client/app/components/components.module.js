@@ -20,6 +20,7 @@
             "components.sparkline",
             "components.streaming",
             "components.toast",
+            "components.token-dialog",
             "components.trades"
         ]);
 

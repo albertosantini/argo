@@ -1,0 +1,24 @@
+<md-dialog-content layout="column" layout-align="center center" layout-margin layout-padding>
+    <md-subheader class="md-sticky-no-effect">Token Dialog</md-subheader>
+
+    <md-radio-group layout="row" ng-model="$ctrl.environment">
+        <md-radio-button value="practice">Practice</md-radio-button>
+        <md-radio-button value="live">Live</md-radio-button>
+    </md-radio-group>
+
+    <md-input-container ng-if="$ctrl.environment === 'practice' || $ctrl.environment === 'live'">
+        <label>Token</label>
+        <input ng-model="$ctrl.token">
+    </md-input-container>
+
+</md-dialog-content>
+
+<md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="$ctrl.answer()">
+        Reset
+    </md-button>
+    <md-button ng-click="$ctrl.answer({'environment': $ctrl.environment, 'token': $ctrl.token})" class="md-primary">
+        Ok
+    </md-button>
+</md-dialog-actions>

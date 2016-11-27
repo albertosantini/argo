@@ -2,8 +2,11 @@
 
 (function () {
     angular
-        .module("components.header")
-        .controller("TokenDialog", TokenDialog);
+        .module("components.token-dialog")
+        .component("tokenDialog", {
+            controller: TokenDialog,
+            templateUrl: "app/components/token-dialog/token-dialog.html"
+        });
 
     TokenDialog.$inject = ["$mdDialog"];
     function TokenDialog($mdDialog) {
