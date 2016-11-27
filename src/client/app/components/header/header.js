@@ -54,11 +54,14 @@
                     environment: vm.environment,
                     token: vm.token
                 }).then(function (accounts) {
+                    var scope = angular.extend($rootScope.$new(true), {
+                        accounts: accounts
+                    });
+
                     $mdBottomSheet.show({
-                        controller: "AccountsBottomSheet",
-                        controllerAs: "vm",
-                        templateUrl: "app/components/account/accounts-bottomsheet.html",
-                        locals: {accounts: accounts},
+                        template: "<accounts-bottomsheet accounts='accounts'></accounts-bottomsheet>",
+                        scope: scope,
+                        preserveScope: true,
                         targetEvent: event
                     }).then(function (accountSelected) {
                         vm.accountId = accountSelected.id;

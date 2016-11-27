@@ -4,6 +4,7 @@
     angular
         .module("components", [
             "components.account",
+            "components.accounts-bottomsheet",
             "components.activity",
             "components.charts",
             "components.dualcolor",

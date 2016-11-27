@@ -1,9 +1,9 @@
 <md-bottom-sheet class="md-list md-has-header" style="position: fixed">
     <md-subheader>Accounts list</md-subheader>
     <md-list>
-        <md-list-item ng-repeat="account in vm.accounts">
+        <md-list-item ng-repeat="account in $ctrl.accounts">
             <md-button aria-label="{{account.accountName}}"
-                ng-click="vm.onAccountClick($index)">
+                ng-click="$ctrl.onAccountClick($index)">
                 <!-- <span>{{ account.accountName }}</span> -->
                 <span>{{ account.id }}</span>
                 <!-- <span>{{ account.accountCurrency }}</span> -->
