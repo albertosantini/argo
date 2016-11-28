@@ -10,7 +10,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         frame: false,
         height: 800,
-        icon: "src/client/favicon.ico",
+        icon: "src/client/img/favicon.ico",
         width: 1450,
         webPreferences: {
             nodeIntegration: false
