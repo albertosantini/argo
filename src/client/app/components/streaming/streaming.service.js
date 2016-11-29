@@ -5,10 +5,10 @@
         .module("components.streaming")
         .factory("streamService", streamService);
 
-    streamService.$inject = ["$timeout", "$http",
+    streamService.$inject = ["$timeout", "$http", "toastService",
         "quotesService", "activityService", "tradesService",
         "ordersService", "accountsService", "pluginsService"];
-    function streamService($timeout, $http,
+    function streamService($timeout, $http, toastService,
             quotesService, activityService, tradesService,
             ordersService, accountsService, pluginsService) {
         var service = {
@@ -23,8 +23,10 @@
                 accessToken: data.accessToken,
                 accountId: data.accountId,
                 instruments: data.instruments
-            }).success(function () {
+            }).then(function () {
                 getStream();
+            }).catch(function (err) {
+                toastService.show(err);
             });
         }
 
