@@ -3,12 +3,12 @@
 (function () {
     angular
         .module("components.streaming")
-        .factory("streamService", streamService);
+        .factory("streamingService", streamingService);
 
-    streamService.$inject = ["$timeout", "$http", "toastService",
+    streamingService.$inject = ["$timeout", "$http", "toastService",
         "quotesService", "activityService", "tradesService",
         "ordersService", "accountsService", "pluginsService"];
-    function streamService($timeout, $http, toastService,
+    function streamingService($timeout, $http, toastService,
             quotesService, activityService, tradesService,
             ordersService, accountsService, pluginsService) {
         var service = {

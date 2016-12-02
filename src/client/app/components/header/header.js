@@ -10,9 +10,9 @@
 
     Header.$inject = ["$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
         "toastService", "accountsService", "sessionService",
-        "quotesService", "streamService"];
+        "quotesService", "streamingService"];
     /*eslint-disable max-len */
-    function Header($window, $rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamService) {
+    function Header($window, $rootScope, $mdDialog, $mdBottomSheet, toastService, accountsService, sessionService, quotesService, streamingService) {
     /*eslint-enable */
         var vm = this,
             instrsStorage = $window.localStorage.getItem("argo.instruments"),
@@ -80,7 +80,7 @@
                             var instruments = accountsService
                                 .setStreamingInstruments(instrs);
 
-                            streamService.startStream({
+                            streamingService.startStream({
                                 environment: vm.environment,
                                 accessToken: vm.token,
                                 accountId: vm.accountId,
@@ -125,7 +125,7 @@
 
                         quotesService.reset();
 
-                        streamService.startStream({
+                        streamingService.startStream({
                             environment: credentials.environment,
                             accessToken: credentials.token,
                             accountId: credentials.accountId,
