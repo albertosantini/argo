@@ -5,9 +5,8 @@
         .module("components.orders")
         .factory("ordersService", ordersService);
 
-    ordersService.$inject = ["$http", "$q",
-        "sessionService", "accountsService"];
-    function ordersService($http, $q, sessionService, accountsService) {
+    ordersService.$inject = ["$http", "sessionService", "accountsService"];
+    function ordersService($http, sessionService, accountsService) {
         var orders = [],
             service = {
                 getOrders: getOrders,
@@ -38,10 +37,8 @@
         }
 
         function putOrder(order) {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/order", {
+            return sessionService.isLogged().then(function (credentials) {
+                return $http.post("/api/order", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
@@ -56,28 +53,26 @@
                     takeProfitOnFill: order.takeProfitOnFill,
                     trailingStopLossOnFill: order.trailingStopLossOnFill
                 }).then(function (trade) {
-                    deferred.resolve(trade.data);
+                    return trade.data;
+                }).catch(function (err) {
+                    return err.data;
                 });
             });
-
-            return deferred.promise;
         }
 
         function closeOrder(id) {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/closeorder", {
+            return sessionService.isLogged().then(function (credentials) {
+                return $http.post("/api/closeorder", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
                     id: id
                 }).then(function (order) {
-                    deferred.resolve(order.data);
+                    return order.data;
+                }).catch(function (err) {
+                    return err.data;
                 });
             });
-
-            return deferred.promise;
         }
 
         function updateOrders(tick) {

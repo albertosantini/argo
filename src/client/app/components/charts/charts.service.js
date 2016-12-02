@@ -5,8 +5,8 @@
         .module("components.charts")
         .factory("chartsService", chartsService);
 
-    chartsService.$inject = ["$http", "$q", "sessionService"];
-    function chartsService($http, $q, sessionService) {
+    chartsService.$inject = ["$http", "sessionService"];
+    function chartsService($http, sessionService) {
         var service = {
             getHistQuotes: getHistQuotes
         };
@@ -14,9 +14,7 @@
         return service;
 
         function getHistQuotes(opt) {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
+            return sessionService.isLogged().then(function (credentials) {
                 var instrument = opt && opt.instrument || "EUR_USD",
                     granularity = opt && opt.granularity || "M5",
                     count = opt && opt.count || 251,
@@ -24,7 +22,7 @@
                         || "America/New_York",
                     dailyAlignment = opt && opt.dailyAlignment || "0";
 
-                $http.post("/api/candles", {
+                return $http.post("/api/candles", {
                     environment: credentials.environment,
                     token: credentials.token,
                     instrument: instrument,
@@ -33,11 +31,11 @@
                     alignmentTimezone: alignmentTimezone,
                     dailyAlignment: dailyAlignment
                 }).then(function (candles) {
-                    deferred.resolve(candles.data);
+                    return candles.data;
+                }).catch(function (err) {
+                    return err.data;
                 });
             });
-
-            return deferred.promise;
         }
 
     }

@@ -5,8 +5,8 @@
         .module("components.positions")
         .factory("positionsService", positionsService);
 
-    positionsService.$inject = ["$http", "$q", "sessionService"];
-    function positionsService($http, $q, sessionService) {
+    positionsService.$inject = ["$http", "sessionService"];
+    function positionsService($http, sessionService) {
         var service = {
             getPositions: getPositions
         };
@@ -14,10 +14,8 @@
         return service;
 
         function getPositions() {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/positions", {
+            return sessionService.isLogged().then(function (credentials) {
+                return $http.post("/api/positions", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
@@ -47,11 +45,12 @@
                             avgPrice: avgPrice
                         });
                     });
-                    deferred.resolve(data);
+
+                    return data;
+                }).catch(function (err) {
+                    return err.data;
                 });
             });
-
-            return deferred.promise;
         }
 
     }

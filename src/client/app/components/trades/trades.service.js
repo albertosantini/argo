@@ -5,9 +5,8 @@
         .module("components.trades")
         .factory("tradesService", tradesService);
 
-    tradesService.$inject = ["$http", "$q",
-        "sessionService", "accountsService"];
-    function tradesService($http, $q, sessionService, accountsService) {
+    tradesService.$inject = ["$http", "sessionService", "accountsService"];
+    function tradesService($http, sessionService, accountsService) {
         var trades = [],
             service = {
                 getTrades: getTrades,
@@ -39,26 +38,18 @@
         }
 
         function closeTrade(id) {
-            var deferred = $q.defer();
-
-            sessionService.isLogged().then(function (credentials) {
-                $http.post("/api/closetrade", {
+            return sessionService.isLogged().then(function (credentials) {
+                return $http.post("/api/closetrade", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
                     id: id
                 }).then(function (order) {
-                    if (order.data.code) {
-                        deferred.reject(order.data);
-                    } else {
-                        deferred.resolve(order.data);
-                    }
-                }, function (err) {
-                    deferred.reject(err.data);
+                    return order.data;
+                }).catch(function (err) {
+                    return err.data;
                 });
             });
-
-            return deferred.promise;
         }
 
         function updateTrades(tick) {
