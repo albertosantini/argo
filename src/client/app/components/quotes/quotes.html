@@ -3,9 +3,9 @@
         <md-item ng-repeat="(instrument, quote) in $ctrl.quotes" layout="row" layout-align="space-between center">
             <b flex="25">{{ instrument }}</b>
             <sl-chart flex="20" instrument="instrument" data="quote" length="100"></sl-chart>
-            <span flex="20" argo-highlighter="quote.bid">{{ quote.bid }}</span>
-            <span flex="20" argo-highlighter="quote.ask">{{ quote.ask }}</span>
-            <span flex="15" argo-highlighter="quote.spread">{{ quote.spread }}</span>
+            <span flex="20" highlighter="quote.bid">{{ quote.bid }}</span>
+            <span flex="20" highlighter="quote.ask">{{ quote.ask }}</span>
+            <span flex="15" highlighter="quote.spread">{{ quote.spread }}</span>
         </md-item>
     </md-list>
 </md-content>

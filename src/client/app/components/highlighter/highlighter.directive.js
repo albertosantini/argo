@@ -3,10 +3,10 @@
 (function () {
     angular
         .module("components.highlighter")
-        .directive("argoHighlighter", argoHighlighter);
+        .directive("highlighter", highlighter);
 
-    argoHighlighter.$inject = ["$timeout"];
-    function argoHighlighter($timeout) {
+    highlighter.$inject = ["$timeout"];
+    function highlighter($timeout) {
         var directive = {
             restrict: "A",
             link: link
@@ -15,7 +15,7 @@
         return directive;
 
         function link(scope, element, attrs) {
-            scope.$watch(attrs.argoHighlighter, function (newValue, oldValue) {
+            scope.$watch(attrs.highlighter, function (newValue, oldValue) {
                 var newclass;
 
                 if (newValue !== oldValue) {
