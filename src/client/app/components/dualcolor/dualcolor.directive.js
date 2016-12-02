@@ -3,10 +3,10 @@
 (function () {
     angular
         .module("components.dualcolor")
-        .directive("argoDualColor", argoDualColor);
+        .directive("dualColor", dualColor);
 
-    argoDualColor.$inject = [];
-    function argoDualColor() {
+    dualColor.$inject = [];
+    function dualColor() {
         var directive = {
             restrict: "A",
             link: link
@@ -15,7 +15,7 @@
         return directive;
 
         function link(scope, element, attrs) {
-            scope.$watch(attrs.argoDualColor, function (newValue, oldValue) {
+            scope.$watch(attrs.dualColor, function (newValue, oldValue) {
                 if (newValue !== oldValue) {
                     if (newValue > 0) {
                         element.removeClass("highlight-red");
