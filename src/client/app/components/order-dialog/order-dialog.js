@@ -3,12 +3,18 @@
 (function () {
     angular
         .module("components.charts")
-        .controller("OrderDialog", OrderDialog);
+        .component("orderDialog", {
+            controller: OrderDialog,
+            templateUrl: "app/components/order-dialog/order-dialog.html",
+            bindings: {
+                params: "<"
+            }
+        });
 
-    OrderDialog.$inject = ["$mdDialog", "toastService", "params",
+    OrderDialog.$inject = ["$mdDialog", "toastService",
         "quotesService", "ordersService", "accountsService"];
     /*eslint-disable max-len */
-    function OrderDialog($mdDialog, toastService, params, quotesService, ordersService, accountsService) {
+    function OrderDialog($mdDialog, toastService, quotesService, ordersService, accountsService) {
     /*eslint-enable */
         var vm = this;
 
@@ -19,9 +25,9 @@
         vm.changeMeasure = changeMeasure;
 
         vm.type = "MARKET";
-        vm.side = params.side;
-        vm.instruments = params.instruments;
-        vm.selectedInstrument = params.selectedInstrument;
+        vm.side = vm.params.side;
+        vm.instruments = vm.params.instruments;
+        vm.selectedInstrument = vm.params.selectedInstrument;
         vm.changeMarket(vm.selectedInstrument);
         vm.expires = [
             {label: "1 Hour", value: 60 * 60 * 1000},

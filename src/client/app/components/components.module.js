@@ -13,6 +13,7 @@
             "components.highlighter",
             "components.news",
             "components.ohlc-chart",
+            "components.order-dialog",
             "components.orders",
             "components.plugins",
             "components.positions",

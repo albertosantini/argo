@@ -1,0 +1,105 @@
+<md-dialog-content layout-padding>
+    <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
+
+    <div layout="row">
+        <div flex="45" layout="column" layout-margin>
+
+            <md-radio-group ng-model="$ctrl.type" layout layout-align="space-between center">
+                  <md-radio-button value="MARKET">Market Order</md-radio-button>
+                  <md-radio-button value="LIMIT">Limit Order</md-radio-button>
+            </md-radio-group>
+
+            <md-radio-group ng-model="$ctrl.side" layout layout-align="space-between center">
+                  <md-radio-button value="buy">Buy</md-radio-button>
+                  <md-radio-button value="sell">Sell</md-radio-button>
+            </md-radio-group>
+
+            <md-input-container layout layout-align="center center">
+                <md-select ng-model="$ctrl.selectedInstrument" placeholder="Market"
+                    ng-change="$ctrl.changeMarket($ctrl.selectedInstrument)">
+                    <md-option ng-value="instrument" ng-repeat="instrument in $ctrl.instruments">
+                        {{ instrument }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container layout layout-align="center center">
+                <label flex="10">Units</label>
+                <input ng-model="$ctrl.units" flex="30">
+            </md-input-container>
+
+            <div layout layout-align="space-between center">
+                <span>Quote</span>
+                <input type="number" ng-model="$ctrl.quote" ng-disabled="$ctrl.type == 'MARKET'" flex="30"
+                    step="{{ $ctrl.step }}" aria-label="lower" aria-controls="quote-slider">
+            </div>
+
+            <md-input-container layout layout-align="center center">
+                <md-select ng-show="$ctrl.type == 'LIMIT'"
+                    ng-model="$ctrl.selectedExpire" placeholder="Expires">
+                    <md-option ng-value="expire.value" ng-repeat="expire in $ctrl.expires">
+                        {{ expire.label }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+        </div>
+        <div flex="45" layout="column" layout-margin>
+
+            <md-radio-group ng-model="$ctrl.measure"
+                ng-change="$ctrl.changeMeasure($ctrl.measure)"
+                layout layout-align="space-between center">
+                  <md-radio-button value="price">Price</md-radio-button>
+                  <md-radio-button value="pips">PIPS</md-radio-button>
+            </md-radio-group>
+
+            <div layout layout-align="space-between center">
+                <md-checkbox md-no-ink aria-label="Lower Bound" ng-model="$ctrl.isLowerBound" class="md-primary">
+                    Lower Bound
+                </md-checkbox>
+                <input type="number" ng-model="$ctrl.lowerBound" min="0" ng-disabled="!$ctrl.isLowerBound"
+                    step="{{ $ctrl.step }}" aria-label="lower" aria-controls="lower-slider" flex="30">
+            </div>
+            <div layout layout-align="space-between center">
+                <md-checkbox md-no-ink aria-label="Upper Bound" ng-model="$ctrl.isUpperBound" class="md-primary">
+                    Upper Bound
+                </md-checkbox>
+                <input type="number" ng-model="$ctrl.upperBound" min="0" ng-disabled="!$ctrl.isUpperBound"
+                    step="{{ $ctrl.step }}" aria-label="upper" aria-controls="upper-slider"flex="30">
+            </div>
+            <div layout layout-align="space-between center">
+                <md-checkbox md-no-ink aria-label="Take Profit" ng-model="$ctrl.isTakeProfit" class="md-primary">
+                    Take Profit
+                </md-checkbox>
+                <input type="number" ng-model="$ctrl.takeProfit" min="0" ng-disabled="!$ctrl.isTakeProfit"
+                    step="{{ $ctrl.step }}" aria-label="take" aria-controls="take-slider" flex="30">
+            </div>
+            <div layout layout-align="space-between center">
+                <md-checkbox md-no-ink aria-label="Stop Loss" ng-model="$ctrl.isStopLoss" class="md-primary">
+                    Stop Loss
+                </md-checkbox>
+                <input type="number" ng-model="$ctrl.stopLoss" min="0" ng-disabled="!$ctrl.isStopLoss"
+                    step="{{ $ctrl.step }}" aria-label="stop" aria-controls="stop-slider" flex="30">
+            </div>
+            <div layout layout-align="space-between center">
+                <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="$ctrl.isTrailingStop" class="md-primary">
+                    Trailing Stop
+                </md-checkbox>
+                <input type="number" ng-model="$ctrl.trailingStop" min="0" ng-disabled="!$ctrl.isTrailingStop"
+                    step="1" aria-label="trailing" aria-controls="trailing-slider" flex="30">
+            </div>
+
+        </div>
+    </div>
+
+</md-dialog-content>
+
+<md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="$ctrl.answer('submit')" class="md-primary">
+        Submit
+    </md-button>
+    <md-button ng-click="$ctrl.answer('close')">
+        Close
+    </md-button>
+</md-dialog-actions>

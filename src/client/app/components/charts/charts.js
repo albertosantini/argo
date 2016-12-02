@@ -8,9 +8,9 @@
             templateUrl: "app/components/charts/charts.html"
         });
 
-    Charts.$inject = ["$mdDialog", "accountsService",
+    Charts.$inject = ["$rootScope", "$mdDialog", "accountsService",
         "chartsService", "quotesService", "tradesService"];
-    function Charts($mdDialog, accountsService,
+    function Charts($rootScope, $mdDialog, accountsService,
         chartsService, quotesService, tradesService) {
 
         var vm = this;
@@ -61,17 +61,18 @@
         vm.changeChart(vm.selectedInstrument, vm.selectedGranularity);
 
         vm.openOrderDialog = function (event, side) {
+            var scope = angular.extend($rootScope.$new(true), {
+                params: {
+                    side: side,
+                    selectedInstrument: vm.selectedInstrument,
+                    instruments: vm.account.streamingInstruments
+                }
+            });
+
             $mdDialog.show({
-                controller: "OrderDialog",
-                controllerAs: "vm",
-                templateUrl: "app/components/charts/order-dialog.html",
-                locals: {
-                    params: {
-                        side: side,
-                        selectedInstrument: vm.selectedInstrument,
-                        instruments: vm.account.streamingInstruments
-                    }
-                },
+                template: "<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",
+                scope: scope,
+                preserveScope: true,
                 targetEvent: event
             });
         };
