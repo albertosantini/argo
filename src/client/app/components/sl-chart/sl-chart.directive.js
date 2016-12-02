@@ -3,11 +3,11 @@
 // Inspired by http://bl.ocks.org/vicapow/9904319
 (function () {
     angular
-        .module("components.sparkline")
-        .directive("argoSl", argoSl);
+        .module("components.sl-chart")
+        .directive("slChart", slChart);
 
-    argoSl.$inject = [];
-    function argoSl() {
+    slChart.$inject = [];
+    function slChart() {
         var data = {},
             directive = {
                 restrict: "E",

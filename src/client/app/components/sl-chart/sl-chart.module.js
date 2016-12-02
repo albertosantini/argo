@@ -2,6 +2,6 @@
 
 (function () {
     angular
-        .module("components.sparkline", []);
+        .module("components.sl-chart", []);
 
 }());

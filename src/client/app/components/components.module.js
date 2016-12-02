@@ -19,7 +19,7 @@
             "components.quotes",
             "components.session",
             "components.settings-dialog",
-            "components.sparkline",
+            "components.sl-chart",
             "components.streaming",
             "components.toast",
             "components.token-dialog",
