@@ -2,6 +2,6 @@
 
 (function () {
     angular
-        .module("components.ohlc", []);
+        .module("components.ohlc-chart", []);
 
 }());

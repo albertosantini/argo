@@ -12,7 +12,7 @@
             "components.header",
             "components.highlighter",
             "components.news",
-            "components.ohlc",
+            "components.ohlc-chart",
             "components.orders",
             "components.plugins",
             "components.positions",

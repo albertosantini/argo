@@ -2,11 +2,11 @@
 
 (function () {
     angular
-        .module("components.ohlc")
-        .directive("argoCharts", argoCharts);
+        .module("components.ohlc-chart")
+        .directive("ohlcChart", ohlcChart);
 
-    argoCharts.$inject = [];
-    function argoCharts() {
+    ohlcChart.$inject = [];
+    function ohlcChart() {
         var directive = {
             restrict: "E",
             scope: {
