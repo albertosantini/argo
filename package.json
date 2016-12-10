@@ -29,17 +29,17 @@
         "limiter": "~1.1.0",
         "request": "~2.79.0",
 
-        "angular": "~1.5.9",
-        "angular-animate": "~1.5.9",
-        "angular-aria": "~1.5.9",
-        "angular-messages": "~1.5.9",
-        "angular-mocks": "~1.5.9",
+        "angular": "~1.6.0",
+        "angular-animate": "~1.6.0",
+        "angular-aria": "~1.6.0",
+        "angular-messages": "~1.6.0",
+        "angular-mocks": "~1.6.0",
         "angular-material": "~1.1.1",
         "d3": "~4.4.0",
         "techan": "~0.8.0"
     },
     "optionalDependencies": {
-        "electron": "~1.4.10"
+        "electron": "~1.4.12"
     },
     "scripts": {
         "test": "npm run lint && npm run karma && npm run snyk",
@@ -53,7 +53,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "~1.2.0",
-        "eslint": "^3.11.1",
+        "eslint": "^3.12.0",
         "eslint-config-eslint": "~3.0.0",
         "eslint-plugin-angular": "~1.4.1",
         "mocha": "~3.2.0",
@@ -62,7 +62,7 @@
         "karma-mocha": "~1.3.0",
         "karma-chai": "~0.1.0",
         "karma-phantomjs-launcher": "~1.0.2",
-        "phantomjs-prebuilt": "~2.1.13",
+        "phantomjs-prebuilt": "~2.1.14",
         "snyk": "~1.21.2"
     }
 }
