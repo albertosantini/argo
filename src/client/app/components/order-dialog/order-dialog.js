@@ -13,9 +13,8 @@
 
     OrderDialog.$inject = ["$mdDialog", "toastService",
         "quotesService", "ordersService", "accountsService"];
-    /*eslint-disable max-len */
-    function OrderDialog($mdDialog, toastService, quotesService, ordersService, accountsService) {
-    /*eslint-enable */
+    function OrderDialog($mdDialog, toastService,
+            quotesService, ordersService, accountsService) {
         var vm = this;
 
         var account = accountsService.getAccount(),
