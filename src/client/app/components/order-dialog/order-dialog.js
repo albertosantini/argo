@@ -188,6 +188,7 @@
             if (action === "submit") {
                 ordersService.putOrder(order).then(function (transaction) {
                     var opened,
+                        canceled,
                         side,
                         message;
 
@@ -199,6 +200,12 @@
                         toastService.show(message);
                     } else if (transaction.errorMessage) {
                         message = "ERROR " + transaction.errorMessage;
+
+                        toastService.show(message);
+                    } else if (transaction.orderCancelTransaction) {
+                        canceled = transaction.orderCancelTransaction;
+
+                        message = "ERROR " + canceled.reason;
 
                         toastService.show(message);
                     } else {
