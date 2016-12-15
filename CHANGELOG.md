@@ -1,3 +1,18 @@
+<a name="4.3.0"></a>
+# [4.3.0](https://github.com/albertosantini/argo/compare/v4.2.0...v4.3.0) (2016-12-15)
+
+
+### Bug Fixes
+
+* **order-dialog:** fix order canceled ([11a9670](https://github.com/albertosantini/argo/commit/11a9670))
+
+
+### Features
+
+* **deps:** angular 1.6.0 ([d0d68cc](https://github.com/albertosantini/argo/commit/d0d68cc))
+
+
+
 <a name="4.2.0"></a>
 # [4.2.0](https://github.com/albertosantini/argo/compare/v4.1.1...v4.2.0) (2016-12-07)
 
