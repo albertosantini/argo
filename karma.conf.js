@@ -27,15 +27,22 @@ module.exports = function (config) {
 
         logLevel: config.LOG_INFO,
 
-        browsers: ["PhantomJS"],
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: "Chrome",
+                flags: ["--no-sandbox"]
+            }
+        },
+        browsers: process.env.TRAVIS ? ["Chrome_travis_ci"] : ["Chrome"],
 
         autoWatch: true,
 
         captureTimeout: 60000,
+
         // to avoid DISCONNECTED messages
         browserDisconnectTimeout: 10000, // default 2000
         browserDisconnectTolerance: 1, // default 0
-        browserNoActivityTimeout: 60000, //default 10000
+        browserNoActivityTimeout: 60000, // default 10000
 
         singleRun: false
     });
