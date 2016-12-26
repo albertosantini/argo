@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.plugins")
         .component("plugins", {
@@ -10,7 +10,7 @@
 
     Plugins.$inject = ["pluginsService"];
     function Plugins(pluginsService) {
-        var vm = this;
+        const vm = this;
 
         vm.engage = engage;
         vm.plugins = pluginsService.getPlugins();
@@ -27,4 +27,4 @@
         }
     }
 
-}());
+}

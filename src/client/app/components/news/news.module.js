@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.news", []);
-
-}());
+angular
+    .module("components.news", []);

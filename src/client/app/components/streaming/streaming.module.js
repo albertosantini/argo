@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.streaming", []);
-
-}());
+angular
+    .module("components.streaming", []);

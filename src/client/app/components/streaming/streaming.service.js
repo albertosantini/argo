@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.streaming")
         .factory("streamingService", streamingService);
@@ -11,8 +11,8 @@
     function streamingService($timeout, $http, toastService,
             quotesService, activityService, tradesService,
             ordersService, accountsService, pluginsService) {
-        var service = {
-            startStream: startStream
+        const service = {
+            startStream
         };
 
         return service;
@@ -23,25 +23,25 @@
                 accessToken: data.accessToken,
                 accountId: data.accountId,
                 instruments: data.instruments
-            }).then(function () {
+            }).then(() => {
                 getStream();
-            }).catch(function (err) {
+            }).catch(err => {
                 toastService.show(err);
             });
         }
 
         function getStream() {
-            var ws = new WebSocket("ws://localhost:8000/stream");
+            const ws = new WebSocket("ws://localhost:8000/stream");
 
-            ws.onmessage = function (event) {
-                var data,
+            ws.onmessage = event => {
+                let data,
                     isTick,
                     tick,
                     isTransaction,
                     transaction,
                     refreshPlugins;
 
-                $timeout(function () {
+                $timeout(() => {
                     try {
                         data = angular.fromJson(event.data);
 
@@ -75,12 +75,13 @@
                             pluginsService.refresh();
                         }
                     } catch (e) {
+
                         // Discard "incomplete" json
-                        console.log(e.name + ": " + e.message);
+                        // console.log(e.name + ": " + e.message);
                     }
                 });
             };
         }
     }
 
-}());
+}

@@ -1,58 +1,50 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.positions")
         .factory("positionsService", positionsService);
 
     positionsService.$inject = ["$http", "sessionService"];
     function positionsService($http, sessionService) {
-        var service = {
-            getPositions: getPositions
+        const service = {
+            getPositions
         };
 
         return service;
 
         function getPositions() {
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/positions", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/positions", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (positions) {
-                    var data = [];
+                }).then(positions => {
+                    const data = [];
 
-                    positions.data.forEach(function (position) {
-                        var side,
-                            longUnits,
-                            shortUnits,
-                            units,
-                            avgPrice;
-
-                        longUnits = position.long &&
+                    positions.data.forEach(position => {
+                        const longUnits = position.long &&
                             parseInt(position.long.units, 10);
-                        shortUnits = position.short &&
+                        const shortUnits = position.short &&
                             parseInt(position.short.units, 10);
-                        units = longUnits || shortUnits;
-                        side = units > 0 ? "buy" : "sell";
-                        avgPrice = (longUnits && position.long.averagePrice)
+                        const units = longUnits || shortUnits;
+                        const side = units > 0 ? "buy" : "sell";
+                        const avgPrice = (longUnits && position.long.averagePrice)
                              || (shortUnits && position.short.averagePrice);
 
                         data.push({
-                            side: side,
+                            side,
                             instrument: position.instrument,
-                            units: units,
-                            avgPrice: avgPrice
+                            units,
+                            avgPrice
                         });
                     });
 
                     return data;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                }).catch(err => err.data)
+            );
         }
 
     }
 
-}());
+}

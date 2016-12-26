@@ -1,22 +1,22 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.highlighter")
         .directive("highlighter", highlighter);
 
     highlighter.$inject = ["$timeout"];
     function highlighter($timeout) {
-        var directive = {
+        const directive = {
             restrict: "A",
-            link: link
+            link
         };
 
         return directive;
 
         function link(scope, element, attrs) {
-            scope.$watch(attrs.highlighter, function (newValue, oldValue) {
-                var newclass;
+            scope.$watch(attrs.highlighter, (newValue, oldValue) => {
+                let newclass;
 
                 if (newValue !== oldValue) {
                     newclass = newValue < oldValue ?
@@ -24,7 +24,7 @@
 
                     element.addClass(newclass);
 
-                    $timeout(function () {
+                    $timeout(() => {
                         element.removeClass(newclass);
                     }, 500);
                 }
@@ -32,4 +32,4 @@
         }
     }
 
-}());
+}

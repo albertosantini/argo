@@ -1,17 +1,17 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.quotes")
         .factory("quotesService", quotesService);
 
     quotesService.$inject = ["accountsService"];
     function quotesService(accountsService) {
-        var quotes = {},
+        const quotes = {},
             service = {
-                getQuotes: getQuotes,
-                updateTick: updateTick,
-                reset: reset
+                getQuotes,
+                updateTick,
+                reset
             };
 
         return service;
@@ -21,7 +21,7 @@
         }
 
         function updateTick(tick) {
-            var account = accountsService.getAccount(),
+            const account = accountsService.getAccount(),
                 streamingInstruments = account.streamingInstruments,
                 pips = account.pips,
                 instrument = tick.instrument;
@@ -35,8 +35,8 @@
 
 
             if (!angular.equals(streamingInstruments, Object.keys(quotes))) {
-                streamingInstruments.forEach(function (instr) {
-                    var temp;
+                streamingInstruments.forEach(instr => {
+                    let temp;
 
                     if (quotes.hasOwnProperty(instr)) {
                         temp = quotes[instr];
@@ -48,7 +48,7 @@
         }
 
         function reset() {
-            var key;
+            let key;
 
             for (key in quotes) {
                 if (quotes.hasOwnProperty(key)) {
@@ -59,4 +59,4 @@
 
     }
 
-}());
+}

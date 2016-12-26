@@ -1,15 +1,16 @@
 "use strict";
 
-describe("ordersService", function () {
-    var api = "/api/orders",
-        $httpBackend,
+describe("ordersService", () => {
+    const api = "/api/orders";
+
+    let $httpBackend,
         sessionService,
         ordersService;
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($injector) {
-        var environment = "my environment",
+    beforeEach(inject($injector => {
+        const environment = "my environment",
             token = "my token",
             accountId = "my account id";
 
@@ -18,62 +19,60 @@ describe("ordersService", function () {
         sessionService = $injector.get("sessionService");
 
         sessionService.setCredentials({
-            environment: environment,
-            token: token,
-            accountId: accountId
+            environment,
+            token,
+            accountId
         });
 
         $httpBackend
             .when("POST", api)
             .respond([
                 {
-                    "id": 175427639,
-                    "instrument": "EUR_USD",
-                    "units": 20,
-                    "side": "buy",
-                    "type": "marketIfTouched",
-                    "time": "2014-02-11T16:22:07Z",
-                    "price": 1,
-                    "takeProfit": 0,
-                    "stopLoss": 0,
-                    "expiry": "2014-02-15T16:22:07Z",
-                    "upperBound": 0,
-                    "lowerBound": 0,
-                    "trailingStop": 0
+                    id: 175427639,
+                    instrument: "EUR_USD",
+                    units: 20,
+                    side: "buy",
+                    type: "marketIfTouched",
+                    time: "2014-02-11T16:22:07Z",
+                    price: 1,
+                    takeProfit: 0,
+                    stopLoss: 0,
+                    expiry: "2014-02-15T16:22:07Z",
+                    upperBound: 0,
+                    lowerBound: 0,
+                    trailingStop: 0
                 },
                 {
-                    "id": 175427637,
-                    "instrument": "EUR_USD",
-                    "units": 10,
-                    "side": "sell",
-                    "type": "marketIfTouched",
-                    "time": "2014-02-11T16:22:07Z",
-                    "price": 1,
-                    "takeProfit": 0,
-                    "stopLoss": 0,
-                    "expiry": "2014-02-12T16:22:07Z",
-                    "upperBound": 0,
-                    "lowerBound": 0,
-                    "trailingStop": 0
+                    id: 175427637,
+                    instrument: "EUR_USD",
+                    units: 10,
+                    side: "sell",
+                    type: "marketIfTouched",
+                    time: "2014-02-11T16:22:07Z",
+                    price: 1,
+                    takeProfit: 0,
+                    stopLoss: 0,
+                    expiry: "2014-02-12T16:22:07Z",
+                    upperBound: 0,
+                    lowerBound: 0,
+                    trailingStop: 0
                 }
             ]);
 
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
-    afterEach(function () {
+    afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("refresh", function () {
-        it("test", function () {
-            var orders;
-
+    describe("refresh", () => {
+        it("test", () => {
             ordersService.refresh();
             $httpBackend.flush();
 
-            orders = ordersService.getOrders();
+            const orders = ordersService.getOrders();
 
             assert.lengthOf(orders, 2);
 

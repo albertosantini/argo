@@ -1,17 +1,17 @@
 "use strict";
 
 // Inspired by http://bl.ocks.org/vicapow/9904319
-(function () {
+{
     angular
         .module("components.sl-chart")
         .directive("slChart", slChart);
 
     slChart.$inject = [];
     function slChart() {
-        var data = {},
+        const data = {},
             directive = {
                 restrict: "E",
-                link: link,
+                link,
                 scope: {
                     instrument: "=",
                     data: "=",
@@ -26,20 +26,16 @@
 
         function link(scope, element) {
 
-            scope.$watch("data", function (quote) {
+            scope.$watch("data", quote => {
                 redraw(quote);
             });
 
             function redraw(quote) {
-                var svg = d3.select(element[0]),
+                const svg = d3.select(element[0]),
                     node = svg.node(),
                     instrument = scope.instrument,
                     w = node.clientWidth,
-                    h = getComputedStyle(node)["font-size"].replace("px", ""),
-                    min,
-                    max,
-                    x,
-                    y;
+                    h = getComputedStyle(node)["font-size"].replace("px", "");
 
                 svg.selectAll("*").remove();
 
@@ -60,19 +56,20 @@
                 }
                 node.style.height = h;
 
-                min = d3.min(data[instrument]);
-                max = d3.max(data[instrument]);
+                const min = d3.min(data[instrument]);
+                const max = d3.max(data[instrument]);
 
-                x = d3.scaleLinear()
+                const x = d3.scaleLinear()
                     .domain([0, data[instrument].length - 1]).range([0, w]);
-                y = d3.scaleLinear()
+                const y = d3.scaleLinear()
                     .domain([min, max]).range([h, 0]);
 
-                svg.append("path")
-                    .attr("d", "M" + data[instrument].map(function (d, i) {
-                        return [x(i), y(d)];
-                    }).join("L"));
+                const paths = data[instrument]
+                    .map((d, i) => [x(i), y(d)])
+                    .join("L");
+
+                svg.append("path").attr("d", `M${paths}`);
             }
         }
     }
-}());
+}

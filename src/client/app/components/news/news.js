@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.news")
         .component("news", {
@@ -10,11 +10,11 @@
 
     News.$inject = ["newsService"];
     function News(newsService) {
-        var vm = this;
+        const vm = this;
 
-        newsService.getNews().then(function (news) {
+        newsService.getNews().then(news => {
             vm.news = news;
         });
     }
 
-}());
+}

@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.session", []);
-
-}());
+angular
+    .module("components.session", []);

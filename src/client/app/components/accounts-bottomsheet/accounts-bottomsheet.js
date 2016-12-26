@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.accounts-bottomsheet")
         .component("accountsBottomsheet", {
@@ -13,13 +13,13 @@
 
     AccountsBottomSheet.$inject = ["$mdBottomSheet"];
     function AccountsBottomSheet($mdBottomSheet) {
-        var vm = this;
+        const vm = this;
 
-        vm.onAccountClick = function ($index) {
-            var account = vm.accounts[$index];
+        vm.onAccountClick = $index => {
+            const account = vm.accounts[$index];
 
             $mdBottomSheet.hide(account);
         };
     }
 
-}());
+}

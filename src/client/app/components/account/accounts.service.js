@@ -1,18 +1,18 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.account")
         .factory("accountsService", accountsService);
 
     accountsService.$inject = ["$http", "sessionService"];
     function accountsService($http, sessionService) {
-        var account = {},
+        const account = {},
             service = {
-                getAccount: getAccount,
-                getAccounts: getAccounts,
-                refresh: refresh,
-                setStreamingInstruments: setStreamingInstruments
+                getAccount,
+                getAccounts,
+                refresh,
+                setStreamingInstruments
             };
 
         return service;
@@ -22,7 +22,7 @@
         }
 
         function refresh() {
-            sessionService.isLogged().then(function (credentials) {
+            sessionService.isLogged().then(credentials => {
                 getAccounts({
                     environment: credentials.environment,
                     token: credentials.token,
@@ -32,17 +32,17 @@
         }
 
         function getAccounts(data) {
-            var environment = data.environment || "practice",
+            const environment = data.environment || "practice",
                 token = data.token,
                 accountId = data.accountId,
                 api = accountId ? "/api/account" : "/api/accounts";
 
             return $http.post(api, {
-                environment: environment,
-                token: token,
-                accountId: accountId
-            }).then(function (response) {
-                var accounts = response.data.accounts || response.data;
+                environment,
+                token,
+                accountId
+            }).then(response => {
+                const accounts = response.data.accounts || response.data;
 
                 if (response.data.message) {
                     throw response.data.message;
@@ -58,13 +58,13 @@
 
                     if (!account.instruments) {
                         $http.post("/api/instruments", {
-                            environment: environment,
-                            token: token,
-                            accountId: accountId
-                        }).then(function (instruments) {
+                            environment,
+                            token,
+                            accountId
+                        }).then(instruments => {
                             account.instruments = instruments.data;
                             account.pips = {};
-                            angular.forEach(account.instruments, function (i) {
+                            angular.forEach(account.instruments, i => {
                                 account.pips[i.name] =
                                     Math.pow(10, i.pipLocation);
                             });
@@ -78,7 +78,7 @@
 
         function setStreamingInstruments(settings) {
             account.streamingInstruments = Object.keys(settings)
-                .filter(function (el) {
+                .filter(el => {
                     if (settings[el]) {
                         return true;
                     } else {
@@ -91,4 +91,4 @@
 
     }
 
-}());
+}

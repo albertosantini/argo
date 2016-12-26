@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.charts")
         .component("charts", {
@@ -13,7 +13,7 @@
     function Charts($rootScope, $mdDialog, accountsService,
         chartsService, quotesService, tradesService) {
 
-        var vm = this;
+        const vm = this;
 
         vm.account = accountsService.getAccount();
 
@@ -49,21 +49,21 @@
 
         vm.trades = tradesService.getTrades();
 
-        vm.changeChart = function (instrument, granularity) {
+        vm.changeChart = (instrument, granularity) => {
             chartsService.getHistQuotes({
-                instrument: instrument,
-                granularity: granularity
-            }).then(function (candles) {
+                instrument,
+                granularity
+            }).then(candles => {
                 vm.data = candles;
             });
         };
 
         vm.changeChart(vm.selectedInstrument, vm.selectedGranularity);
 
-        vm.openOrderDialog = function (event, side) {
-            var scope = angular.extend($rootScope.$new(true), {
+        vm.openOrderDialog = (event, side) => {
+            const scope = angular.extend($rootScope.$new(true), {
                 params: {
-                    side: side,
+                    side,
                     selectedInstrument: vm.selectedInstrument,
                     instruments: vm.account.streamingInstruments
                 }
@@ -71,7 +71,7 @@
 
             $mdDialog.show({
                 template: "<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",
-                scope: scope,
+                scope,
                 preserveScope: true,
                 targetEvent: event
             });
@@ -79,4 +79,4 @@
 
     }
 
-}());
+}

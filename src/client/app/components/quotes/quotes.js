@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.quotes")
         .component("quotes", {
@@ -10,9 +10,9 @@
 
     Quotes.$inject = ["quotesService"];
     function Quotes(quotesService) {
-        var vm = this;
+        const vm = this;
 
         vm.quotes = quotesService.getQuotes();
     }
 
-}());
+}

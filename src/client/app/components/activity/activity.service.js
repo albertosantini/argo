@@ -1,38 +1,36 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.activity")
         .factory("activityService", activityService);
 
     activityService.$inject = ["$http", "sessionService", "accountsService"];
     function activityService($http, sessionService, accountsService) {
-        var activities = [],
-            service = {
-                getActivities: getActivities,
-                addActivity: addActivity
-            };
+        let activities = [];
+        const service = {
+            getActivities,
+            addActivity
+        };
 
         return service;
 
         function getActivities() {
-            var account = accountsService.getAccount(),
+            const account = accountsService.getAccount(),
                 lastTransactionID = account.lastTransactionID;
 
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/transactions", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/transactions", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
-                    lastTransactionID: lastTransactionID
-                }).then(function (transactions) {
+                    lastTransactionID
+                }).then(transactions => {
                     activities = transactions.data.reverse();
 
                     return activities;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                }).catch(err => err.data)
+            );
         }
 
         function addActivity(activity) {
@@ -43,12 +41,10 @@
                 units: activity.units,
                 price: activity.price,
                 pl: activity.pl,
-                // PROFIT (PIPS)
-                // PROFIT (%)
                 accountBalance: activity.accountBalance,
                 time: activity.time
             });
         }
     }
 
-}());
+}

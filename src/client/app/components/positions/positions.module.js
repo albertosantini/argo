@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.positions", []);
-
-}());
+angular
+    .module("components.positions", []);

@@ -1,7 +1,7 @@
 "use strict";
 
-describe("components module", function () {
-    it("should be defined", function () {
+describe("components module", () => {
+    it("should be defined", () => {
         assert(angular.isDefined(angular.module("components")));
     });
 });

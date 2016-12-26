@@ -1,10 +1,10 @@
 "use strict";
 
-var electron = require("electron");
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
+const electron = require("electron");
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 
-var mainWindow;
+let mainWindow;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -19,7 +19,7 @@ function createWindow() {
 
     mainWindow.loadURL("http://localhost:8000");
 
-    mainWindow.on("closed", function () {
+    mainWindow.on("closed", () => {
         mainWindow = null;
     });
 }

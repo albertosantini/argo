@@ -1,15 +1,16 @@
 "use strict";
 
-describe("positionsService", function () {
-    var api = "/api/positions",
-        $httpBackend,
+describe("positionsService", () => {
+    const api = "/api/positions";
+
+    let $httpBackend,
         sessionService,
         positionsService;
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($injector) {
-        var environment = "my environment",
+    beforeEach(inject($injector => {
+        const environment = "my environment",
             token = "my token",
             accountId = "my account id";
 
@@ -18,33 +19,33 @@ describe("positionsService", function () {
         sessionService = $injector.get("sessionService");
 
         sessionService.setCredentials({
-            environment: environment,
-            token: token,
-            accountId: accountId
+            environment,
+            token,
+            accountId
         });
 
         $httpBackend
             .when("POST", api)
             .respond([
                 {
-                    "instrument": "EUR_USD",
-                    "long": {
-                        "units": 4741,
-                        "averagePrice": 1.3626
+                    instrument: "EUR_USD",
+                    long: {
+                        units: 4741,
+                        averagePrice: 1.3626
                     }
                 },
                 {
-                    "instrument": "USD_CAD",
-                    "short": {
-                        "units": -30,
-                        "averagePrice": 1.11563
+                    instrument: "USD_CAD",
+                    short: {
+                        units: -30,
+                        averagePrice: 1.11563
                     }
                 },
                 {
-                    "instrument": "USD_JPY",
-                    "long": {
-                        "units": 88,
-                        "averagePrice": 102.455
+                    instrument: "USD_JPY",
+                    long: {
+                        units: 88,
+                        averagePrice: 102.455
                     }
                 }
             ]);
@@ -52,14 +53,14 @@ describe("positionsService", function () {
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
-    afterEach(function () {
+    afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("getPositions", function () {
-        it("test", function () {
-            positionsService.getPositions().then(function (positions) {
+    describe("getPositions", () => {
+        it("test", () => {
+            positionsService.getPositions().then(positions => {
                 assert.lengthOf(positions, 3);
 
                 assert.equal("USD_CAD", positions[1].instrument);

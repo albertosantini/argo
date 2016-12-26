@@ -1,21 +1,21 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.plugins")
         .factory("pluginsService", pluginsService);
 
     pluginsService.$inject = ["$http", "sessionService", "accountsService"];
     function pluginsService($http, sessionService, accountsService) {
-        var plugins = {},
+        const plugins = {},
             pluginsInfo = {
                 count: 0
             },
             service = {
-                getPlugins: getPlugins,
-                getPluginsInfo: getPluginsInfo,
-                engagePlugins: engagePlugins,
-                refresh: refresh
+                getPlugins,
+                getPluginsInfo,
+                engagePlugins,
+                refresh
             };
 
         return service;
@@ -29,13 +29,13 @@
         }
 
         function refresh() {
-            sessionService.isLogged().then(function (credentials) {
+            sessionService.isLogged().then(credentials => {
                 $http.post("/api/plugins", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (res) {
-                    var name;
+                }).then(res => {
+                    let name;
 
                     for (name in plugins) {
                         if (plugins.hasOwnProperty(name)) {
@@ -45,7 +45,7 @@
                     angular.extend(plugins, res.data);
                     pluginsInfo.count = Object.keys(plugins).length;
 
-                    Object.keys(plugins).forEach(function (key) {
+                    Object.keys(plugins).forEach(key => {
                         if (plugins[key] === "enabled") {
                             plugins[key] = true;
                         } else {
@@ -57,8 +57,8 @@
         }
 
         function engagePlugins(plugs) {
-            sessionService.isLogged().then(function (credentials) {
-                var account = accountsService.getAccount();
+            sessionService.isLogged().then(credentials => {
+                const account = accountsService.getAccount();
 
                 $http.post("/api/engageplugins", {
                     environment: credentials.environment,
@@ -74,4 +74,4 @@
 
     }
 
-}());
+}

@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.dualcolor", []);
-
-}());
+angular
+    .module("components.dualcolor", []);

@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.sl-chart", []);
-
-}());
+angular
+    .module("components.sl-chart", []);

@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.activity", []);
-
-}());
+angular
+    .module("components.activity", []);

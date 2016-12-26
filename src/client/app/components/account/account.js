@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.account")
         .component("account", {
@@ -10,9 +10,9 @@
 
     Account.$inject = ["accountsService"];
     function Account(accountService) {
-        var vm = this;
+        const vm = this;
 
         vm.account = accountService.getAccount();
     }
 
-}());
+}

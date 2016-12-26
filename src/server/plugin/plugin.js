@@ -4,17 +4,17 @@ exports.shoutStreaming = shoutStreaming;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-var util = require("util"),
+const util = require("util"),
     flic = require("flic"),
     async = require("async"),
     routes = require("../routes");
 
-var nodeName = "master",
+const nodeName = "master",
     plugins = {};
 
-var masterNode = flic.createNode({
+const masterNode = flic.createNode({
     id: nodeName,
-    connect_callback: function (err) {
+    connect_callback(err) {
         if (!err) {
             util.log("Argo streaming node online");
         } else {
@@ -23,41 +23,43 @@ var masterNode = flic.createNode({
     }
 });
 
-masterNode.on("argo.register", function (pluginName, done) {
+masterNode.on("argo.register", (pluginName, done) => {
     plugins[pluginName] = true;
     util.log("Argo plugin registered", pluginName);
-    done(null, "http://localhost:" + routes.config.port);
+    done(null, `http://localhost:${routes.config.port}`);
     refreshPlugins();
 });
 
-masterNode.on("argo.unregister", function (pluginName, done) {
+masterNode.on("argo.unregister", (pluginName, done) => {
     delete plugins[pluginName];
     util.log("Argo plugin unregistered", pluginName);
     done();
     refreshPlugins();
 });
 
-masterNode.on("error", function (err) {
+masterNode.on("error", err => {
     util.log(err);
 });
 
 function enable(name, config, callback) {
-    var event = name + ":argo.enable";
+    const event = `${name}:argo.enable`;
 
-    masterNode.tell(event, name, config, function (err) {
-        if (!err) {
-            return callback();
+    masterNode.tell(event, name, config, err => {
+        if (err) {
+            return callback(err);
         }
+        return callback();
     });
 }
 
 function disable(name, callback) {
-    var event = name + ":argo.disable";
+    const event = `${name}:argo.disable`;
 
-    masterNode.tell(event, name, function (err) {
-        if (!err) {
-            return callback();
+    masterNode.tell(event, name, err => {
+        if (err) {
+            return callback(err);
         }
+        return callback();
     });
 }
 
@@ -66,13 +68,14 @@ function shoutStreaming(data) {
 }
 
 function getPlugins(callback) {
-    var pluginNames = Object.keys(plugins),
+    const pluginNames = Object.keys(plugins),
         tellSeries = {};
 
-    pluginNames.forEach(function (name) {
-        tellSeries[name] = function (done) {
-            var event = name + ":argo.status";
-            masterNode.tell(event, name, function (err, status) {
+    pluginNames.forEach(name => {
+        tellSeries[name] = done => {
+            const event = `${name}:argo.status`;
+
+            masterNode.tell(event, name, (err, status) => {
                 if (!err) {
                     done(null, status);
                 }
@@ -80,19 +83,20 @@ function getPlugins(callback) {
         };
     });
 
-    async.series(tellSeries, function (err, res) {
-        if (!err) {
-            return callback(err, res);
+    async.series(tellSeries, (err, res) => {
+        if (err) {
+            return callback(err);
         }
+        return callback(err, res);
     });
 }
 
 function engagePlugins(plugs, config) {
-    var pluginNames = Object.keys(plugs),
+    const pluginNames = Object.keys(plugs),
         tellSeries = {};
 
-    pluginNames.forEach(function (name) {
-        tellSeries[name] = function (done) {
+    pluginNames.forEach(name => {
+        tellSeries[name] = done => {
             if (plugs[name]) {
                 enable(name, config, done);
             } else {
@@ -105,5 +109,5 @@ function engagePlugins(plugs, config) {
 }
 
 function refreshPlugins() {
-    routes.stream.sendMessage(JSON.stringify({"refreshPlugins": true}));
+    routes.stream.sendMessage(JSON.stringify({ refreshPlugins: true }));
 }

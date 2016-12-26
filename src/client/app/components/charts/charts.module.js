@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.charts", []);
-
-}());
+angular
+    .module("components.charts", []);

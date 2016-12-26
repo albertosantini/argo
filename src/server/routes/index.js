@@ -1,12 +1,12 @@
 "use strict";
 
-var express = require("express"),
+const express = require("express"),
     bodyParser = require("body-parser"),
     config = require("./config"),
     stream = require("./stream"),
     api = require("./api");
 
-var router = express.Router(),
+const router = express.Router(), // eslint-disable-line new-cap
     jsonParser = bodyParser.json();
 
 exports.config = config;

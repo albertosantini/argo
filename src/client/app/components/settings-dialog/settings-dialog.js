@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.settings-dialog")
         .component("settingsDialog", {
@@ -13,19 +13,19 @@
 
     SettingsDialog.$inject = ["$mdDialog"];
     function SettingsDialog($mdDialog) {
-        var vm = this;
+        const vm = this;
 
-        vm.hide = function () {
+        vm.hide = () => {
             $mdDialog.hide();
         };
 
-        vm.cancel = function () {
+        vm.cancel = () => {
             $mdDialog.cancel();
         };
 
-        vm.answer = function (settings) {
+        vm.answer = settings => {
             $mdDialog.hide(settings);
         };
     }
 
-}());
+}

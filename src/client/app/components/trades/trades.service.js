@@ -1,18 +1,18 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.trades")
         .factory("tradesService", tradesService);
 
     tradesService.$inject = ["$http", "sessionService", "accountsService"];
     function tradesService($http, sessionService, accountsService) {
-        var trades = [],
+        const trades = [],
             service = {
-                getTrades: getTrades,
-                closeTrade: closeTrade,
-                updateTrades: updateTrades,
-                refresh: refresh
+                getTrades,
+                closeTrade,
+                updateTrades,
+                refresh
             };
 
         return service;
@@ -22,15 +22,15 @@
         }
 
         function refresh() {
-            sessionService.isLogged().then(function (credentials) {
+            sessionService.isLogged().then(credentials => {
                 $http.post("/api/trades", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (res) {
+                }).then(res => {
                     trades.length = 0;
                     angular.extend(trades, res.data);
-                    trades.forEach(function (trade) {
+                    trades.forEach(trade => {
                         trade.side = trade.currentUnits > 0 ? "buy" : "sell";
                     });
                 });
@@ -38,26 +38,23 @@
         }
 
         function closeTrade(id) {
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/closetrade", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/closetrade", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
-                    id: id
-                }).then(function (order) {
-                    return order.data;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                    id
+                }).then(order => order.data)
+                .catch(err => err.data)
+            );
         }
 
         function updateTrades(tick) {
-            var account = accountsService.getAccount(),
+            const account = accountsService.getAccount(),
                 pips = account.pips;
 
-            trades.forEach(function (trade, index) {
-                var current,
+            trades.forEach((trade, index) => {
+                let current,
                     side;
 
                 if (trade.instrument === tick.instrument) {
@@ -81,4 +78,4 @@
 
     }
 
-}());
+}

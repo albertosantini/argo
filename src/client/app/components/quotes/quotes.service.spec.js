@@ -1,15 +1,15 @@
 "use strict";
 
 
-describe("quotesService", function () {
-    var accountsService,
+describe("quotesService", () => {
+    let accountsService,
         quotesService;
 
     beforeEach(module("components.quotes"));
 
-    beforeEach(function () {
+    beforeEach(() => {
         accountsService = {
-            getAccount: function () {
+            getAccount() {
                 return {
                     streamingInstruments: ["EUR_USD"],
                     pips: {
@@ -19,12 +19,12 @@ describe("quotesService", function () {
             }
         };
 
-        module(function ($provide) {
+        module($provide => {
             $provide.value("accountsService", accountsService);
         });
     });
 
-    beforeEach(inject(function ($injector) {
+    beforeEach(inject($injector => {
         quotesService = $injector.get("quotesService");
 
         quotesService.updateTick({
@@ -35,9 +35,9 @@ describe("quotesService", function () {
         });
     }));
 
-    describe("getQuotes", function () {
-        it("test", function () {
-            var quotes = quotesService.getQuotes(),
+    describe("getQuotes", () => {
+        it("test", () => {
+            const quotes = quotesService.getQuotes(),
                 eurusd = quotes.EUR_USD;
 
             assert.equal("2013-06-21T17:41:04.648747Z", eurusd.time);

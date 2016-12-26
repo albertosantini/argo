@@ -1,20 +1,19 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.orders")
         .factory("ordersService", ordersService);
 
     ordersService.$inject = ["$http", "sessionService", "accountsService"];
     function ordersService($http, sessionService, accountsService) {
-        var orders = [],
+        const orders = [],
             service = {
-                getOrders: getOrders,
-                closeOrder: closeOrder,
-                putOrder: putOrder,
-                updateOrders: updateOrders,
-                refresh: refresh
-
+                getOrders,
+                closeOrder,
+                putOrder,
+                updateOrders,
+                refresh
             };
 
         return service;
@@ -24,12 +23,12 @@
         }
 
         function refresh() {
-            sessionService.isLogged().then(function (credentials) {
+            sessionService.isLogged().then(credentials => {
                 $http.post("/api/orders", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId
-                }).then(function (res) {
+                }).then(res => {
                     orders.length = 0;
                     angular.extend(orders, res.data);
                 });
@@ -37,8 +36,8 @@
         }
 
         function putOrder(order) {
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/order", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/order", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
@@ -52,35 +51,29 @@
                     stopLossOnFill: order.stopLossOnFill,
                     takeProfitOnFill: order.takeProfitOnFill,
                     trailingStopLossOnFill: order.trailingStopLossOnFill
-                }).then(function (trade) {
-                    return trade.data;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                }).then(trade => trade.data)
+                .catch(err => err.data)
+            );
         }
 
         function closeOrder(id) {
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/closeorder", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/closeorder", {
                     environment: credentials.environment,
                     token: credentials.token,
                     accountId: credentials.accountId,
-                    id: id
-                }).then(function (order) {
-                    return order.data;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                    id
+                }).then(order => order.data)
+                .catch(err => err.data)
+            );
         }
 
         function updateOrders(tick) {
-            var account = accountsService.getAccount(),
+            const account = accountsService.getAccount(),
                 pips = account.pips;
 
-            orders.forEach(function (order, index) {
-                var current;
+            orders.forEach((order, index) => {
+                let current;
 
                 if (order.instrument === tick.instrument) {
 
@@ -100,4 +93,4 @@
 
     }
 
-}());
+}

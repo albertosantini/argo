@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.token-dialog")
         .component("tokenDialog", {
@@ -10,21 +10,21 @@
 
     TokenDialog.$inject = ["$mdDialog"];
     function TokenDialog($mdDialog) {
-        var vm = this;
+        const vm = this;
 
         vm.environment = "practice";
 
-        vm.hide = function () {
+        vm.hide = () => {
             $mdDialog.hide();
         };
 
-        vm.cancel = function () {
+        vm.cancel = () => {
             $mdDialog.cancel();
         };
 
-        vm.answer = function (token) {
+        vm.answer = token => {
             $mdDialog.hide(token);
         };
     }
 
-}());
+}

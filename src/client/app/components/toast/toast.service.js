@@ -1,14 +1,14 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.toast")
         .factory("toastService", toastService);
 
     toastService.$inject = ["$mdToast"];
     function toastService($mdToast) {
-        var service = {
-            show: show
+        const service = {
+            show
         };
 
         return service;
@@ -24,4 +24,4 @@
         }
     }
 
-}());
+}

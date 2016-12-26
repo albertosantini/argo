@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.order-dialog", []);
-
-}());
+angular
+    .module("components.order-dialog", []);

@@ -1,11 +1,11 @@
 "use strict";
 
-(function () {
-    var root = {
+{
+    const root = {
         templateUrl: "app/root.html"
     };
 
     angular
         .module("root")
         .component("root", root);
-}());
+}

@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.highlighter", []);
-
-}());
+angular
+    .module("components.highlighter", []);

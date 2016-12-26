@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.ohlc-chart", []);
-
-}());
+angular
+    .module("components.ohlc-chart", []);

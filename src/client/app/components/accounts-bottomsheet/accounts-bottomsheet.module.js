@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.accounts-bottomsheet", []);
-
-}());
+angular
+    .module("components.accounts-bottomsheet", []);

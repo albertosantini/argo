@@ -1,10 +1,7 @@
 "use strict";
 
-(function () {
-    angular
-        .module("root", [
-            "common",
-            "components"
-        ]);
-
-}());
+angular
+    .module("root", [
+        "common",
+        "components"
+    ]);

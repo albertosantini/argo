@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.exposure", []);
-
-}());
+angular
+    .module("components.exposure", []);

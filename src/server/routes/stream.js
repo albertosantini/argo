@@ -4,27 +4,27 @@ exports.start = start;
 exports.run = run;
 exports.sendMessage = sendMessage;
 
-var WebSocket = require("faye-websocket"),
+const WebSocket = require("faye-websocket"),
     request = require("request"),
     config = require("./config"),
     plugin = require("../plugin/plugin");
 
-var pricesStreaming,
+const initialSnapshots = [];
+
+let pricesStreaming,
     eventsStreaming,
-    initialSnapshots = [],
     ws;
 
 function start(options, callback) {
-    var environment = options && options.environment || config.environment,
+    const environment = options && options.environment || config.environment,
         accessToken = options && options.accessToken || config.accessToken,
         accountId = options && options.accountId || config.accountId,
         instruments = options && options.instruments || config.instruments,
-        pricesUrl = config.getUrl(environment, "stream") + "/v3/accounts/" +
-            accountId + "/pricing/stream",
-        eventsUrl = config.getUrl(environment, "stream") + "/v3/accounts/" +
-            accountId + "/transactions/stream",
+        stream = config.getUrl(environment, "stream"),
+        pricesUrl = `${stream}/v3/accounts/${accountId}/pricing/stream`,
+        eventsUrl = `${stream}/v3/accounts/${accountId}/transactions/stream`,
         authHeader = {
-            "Authorization": "Bearer " + accessToken
+            Authorization: `Bearer ${accessToken}`
         };
 
     if (pricesStreaming && eventsStreaming) {
@@ -33,27 +33,27 @@ function start(options, callback) {
     }
 
     pricesStreaming = request({
-        "url": pricesUrl,
-        "qs": {
+        url: pricesUrl,
+        qs: {
             instruments: instruments.join(",")
         },
-        "headers": authHeader
-    }).on("response", function () {
+        headers: authHeader
+    }).on("response", () => {
         eventsStreaming = request({
-            "url": eventsUrl,
-            "headers": authHeader
-        }).on("response", function () {
+            url: eventsUrl,
+            headers: authHeader
+        }).on("response", () => {
             callback();
         }).on("data", processChunk);
     }).on("data", processChunk);
 }
 
 function processChunk(chunk) {
-    var data = chunk.toString();
+    const data = chunk.toString();
 
     if (ws) {
         if (initialSnapshots.length > 0) {
-            initialSnapshots.forEach(function () {
+            initialSnapshots.forEach(() => {
                 ws.send(initialSnapshots.pop());
             });
         }
@@ -65,7 +65,7 @@ function processChunk(chunk) {
 }
 
 function run(req, socket, body) {
-    var url = req.url,
+    const url = req.url,
         streamUrl = config.streamUrl;
 
     if (url === streamUrl && WebSocket.isWebSocket(req)) {

@@ -1,13 +1,13 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.ohlc-chart")
         .directive("ohlcChart", ohlcChart);
 
     ohlcChart.$inject = [];
     function ohlcChart() {
-        var directive = {
+        const directive = {
             restrict: "E",
             scope: {
                 instrument: "=",
@@ -16,13 +16,13 @@
                 feed: "=",
                 trades: "="
             },
-            link: link
+            link
         };
 
         return directive;
 
         function link(scope, element) {
-            var myInstrument,
+            let myInstrument,
                 myGranularity,
                 myTrades,
                 data,
@@ -32,7 +32,7 @@
                 lastClose,
                 feedVolume = 0;
 
-            scope.$watch("data", function (csv) {
+            scope.$watch("data", csv => {
                 if (csv && csv.length > 0) {
                     myInstrument = scope.instrument;
                     myGranularity = scope.granularity;
@@ -46,10 +46,11 @@
                 }
             });
 
-            scope.$watch("feed", function (feed) {
-                var tick = feed[myInstrument],
-                    nextHistUpdate = getLastHistUpdate(myGranularity, tick),
-                    midPrice;
+            scope.$watch("feed", feed => {
+                const tick = feed[myInstrument],
+                    nextHistUpdate = getLastHistUpdate(myGranularity, tick);
+
+                let midPrice;
 
                 if (tick && data && lastHistUpdate !== nextHistUpdate) {
                     data.shift();
@@ -98,9 +99,10 @@
             }, true);
 
             function getLastHistUpdate(granularity, tick) {
-                var time = tick && tick.time,
-                    now = time ? new Date(time) : new Date(),
-                    coeff;
+                const time = tick && tick.time,
+                    now = time ? new Date(time) : new Date();
+
+                let coeff;
 
                 if (granularity === "S5") {
                     coeff = 1000 * 5;
@@ -141,6 +143,7 @@
                 } else if (granularity === "H12") {
                     coeff = 1000 * 60 * 60 * 12;
                 } else {
+
                     // for D / W / M
                     coeff = 1000 * 60 * 60 * 12;
                 }
@@ -149,7 +152,7 @@
             }
 
             function drawChart(el, csv) {
-                var margin = {
+                const margin = {
                         top: 0,
                         right: 20,
                         bottom: 30,
@@ -158,73 +161,73 @@
                     width = 960 - margin.left - margin.right,
                     height = 400 - margin.top - margin.bottom;
 
-                var x = techan.scale.financetime()
+                const x = techan.scale.financetime()
                     .range([0, width]);
 
-                var y = d3.scaleLinear()
+                const y = d3.scaleLinear()
                     .range([height, 0]);
 
-                var yVolume = d3.scaleLinear()
+                const yVolume = d3.scaleLinear()
                     .range([y(0), y(0.2)]);
 
-                var ohlc = techan.plot.ohlc()
+                const ohlc = techan.plot.ohlc()
                     .xScale(x)
                     .yScale(y);
 
-                var tradearrow = techan.plot.tradearrow()
-                          .xScale(x)
-                          .yScale(y)
-                          .orient(function (d) {
-                              return d.type.startsWith("buy") ? "up" : "down";
-                          });
-                          // .on("mouseenter", enter)
-                          // .on("mouseout", out);
+                const tradearrow = techan.plot.tradearrow()
+                    .xScale(x)
+                    .yScale(y)
+                    .orient(d => {
+                        const side = d.type.startsWith("buy") ? "up" : "down";
 
-                var sma0 = techan.plot.sma()
+                        return side;
+                    });
+
+                const sma0 = techan.plot.sma()
                     .xScale(x)
                     .yScale(y);
 
-                var sma0Calculator = techan.indicator.sma()
+                const sma0Calculator = techan.indicator.sma()
                     .period(10);
 
-                var sma1 = techan.plot.sma()
+                const sma1 = techan.plot.sma()
                     .xScale(x)
                     .yScale(y);
 
-                var sma1Calculator = techan.indicator.sma()
+                const sma1Calculator = techan.indicator.sma()
                     .period(20);
 
-                var volume = techan.plot.volume()
+                const volume = techan.plot.volume()
                     .accessor(ohlc.accessor())
                     .xScale(x)
                     .yScale(yVolume);
 
-                var xAxis = d3.axisBottom(x);
+                const xAxis = d3.axisBottom(x);
 
-                var yAxis = d3.axisLeft(y);
+                const yAxis = d3.axisLeft(y);
 
-                var volumeAxis = d3.axisRight(yVolume)
+                const volumeAxis = d3.axisRight(yVolume)
                     .ticks(3)
                     .tickFormat(d3.format(",.3s"));
 
-                var timeAnnotation = techan.plot.axisannotation()
+                const timeAnnotation = techan.plot.axisannotation()
                     .axis(xAxis)
                     .orient("bottom")
                     .format(d3.timeFormat("%Y-%m-%d %H:%M"))
                     .width(80)
                     .translate([0, height]);
 
-                var ohlcAnnotation = techan.plot.axisannotation()
+                const ohlcAnnotation = techan.plot.axisannotation()
                     .axis(yAxis)
                     .orient("left")
                     .format(d3.format(",.4f"));
 
-                var volumeAnnotation = techan.plot.axisannotation()
+                const volumeAnnotation = techan.plot.axisannotation()
                     .axis(volumeAxis)
                     .orient("right")
                     .width(35);
 
-                var crosshair = techan.plot.crosshair()
+                const crosshair = techan.plot.crosshair()
                     .xScale(x)
                     .yScale(y)
                     .xAnnotation(timeAnnotation)
@@ -232,26 +235,24 @@
 
                 d3.select(el).select("svg").remove();
 
-                var svg = d3.select(el).append("svg")
+                const svg = d3.select(el).append("svg")
                     .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom);
-
-                var defs = svg.append("defs");
-
-                svg = svg.append("g")
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
                     .attr("transform",
-                        "translate(" + margin.left + "," + margin.top + ")");
+                        `translate(${margin.left}, ${margin.top})`);
 
-                defs
+                const defs = svg.append("defs")
                     .append("clipPath")
-                        .attr("id", "ohlcClip")
-                    .append("rect")
-                        .attr("x", 0)
-                        .attr("y", 0)
-                        .attr("width", width)
-                        .attr("height", height);
+                        .attr("id", "ohlcClip");
 
-                var ohlcSelection = svg.append("g")
+                defs.append("rect")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", width)
+                    .attr("height", height);
+
+                const ohlcSelection = svg.append("g")
                     .attr("class", "ohlc")
                     .attr("transform", "translate(0,0)");
 
@@ -276,7 +277,7 @@
 
                 svg.append("g")
                     .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")");
+                    .attr("transform", `translate(0, ${height})`);
 
                 svg
                     .append("g")
@@ -287,8 +288,7 @@
                         .attr("dy", ".71em")
                         .style("font-weight", "bold")
                         .style("text-anchor", "end")
-                        .text("Price (" +
-                            myInstrument + " / " + myGranularity + ")");
+                        .text(`Price (${myInstrument} / ${myGranularity})`);
 
                 svg.append("g")
                     .attr("class", "volume axis");
@@ -296,16 +296,16 @@
                 svg.append("g")
                     .attr("class", "crosshair ohlc");
 
-                data = d3.csvParse(csv).map(function (d) {
-                    return {
+                data = d3.csvParse(csv).map(
+                    d => ({
                         date: new Date(d.Date),
                         open: +d.Open,
                         high: +d.High,
                         low: +d.Low,
                         close: +d.Close,
                         volume: +d.Volume
-                    };
-                });
+                    })
+                );
 
                 svg.select("g.candlestick").datum(data);
                 svg.select("g.sma.ma-0").datum(sma0Calculator(data));
@@ -315,7 +315,7 @@
                 redraw();
 
                 function redraw() {
-                    var accessor = ohlc.accessor();
+                    const accessor = ohlc.accessor();
 
                     x.domain(data.map(accessor.d));
                     x.zoomable().domain([data.length - 130, data.length]);
@@ -330,27 +330,25 @@
                     svg.select("g.volume.axis").call(volumeAxis);
 
                     svg.select("g.candlestick").datum(data).call(ohlc);
-                    // svg.select("g.candlestick").call(ohlc);
-
                     svg.select("g.tradearrow").remove();
                     svg.append("g").attr("class", "tradearrow");
-                    myTrades = scope.trades.filter(function (trade) {
-                        return trade.instrument === myInstrument;
-                    }).map(function (trade) {
-                        return {
-                            date: new Date(trade.openTime),
-                            type: trade.currentUnits > 0 ? "buy" : "sell",
-                            price: trade.price
-                        };
-                    });
+                    myTrades = scope.trades.filter(
+                        trade => trade.instrument === myInstrument)
+                        .map(
+                            trade => ({
+                                date: new Date(trade.openTime),
+                                type: trade.currentUnits > 0 ? "buy" : "sell",
+                                price: trade.price
+                            })
+                        );
                     svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
 
-                    svg.select("g.sma.ma-0").datum(sma0Calculator(data)).call(sma0);
-                    svg.select("g.sma.ma-1").datum(sma1Calculator(data)).call(sma1);
+                    svg.select("g.sma.ma-0")
+                        .datum(sma0Calculator(data)).call(sma0);
+                    svg.select("g.sma.ma-1")
+                        .datum(sma1Calculator(data)).call(sma1);
 
                     svg.select("g.volume").datum(data).call(volume);
-                    // svg.select("g.volume").call(volume);
-
                     svg.select("g.crosshair.ohlc").call(crosshair);
                 }
 
@@ -360,4 +358,4 @@
         }
     }
 
-}());
+}

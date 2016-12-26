@@ -1,15 +1,16 @@
 "use strict";
 
-describe("tradesService", function () {
-    var api = "/api/trades",
-        $httpBackend,
+describe("tradesService", () => {
+    const api = "/api/trades";
+
+    let $httpBackend,
         sessionService,
         tradesService;
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($injector) {
-        var environment = "my environment",
+    beforeEach(inject($injector => {
+        const environment = "my environment",
             token = "my token",
             accountId = "my account id";
 
@@ -18,56 +19,54 @@ describe("tradesService", function () {
         sessionService = $injector.get("sessionService");
 
         sessionService.setCredentials({
-            environment: environment,
-            token: token,
-            accountId: accountId
+            environment,
+            token,
+            accountId
         });
 
         $httpBackend
             .when("POST", api)
             .respond([
                 {
-                    "id": 175427743,
-                    "units": 2,
-                    "side": "sell",
-                    "instrument": "EUR_USD",
-                    "time": "2014-02-13T17:47:57Z",
-                    "price": 1.36687,
-                    "takeProfit": 0,
-                    "stopLoss": 0,
-                    "trailingStop": 0,
-                    "trailingAmount": 0
+                    id: 175427743,
+                    units: 2,
+                    side: "sell",
+                    instrument: "EUR_USD",
+                    time: "2014-02-13T17:47:57Z",
+                    price: 1.36687,
+                    takeProfit: 0,
+                    stopLoss: 0,
+                    trailingStop: 0,
+                    trailingAmount: 0
                 },
                 {
-                    "id": 175427742,
-                    "units": 2,
-                    "side": "sell",
-                    "instrument": "EUR_USD",
-                    "time": "2014-02-13T17:47:56Z",
-                    "price": 1.36687,
-                    "takeProfit": 0,
-                    "stopLoss": 0,
-                    "trailingStop": 0,
-                    "trailingAmount": 0
+                    id: 175427742,
+                    units: 2,
+                    side: "sell",
+                    instrument: "EUR_USD",
+                    time: "2014-02-13T17:47:56Z",
+                    price: 1.36687,
+                    takeProfit: 0,
+                    stopLoss: 0,
+                    trailingStop: 0,
+                    trailingAmount: 0
                 }
             ]);
 
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
-    afterEach(function () {
+    afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("refresh", function () {
-        it("test", function () {
-            var trades;
-
+    describe("refresh", () => {
+        it("test", () => {
             tradesService.refresh();
             $httpBackend.flush();
 
-            trades = tradesService.getTrades();
+            const trades = tradesService.getTrades();
 
             assert.lengthOf(trades, 2);
 

@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.orders")
         .component("orders", {
@@ -10,7 +10,7 @@
 
     Orders.$inject = ["$mdDialog", "toastService", "ordersService"];
     function Orders($mdDialog, toastService, ordersService) {
-        var vm = this;
+        const vm = this;
 
         vm.closeOrder = closeOrder;
         vm.orders = ordersService.getOrders();
@@ -22,17 +22,17 @@
         }
 
         function closeOrder(event, id) {
-            var confirm = $mdDialog.confirm()
+            const confirm = $mdDialog.confirm()
                 .textContent("Are you sure to close the order?")
                 .ariaLabel("Order closing confirmation")
                 .ok("Ok")
                 .cancel("Cancel")
                 .targetEvent(event);
 
-            $mdDialog.show(confirm).then(function () {
-                ordersService.closeOrder(id).then(function (order) {
-                    var message = "Closed " +
-                        " #" + order.orderCancelTransaction.orderID;
+            $mdDialog.show(confirm).then(() => {
+                ordersService.closeOrder(id).then(order => {
+                    const message = "Closed " +
+                        `#${order.orderCancelTransaction.orderID}`;
 
                     toastService.show(message);
                 });
@@ -40,4 +40,4 @@
         }
     }
 
-}());
+}

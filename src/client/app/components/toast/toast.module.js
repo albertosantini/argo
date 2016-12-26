@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.toast", []);
-
-}());
+angular
+    .module("components.toast", []);

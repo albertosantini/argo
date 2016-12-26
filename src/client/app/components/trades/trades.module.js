@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.trades", []);
-
-}());
+angular
+    .module("components.trades", []);

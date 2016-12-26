@@ -1,21 +1,21 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.session")
         .factory("sessionService", sessionService);
 
     sessionService.$inject = ["$q"];
     function sessionService($q) {
-        var deferred = $q.defer(),
+        const deferred = $q.defer(),
             credentials = {
                 environment: null,
                 token: null,
                 accountId: null
             },
             service = {
-                setCredentials: setCredentials,
-                isLogged: isLogged
+                setCredentials,
+                isLogged
             };
 
         return service;
@@ -33,4 +33,4 @@
         }
     }
 
-}());
+}

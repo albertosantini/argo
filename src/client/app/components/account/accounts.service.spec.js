@@ -1,16 +1,17 @@
 "use strict";
 
-describe("accountsService", function () {
-    var api = "/api/account",
-        apiInstruments = "/api/instruments",
-        $httpBackend,
+describe("accountsService", () => {
+    const api = "/api/account",
+        apiInstruments = "/api/instruments";
+
+    let $httpBackend,
         sessionService,
         accountsService;
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($injector) {
-        var environment = "my environment",
+    beforeEach(inject($injector => {
+        const environment = "my environment",
             token = "my token",
             accountId = "my account id";
 
@@ -19,9 +20,9 @@ describe("accountsService", function () {
         sessionService = $injector.get("sessionService");
 
         sessionService.setCredentials({
-            environment: environment,
-            token: token,
-            accountId: accountId
+            environment,
+            token,
+            accountId
         });
 
         $httpBackend
@@ -52,19 +53,19 @@ describe("accountsService", function () {
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
-    afterEach(function () {
+    afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("getAccounts", function () {
-        it("test", function () {
+    describe("getAccounts", () => {
+        it("test", () => {
             accountsService.getAccounts({
                 environment: "my environment",
                 token: "my token",
                 accountId: "my account id"
-            }).then(function () {
-                var account = accountsService.getAccount();
+            }).then(() => {
+                const account = accountsService.getAccount();
 
                 assert.equal("USD", account.currency);
                 assert.equal("7442890", account.accountId);

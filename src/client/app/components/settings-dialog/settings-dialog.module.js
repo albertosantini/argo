@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.settings-dialog", []);
-
-}());
+angular
+    .module("components.settings-dialog", []);

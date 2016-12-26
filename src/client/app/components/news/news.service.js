@@ -1,30 +1,27 @@
 "use strict";
 
-(function () {
+{
     angular
         .module("components.news")
         .factory("newsService", newsService);
 
     newsService.$inject = ["$http", "sessionService"];
     function newsService($http, sessionService) {
-        var service = {
-            getNews: getNews
+        const service = {
+            getNews
         };
 
         return service;
 
         function getNews() {
-            return sessionService.isLogged().then(function (credentials) {
-                return $http.post("/api/calendar", {
+            return sessionService.isLogged().then(
+                credentials => $http.post("/api/calendar", {
                     environment: credentials.environment,
                     token: credentials.token
-                }).then(function (news) {
-                    return news.data;
-                }).catch(function (err) {
-                    return err.data;
-                });
-            });
+                }).then(news => news.data)
+                .catch(err => err.data)
+            );
         }
     }
 
-}());
+}

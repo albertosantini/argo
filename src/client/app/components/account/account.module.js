@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.account", []);
-
-}());
+angular
+    .module("components.account", []);

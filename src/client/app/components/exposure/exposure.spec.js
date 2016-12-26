@@ -1,16 +1,16 @@
 "use strict";
 
-describe("Exposure", function () {
-    var $controller,
+describe("Exposure", () => {
+    let $controller,
         tradesServiceMock;
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($componentController) {
+    beforeEach(inject($componentController => {
         $controller = $componentController;
 
         tradesServiceMock = {
-            getTrades: function () {
+            getTrades() {
                 return [
                     {
                         instrument: "EUR_USD",
@@ -27,18 +27,18 @@ describe("Exposure", function () {
         };
     }));
 
-    describe("vm.exposures", function () {
-        var controller;
+    describe("vm.exposures", () => {
+        let controller;
 
-        beforeEach(function () {
+        beforeEach(() => {
             controller = $controller("exposure", {
                 $scope: {},
                 tradesService: tradesServiceMock
             });
         });
 
-        it("test", function () {
-            var exposures = controller.exposures;
+        it("test", () => {
+            const exposures = controller.exposures;
 
             assert.lengthOf(exposures, 3);
 

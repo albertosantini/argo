@@ -1,7 +1,4 @@
 "use strict";
 
-(function () {
-    angular
-        .module("components.quotes", []);
-
-}());
+angular
+    .module("components.quotes", []);

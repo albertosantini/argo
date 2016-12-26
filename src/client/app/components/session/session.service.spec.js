@@ -1,17 +1,18 @@
 "use strict";
 
-describe("sessionService", function () {
-    var scope,
+describe("sessionService", () => {
+    let scope,
         $httpBackend,
-        sessionService,
-        environment = "my environment",
+        sessionService;
+
+    const environment = "my environment",
         token = "my token",
         accountId = "my account id";
 
     beforeEach(module("components"));
 
-    beforeEach(inject(function ($injector) {
-        var $rootScope = $injector.get("$rootScope");
+    beforeEach(inject($injector => {
+        const $rootScope = $injector.get("$rootScope");
 
         scope = $rootScope.$new();
         $httpBackend = $injector.get("$httpBackend");
@@ -20,8 +21,8 @@ describe("sessionService", function () {
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
 
-    it("isLogged and setCredentials", function (done) {
-        sessionService.isLogged().then(function (credentials) {
+    it("isLogged and setCredentials", done => {
+        sessionService.isLogged().then(credentials => {
             assert(environment, credentials.environment);
             assert(token, credentials.token);
             assert(accountId, credentials.accountId);
@@ -30,9 +31,9 @@ describe("sessionService", function () {
         });
 
         sessionService.setCredentials({
-            environment: environment,
-            token: token,
-            accountId: accountId
+            environment,
+            token,
+            accountId
         });
 
         scope.$apply();
