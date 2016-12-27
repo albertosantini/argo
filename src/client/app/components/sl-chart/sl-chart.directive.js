@@ -54,7 +54,7 @@
                 } else {
                     node.style.stroke = "green";
                 }
-                node.style.height = h;
+                node.style.height = `${h}px`;
 
                 const min = d3.min(data[instrument]);
                 const max = d3.max(data[instrument]);
