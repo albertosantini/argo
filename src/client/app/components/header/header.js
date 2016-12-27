@@ -91,6 +91,11 @@
                 }, err => {
                     toastService.show(err);
                 });
+            })
+            .catch(err => {
+                if (err) {
+                    toastService.show(err);
+                }
             });
         }
 
