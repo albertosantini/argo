@@ -136,6 +136,11 @@
                             instruments
                         });
                     }
+                })
+                .catch(err => {
+                    if (err) {
+                        toastService.show(err);
+                    }
                 });
             });
         }
