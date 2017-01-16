@@ -42,14 +42,13 @@
         "electron": "~1.4.14"
     },
     "scripts": {
-        "test": "npm run lint && npm run karma && npm run snyk",
+        "test": "npm run lint && npm run karma",
         "start": "node src/server/app.js",
         "debug": "node --inspect src/server/app.js",
         "electron": "electron .",
         "lint": "eslint main.js karma.conf.js src/**/*.js",
         "karma": "karma start --single-run",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-        "snyk": "snyk test"
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
     },
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
@@ -60,7 +59,6 @@
         "karma": "^1.4.0",
         "karma-mocha": "^1.3.0",
         "karma-chai": "^0.1.0",
-        "karma-chrome-launcher": "^2.0.0",
-        "snyk": "^1.24.4"
+        "karma-chrome-launcher": "^2.0.0"
     }
 }
