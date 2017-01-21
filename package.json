@@ -35,11 +35,11 @@
         "angular-messages": "~1.6.1",
         "angular-mocks": "~1.6.1",
         "angular-material": "~1.1.1",
-        "d3": "~4.4.2",
+        "d3": "~4.4.3",
         "techan": "~0.8.0"
     },
     "optionalDependencies": {
-        "electron": "~1.4.14"
+        "electron": "~1.4.15"
     },
     "scripts": {
         "test": "npm run lint && npm run karma",
@@ -52,7 +52,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
-        "eslint": "^3.13.1",
+        "eslint": "^3.14.0",
         "eslint-plugin-angular": "^1.6.1",
         "mocha": "^3.2.0",
         "chai": "^3.5.0",
