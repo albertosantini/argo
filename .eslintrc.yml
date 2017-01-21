@@ -22,6 +22,7 @@ rules:
     camelcase: ["error", { properties: "never" }]
     callback-return: ["error", ["cb", "callback", "next"]]
     class-methods-use-this: "error"
+    comma-dangle: "error"
     comma-spacing: "error"
     comma-style: ["error", "last"]
     consistent-return: "error"
@@ -79,6 +80,7 @@ rules:
     no-proto: "error"
     no-redeclare: "error"
     no-return-assign: "error"
+    prefer-promise-reject-errors: "error"
     no-script-url: "error"
     no-self-assign: "error"
     no-sequences: "error"
