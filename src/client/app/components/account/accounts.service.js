@@ -78,13 +78,7 @@
 
         function setStreamingInstruments(settings) {
             account.streamingInstruments = Object.keys(settings)
-                .filter(el => {
-                    if (settings[el]) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                .filter(el => !!settings[el]);
 
             return account.streamingInstruments;
         }
