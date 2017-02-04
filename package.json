@@ -52,7 +52,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
-        "eslint": "^3.14.1",
+        "eslint": "^3.15.0",
         "eslint-plugin-angular": "^1.6.1",
         "mocha": "^3.2.0",
         "chai": "^3.5.0",
