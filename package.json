@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "async": "~2.1.4",
-        "body-parser": "~1.16.0",
+        "body-parser": "~1.16.1",
         "express": "~4.14.1",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
