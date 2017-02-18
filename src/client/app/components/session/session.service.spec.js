@@ -1,5 +1,3 @@
-"use strict";
-
 describe("sessionService", () => {
     let scope,
         $httpBackend,
@@ -16,7 +14,7 @@ describe("sessionService", () => {
 
         scope = $rootScope.$new();
         $httpBackend = $injector.get("$httpBackend");
-        sessionService = $injector.get("sessionService");
+        sessionService = $injector.get("SessionService");
 
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));

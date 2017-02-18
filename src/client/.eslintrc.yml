@@ -1,3 +1,6 @@
+parserOptions:
+    sourceType: "module"
+
 env:
     browser: true
     mocha: true
@@ -42,7 +45,7 @@ rules:
     angular/no-cookiestore: "error"
     angular/no-jquery-angularelement: "error"
     angular/no-private-call: "error"
-    angular/no-service-method: "error"
+    angular/no-service-method: "off"
     angular/no-services: ["error", ["$http", "$resource", "Restangular"]]
     angular/on-watch: "error"
     angular/rest-service: "off"

@@ -1,5 +1,3 @@
-"use strict";
-
 describe("Exposure", () => {
     let $controller,
         tradesServiceMock;
@@ -33,8 +31,10 @@ describe("Exposure", () => {
         beforeEach(() => {
             controller = $controller("exposure", {
                 $scope: {},
-                tradesService: tradesServiceMock
+                TradesService: tradesServiceMock
             });
+
+            controller.$onInit();
         });
 
         it("test", () => {

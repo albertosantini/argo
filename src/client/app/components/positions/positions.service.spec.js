@@ -1,5 +1,3 @@
-"use strict";
-
 describe("positionsService", () => {
     const api = "/api/positions";
 
@@ -15,8 +13,8 @@ describe("positionsService", () => {
             accountId = "my account id";
 
         $httpBackend = $injector.get("$httpBackend");
-        positionsService = $injector.get("positionsService");
-        sessionService = $injector.get("sessionService");
+        positionsService = $injector.get("PositionsService");
+        sessionService = $injector.get("SessionService");
 
         sessionService.setCredentials({
             environment,

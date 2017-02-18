@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.sl-chart", []);
+import { slChartDirective } from "./sl-chart.directive";
+
+export const slChart = angular
+    .module("components.sl-chart", [])
+    .directive("slChart", slChartDirective)
+    .name;

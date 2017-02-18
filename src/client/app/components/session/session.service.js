@@ -1,36 +1,23 @@
-"use strict";
-
-{
-    angular
-        .module("components.session")
-        .factory("sessionService", sessionService);
-
-    sessionService.$inject = ["$q"];
-    function sessionService($q) {
-        const deferred = $q.defer(),
-            credentials = {
-                environment: null,
-                token: null,
-                accountId: null
-            },
-            service = {
-                setCredentials,
-                isLogged
-            };
-
-        return service;
-
-        function setCredentials(session) {
-            credentials.environment = session.environment;
-            credentials.token = session.token;
-            credentials.accountId = session.accountId;
-
-            deferred.resolve(credentials);
-        }
-
-        function isLogged() {
-            return deferred.promise;
-        }
+export class SessionService {
+    constructor($q) {
+        this.deferred = $q.defer();
+        this.credentials = {
+            environment: null,
+            token: null,
+            accountId: null
+        };
     }
 
+    setCredentials(session) {
+        this.credentials.environment = session.environment;
+        this.credentials.token = session.token;
+        this.credentials.accountId = session.accountId;
+
+        this.deferred.resolve(this.credentials);
+    }
+
+    isLogged() {
+        return this.deferred.promise;
+    }
 }
+SessionService.$inject = ["$q"];

@@ -1,4 +1,10 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.account", []);
+import { accountComponent } from "./account.component";
+import { AccountsService } from "./accounts.service";
+
+export const account = angular
+    .module("components.account", [])
+    .component("account", accountComponent)
+    .service("AccountsService", AccountsService)
+    .name;

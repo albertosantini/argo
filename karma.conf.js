@@ -8,12 +8,11 @@ module.exports = config => {
         frameworks: ["mocha", "chai"],
 
         files: [
-            "node_modules/angular/angular.js",
-
+            "build/vendor.bundle.js",
             "node_modules/angular-mocks/angular-mocks.js",
 
-            "src/client/app/**/*.module.js",
-            "src/client/app/**/*.js"
+            "build/app.bundle.js",
+            "src/client/app/**/*.spec.js"
         ],
 
         exclude: [

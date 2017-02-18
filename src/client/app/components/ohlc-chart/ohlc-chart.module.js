@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.ohlc-chart", []);
+import { ohlcChartDirective } from "./ohlc-chart.directive";
+
+export const ohlcChart = angular
+    .module("components.ohlc-chart", [])
+    .directive("ohlcChart", ohlcChartDirective)
+    .name;

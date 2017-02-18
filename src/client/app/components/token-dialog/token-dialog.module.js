@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.token-dialog", []);
+import { tokenDialogComponent } from "./token-dialog.component";
+
+export const tokenDialog = angular
+    .module("components.token-dialog", [])
+    .component("tokenDialog", tokenDialogComponent)
+    .name;

@@ -1,35 +1,26 @@
-"use strict";
+export function highlighterDirective($timeout) {
+    const directive = {
+        restrict: "A",
+        link
+    };
 
-{
-    angular
-        .module("components.highlighter")
-        .directive("highlighter", highlighter);
+    return directive;
 
-    highlighter.$inject = ["$timeout"];
-    function highlighter($timeout) {
-        const directive = {
-            restrict: "A",
-            link
-        };
+    function link(scope, element, attrs) {
+        scope.$watch(attrs.highlighter, (newValue, oldValue) => {
+            let newclass;
 
-        return directive;
+            if (newValue !== oldValue) {
+                newclass = newValue < oldValue ?
+                    "highlight-red" : "highlight-green";
 
-        function link(scope, element, attrs) {
-            scope.$watch(attrs.highlighter, (newValue, oldValue) => {
-                let newclass;
+                element.addClass(newclass);
 
-                if (newValue !== oldValue) {
-                    newclass = newValue < oldValue ?
-                        "highlight-red" : "highlight-green";
-
-                    element.addClass(newclass);
-
-                    $timeout(() => {
-                        element.removeClass(newclass);
-                    }, 500);
-                }
-            });
-        }
+                $timeout(() => {
+                    element.removeClass(newclass);
+                }, 500);
+            }
+        });
     }
-
 }
+highlighterDirective.$inject = ["$timeout"];

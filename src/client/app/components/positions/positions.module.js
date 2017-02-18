@@ -1,4 +1,10 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.positions", []);
+import { positionsComponent } from "./positions.component";
+import { PositionsService } from "./positions.service";
+
+export const positions = angular
+    .module("components.positions", [])
+    .component("positions", positionsComponent)
+    .service("PositionsService", PositionsService)
+    .name;

@@ -1,96 +1,83 @@
-"use strict";
+export class OrdersService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
 
-{
-    angular
-        .module("components.orders")
-        .factory("ordersService", ordersService);
-
-    ordersService.$inject = ["$http", "sessionService", "accountsService"];
-    function ordersService($http, sessionService, accountsService) {
-        const orders = [],
-            service = {
-                getOrders,
-                closeOrder,
-                putOrder,
-                updateOrders,
-                refresh
-            };
-
-        return service;
-
-        function getOrders() {
-            return orders;
-        }
-
-        function refresh() {
-            sessionService.isLogged().then(credentials => {
-                $http.post("/api/orders", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId
-                }).then(res => {
-                    orders.length = 0;
-                    angular.extend(orders, res.data);
-                });
-            });
-        }
-
-        function putOrder(order) {
-            return sessionService.isLogged().then(
-                credentials => $http.post("/api/order", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId,
-                    instrument: order.instrument,
-                    units: order.units,
-                    side: order.side,
-                    type: order.type,
-                    expiry: order.expiry,
-                    price: order.price,
-                    priceBound: order.lowerBound || order.upperBound,
-                    stopLossOnFill: order.stopLossOnFill,
-                    takeProfitOnFill: order.takeProfitOnFill,
-                    trailingStopLossOnFill: order.trailingStopLossOnFill
-                }).then(trade => trade.data)
-                .catch(err => err.data)
-            );
-        }
-
-        function closeOrder(id) {
-            return sessionService.isLogged().then(
-                credentials => $http.post("/api/closeorder", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId,
-                    id
-                }).then(order => order.data)
-                .catch(err => err.data)
-            );
-        }
-
-        function updateOrders(tick) {
-            const account = accountsService.getAccount(),
-                pips = account.pips;
-
-            orders.forEach((order, index) => {
-                let current;
-
-                if (order.instrument === tick.instrument) {
-
-                    if (order.units > 0) {
-                        current = tick.ask;
-                    }
-                    if (order.units < 0) {
-                        current = tick.bid;
-                    }
-
-                    orders[index].current = current;
-                    orders[index].distance = (Math.abs(current - order.price) /
-                        pips[order.instrument]);
-                }
-            });
-        }
-
+        this.orders = [];
     }
 
+    getOrders() {
+        return this.orders;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.$http.post("/api/orders", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(res => {
+                this.orders.length = 0;
+                angular.extend(this.orders, res.data);
+            });
+        });
+    }
+
+    putOrder(order) {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/order", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                instrument: order.instrument,
+                units: order.units,
+                side: order.side,
+                type: order.type,
+                expiry: order.expiry,
+                price: order.price,
+                priceBound: order.lowerBound || order.upperBound,
+                stopLossOnFill: order.stopLossOnFill,
+                takeProfitOnFill: order.takeProfitOnFill,
+                trailingStopLossOnFill: order.trailingStopLossOnFill
+            }).then(trade => trade.data)
+            .catch(err => err.data)
+        );
+    }
+
+    closeOrder(id) {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/closeorder", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                id
+            }).then(order => order.data)
+            .catch(err => err.data)
+        );
+    }
+
+    updateOrders(tick) {
+        const account = this.AccountsService.getAccount(),
+            pips = account.pips;
+
+        this.orders.forEach((order, index) => {
+            let current;
+
+            if (order.instrument === tick.instrument) {
+
+                if (order.units > 0) {
+                    current = tick.ask;
+                }
+                if (order.units < 0) {
+                    current = tick.bid;
+                }
+
+                this.orders[index].current = current;
+                this.orders[index].distance = (Math.abs(current - order.price) /
+                    pips[order.instrument]);
+            }
+        });
+    }
 }
+OrdersService.$inject = ["$http", "SessionService", "AccountsService"];

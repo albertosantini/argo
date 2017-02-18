@@ -1,14 +1,11 @@
-"use strict";
-
-
 describe("quotesService", () => {
-    let accountsService,
+    let AccountsService,
         quotesService;
 
     beforeEach(module("components.quotes"));
 
     beforeEach(() => {
-        accountsService = {
+        AccountsService = {
             getAccount() {
                 return {
                     streamingInstruments: ["EUR_USD"],
@@ -20,12 +17,12 @@ describe("quotesService", () => {
         };
 
         module($provide => {
-            $provide.value("accountsService", accountsService);
+            $provide.value("AccountsService", AccountsService);
         });
     });
 
     beforeEach(inject($injector => {
-        quotesService = $injector.get("quotesService");
+        quotesService = $injector.get("QuotesService");
 
         quotesService.updateTick({
             instrument: "EUR_USD",

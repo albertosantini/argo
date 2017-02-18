@@ -1,4 +1,10 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.activity", []);
+import { activityComponent } from "./activity.component";
+import { ActivityService } from "./activity.service";
+
+export const activity = angular
+    .module("components.activity", [])
+    .component("activity", activityComponent)
+    .service("ActivityService", ActivityService)
+    .name;

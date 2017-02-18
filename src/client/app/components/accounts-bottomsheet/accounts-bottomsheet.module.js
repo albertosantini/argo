@@ -1,4 +1,9 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.accounts-bottomsheet", []);
+import { accountsBottomsheetComponent } from "./accounts-bottomsheet.component";
+
+export const accountsBottomsheet = angular
+    .module("components.accounts-bottomsheet", [])
+    .component("accountsBottomsheet", accountsBottomsheetComponent)
+    .name;
+

@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.exposure", []);
+import { exposureComponent } from "./exposure.component";
+
+export const exposure = angular
+    .module("components.exposure", [])
+    .component("exposure", exposureComponent)
+    .name;

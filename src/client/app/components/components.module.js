@@ -1,27 +1,51 @@
-"use strict";
+import angular from "angular";
 
-angular
+import { account } from "./account/account.module";
+import { accountsBottomsheet } from "./accounts-bottomsheet/accounts-bottomsheet.module";
+import { activity } from "./activity/activity.module";
+import { charts } from "./charts/charts.module";
+import { dualColor } from "./dual-color/dual-color.module";
+import { exposure } from "./exposure/exposure.module";
+import { header } from "./header/header.module";
+import { highlighter } from "./highlighter/highlighter.module";
+import { news } from "./news/news.module";
+import { ohlcChart } from "./ohlc-chart/ohlc-chart.module";
+import { orderDialog } from "./order-dialog/order-dialog.module";
+import { orders } from "./orders/orders.module";
+import { plugins } from "./plugins/plugins.module";
+import { positions } from "./positions/positions.module";
+import { quotes } from "./quotes/quotes.module";
+import { session } from "./session/session.module";
+import { settingsDialog } from "./settings-dialog/settings-dialog.module";
+import { slChart } from "./sl-chart/sl-chart.module";
+import { streaming } from "./streaming/streaming.module";
+import { toast } from "./toast/toast.module";
+import { tokenDialog } from "./token-dialog/token-dialog.module";
+import { trades } from "./trades/trades.module";
+
+export const components = angular
     .module("components", [
-        "components.account",
-        "components.accounts-bottomsheet",
-        "components.activity",
-        "components.charts",
-        "components.dualcolor",
-        "components.exposure",
-        "components.header",
-        "components.highlighter",
-        "components.news",
-        "components.ohlc-chart",
-        "components.order-dialog",
-        "components.orders",
-        "components.plugins",
-        "components.positions",
-        "components.quotes",
-        "components.session",
-        "components.settings-dialog",
-        "components.sl-chart",
-        "components.streaming",
-        "components.toast",
-        "components.token-dialog",
-        "components.trades"
-    ]);
+        account,
+        accountsBottomsheet,
+        activity,
+        charts,
+        dualColor,
+        exposure,
+        header,
+        highlighter,
+        news,
+        ohlcChart,
+        orderDialog,
+        orders,
+        plugins,
+        positions,
+        quotes,
+        session,
+        settingsDialog,
+        slChart,
+        streaming,
+        toast,
+        tokenDialog,
+        trades
+    ])
+    .name;

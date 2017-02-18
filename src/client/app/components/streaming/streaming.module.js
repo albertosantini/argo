@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.streaming", []);
+import { StreamingService } from "./streaming.service";
+
+export const streaming = angular
+    .module("components.streaming", [])
+    .service("StreamingService", StreamingService)
+    .name;

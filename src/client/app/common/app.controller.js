@@ -1,22 +1,14 @@
-"use strict";
-
-{
-    angular
-        .module("common")
-        .controller("AppController", AppController);
-
-    AppController.$inject = [];
-    function AppController() {
-        const vm = this;
-
-        vm.tabSelectedIndex = 0;
-
-        vm.next = () => {
-            vm.tabSelectedIndex = Math.min(vm.tabSelectedIndex + 1, 6);
-        };
-        vm.previous = () => {
-            vm.tabSelectedIndex = Math.max(vm.tabSelectedIndex - 1, 0);
-        };
+export class AppController {
+    $onInit() {
+        this.tabSelectedIndex = 0;
     }
 
+    next() {
+        this.tabSelectedIndex = Math.min(this.tabSelectedIndex + 1, 6);
+    }
+
+    previous() {
+        this.tabSelectedIndex = Math.max(this.tabSelectedIndex - 1, 0);
+    }
 }
+AppController.$inject = [];

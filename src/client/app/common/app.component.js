@@ -1,12 +1,6 @@
-"use strict";
+import { AppController } from "./app.controller";
 
-{
-    const app = {
-        templateUrl: "app/common/app.html",
-        controller: "AppController"
-    };
-
-    angular
-        .module("common")
-        .component("app", app);
-}
+export const appComponent = {
+    templateUrl: "app/common/app.html",
+    controller: AppController
+};

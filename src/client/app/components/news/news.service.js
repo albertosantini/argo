@@ -1,27 +1,17 @@
-"use strict";
-
-{
-    angular
-        .module("components.news")
-        .factory("newsService", newsService);
-
-    newsService.$inject = ["$http", "sessionService"];
-    function newsService($http, sessionService) {
-        const service = {
-            getNews
-        };
-
-        return service;
-
-        function getNews() {
-            return sessionService.isLogged().then(
-                credentials => $http.post("/api/calendar", {
-                    environment: credentials.environment,
-                    token: credentials.token
-                }).then(news => news.data)
-                .catch(err => err.data)
-            );
-        }
+export class NewsService {
+    constructor($http, SessionService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
     }
 
+    getNews() {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/calendar", {
+                environment: credentials.environment,
+                token: credentials.token
+            }).then(news => news.data)
+            .catch(err => err.data)
+        );
+    }
 }
+NewsService.$inject = ["$http", "SessionService"];

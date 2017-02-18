@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.header", []);
+import { headerComponent } from "./header.component";
+
+export const header = angular
+    .module("components.header", [])
+    .component("header", headerComponent)
+    .name;

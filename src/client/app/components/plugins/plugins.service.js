@@ -1,77 +1,65 @@
-"use strict";
+export class PluginsService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
 
-{
-    angular
-        .module("components.plugins")
-        .factory("pluginsService", pluginsService);
-
-    pluginsService.$inject = ["$http", "sessionService", "accountsService"];
-    function pluginsService($http, sessionService, accountsService) {
-        const plugins = {},
-            pluginsInfo = {
-                count: 0
-            },
-            service = {
-                getPlugins,
-                getPluginsInfo,
-                engagePlugins,
-                refresh
-            };
-
-        return service;
-
-        function getPlugins() {
-            return plugins;
-        }
-
-        function getPluginsInfo() {
-            return pluginsInfo;
-        }
-
-        function refresh() {
-            sessionService.isLogged().then(credentials => {
-                $http.post("/api/plugins", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId
-                }).then(res => {
-                    let name;
-
-                    for (name in plugins) {
-                        if (plugins.hasOwnProperty(name)) {
-                            delete plugins[name];
-                        }
-                    }
-                    angular.extend(plugins, res.data);
-                    pluginsInfo.count = Object.keys(plugins).length;
-
-                    Object.keys(plugins).forEach(key => {
-                        if (plugins[key] === "enabled") {
-                            plugins[key] = true;
-                        } else {
-                            plugins[key] = false;
-                        }
-                    });
-                });
-            });
-        }
-
-        function engagePlugins(plugs) {
-            sessionService.isLogged().then(credentials => {
-                const account = accountsService.getAccount();
-
-                $http.post("/api/engageplugins", {
-                    environment: credentials.environment,
-                    token: credentials.token,
-                    accountId: credentials.accountId,
-                    plugins: plugs,
-                    config: {
-                        pips: account.pips
-                    }
-                });
-            });
-        }
-
+        this.plugins = {};
+        this.pluginsInfo = {
+            count: 0
+        };
     }
 
+    getPlugins() {
+        return this.plugins;
+    }
+
+    getPluginsInfo() {
+        return this.pluginsInfo;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.$http.post("/api/plugins", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(res => {
+                let name;
+
+                for (name in this.plugins) {
+                    if (this.plugins.hasOwnProperty(name)) {
+                        delete this.plugins[name];
+                    }
+                }
+                angular.extend(this.plugins, res.data);
+                this.pluginsInfo.count = Object.keys(this.plugins).length;
+
+                Object.keys(this.plugins).forEach(key => {
+                    if (this.plugins[key] === "enabled") {
+                        this.plugins[key] = true;
+                    } else {
+                        this.plugins[key] = false;
+                    }
+                });
+            });
+        });
+    }
+
+    engagePlugins(plugs) {
+        this.SessionService.isLogged().then(credentials => {
+            const account = this.AccountsService.getAccount();
+
+            this.$http.post("/api/engageplugins", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                plugins: plugs,
+                config: {
+                    pips: account.pips
+                }
+            });
+        });
+    }
 }
+PluginsService.$inject = ["$http", "SessionService", "AccountsService"];

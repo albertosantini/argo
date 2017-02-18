@@ -1,11 +1,3 @@
-"use strict";
-
-{
-    const root = {
-        templateUrl: "app/root.html"
-    };
-
-    angular
-        .module("root")
-        .component("root", root);
-}
+export const rootComponent = {
+    templateUrl: "app/root.html"
+};

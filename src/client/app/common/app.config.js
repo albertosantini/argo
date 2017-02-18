@@ -1,47 +1,38 @@
-"use strict";
+export function appConfig($httpProvider, $locationProvider) {
+    const interceptors = $httpProvider.interceptors;
 
-{
-    angular
-        .module("common")
-        .config(config);
+    interceptors.push(["$q", "$rootScope", ($q, $rootScope) => {
+        let nLoadings = 0;
 
-    config.$inject = ["$httpProvider", "$locationProvider"];
-    function config($httpProvider, $locationProvider) {
-        const interceptors = $httpProvider.interceptors;
+        return {
+            request(request) {
+                nLoadings += 1;
 
-        interceptors.push(["$q", "$rootScope", ($q, $rootScope) => {
-            let nLoadings = 0;
+                $rootScope.isLoadingView = true;
 
-            return {
-                request(request) {
-                    nLoadings += 1;
+                return request;
+            },
 
-                    $rootScope.isLoadingView = true;
-
-                    return request;
-                },
-
-                response(response) {
-                    nLoadings -= 1;
-                    if (nLoadings === 0) {
-                        $rootScope.isLoadingView = false;
-                    }
-
-                    return response;
-                },
-
-                responseError(response) {
-                    nLoadings -= 1;
-                    if (!nLoadings) {
-                        $rootScope.isLoadingView = false;
-                    }
-
-                    return $q.reject(response);
+            response(response) {
+                nLoadings -= 1;
+                if (nLoadings === 0) {
+                    $rootScope.isLoadingView = false;
                 }
-            };
-        }]);
 
-        $locationProvider.html5Mode(true);
-    }
+                return response;
+            },
 
+            responseError(response) {
+                nLoadings -= 1;
+                if (!nLoadings) {
+                    $rootScope.isLoadingView = false;
+                }
+
+                return $q.reject(response);
+            }
+        };
+    }]);
+
+    $locationProvider.html5Mode(true);
 }
+appConfig.$inject = ["$httpProvider", "$locationProvider"];

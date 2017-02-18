@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.toast", []);
+import { ToastService } from "./toast.service";
+
+export const toast = angular
+    .module("components.toast", [])
+    .service("ToastService", ToastService)
+    .name;

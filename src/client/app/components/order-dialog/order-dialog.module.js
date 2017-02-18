@@ -1,4 +1,8 @@
-"use strict";
+import angular from "angular";
 
-angular
-    .module("components.order-dialog", []);
+import { orderDialogComponent } from "./order-dialog.component";
+
+export const orderDialog = angular
+    .module("components.order-dialog", [])
+    .component("orderDialog", orderDialogComponent)
+    .name;
