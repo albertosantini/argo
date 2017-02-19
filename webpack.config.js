@@ -11,9 +11,7 @@ module.exports = {
             "angular-animate",
             "angular-aria",
             "angular-material",
-            "angular-material/angular-material.css",
-            "d3",
-            "techan"
+            "angular-material/angular-material.css"
         ]
     },
 
@@ -36,9 +34,6 @@ module.exports = {
         }),
         new ExtractTextPlugin({
             filename: "[name].bundle.css"
-        }),
-        new webpack.ProvidePlugin({
-            "window.d3": "d3"
         })
     ],
 

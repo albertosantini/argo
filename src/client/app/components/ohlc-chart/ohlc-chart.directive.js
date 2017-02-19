@@ -1,5 +1,5 @@
-import * as d3 from "d3";
-import techan from "techan";
+// import * as d3 from "d3";
+// import techan from "techan";
 
 export function ohlcChartDirective() {
     const directive = {
@@ -205,28 +205,28 @@ export function ohlcChartDirective() {
                 .ticks(3)
                 .tickFormat(d3.format(",.3s"));
 
-            // const timeAnnotation = techan.plot.axisannotation()
-            //     .axis(xAxis)
-            //     .orient("bottom")
-            //     .format(d3.timeFormat("%Y-%m-%d %H:%M"))
-            //     .width(80)
-            //     .translate([0, height]);
+            const timeAnnotation = techan.plot.axisannotation()
+                .axis(xAxis)
+                .orient("bottom")
+                .format(d3.timeFormat("%Y-%m-%d %H:%M"))
+                .width(80)
+                .translate([0, height]);
 
-            // const ohlcAnnotation = techan.plot.axisannotation()
-            //     .axis(yAxis)
-            //     .orient("left")
-            //     .format(d3.format(",.4f"));
+            const ohlcAnnotation = techan.plot.axisannotation()
+                .axis(yAxis)
+                .orient("left")
+                .format(d3.format(",.4f"));
 
-            // const volumeAnnotation = techan.plot.axisannotation()
-            //     .axis(volumeAxis)
-            //     .orient("right")
-            //     .width(35);
+            const volumeAnnotation = techan.plot.axisannotation()
+                .axis(volumeAxis)
+                .orient("right")
+                .width(35);
 
-            // const crosshair = techan.plot.crosshair()
-            //     .xScale(x)
-            //     .yScale(y)
-            //     .xAnnotation(timeAnnotation)
-            //     .yAnnotation([ohlcAnnotation, volumeAnnotation]);
+            const crosshair = techan.plot.crosshair()
+                .xScale(x)
+                .yScale(y)
+                .xAnnotation(timeAnnotation)
+                .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
             d3.select(el).select("svg").remove();
 
@@ -288,8 +288,8 @@ export function ohlcChartDirective() {
             svg.append("g")
                 .attr("class", "volume axis");
 
-            // svg.append("g")
-            //     .attr("class", "crosshair ohlc");
+            svg.append("g")
+                .attr("class", "crosshair ohlc");
 
             data = d3.csvParse(csv).map(
                 d => ({
@@ -345,7 +345,7 @@ export function ohlcChartDirective() {
 
                 svg.select("g.volume").datum(data).call(volume);
 
-                // svg.select("g.crosshair.ohlc").call(crosshair);
+                svg.select("g.crosshair.ohlc").call(crosshair);
             }
 
             return redraw;
