@@ -1,3 +1,5 @@
+import angular from "angular";
+
 export class OrdersService {
     constructor($http, SessionService, AccountsService) {
         this.$http = $http;
