@@ -3,9 +3,7 @@ export class ActivityService {
         this.$http = $http;
         this.SessionService = SessionService;
         this.AccountsService = AccountsService;
-    }
 
-    $onInit() {
         this.activities = [];
     }
 
