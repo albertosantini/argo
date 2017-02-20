@@ -1,5 +1,23 @@
 describe("activityService", () => {
     const api = "/api/transactions";
+    const activity = {
+        id: 176403879,
+        accountId: 6765103,
+        time: "2014-04-07T18:31:05Z",
+        type: "MARKET_ORDER_CREATE",
+        instrument: "EUR_USD",
+        units: 2,
+        side: "buy",
+        price: 1.25325,
+        pl: 0,
+        interest: 0,
+        accountBalance: 100000,
+        tradeOpened: {
+            id: 176403879,
+            units: 2
+        }
+    };
+
 
     let $httpBackend,
         sessionService,
@@ -24,25 +42,7 @@ describe("activityService", () => {
 
         $httpBackend
             .when("POST", api)
-            .respond([
-                {
-                    id: 176403879,
-                    accountId: 6765103,
-                    time: "2014-04-07T18:31:05Z",
-                    type: "MARKET_ORDER_CREATE",
-                    instrument: "EUR_USD",
-                    units: 2,
-                    side: "buy",
-                    price: 1.25325,
-                    pl: 0,
-                    interest: 0,
-                    accountBalance: 100000,
-                    tradeOpened: {
-                        id: 176403879,
-                        units: 2
-                    }
-                }
-            ]);
+            .respond([activity]);
 
         $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
     }));
@@ -68,6 +68,14 @@ describe("activityService", () => {
                 assert.equal("2014-04-07T18:31:05Z", activities[0].time);
             });
             $httpBackend.flush();
+        });
+    });
+
+    describe("addActivity", () => {
+        it("test", () => {
+            expect(() => {
+                activityService.addActivity(activity);
+            }).to.not.throw(TypeError);
         });
     });
 });

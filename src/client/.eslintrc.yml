@@ -12,6 +12,7 @@ globals:
 
     assert: false
     inject: false
+    expect: false
 
 plugins:
     - angular
