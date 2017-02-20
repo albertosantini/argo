@@ -9,7 +9,7 @@ let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
         frame: false,
-        height: 800,
+        height: 850,
         icon: "src/client/img/favicon.ico",
         width: 1450,
         webPreferences: {
