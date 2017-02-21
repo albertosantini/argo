@@ -20,8 +20,8 @@ export class PositionsService {
                         parseInt(position.short.units, 10);
                     const units = longUnits || shortUnits;
                     const side = units > 0 ? "buy" : "sell";
-                    const avgPrice = (longUnits && position.long.averagePrice)
-                         || (shortUnits && position.short.averagePrice);
+                    const avgPrice = (longUnits && position.long.averagePrice) ||
+                        (shortUnits && position.short.averagePrice);
 
                     data.push({
                         side,

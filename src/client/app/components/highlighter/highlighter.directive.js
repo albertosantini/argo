@@ -11,8 +11,8 @@ export function highlighterDirective($timeout) {
             let newclass;
 
             if (newValue !== oldValue) {
-                newclass = newValue < oldValue ?
-                    "highlight-red" : "highlight-green";
+                newclass = newValue < oldValue
+                    ? "highlight-red" : "highlight-green";
 
                 element.addClass(newclass);
 
