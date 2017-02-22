@@ -1,3 +1,24 @@
+<a name="4.4.0"></a>
+# [4.4.0](https://github.com/albertosantini/argo/compare/v4.3.0...v4.4.0) (2017-02-22)
+
+
+### Bug Fixes
+
+* **activity:** move initialization to the constructor ([243cb59](https://github.com/albertosantini/argo/commit/243cb59))
+* **build:** load d3 and techan lib via script tags ([ad4e282](https://github.com/albertosantini/argo/commit/ad4e282))
+* **header:** fix escaping from settings dialog ([38db7f7](https://github.com/albertosantini/argo/commit/38db7f7))
+* **header:** fix escaping from token dialog ([6c8c786](https://github.com/albertosantini/argo/commit/6c8c786))
+* **sl-chart:** fix sparkline height in IE ([e9e1061](https://github.com/albertosantini/argo/commit/e9e1061))
+
+
+### Features
+
+* **build:** add webpack with ES2015 modules ([19e07a5](https://github.com/albertosantini/argo/commit/19e07a5))
+* **build:** replace webpack with rollup ([c07db8b](https://github.com/albertosantini/argo/commit/c07db8b))
+* **core:** use ES2015 ([ee410ae](https://github.com/albertosantini/argo/commit/ee410ae))
+
+
+
 <a name="4.3.0"></a>
 # [4.3.0](https://github.com/albertosantini/argo/compare/v4.2.0...v4.3.0) (2016-12-15)
 
