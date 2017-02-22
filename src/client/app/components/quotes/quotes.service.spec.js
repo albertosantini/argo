@@ -32,15 +32,14 @@ describe("quotesService", () => {
         });
     }));
 
-    describe("getQuotes", () => {
-        it("test", () => {
-            const quotes = quotesService.getQuotes(),
-                eurusd = quotes.EUR_USD;
+    it("getQuotes", () => {
+        const quotes = quotesService.getQuotes(),
+            eurusd = quotes.EUR_USD;
 
-            assert.equal("2013-06-21T17:41:04.648747Z", eurusd.time);
-            assert.equal(1.31528, eurusd.ask);
-            assert.equal(1.31513, eurusd.bid);
-            assert.equal(1.5, eurusd.spread);
-        });
+        assert.equal("2013-06-21T17:41:04.648747Z", eurusd.time);
+        assert.equal(1.31528, eurusd.ask);
+        assert.equal(1.31513, eurusd.bid);
+        assert.equal(1.5, eurusd.spread);
     });
+
 });

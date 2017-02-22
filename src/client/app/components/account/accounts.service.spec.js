@@ -56,26 +56,30 @@ describe("accountsService", () => {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("getAccounts", () => {
-        it("test", () => {
-            accountsService.getAccounts({
-                environment: "my environment",
-                token: "my token",
-                accountId: "my account id"
-            }).then(() => {
-                const account = accountsService.getAccount();
+    it("getAccount", () => {
+        const account = accountsService.getAccount();
 
-                assert.equal("USD", account.currency);
-                assert.equal("7442890", account.accountId);
-                assert.equal(110410.5028, account.balance);
-                assert.equal(110394.9676, account.marginAvailable);
-                assert.equal(18.1671, account.marginCallMarginUsed);
-                assert.equal(-1983.78, account.realizedPL);
-                assert.equal(2.6319, account.unrealizedPL);
-                assert.isDefined(account.timestamp);
-                assert.equal(0.0023837406163863604, account.unrealizedPLPercent);
-            });
-            $httpBackend.flush();
+        assert.equal(true, angular.isObject(account));
+    });
+
+    it("getAccounts", () => {
+        accountsService.getAccounts({
+            environment: "my environment",
+            token: "my token",
+            accountId: "my account id"
+        }).then(() => {
+            const account = accountsService.getAccount();
+
+            assert.equal("USD", account.currency);
+            assert.equal("7442890", account.accountId);
+            assert.equal(110410.5028, account.balance);
+            assert.equal(110394.9676, account.marginAvailable);
+            assert.equal(18.1671, account.marginCallMarginUsed);
+            assert.equal(-1983.78, account.realizedPL);
+            assert.equal(2.6319, account.unrealizedPL);
+            assert.isDefined(account.timestamp);
+            assert.equal(0.0023837406163863604, account.unrealizedPLPercent);
         });
+        $httpBackend.flush();
     });
 });

@@ -56,17 +56,16 @@ describe("positionsService", () => {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("getPositions", () => {
-        it("test", () => {
-            positionsService.getPositions().then(positions => {
-                assert.lengthOf(positions, 3);
+    it("getPositions", () => {
+        positionsService.getPositions().then(positions => {
+            assert.lengthOf(positions, 3);
 
-                assert.equal("USD_CAD", positions[1].instrument);
-                assert.equal(-30, positions[1].units);
-                assert.equal("sell", positions[1].side);
-                assert.equal(1.11563, positions[1].avgPrice);
-            });
-            $httpBackend.flush();
+            assert.equal("USD_CAD", positions[1].instrument);
+            assert.equal(-30, positions[1].units);
+            assert.equal("sell", positions[1].side);
+            assert.equal(1.11563, positions[1].avgPrice);
         });
+        $httpBackend.flush();
     });
+
 });

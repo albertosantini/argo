@@ -59,25 +59,29 @@ describe("tradesService", () => {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe("refresh", () => {
-        it("test", () => {
-            tradesService.refresh();
-            $httpBackend.flush();
+    it("getTrades", () => {
+        const trades = tradesService.getTrades();
 
-            const trades = tradesService.getTrades();
+        assert.equal(true, angular.isArray(trades));
+    });
 
-            assert.lengthOf(trades, 2);
+    it("refresh", () => {
+        tradesService.refresh();
+        $httpBackend.flush();
 
-            assert.equal(175427743, trades[0].id);
-            assert.equal(2, trades[0].units);
-            assert.equal("sell", trades[0].side);
-            assert.equal("EUR_USD", trades[0].instrument);
-            assert.equal("2014-02-13T17:47:57Z", trades[0].time);
-            assert.equal(1.36687, trades[0].price);
-            assert.equal(0, trades[0].takeProfit);
-            assert.equal(0, trades[0].stopLoss);
-            assert.equal(0, trades[0].trailingStop);
-            assert.equal(0, trades[0].trailingAmount);
-        });
+        const trades = tradesService.getTrades();
+
+        assert.lengthOf(trades, 2);
+
+        assert.equal(175427743, trades[0].id);
+        assert.equal(2, trades[0].units);
+        assert.equal("sell", trades[0].side);
+        assert.equal("EUR_USD", trades[0].instrument);
+        assert.equal("2014-02-13T17:47:57Z", trades[0].time);
+        assert.equal(1.36687, trades[0].price);
+        assert.equal(0, trades[0].takeProfit);
+        assert.equal(0, trades[0].stopLoss);
+        assert.equal(0, trades[0].trailingStop);
+        assert.equal(0, trades[0].trailingAmount);
     });
 });

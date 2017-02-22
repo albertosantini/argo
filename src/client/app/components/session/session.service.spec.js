@@ -37,14 +37,4 @@ describe("sessionService", () => {
         scope.$apply();
     });
 
-    // it("isLogged with credentials resolved", function (done) {
-    //     sessionService.isLogged().then(function (credentials) {
-    //         assert(angular.isDefined(credentials));
-    //
-    //         done();
-    //     });
-    //
-    //     scope.$apply();
-    // });
-
 });
