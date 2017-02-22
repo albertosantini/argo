@@ -1,3 +1,2099 @@
-webpackJsonp([0],[,,,,,function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(17);const c=s.a.module("common",[o["a"]]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(20);var c=n(24);var a=n(27);var r=n(31);var u=n(34);var h=n(37);var l=n(40);var d=n(42);var p=n(45);var m=n(48);var v=n(51);var f=n(54);var g=n(58);var S=n(62);var $=n(66);var k=n(68);var w=n(72);var y=n(74);var b=n(75);var I=n(77);var T=n(81);var A=n(84);const x=s.a.module("components",[o["a"],c["a"],a["a"],r["a"],u["a"],h["a"],l["a"],d["a"],p["a"],m["a"],v["a"],f["a"],g["a"],S["a"],$["a"],k["a"],w["a"],y["a"],b["a"],I["a"],T["a"],A["a"]]).name;e["a"]=x},function(t,e,n){"use strict";const i={templateUrl:"app/root.html"};e["a"]=i},,,,,function(t,e){},function(t,e){},function(t,e,n){"use strict";var i=n(16);const s={templateUrl:"app/common/app.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";e["a"]=i;function i(t,e){const n=t.interceptors;n.push(["$q","$rootScope",(t,e)=>{let n=0;return{request(t){n+=1;e.isLoadingView=true;return t},response(t){n-=1;if(n===0){e.isLoadingView=false}return t},responseError(i){n-=1;if(!n){e.isLoadingView=false}return t.reject(i)}}}]);e.html5Mode(true)}i.$inject=["$httpProvider","$locationProvider"]},function(t,e,n){"use strict";class i{$onInit(){this.tabSelectedIndex=0}next(){this.tabSelectedIndex=Math.min(this.tabSelectedIndex+1,6)}previous(){this.tabSelectedIndex=Math.max(this.tabSelectedIndex-1,0)}}e["a"]=i;i.$inject=[]},function(t,e,n){"use strict";var i=n(12);var s=n.n(i);var o=n(0);var c=n.n(o);var a=n(3);var r=n.n(a);var u=n(14);var h=n(15);const l=c.a.module("common.app",[r.a]).component("app",u["a"]).config(h["a"]).name;e["a"]=l},function(t,e,n){"use strict";var i=n(19);const s={templateUrl:"app/components/account/account.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.AccountService=t}$onInit(){this.account=this.AccountService.getAccount()}}e["a"]=i;i.$inject=["AccountsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(18);var c=n(21);const a=s.a.module("components.account",[]).component("account",o["a"]).service("AccountsService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e){this.$http=t;this.SessionService=e;this.account={}}getAccount(){return this.account}refresh(){this.SessionService.isLogged().then(t=>{this.getAccounts({environment:t.environment,token:t.token,accountId:t.accountId})})}getAccounts(t){const e=t.environment||"practice",n=t.token,i=t.accountId,o=i?"/api/account":"/api/accounts";return this.$http.post(o,{environment:e,token:n,accountId:i}).then(t=>{const o=t.data.accounts||t.data;if(t.data.message){throw t.data.message}if(!o.length){s.a.merge(this.account,t.data.account);this.account.timestamp=new Date;this.account.unrealizedPLPercent=this.account.unrealizedPL/this.account.balance*100;if(!this.account.instruments){this.$http.post("/api/instruments",{environment:e,token:n,accountId:i}).then(t=>{this.account.instruments=t.data;this.account.pips={};s.a.forEach(this.account.instruments,t=>{this.account.pips[t.name]=Math.pow(10,t.pipLocation)})})}}return o})}setStreamingInstruments(t){this.account.streamingInstruments=Object.keys(t).filter(e=>!!t[e]);return this.account.streamingInstruments}}e["a"]=o;o.$inject=["$http","SessionService"]},function(t,e,n){"use strict";var i=n(23);const s={templateUrl:"app/components/accounts-bottomsheet/accounts-bottomsheet.html",controller:i["a"],bindings:{accounts:"<"}};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.$mdBottomSheet=t}onAccountClick(t){const e=this.accounts[t];this.$mdBottomSheet.hide(e)}}e["a"]=i;i.$inject=["$mdBottomSheet"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(22);const c=s.a.module("components.accounts-bottomsheet",[]).component("accountsBottomsheet",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(26);const s={templateUrl:"app/components/activity/activity.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.ActivityService=t}$onInit(){this.ActivityService.getActivities().then(t=>{this.activities=t})}}e["a"]=i;i.$inject=["ActivityService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(25);var c=n(28);const a=s.a.module("components.activity",[]).component("activity",o["a"]).service("ActivityService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";class i{constructor(t,e,n){this.$http=t;this.SessionService=e;this.AccountsService=n;this.activities=[]}getActivities(){const t=this.AccountsService.getAccount(),e=t.lastTransactionID;return this.SessionService.isLogged().then(t=>this.$http.post("/api/transactions",{environment:t.environment,token:t.token,accountId:t.accountId,lastTransactionID:e}).then(t=>{this.activities=t.data.reverse();return this.activities}).catch(t=>t.data))}addActivity(t){this.activities.splice(0,0,{id:t.id,type:t.type,instrument:t.instrument,units:t.units,price:t.price,pl:t.pl,accountBalance:t.accountBalance,time:t.time})}}e["a"]=i;i.$inject=["$http","SessionService","AccountsService"]},function(t,e,n){"use strict";var i=n(30);const s={templateUrl:"app/components/charts/charts.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n,i,s,o){this.$rootScope=t;this.$mdDialog=e;this.AccountsService=n;this.ChartsService=i;this.QuotesService=s;this.TradesService=o}$onInit(){this.account=this.AccountsService.getAccount();this.selectedInstrument="EUR_USD";this.granularities=["S5","S10","S15","S30","M1","M2","M3","M4","M5","M10","M15","M30","H1","H2","H3","H4","H6","H8","H12","D","W","M"];this.selectedGranularity="M5";this.feed=this.QuotesService.getQuotes();this.trades=this.TradesService.getTrades();this.changeChart(this.selectedInstrument,this.selectedGranularity)}changeChart(t,e){this.ChartsService.getHistQuotes({instrument:t,granularity:e}).then(t=>{this.data=t})}openOrderDialog(t,e){const n=s.a.extend(this.$rootScope.$new(true),{params:{side:e,selectedInstrument:this.selectedInstrument,instruments:this.account.streamingInstruments}});this.$mdDialog.show({template:"<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",scope:n,preserveScope:true,targetEvent:t})}}e["a"]=o;o.$inject=["$rootScope","$mdDialog","AccountsService","ChartsService","QuotesService","TradesService"]},function(t,e,n){"use strict";var i=n(13);var s=n.n(i);var o=n(0);var c=n.n(o);var a=n(29);var r=n(32);const u=c.a.module("components.charts",[]).component("charts",a["a"]).service("ChartsService",r["a"]).name;e["a"]=u},function(t,e,n){"use strict";class i{constructor(t,e){this.$http=t;this.SessionService=e}getHistQuotes(t){return this.SessionService.isLogged().then(e=>{const n=t&&t.instrument||"EUR_USD",i=t&&t.granularity||"M5",s=t&&t.count||251,o=t&&t.alignmentTimezone||"America/New_York",c=t&&t.dailyAlignment||"0";return this.$http.post("/api/candles",{environment:e.environment,token:e.token,instrument:n,granularity:i,count:s,alignmentTimezone:o,dailyAlignment:c}).then(t=>t.data).catch(t=>t.data)})}}e["a"]=i;i.$inject=["$http","SessionService"]},function(t,e,n){"use strict";e["a"]=i;function i(){const t={restrict:"A",link:e};return t;function e(t,e,n){t.$watch(n.dualColor,(t,n)=>{if(t!==n){if(t>0){e.removeClass("highlight-red");e.addClass("highlight-green")}if(t<0){e.removeClass("highlight-green");e.addClass("highlight-red")}}})}}i.$inject=[]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(33);const c=s.a.module("components.dual-color",[]).directive("dualColor",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(36);const s={templateUrl:"app/components/exposure/exposure.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.TradesService=t}$onInit(){this.exposures=[];const t=this.TradesService.getTrades(),e={};t.forEach(t=>{const n=t.instrument.split("_");e[n[0]]=e[n[0]]||0;e[n[1]]=e[n[1]]||0;e[n[0]]+=parseInt(t.currentUnits,10);e[n[1]]-=t.currentUnits*t.price});Object.keys(e).forEach(t=>{const n=e[t]>0;this.exposures.push({type:n?"Long":"Short",market:t,units:Math.abs(e[t])})})}}e["a"]=i;i.$inject=["TradesService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(35);const c=s.a.module("components.exposure",[]).component("exposure",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(39);const s={templateUrl:"app/components/header/header.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n,i,s,o,c,a,r){this.$window=t;this.$rootScope=e;this.$mdDialog=n;this.$mdBottomSheet=i;this.ToastService=s;this.AccountsService=o;this.SessionService=c;this.QuotesService=a;this.StreamingService=r}$onInit(){const t=this.$window.localStorage.getItem("argo.instruments");this.instrs=s.a.fromJson(t)||{EUR_USD:true,USD_JPY:true,GBP_USD:true,EUR_GBP:true,USD_CHF:true,EUR_JPY:true,EUR_CHF:true,USD_CAD:true,AUD_USD:true,GBP_JPY:true};this.isLoadingViewWatcher=this.$rootScope.$watch("isLoadingView",()=>{this.isLoadingView=this.$rootScope.isLoadingView})}openTokenDialog(t){this.$mdDialog.show({template:"<token-dialog aria-label='Token Dialog'></token-dialog>",targetEvent:t}).then(e=>{if(e){this.environment=e.environment;this.token=e.token}else{this.environment="";this.token="";this.accountId=""}this.AccountsService.getAccounts({environment:this.environment,token:this.token}).then(e=>{const n=s.a.extend(this.$rootScope.$new(true),{accounts:e});this.$mdBottomSheet.show({template:"<accounts-bottomsheet accounts='accounts'></accounts-bottomsheet>",scope:n,preserveScope:true,targetEvent:t}).then(t=>{this.accountId=t.id;this.SessionService.setCredentials({environment:this.environment,token:this.token,accountId:this.accountId});this.AccountsService.getAccounts({environment:this.environment,token:this.token,accountId:this.accountId}).then(()=>{const t=this.AccountsService.setStreamingInstruments(this.instrs);this.StreamingService.startStream({environment:this.environment,accessToken:this.token,accountId:this.accountId,instruments:t})})})},t=>{this.ToastService.show(t)})}).catch(t=>{if(t){this.ToastService.show(t)}})}openSettingsDialog(t){this.SessionService.isLogged().then(e=>{const n=this.AccountsService.getAccount().instruments;s.a.forEach(n,t=>{if(!this.instrs.hasOwnProperty(t.name)){this.instrs[t.name]=false}});const i=s.a.extend(this.$rootScope.$new(true),{instruments:this.instrs});this.$mdDialog.show({template:"<settings-dialog aria-label='Settings Dialog' instruments='instruments'></settings-dialog>",scope:i,preserveScope:true,targetEvent:t}).then(t=>{let n;if(t){this.$window.localStorage.setItem("argo.instruments",s.a.toJson(t));n=this.AccountsService.setStreamingInstruments(t);this.QuotesService.reset();this.StreamingService.startStream({environment:e.environment,accessToken:e.token,accountId:e.accountId,instruments:n})}}).catch(t=>{if(t){this.ToastService.show(t)}})})}}e["a"]=o;o.$inject=["$window","$rootScope","$mdDialog","$mdBottomSheet","ToastService","AccountsService","SessionService","QuotesService","StreamingService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(38);const c=s.a.module("components.header",[]).component("header",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";e["a"]=i;function i(t){const e={restrict:"A",link:n};return e;function n(e,n,i){e.$watch(i.highlighter,(e,i)=>{let s;if(e!==i){s=e<i?"highlight-red":"highlight-green";n.addClass(s);t(()=>{n.removeClass(s)},500)}})}}i.$inject=["$timeout"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(41);const c=s.a.module("components.highlighter",[]).directive("highlighter",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(44);const s={templateUrl:"app/components/news/news.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.NewsService=t}$onInit(){this.NewsService.getNews().then(t=>{this.news=t})}}e["a"]=i;i.$inject=["NewsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(43);var c=n(46);const a=s.a.module("components.news",[]).component("news",o["a"]).service("NewsService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";class i{constructor(t,e){this.$http=t;this.SessionService=e}getNews(){return this.SessionService.isLogged().then(t=>this.$http.post("/api/calendar",{environment:t.environment,token:t.token}).then(t=>t.data).catch(t=>t.data))}}e["a"]=i;i.$inject=["$http","SessionService"]},function(t,e,n){"use strict";e["a"]=i;function i(){const t={restrict:"E",scope:{instrument:"=",granularity:"=",data:"=",feed:"=",trades:"="},link:e};return t;function e(t,e){let n,i,s,o,c,a,r,u,h=0;t.$watch("data",s=>{if(s&&s.length>0){n=t.instrument;i=t.granularity;c=d(e[0],s);r=o&&o[o.length-1];u=r.close;h=r.volume;a=l(i)}});t.$watch("feed",t=>{const e=t[n],s=l(i,e);let d;if(e&&o&&a!==s){o.shift();e.bid=parseFloat(e.bid);e.ask=parseFloat(e.ask);d=(e.bid+e.ask)/2;h=0;o.push({open:d,close:d,high:d,low:d,date:new Date(s),volume:h});a=s}if(e&&o){if(r.close!==u){h+=1}e.bid=parseFloat(e.bid);e.ask=parseFloat(e.ask);d=(e.bid+e.ask)/2;r=o&&o[o.length-1];u=r.close;r.close=d;r.volume=h;if(r.close>r.high){r.high=r.close}if(r.close<r.low){r.low=r.close}c()}},true);function l(t,e){const n=e&&e.time,i=n?new Date(n):new Date;let s;if(t==="S5"){s=1e3*5}else if(t==="S10"){s=1e3*10}else if(t==="S15"){s=1e3*15}else if(t==="S30"){s=1e3*30}else if(t==="M1"){s=1e3*60}else if(t==="M2"){s=1e3*60*2}else if(t==="M3"){s=1e3*60*3}else if(t==="M4"){s=1e3*60*4}else if(t==="M5"){s=1e3*60*5}else if(t==="M10"){s=1e3*60*10}else if(t==="M15"){s=1e3*60*15}else if(t==="M30"){s=1e3*60*30}else if(t==="H1"){s=1e3*60*60}else if(t==="H2"){s=1e3*60*60*2}else if(t==="H3"){s=1e3*60*60*3}else if(t==="H4"){s=1e3*60*60*4}else if(t==="H6"){s=1e3*60*60*6}else if(t==="H8"){s=1e3*60*60*8}else if(t==="H12"){s=1e3*60*60*12}else{s=1e3*60*60*12}return Math.floor(i/s)*s}function d(e,c){const a={top:0,right:20,bottom:30,left:75},r=960-a.left-a.right,u=400-a.top-a.bottom;const h=techan.scale.financetime().range([0,r]);const l=d3.scaleLinear().range([u,0]);const d=d3.scaleLinear().range([l(0),l(.2)]);const p=techan.plot.ohlc().xScale(h).yScale(l);const m=techan.plot.tradearrow().xScale(h).yScale(l).orient(t=>{const e=t.type.startsWith("buy")?"up":"down";return e});const v=techan.plot.sma().xScale(h).yScale(l);const f=techan.indicator.sma().period(10);const g=techan.plot.sma().xScale(h).yScale(l);const S=techan.indicator.sma().period(20);const $=techan.plot.volume().accessor(p.accessor()).xScale(h).yScale(d);const k=d3.axisBottom(h);const w=d3.axisLeft(l);const y=d3.axisRight(d).ticks(3).tickFormat(d3.format(",.3s"));const b=techan.plot.axisannotation().axis(k).orient("bottom").format(d3.timeFormat("%Y-%m-%d %H:%M")).width(80).translate([0,u]);const I=techan.plot.axisannotation().axis(w).orient("left").format(d3.format(",.4f"));const T=techan.plot.axisannotation().axis(y).orient("right").width(35);const A=techan.plot.crosshair().xScale(h).yScale(l).xAnnotation(b).yAnnotation([I,T]);d3.select(e).select("svg").remove();const x=d3.select(e).append("svg").attr("width",r+a.left+a.right).attr("height",u+a.top+a.bottom).append("g").attr("transform",`translate(${a.left}, ${a.top})`);const D=x.append("defs").append("clipPath").attr("id","ohlcClip");D.append("rect").attr("x",0).attr("y",0).attr("width",r).attr("height",u);const P=x.append("g").attr("class","ohlc").attr("transform","translate(0,0)");P.append("g").attr("class","volume").attr("clip-path","url(#ohlcClip)");P.append("g").attr("class","candlestick").attr("clip-path","url(#ohlcClip)");P.append("g").attr("class","indicator sma ma-0").attr("clip-path","url(#ohlcClip)");P.append("g").attr("class","indicator sma ma-1").attr("clip-path","url(#ohlcClip)");P.append("g").attr("class","tradearrow");x.append("g").attr("class","x axis").attr("transform",`translate(0, ${u})`);x.append("g").attr("class","y axis").append("text").attr("transform","rotate(-90)").attr("y",6).attr("dy",".71em").style("font-weight","bold").style("text-anchor","end").text(`Price (${n} / ${i})`);x.append("g").attr("class","volume axis");x.append("g").attr("class","crosshair ohlc");o=d3.csvParse(c).map(t=>({date:new Date(t.Date),open:+t.Open,high:+t.High,low:+t.Low,close:+t.Close,volume:+t.Volume}));x.select("g.candlestick").datum(o);x.select("g.sma.ma-0").datum(f(o));x.select("g.sma.ma-1").datum(S(o));x.select("g.volume").datum(o);L();function L(){const e=p.accessor();h.domain(o.map(e.d));h.zoomable().domain([o.length-130,o.length]);l.domain(techan.scale.plot.ohlc(o.slice(o.length-130,o.length)).domain());d.domain(techan.scale.plot.volume(o.slice(o.length-130,o.length)).domain());x.select("g.x.axis").call(k);x.select("g.y.axis").call(w);x.select("g.volume.axis").call(y);x.select("g.candlestick").datum(o).call(p);x.select("g.tradearrow").remove();x.append("g").attr("class","tradearrow");s=t.trades.filter(t=>t.instrument===n).map(t=>({date:new Date(t.openTime),type:t.currentUnits>0?"buy":"sell",price:t.price}));x.select("g.tradearrow").datum(s).call(m);x.select("g.sma.ma-0").datum(f(o)).call(v);x.select("g.sma.ma-1").datum(S(o)).call(g);x.select("g.volume").datum(o).call($);x.select("g.crosshair.ohlc").call(A)}return L}}}i.$inject=[]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(47);const c=s.a.module("components.ohlc-chart",[]).directive("ohlcChart",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(50);const s={templateUrl:"app/components/order-dialog/order-dialog.html",controller:i["a"],bindings:{params:"<"}};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t,e,n,i,s){this.$mdDialog=t;this.ToastService=e;this.QuotesService=n;this.OrdersService=i;this.AccountsService=s}$onInit(){const t=this.AccountsService.getAccount();this.pips=t.pips;this.type="MARKET";this.side=this.params.side;this.instruments=this.params.instruments;this.selectedInstrument=this.params.selectedInstrument;this.changeMarket(this.selectedInstrument);this.expires=[{label:"1 Hour",value:60*60*1e3},{label:"2 Hours",value:2*60*60*1e3},{label:"3 Hours",value:3*60*60*1e3},{label:"4 Hours",value:4*60*60*1e3},{label:"5 Hours",value:5*60*60*1e3},{label:"6 Hours",value:6*60*60*1e3},{label:"8 Hours",value:8*60*60*1e3},{label:"12 Hours",value:12*60*60*1e3},{label:"18 Hours",value:18*60*60*1e3},{label:"1 Day",value:60*60*24*1e3},{label:"2 Days",value:2*60*60*24*1e3},{label:"1 Week",value:7*60*60*24*1e3},{label:"1 Month",value:30*60*60*24*1e3},{label:"2 Months",value:60*60*60*24*1e3},{label:"3 Months",value:90*60*60*24*1e3}];this.selectedExpire=6048e5;this.measure="price";this.isLowerBound=false;this.isUpperBound=false;this.isTakeProfit=false;this.isStopLoss=false;this.isTrailingStop=false}changeMarket(t){if(!this.pips){return}const e=this.QuotesService.getQuotes()[t],n=(this.pips[this.selectedInstrument].toString().match(/0/g)||[]).length;this.measure="price";this.step=parseFloat(this.pips[this.selectedInstrument]);if(this.side==="buy"){this.quote=parseFloat(e&&e.ask);this.takeProfit=parseFloat((this.quote+this.step*10).toFixed(n));this.stopLoss=parseFloat((this.quote-this.step*10).toFixed(n))}else{this.quote=parseFloat(e&&e.bid);this.takeProfit=parseFloat((this.quote-this.step*10).toFixed(n));this.stopLoss=parseFloat((this.quote+this.step*10).toFixed(n))}this.lowerBound=parseFloat((this.quote-this.step).toFixed(n));this.upperBound=parseFloat((this.quote+this.step).toFixed(n));this.trailingStop=25}changeMeasure(t){if(t==="price"){this.changeMarket(this.selectedInstrument)}else{this.lowerBound=1;this.upperBound=1;this.takeProfit=10;this.stopLoss=10;this.trailingStop=25;this.step=1}}hide(){this.$mdDialog.hide()}cancel(){this.$mdDialog.cancel()}answer(t){const e={},n=this.side==="buy",i=this.measure==="pips";this.$mdDialog.hide(t);this.step=parseFloat(this.pips[this.selectedInstrument]);e.instrument=this.selectedInstrument;e.units=this.units;if(this.units&&!n){e.units=`-${e.units}`}e.side=this.side;e.type=this.type;if(e.type==="LIMIT"){e.price=this.quote&&this.quote.toString();e.gtdTime=new Date(Date.now()+this.selectedExpire)}if(i){if(this.isLowerBound){e.priceBound=parseFloat(this.quote-this.step*this.lowerBound).toString()}if(this.isUpperBound){e.priceBound=parseFloat(this.quote+this.step*this.upperBound).toString()}if(n){if(this.isTakeProfit){e.takeProfitOnFill={};e.takeProfitOnFill.price=parseFloat(this.quote+this.step*this.takeProfit).toString()}if(this.isStopLoss){e.stopLossOnFill={};e.order.takeProfitOnFill.price=parseFloat(this.quote-this.step*this.stopLoss).toString()}}else{if(this.isTakeProfit){e.takeProfitOnFill={};e.takeProfitOnFill.price=parseFloat(this.quote-this.step*this.takeProfit).toString()}if(this.isStopLoss){e.stopLossOnFill={};e.order.takeProfitOnFill.price=parseFloat(this.quote+this.step*this.stopLoss).toString()}}}else{if(this.isLowerBound){e.priceBound=this.lowerBound.toString()}if(this.isUpperBound){e.priceBound=this.upperBound.toString()}if(this.isTakeProfit){e.takeProfitOnFill={};e.takeProfitOnFill.price=this.takeProfit.toString()}if(this.isStopLoss){e.stopLossOnFill={};e.stopLossOnFill.price=this.stopLoss.toString()}}if(this.isTrailingStop){e.trailingStopLossOnFill={};e.trailingStopLossOnFill.distance=(this.step*this.trailingStop).toString()}if(t==="submit"){this.OrdersService.putOrder(e).then(t=>{let e,n,i,s;if(t.code&&t.message){s="ERROR "+`${t.code} ${t.message}`;this.ToastService.show(s)}else if(t.errorMessage){s=`ERROR ${t.errorMessage}`;this.ToastService.show(s)}else if(t.orderCancelTransaction){n=t.orderCancelTransaction;s=`ERROR ${n.reason}`;this.ToastService.show(s)}else{e=t.orderFillTransaction||t.orderFillTransaction||t.orderCreateTransaction;i=e.units>0?"buy":"sell";s=`${i} `+`${e.instrument} `+`#${e.id} `+`@${e.price} `+`for ${e.units}`;this.ToastService.show(s)}})}}}e["a"]=i;i.$inject=["$mdDialog","ToastService","QuotesService","OrdersService","AccountsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(49);const c=s.a.module("components.order-dialog",[]).component("orderDialog",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(53);const s={templateUrl:"app/components/orders/orders.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t,e,n){this.$mdDialog=t;this.ToastService=e;this.OrdersService=n}$onInit(){this.orders=this.OrdersService.getOrders();this.OrdersService.refresh()}closeOrder(t,e){const n=this.$mdDialog.confirm().textContent("Are you sure to close the order?").ariaLabel("Order closing confirmation").ok("Ok").cancel("Cancel").targetEvent(t);this.$mdDialog.show(n).then(()=>{this.OrdersService.closeOrder(e).then(t=>{const e="Closed "+`#${t.orderCancelTransaction.orderID}`;this.ToastService.show(e)})})}}e["a"]=i;i.$inject=["$mdDialog","ToastService","OrdersService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(52);var c=n(55);const a=s.a.module("components.orders",[]).component("orders",o["a"]).service("OrdersService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n){this.$http=t;this.SessionService=e;this.AccountsService=n;this.orders=[]}getOrders(){return this.orders}refresh(){this.SessionService.isLogged().then(t=>{this.$http.post("/api/orders",{environment:t.environment,token:t.token,accountId:t.accountId}).then(t=>{this.orders.length=0;s.a.extend(this.orders,t.data)})})}putOrder(t){return this.SessionService.isLogged().then(e=>this.$http.post("/api/order",{environment:e.environment,token:e.token,accountId:e.accountId,instrument:t.instrument,units:t.units,side:t.side,type:t.type,expiry:t.expiry,price:t.price,priceBound:t.lowerBound||t.upperBound,stopLossOnFill:t.stopLossOnFill,takeProfitOnFill:t.takeProfitOnFill,trailingStopLossOnFill:t.trailingStopLossOnFill}).then(t=>t.data).catch(t=>t.data))}closeOrder(t){return this.SessionService.isLogged().then(e=>this.$http.post("/api/closeorder",{environment:e.environment,token:e.token,accountId:e.accountId,id:t}).then(t=>t.data).catch(t=>t.data))}updateOrders(t){const e=this.AccountsService.getAccount(),n=e.pips;this.orders.forEach((e,i)=>{let s;if(e.instrument===t.instrument){if(e.units>0){s=t.ask}if(e.units<0){s=t.bid}this.orders[i].current=s;this.orders[i].distance=Math.abs(s-e.price)/n[e.instrument]}})}}e["a"]=o;o.$inject=["$http","SessionService","AccountsService"]},function(t,e,n){"use strict";var i=n(57);const s={templateUrl:"app/components/plugins/plugins.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.PluginsService=t}$onInit(){this.plugins=this.PluginsService.getPlugins();this.pluginsInfo=this.PluginsService.getPluginsInfo();this.PluginsService.refresh()}engage(){this.PluginsService.engagePlugins(this.plugins)}}e["a"]=i;i.$inject=["PluginsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(56);var c=n(59);const a=s.a.module("components.plugins",[]).component("plugins",o["a"]).service("PluginsService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n){this.$http=t;this.SessionService=e;this.AccountsService=n;this.plugins={};this.pluginsInfo={count:0}}getPlugins(){return this.plugins}getPluginsInfo(){return this.pluginsInfo}refresh(){this.SessionService.isLogged().then(t=>{this.$http.post("/api/plugins",{environment:t.environment,token:t.token,accountId:t.accountId}).then(t=>{let e;for(e in this.plugins){if(this.plugins.hasOwnProperty(e)){delete this.plugins[e]}}s.a.extend(this.plugins,t.data);this.pluginsInfo.count=Object.keys(this.plugins).length;Object.keys(this.plugins).forEach(t=>{if(this.plugins[t]==="enabled"){this.plugins[t]=true}else{this.plugins[t]=false}})})})}engagePlugins(t){this.SessionService.isLogged().then(e=>{const n=this.AccountsService.getAccount();this.$http.post("/api/engageplugins",{environment:e.environment,token:e.token,accountId:e.accountId,plugins:t,config:{pips:n.pips}})})}}e["a"]=o;o.$inject=["$http","SessionService","AccountsService"]},function(t,e,n){"use strict";var i=n(61);const s={templateUrl:"app/components/positions/positions.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.PositionsService=t}$onInit(){this.PositionsService.getPositions().then(t=>{this.positions=t})}}e["a"]=i;i.$inject=["PositionsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(60);var c=n(63);const a=s.a.module("components.positions",[]).component("positions",o["a"]).service("PositionsService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";class i{constructor(t,e){this.$http=t;this.SessionService=e}getPositions(){return this.SessionService.isLogged().then(t=>this.$http.post("/api/positions",{environment:t.environment,token:t.token,accountId:t.accountId}).then(t=>{const e=[];t.data.forEach(t=>{const n=t.long&&parseInt(t.long.units,10);const i=t.short&&parseInt(t.short.units,10);const s=n||i;const o=s>0?"buy":"sell";const c=n&&t.long.averagePrice||i&&t.short.averagePrice;e.push({side:o,instrument:t.instrument,units:s,avgPrice:c})});return e}).catch(t=>t.data))}}e["a"]=i;i.$inject=["$http","SessionService"]},function(t,e,n){"use strict";var i=n(65);const s={templateUrl:"app/components/quotes/quotes.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.QuotesService=t}$onInit(){this.quotes=this.QuotesService.getQuotes()}}e["a"]=i;i.$inject=["QuotesService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(64);var c=n(67);const a=s.a.module("components.quotes",[]).component("quotes",o["a"]).service("QuotesService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t){this.AccountsService=t;this.quotes={}}getQuotes(){return this.quotes}updateTick(t){const e=this.AccountsService.getAccount(),n=e.streamingInstruments,i=e.pips,o=t.instrument;this.quotes[o]={time:t.time,ask:t.ask,bid:t.bid,spread:((t.ask-t.bid)/i[o]).toFixed(1)};if(!s.a.equals(n,Object.keys(this.quotes))){n.forEach(t=>{let e;if(this.quotes.hasOwnProperty(t)){e=this.quotes[t];delete this.quotes[t];this.quotes[t]=e}})}}reset(){let t;for(t in this.quotes){if(this.quotes.hasOwnProperty(t)){delete this.quotes[t]}}}}e["a"]=o;o.$inject=["AccountsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(69);const c=s.a.module("components.session",[]).service("SessionService",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";class i{constructor(t){this.deferred=t.defer();this.credentials={environment:null,token:null,accountId:null}}setCredentials(t){this.credentials.environment=t.environment;this.credentials.token=t.token;this.credentials.accountId=t.accountId;this.deferred.resolve(this.credentials)}isLogged(){return this.deferred.promise}}e["a"]=i;i.$inject=["$q"]},function(t,e,n){"use strict";var i=n(71);const s={templateUrl:"app/components/settings-dialog/settings-dialog.html",controller:i["a"],bindings:{instruments:"<"}};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.$mdDialog=t}hide(){this.$mdDialog.hide()}cancel(){this.$mdDialog.cancel()}answer(t){this.$mdDialog.hide(t)}}e["a"]=i;i.$inject=["$mdDialog"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(70);const c=s.a.module("components.settings-dialog",[]).component("settingsDialog",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";e["a"]=i;function i(){const t={},e={restrict:"E",link:n,scope:{instrument:"=",data:"=",length:"="},replace:true,template:"<svg class='sl'></svg>",transclude:true};return e;function n(e,n){e.$watch("data",t=>{i(t)});function i(i){const s=d3.select(n[0]),o=s.node(),c=e.instrument,a=o.clientWidth,r=getComputedStyle(o)["font-size"].replace("px","");s.selectAll("*").remove();if(!t[c]){t[c]=[]}t[c].push((parseFloat(i.bid)+parseFloat(i.ask))/2);t[c]=t[c].slice(-e.length);if(t[c][0]>t[c].slice(-1)){o.style.stroke="red"}else{o.style.stroke="green"}o.style.height=`${r}px`;const u=d3.min(t[c]);const h=d3.max(t[c]);const l=d3.scaleLinear().domain([0,t[c].length-1]).range([0,a]);const d=d3.scaleLinear().domain([u,h]).range([r,0]);const p=t[c].map((t,e)=>[l(e),d(t)]).join("L");s.append("path").attr("d",`M${p}`)}}}i.$inject=[]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(73);const c=s.a.module("components.sl-chart",[]).directive("slChart",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(76);const c=s.a.module("components.streaming",[]).service("StreamingService",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n,i,s,o,c,a,r){this.$timeout=t;this.$http=e;this.ToastService=n;this.QuotesService=i;this.ActivityService=s;this.TradesService=o;this.OrdersService=c;this.AccountsService=a;this.PluginsService=r}startStream(t){this.$http.post("/api/startstream",{environment:t.environment,accessToken:t.accessToken,accountId:t.accountId,instruments:t.instruments}).then(()=>{this.getStream()}).catch(t=>{this.ToastService.show(t)})}getStream(){const t=new WebSocket("ws://localhost:8000/stream");t.onmessage=(t=>{let e,n,i,o,c,a;this.$timeout(()=>{try{e=s.a.fromJson(t.data);n=e.closeoutAsk&&e.closeoutBid;o=e.accountID;a=e.refreshPlugins;if(n){i={time:e.time,instrument:e.instrument,ask:e.closeoutAsk,bid:e.closeoutBid};this.QuotesService.updateTick(i);this.TradesService.updateTrades(i);this.OrdersService.updateOrders(i)}if(o){c=e;this.ActivityService.addActivity(c);this.TradesService.refresh();this.OrdersService.refresh();this.AccountsService.refresh()}if(a){this.PluginsService.refresh()}}catch(t){}})})}}e["a"]=o;o.$inject=["$timeout","$http","ToastService","QuotesService","ActivityService","TradesService","OrdersService","AccountsService","PluginsService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(78);const c=s.a.module("components.toast",[]).service("ToastService",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";class i{constructor(t){this.$mdToast=t}show(t){this.$mdToast.show(this.$mdToast.simple().textContent(t).action("CLOSE").position("right bottom").hideDelay(1e4));
-}}e["a"]=i;i.$inject=["$mdToast"]},function(t,e,n){"use strict";var i=n(80);const s={templateUrl:"app/components/token-dialog/token-dialog.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t){this.$mdDialog=t}$onInit(){this.environment="practice"}hide(){this.$mdDialog.hide()}cancel(){this.$mdDialog.cancel()}answer(t){this.$mdDialog.hide(t)}}e["a"]=i;i.$inject=["$mdDialog"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(79);const c=s.a.module("components.token-dialog",[]).component("tokenDialog",o["a"]).name;e["a"]=c},function(t,e,n){"use strict";var i=n(83);const s={templateUrl:"app/components/trades/trades.html",controller:i["a"]};e["a"]=s},function(t,e,n){"use strict";class i{constructor(t,e,n){this.$mdDialog=t;this.ToastService=e;this.TradesService=n}$onInit(){this.trades=this.TradesService.getTrades();this.TradesService.refresh()}closeTrade(t,e){const n=this.$mdDialog.confirm().textContent("Are you sure to close the trade?").ariaLabel("Trade closing confirmation").ok("Ok").cancel("Cancel").targetEvent(t);this.$mdDialog.show(n).then(()=>{this.TradesService.closeTrade(e).then(t=>{const e="Closed "+`${t.units>0?"sell":"buy"} `+`${t.instrument} `+`#${t.id} `+`@${t.price} `+`P&L ${t.pl}`;this.ToastService.show(e)}).catch(t=>{const e=`ERROR ${t.code} ${t.message}`;this.ToastService.show(e)})})}}e["a"]=i;i.$inject=["$mdDialog","ToastService","TradesService"]},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);var o=n(82);var c=n(85);const a=s.a.module("components.trades",[]).component("trades",o["a"]).service("TradesService",c["a"]).name;e["a"]=a},function(t,e,n){"use strict";var i=n(0);var s=n.n(i);class o{constructor(t,e,n){this.$http=t;this.SessionService=e;this.AccountsService=n;this.trades=[]}getTrades(){return this.trades}refresh(){this.SessionService.isLogged().then(t=>{this.$http.post("/api/trades",{environment:t.environment,token:t.token,accountId:t.accountId}).then(t=>{this.trades.length=0;s.a.extend(this.trades,t.data);this.trades.forEach(t=>{t.side=t.currentUnits>0?"buy":"sell"})})})}closeTrade(t){return this.SessionService.isLogged().then(e=>this.$http.post("/api/closetrade",{environment:e.environment,token:e.token,accountId:e.accountId,id:t}).then(t=>t.data).catch(t=>t.data))}updateTrades(t){const e=this.AccountsService.getAccount(),n=e.pips;this.trades.forEach((e,i)=>{let s,o;if(e.instrument===t.instrument){o=e.currentUnits>0?"buy":"sell";if(o==="buy"){s=t.bid;this.trades[i].profitPips=(s-e.price)/n[e.instrument]}if(o==="sell"){s=t.ask;this.trades[i].profitPips=(e.price-s)/n[e.instrument]}this.trades[i].current=s}})}}e["a"]=o;o.$inject=["$http","SessionService","AccountsService"]},function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:true});var i=n(0);var s=n.n(i);var o=n(7);var c=n(5);var a=n(6);const r=s.a.module("root",[c["a"],a["a"]]).component("root",o["a"]).name;e["root"]=r}],[86]);
-//# sourceMappingURL=app.bundle.js.map
+(function (exports,angular,d3,techan) {
+'use strict';
+
+angular = 'default' in angular ? angular['default'] : angular;
+techan = 'default' in techan ? techan['default'] : techan;
+
+const rootComponent = {
+    templateUrl: "app/root.html"
+};
+
+class AppController {
+    $onInit() {
+        this.tabSelectedIndex = 0;
+    }
+
+    next() {
+        this.tabSelectedIndex = Math.min(this.tabSelectedIndex + 1, 6);
+    }
+
+    previous() {
+        this.tabSelectedIndex = Math.max(this.tabSelectedIndex - 1, 0);
+    }
+}
+AppController.$inject = [];
+
+const appComponent = {
+    templateUrl: "app/common/app.html",
+    controller: AppController
+};
+
+function appConfig($httpProvider, $locationProvider) {
+    const interceptors = $httpProvider.interceptors;
+
+    interceptors.push(["$q", "$rootScope", ($q, $rootScope) => {
+        let nLoadings = 0;
+
+        return {
+            request(request) {
+                nLoadings += 1;
+
+                $rootScope.isLoadingView = true;
+
+                return request;
+            },
+
+            response(response) {
+                nLoadings -= 1;
+                if (nLoadings === 0) {
+                    $rootScope.isLoadingView = false;
+                }
+
+                return response;
+            },
+
+            responseError(response) {
+                nLoadings -= 1;
+                if (!nLoadings) {
+                    $rootScope.isLoadingView = false;
+                }
+
+                return $q.reject(response);
+            }
+        };
+    }]);
+
+    $locationProvider.html5Mode(true);
+}
+appConfig.$inject = ["$httpProvider", "$locationProvider"];
+
+const app = angular
+    .module("common.app", [
+        "ngMaterial"
+    ])
+    .component("app", appComponent)
+    .config(appConfig)
+    .name;
+
+const common = angular
+    .module("common", [
+        app
+    ])
+    .name;
+
+class AccountController {
+    constructor(AccountService) {
+        this.AccountService = AccountService;
+    }
+
+    $onInit() {
+        this.account = this.AccountService.getAccount();
+    }
+}
+AccountController.$inject = ["AccountsService"];
+
+const accountComponent = {
+    templateUrl: "app/components/account/account.html",
+    controller: AccountController
+};
+
+class AccountsService {
+    constructor($http, SessionService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+
+        this.account = {};
+    }
+
+    getAccount() {
+        return this.account;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.getAccounts({
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            });
+        });
+    }
+
+    getAccounts(data) {
+        const environment = data.environment || "practice",
+            token = data.token,
+            accountId = data.accountId,
+            api = accountId ? "/api/account" : "/api/accounts";
+
+        return this.$http.post(api, {
+            environment,
+            token,
+            accountId
+        }).then(response => {
+            const accounts = response.data.accounts || response.data;
+
+            if (response.data.message) {
+                throw response.data.message;
+            }
+
+            if (!accounts.length) {
+                angular.merge(this.account, response.data.account);
+
+                this.account.timestamp = new Date();
+
+                this.account.unrealizedPLPercent =
+                    this.account.unrealizedPL / this.account.balance * 100;
+
+                if (!this.account.instruments) {
+                    this.$http.post("/api/instruments", {
+                        environment,
+                        token,
+                        accountId
+                    }).then(instruments => {
+                        this.account.instruments = instruments.data;
+                        this.account.pips = {};
+                        angular.forEach(this.account.instruments, i => {
+                            this.account.pips[i.name] =
+                                Math.pow(10, i.pipLocation);
+                        });
+                    });
+                }
+            }
+
+            return accounts;
+        });
+    }
+
+    setStreamingInstruments(settings) {
+        this.account.streamingInstruments = Object.keys(settings)
+            .filter(el => !!settings[el]);
+
+        return this.account.streamingInstruments;
+    }
+}
+AccountsService.$inject = ["$http", "SessionService"];
+
+const account = angular
+    .module("components.account", [])
+    .component("account", accountComponent)
+    .service("AccountsService", AccountsService)
+    .name;
+
+class AccountsBottomsheetController {
+    constructor($mdBottomSheet) {
+        this.$mdBottomSheet = $mdBottomSheet;
+    }
+
+    onAccountClick($index) {
+        const account = this.accounts[$index];
+
+        this.$mdBottomSheet.hide(account);
+    }
+}
+AccountsBottomsheetController.$inject = ["$mdBottomSheet"];
+
+const accountsBottomsheetComponent = {
+    templateUrl: "app/components/accounts-bottomsheet/accounts-bottomsheet.html",
+    controller: AccountsBottomsheetController,
+    bindings: {
+        accounts: "<"
+    }
+};
+
+const accountsBottomsheet = angular
+    .module("components.accounts-bottomsheet", [])
+    .component("accountsBottomsheet", accountsBottomsheetComponent)
+    .name;
+
+class ActivityController {
+    constructor(ActivityService) {
+        this.ActivityService = ActivityService;
+    }
+
+    $onInit() {
+        this.ActivityService.getActivities().then(activities => {
+            this.activities = activities;
+        });
+    }
+}
+ActivityController.$inject = ["ActivityService"];
+
+const activityComponent = {
+    templateUrl: "app/components/activity/activity.html",
+    controller: ActivityController
+};
+
+class ActivityService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
+
+        this.activities = [];
+    }
+
+    getActivities() {
+        const account = this.AccountsService.getAccount(),
+            lastTransactionID = account.lastTransactionID;
+
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/transactions", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                lastTransactionID
+            }).then(transactions => {
+                this.activities = transactions.data.reverse();
+
+                return this.activities;
+            }).catch(err => err.data)
+        );
+    }
+
+    addActivity(activity) {
+        this.activities.splice(0, 0, {
+            id: activity.id,
+            type: activity.type,
+            instrument: activity.instrument,
+            units: activity.units,
+            price: activity.price,
+            pl: activity.pl,
+            accountBalance: activity.accountBalance,
+            time: activity.time
+        });
+    }
+}
+ActivityService.$inject = ["$http", "SessionService", "AccountsService"];
+
+const activity = angular
+    .module("components.activity", [])
+    .component("activity", activityComponent)
+    .service("ActivityService", ActivityService)
+    .name;
+
+class ChartsController {
+    constructor($rootScope, $mdDialog, AccountsService,
+            ChartsService, QuotesService, TradesService) {
+        this.$rootScope = $rootScope;
+        this.$mdDialog = $mdDialog;
+        this.AccountsService = AccountsService;
+        this.ChartsService = ChartsService;
+        this.QuotesService = QuotesService;
+        this.TradesService = TradesService;
+    }
+
+    $onInit() {
+        this.account = this.AccountsService.getAccount();
+
+        this.selectedInstrument = "EUR_USD";
+
+        this.granularities = [
+            "S5",
+            "S10",
+            "S15",
+            "S30",
+            "M1",
+            "M2",
+            "M3",
+            "M4",
+            "M5",
+            "M10",
+            "M15",
+            "M30",
+            "H1",
+            "H2",
+            "H3",
+            "H4",
+            "H6",
+            "H8",
+            "H12",
+            "D",
+            "W",
+            "M"
+        ];
+        this.selectedGranularity = "M5";
+
+        this.feed = this.QuotesService.getQuotes();
+
+        this.trades = this.TradesService.getTrades();
+
+        this.changeChart(this.selectedInstrument, this.selectedGranularity);
+    }
+
+    changeChart(instrument, granularity) {
+        this.ChartsService.getHistQuotes({
+            instrument,
+            granularity
+        }).then(candles => {
+            this.data = candles;
+        });
+    }
+
+
+    openOrderDialog(event, side) {
+        const scope = angular.extend(this.$rootScope.$new(true), {
+            params: {
+                side,
+                selectedInstrument: this.selectedInstrument,
+                instruments: this.account.streamingInstruments
+            }
+        });
+
+        this.$mdDialog.show({
+            template: "<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",
+            scope,
+            preserveScope: true,
+            targetEvent: event
+        });
+    }
+}
+ChartsController.$inject = ["$rootScope", "$mdDialog", "AccountsService",
+    "ChartsService", "QuotesService", "TradesService"];
+
+const chartsComponent = {
+    templateUrl: "app/components/charts/charts.html",
+    controller: ChartsController
+};
+
+class ChartsService {
+    constructor($http, SessionService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+    }
+
+    getHistQuotes(opt) {
+        return this.SessionService.isLogged().then(credentials => {
+            const instrument = opt && opt.instrument || "EUR_USD",
+                granularity = opt && opt.granularity || "M5",
+                count = opt && opt.count || 251,
+                alignmentTimezone = opt && opt.alignmentTimezone ||
+                    "America/New_York",
+                dailyAlignment = opt && opt.dailyAlignment || "0";
+
+            return this.$http.post("/api/candles", {
+                environment: credentials.environment,
+                token: credentials.token,
+                instrument,
+                granularity,
+                count,
+                alignmentTimezone,
+                dailyAlignment
+            }).then(candles => candles.data)
+            .catch(err => err.data);
+        });
+    }
+}
+ChartsService.$inject = ["$http", "SessionService"];
+
+const charts = angular
+    .module("components.charts", [])
+    .component("charts", chartsComponent)
+    .service("ChartsService", ChartsService)
+    .name;
+
+function dualColorDirective() {
+    const directive = {
+        restrict: "A",
+        link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.$watch(attrs.dualColor, (newValue, oldValue) => {
+            if (newValue !== oldValue) {
+                if (newValue > 0) {
+                    element.removeClass("highlight-red");
+                    element.addClass("highlight-green");
+                }
+                if (newValue < 0) {
+                    element.removeClass("highlight-green");
+                    element.addClass("highlight-red");
+                }
+            }
+        });
+    }
+}
+dualColorDirective.$inject = [];
+
+const dualColor = angular
+    .module("components.dual-color", [])
+    .directive("dualColor", dualColorDirective)
+    .name;
+
+class ExposureController {
+    constructor(TradesService) {
+        this.TradesService = TradesService;
+    }
+
+    $onInit() {
+        this.exposures = [];
+
+        const trades = this.TradesService.getTrades(),
+            exps = {};
+
+        trades.forEach(trade => {
+            const legs = trade.instrument.split("_");
+
+            exps[legs[0]] = exps[legs[0]] || 0;
+            exps[legs[1]] = exps[legs[1]] || 0;
+
+            exps[legs[0]] += parseInt(trade.currentUnits, 10);
+            exps[legs[1]] -= trade.currentUnits * trade.price;
+        });
+
+        Object.keys(exps).forEach(exp => {
+            const type = exps[exp] > 0;
+
+            this.exposures.push({
+                type: type ? "Long" : "Short",
+                market: exp,
+                units: Math.abs(exps[exp])
+            });
+        });
+    }
+}
+ExposureController.$inject = ["TradesService"];
+
+const exposureComponent = {
+    templateUrl: "app/components/exposure/exposure.html",
+    controller: ExposureController
+};
+
+const exposure = angular
+    .module("components.exposure", [])
+    .component("exposure", exposureComponent)
+    .name;
+
+class HeaderController {
+    constructor($window, $rootScope, $mdDialog, $mdBottomSheet,
+            ToastService, AccountsService, SessionService,
+            QuotesService, StreamingService) {
+        this.$window = $window;
+        this.$rootScope = $rootScope;
+        this.$mdDialog = $mdDialog;
+        this.$mdBottomSheet = $mdBottomSheet;
+        this.ToastService = ToastService;
+        this.AccountsService = AccountsService;
+        this.SessionService = SessionService;
+        this.QuotesService = QuotesService;
+        this.StreamingService = StreamingService;
+    }
+
+    $onInit() {
+        const instrsStorage = this.$window.localStorage.getItem("argo.instruments");
+
+        this.instrs = angular.fromJson(instrsStorage) || {
+            EUR_USD: true,
+            USD_JPY: true,
+            GBP_USD: true,
+            EUR_GBP: true,
+            USD_CHF: true,
+            EUR_JPY: true,
+            EUR_CHF: true,
+            USD_CAD: true,
+            AUD_USD: true,
+            GBP_JPY: true
+        };
+
+        this.isLoadingViewWatcher = this.$rootScope.$watch("isLoadingView", () => {
+            this.isLoadingView = this.$rootScope.isLoadingView;
+        });
+    }
+
+    openTokenDialog(event) {
+        this.$mdDialog.show({
+            template: "<token-dialog aria-label='Token Dialog'></token-dialog>",
+            targetEvent: event
+        }).then(tokenInfo => {
+            if (tokenInfo) {
+                this.environment = tokenInfo.environment;
+                this.token = tokenInfo.token;
+            } else {
+                this.environment = "";
+                this.token = "";
+                this.accountId = "";
+            }
+
+            this.AccountsService.getAccounts({
+                environment: this.environment,
+                token: this.token
+            }).then(accounts => {
+                const scope = angular.extend(this.$rootScope.$new(true), {
+                    accounts
+                });
+
+                this.$mdBottomSheet.show({
+                    template: "<accounts-bottomsheet accounts='accounts'></accounts-bottomsheet>",
+                    scope,
+                    preserveScope: true,
+                    targetEvent: event
+                }).then(accountSelected => {
+                    this.accountId = accountSelected.id;
+
+                    this.SessionService.setCredentials({
+                        environment: this.environment,
+                        token: this.token,
+                        accountId: this.accountId
+                    });
+
+                    this.AccountsService.getAccounts({
+                        environment: this.environment,
+                        token: this.token,
+                        accountId: this.accountId
+                    }).then(() => {
+                        const instruments = this.AccountsService
+                            .setStreamingInstruments(this.instrs);
+
+                        this.StreamingService.startStream({
+                            environment: this.environment,
+                            accessToken: this.token,
+                            accountId: this.accountId,
+                            instruments
+                        });
+                    });
+                });
+            }, err => {
+                this.ToastService.show(err);
+            });
+        })
+        .catch(err => {
+            if (err) {
+                this.ToastService.show(err);
+            }
+        });
+    }
+
+    openSettingsDialog(event) {
+        this.SessionService.isLogged().then(credentials => {
+            const allInstrs = this.AccountsService.getAccount().instruments;
+
+            angular.forEach(allInstrs, instrument => {
+                if (!this.instrs.hasOwnProperty(instrument.name)) {
+                    this.instrs[instrument.name] = false;
+                }
+            });
+
+            const scope = angular.extend(this.$rootScope.$new(true), {
+                instruments: this.instrs
+            });
+
+            this.$mdDialog.show({
+                template: "<settings-dialog aria-label='Settings Dialog' instruments='instruments'></settings-dialog>",
+                scope,
+                preserveScope: true,
+                targetEvent: event
+            }).then(settingsInfo => {
+                let instruments;
+
+                if (settingsInfo) {
+                    this.$window.localStorage.setItem("argo.instruments",
+                        angular.toJson(settingsInfo));
+                    instruments = this.AccountsService
+                        .setStreamingInstruments(settingsInfo);
+
+                    this.QuotesService.reset();
+
+                    this.StreamingService.startStream({
+                        environment: credentials.environment,
+                        accessToken: credentials.token,
+                        accountId: credentials.accountId,
+                        instruments
+                    });
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    this.ToastService.show(err);
+                }
+            });
+        });
+    }
+}
+HeaderController.$inject = [
+    "$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
+    "ToastService", "AccountsService", "SessionService",
+    "QuotesService", "StreamingService"
+];
+
+const headerComponent = {
+    templateUrl: "app/components/header/header.html",
+    controller: HeaderController
+};
+
+const header = angular
+    .module("components.header", [])
+    .component("header", headerComponent)
+    .name;
+
+function highlighterDirective($timeout) {
+    const directive = {
+        restrict: "A",
+        link
+    };
+
+    return directive;
+
+    function link(scope, element, attrs) {
+        scope.$watch(attrs.highlighter, (newValue, oldValue) => {
+            let newclass;
+
+            if (newValue !== oldValue) {
+                newclass = newValue < oldValue
+                    ? "highlight-red" : "highlight-green";
+
+                element.addClass(newclass);
+
+                $timeout(() => {
+                    element.removeClass(newclass);
+                }, 500);
+            }
+        });
+    }
+}
+highlighterDirective.$inject = ["$timeout"];
+
+const highlighter = angular
+    .module("components.highlighter", [])
+    .directive("highlighter", highlighterDirective)
+    .name;
+
+class NewsController {
+    constructor(NewsService) {
+        this.NewsService = NewsService;
+    }
+
+    $onInit() {
+        this.NewsService.getNews().then(news => {
+            this.news = news;
+        });
+    }
+}
+NewsController.$inject = ["NewsService"];
+
+const newsComponent = {
+    templateUrl: "app/components/news/news.html",
+    controller: NewsController
+};
+
+class NewsService {
+    constructor($http, SessionService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+    }
+
+    getNews() {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/calendar", {
+                environment: credentials.environment,
+                token: credentials.token
+            }).then(news => news.data)
+            .catch(err => err.data)
+        );
+    }
+}
+NewsService.$inject = ["$http", "SessionService"];
+
+const news = angular
+    .module("components.news", [])
+    .component("news", newsComponent)
+    .service("NewsService", NewsService)
+    .name;
+
+function ohlcChartDirective() {
+    const directive = {
+        restrict: "E",
+        scope: {
+            instrument: "=",
+            granularity: "=",
+            data: "=",
+            feed: "=",
+            trades: "="
+        },
+        link
+    };
+
+    return directive;
+
+    function link(scope, element) {
+        let myInstrument,
+            myGranularity,
+            myTrades,
+            data,
+            refreshChart,
+            lastHistUpdate,
+            lastData,
+            lastClose,
+            feedVolume = 0;
+
+        scope.$watch("data", csv => {
+            if (csv && csv.length > 0) {
+                myInstrument = scope.instrument;
+                myGranularity = scope.granularity;
+
+                refreshChart = drawChart(element[0], csv);
+
+                lastData = data && data[data.length - 1];
+                lastClose = lastData.close;
+                feedVolume = lastData.volume;
+                lastHistUpdate = getLastHistUpdate(myGranularity);
+            }
+        });
+
+        scope.$watch("feed", feed => {
+            const tick = feed[myInstrument],
+                nextHistUpdate = getLastHistUpdate(myGranularity, tick);
+
+            let midPrice;
+
+            if (tick && data && lastHistUpdate !== nextHistUpdate) {
+                data.shift();
+                tick.bid = parseFloat(tick.bid);
+                tick.ask = parseFloat(tick.ask);
+                midPrice = (tick.bid + tick.ask) / 2;
+                feedVolume = 0;
+                data.push({
+                    open: midPrice,
+                    close: midPrice,
+                    high: midPrice,
+                    low: midPrice,
+                    date: new Date(nextHistUpdate),
+                    volume: feedVolume
+                });
+
+                lastHistUpdate = nextHistUpdate;
+            }
+
+            if (tick && data) {
+
+                if (lastData.close !== lastClose) {
+                    feedVolume += 1;
+                }
+
+                tick.bid = parseFloat(tick.bid);
+                tick.ask = parseFloat(tick.ask);
+                midPrice = (tick.bid + tick.ask) / 2;
+
+                lastData = data && data[data.length - 1];
+                lastClose = lastData.close;
+                lastData.close = midPrice;
+                lastData.volume = feedVolume;
+
+                if (lastData.close > lastData.high) {
+                    lastData.high = lastData.close;
+                }
+
+                if (lastData.close < lastData.low) {
+                    lastData.low = lastData.close;
+                }
+
+                refreshChart();
+            }
+
+        }, true);
+
+        function getLastHistUpdate(granularity, tick) {
+            const time = tick && tick.time,
+                now = time ? new Date(time) : new Date();
+
+            let coeff;
+
+            if (granularity === "S5") {
+                coeff = 1000 * 5;
+            } else if (granularity === "S10") {
+                coeff = 1000 * 10;
+            } else if (granularity === "S15") {
+                coeff = 1000 * 15;
+            } else if (granularity === "S30") {
+                coeff = 1000 * 30;
+            } else if (granularity === "M1") {
+                coeff = 1000 * 60;
+            } else if (granularity === "M2") {
+                coeff = 1000 * 60 * 2;
+            } else if (granularity === "M3") {
+                coeff = 1000 * 60 * 3;
+            } else if (granularity === "M4") {
+                coeff = 1000 * 60 * 4;
+            } else if (granularity === "M5") {
+                coeff = 1000 * 60 * 5;
+            } else if (granularity === "M10") {
+                coeff = 1000 * 60 * 10;
+            } else if (granularity === "M15") {
+                coeff = 1000 * 60 * 15;
+            } else if (granularity === "M30") {
+                coeff = 1000 * 60 * 30;
+            } else if (granularity === "H1") {
+                coeff = 1000 * 60 * 60;
+            } else if (granularity === "H2") {
+                coeff = 1000 * 60 * 60 * 2;
+            } else if (granularity === "H3") {
+                coeff = 1000 * 60 * 60 * 3;
+            } else if (granularity === "H4") {
+                coeff = 1000 * 60 * 60 * 4;
+            } else if (granularity === "H6") {
+                coeff = 1000 * 60 * 60 * 6;
+            } else if (granularity === "H8") {
+                coeff = 1000 * 60 * 60 * 8;
+            } else if (granularity === "H12") {
+                coeff = 1000 * 60 * 60 * 12;
+            } else {
+
+                // for D / W / M
+                coeff = 1000 * 60 * 60 * 12;
+            }
+
+            return Math.floor(now / (coeff)) * coeff;
+        }
+
+        function drawChart(el, csv) {
+            const margin = {
+                    top: 0,
+                    right: 20,
+                    bottom: 30,
+                    left: 75
+                },
+                width = 960 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
+
+            const x = techan.scale.financetime()
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .range([height, 0]);
+
+            const yVolume = d3.scaleLinear()
+                .range([y(0), y(0.2)]);
+
+            const ohlc = techan.plot.ohlc()
+                .xScale(x)
+                .yScale(y);
+
+            const tradearrow = techan.plot.tradearrow()
+                .xScale(x)
+                .yScale(y)
+                .orient(d => {
+                    const side = d.type.startsWith("buy") ? "up" : "down";
+
+                    return side;
+                });
+
+            const sma0 = techan.plot.sma()
+                .xScale(x)
+                .yScale(y);
+
+            const sma0Calculator = techan.indicator.sma()
+                .period(10);
+
+            const sma1 = techan.plot.sma()
+                .xScale(x)
+                .yScale(y);
+
+            const sma1Calculator = techan.indicator.sma()
+                .period(20);
+
+            const volume = techan.plot.volume()
+                .accessor(ohlc.accessor())
+                .xScale(x)
+                .yScale(yVolume);
+
+            const xAxis = d3.axisBottom(x);
+
+            const yAxis = d3.axisLeft(y);
+
+            const volumeAxis = d3.axisRight(yVolume)
+                .ticks(3)
+                .tickFormat(d3.format(",.3s"));
+
+            const timeAnnotation = techan.plot.axisannotation()
+                .axis(xAxis)
+                .orient("bottom")
+                .format(d3.timeFormat("%Y-%m-%d %H:%M"))
+                .width(80)
+                .translate([0, height]);
+
+            const ohlcAnnotation = techan.plot.axisannotation()
+                .axis(yAxis)
+                .orient("left")
+                .format(d3.format(",.4f"));
+
+            const volumeAnnotation = techan.plot.axisannotation()
+                .axis(volumeAxis)
+                .orient("right")
+                .width(35);
+
+            const crosshair = techan.plot.crosshair()
+                .xScale(x)
+                .yScale(y)
+                .xAnnotation(timeAnnotation)
+                .yAnnotation([ohlcAnnotation, volumeAnnotation]);
+
+            d3.select(el).select("svg").remove();
+
+            const svg = d3.select(el).append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    `translate(${margin.left}, ${margin.top})`);
+
+            const defs = svg.append("defs")
+                .append("clipPath")
+                    .attr("id", "ohlcClip");
+
+            defs.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", width)
+                .attr("height", height);
+
+            const ohlcSelection = svg.append("g")
+                .attr("class", "ohlc")
+                .attr("transform", "translate(0,0)");
+
+            ohlcSelection.append("g")
+                .attr("class", "volume")
+                .attr("clip-path", "url(#ohlcClip)");
+
+            ohlcSelection.append("g")
+                .attr("class", "candlestick")
+                .attr("clip-path", "url(#ohlcClip)");
+
+            ohlcSelection.append("g")
+                .attr("class", "indicator sma ma-0")
+                .attr("clip-path", "url(#ohlcClip)");
+
+            ohlcSelection.append("g")
+                .attr("class", "indicator sma ma-1")
+                .attr("clip-path", "url(#ohlcClip)");
+
+            ohlcSelection.append("g")
+                .attr("class", "tradearrow");
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", `translate(0, ${height})`);
+
+            svg
+                .append("g")
+                    .attr("class", "y axis")
+                .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("font-weight", "bold")
+                    .style("text-anchor", "end")
+                    .text(`Price (${myInstrument} / ${myGranularity})`);
+
+            svg.append("g")
+                .attr("class", "volume axis");
+
+            svg.append("g")
+                .attr("class", "crosshair ohlc");
+
+            data = d3.csvParse(csv).map(
+                d => ({
+                    date: new Date(d.Date),
+                    open: +d.Open,
+                    high: +d.High,
+                    low: +d.Low,
+                    close: +d.Close,
+                    volume: +d.Volume
+                })
+            );
+
+            svg.select("g.candlestick").datum(data);
+            svg.select("g.sma.ma-0").datum(sma0Calculator(data));
+            svg.select("g.sma.ma-1").datum(sma1Calculator(data));
+            svg.select("g.volume").datum(data);
+
+            redraw();
+
+            function redraw() {
+                const accessor = ohlc.accessor();
+
+                x.domain(data.map(accessor.d));
+                x.zoomable().domain([data.length - 130, data.length]);
+
+                y.domain(techan.scale.plot.ohlc(
+                    data.slice(data.length - 130, data.length)).domain());
+                yVolume.domain(techan.scale.plot.volume(
+                    data.slice(data.length - 130, data.length)).domain());
+
+                svg.select("g.x.axis").call(xAxis);
+                svg.select("g.y.axis").call(yAxis);
+                svg.select("g.volume.axis").call(volumeAxis);
+
+                svg.select("g.candlestick").datum(data).call(ohlc);
+                svg.select("g.tradearrow").remove();
+                svg.append("g").attr("class", "tradearrow");
+                myTrades = scope.trades.filter(
+                    trade => trade.instrument === myInstrument)
+                    .map(
+                        trade => ({
+                            date: new Date(trade.openTime),
+                            type: trade.currentUnits > 0 ? "buy" : "sell",
+                            price: trade.price
+                        })
+                    );
+                svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
+
+                svg.select("g.sma.ma-0")
+                    .datum(sma0Calculator(data)).call(sma0);
+                svg.select("g.sma.ma-1")
+                    .datum(sma1Calculator(data)).call(sma1);
+
+                svg.select("g.volume").datum(data).call(volume);
+
+                svg.select("g.crosshair.ohlc").call(crosshair);
+            }
+
+            return redraw;
+        }
+
+    }
+}
+ohlcChartDirective.$inject = [];
+
+const ohlcChart = angular
+    .module("components.ohlc-chart", [])
+    .directive("ohlcChart", ohlcChartDirective)
+    .name;
+
+class OrderDialogController {
+    constructor($mdDialog, ToastService,
+            QuotesService, OrdersService, AccountsService) {
+        this.$mdDialog = $mdDialog;
+        this.ToastService = ToastService;
+        this.QuotesService = QuotesService;
+        this.OrdersService = OrdersService;
+        this.AccountsService = AccountsService;
+    }
+
+    $onInit() {
+        const account = this.AccountsService.getAccount();
+
+        this.pips = account.pips;
+
+        this.type = "MARKET";
+        this.side = this.params.side;
+        this.instruments = this.params.instruments;
+        this.selectedInstrument = this.params.selectedInstrument;
+        this.changeMarket(this.selectedInstrument);
+        this.expires = [
+            { label: "1 Hour", value: 60 * 60 * 1000 },
+            { label: "2 Hours", value: 2 * 60 * 60 * 1000 },
+            { label: "3 Hours", value: 3 * 60 * 60 * 1000 },
+            { label: "4 Hours", value: 4 * 60 * 60 * 1000 },
+            { label: "5 Hours", value: 5 * 60 * 60 * 1000 },
+            { label: "6 Hours", value: 6 * 60 * 60 * 1000 },
+            { label: "8 Hours", value: 8 * 60 * 60 * 1000 },
+            { label: "12 Hours", value: 12 * 60 * 60 * 1000 },
+            { label: "18 Hours", value: 18 * 60 * 60 * 1000 },
+            { label: "1 Day", value: 60 * 60 * 24 * 1000 },
+            { label: "2 Days", value: 2 * 60 * 60 * 24 * 1000 },
+            { label: "1 Week", value: 7 * 60 * 60 * 24 * 1000 },
+            { label: "1 Month", value: 30 * 60 * 60 * 24 * 1000 },
+            { label: "2 Months", value: 60 * 60 * 60 * 24 * 1000 },
+            { label: "3 Months", value: 90 * 60 * 60 * 24 * 1000 }
+        ];
+        this.selectedExpire = 604800000; // 1 week
+        this.measure = "price";
+        this.isLowerBound = false;
+        this.isUpperBound = false;
+        this.isTakeProfit = false;
+        this.isStopLoss = false;
+        this.isTrailingStop = false;
+    }
+
+    changeMarket(instrument) {
+        if (!this.pips) {
+            return;
+        }
+
+        const price = this.QuotesService.getQuotes()[instrument],
+            fixed = ((this.pips[this.selectedInstrument].toString())
+                .match(/0/g) || []).length;
+
+        this.measure = "price";
+        this.step = parseFloat(this.pips[this.selectedInstrument]);
+        if (this.side === "buy") {
+            this.quote = parseFloat(price && price.ask);
+            this.takeProfit = parseFloat((this.quote + this.step * 10)
+                .toFixed(fixed));
+            this.stopLoss = parseFloat((this.quote - this.step * 10)
+                .toFixed(fixed));
+        } else {
+            this.quote = parseFloat(price && price.bid);
+            this.takeProfit = parseFloat((this.quote - this.step * 10)
+                .toFixed(fixed));
+            this.stopLoss = parseFloat((this.quote + this.step * 10)
+                .toFixed(fixed));
+        }
+        this.lowerBound = parseFloat((this.quote - this.step).toFixed(fixed));
+        this.upperBound = parseFloat((this.quote + this.step).toFixed(fixed));
+        this.trailingStop = 25;
+    }
+
+    changeMeasure(measure) {
+        if (measure === "price") {
+            this.changeMarket(this.selectedInstrument);
+        } else {
+            this.lowerBound = 1;
+            this.upperBound = 1;
+            this.takeProfit = 10;
+            this.stopLoss = 10;
+            this.trailingStop = 25;
+            this.step = 1;
+        }
+    }
+
+    hide() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
+    answer(action) {
+        const order = {},
+            isBuy = this.side === "buy",
+            isMeasurePips = this.measure === "pips";
+
+        this.$mdDialog.hide(action);
+
+        this.step = parseFloat(this.pips[this.selectedInstrument]);
+
+        order.instrument = this.selectedInstrument;
+        order.units = this.units;
+        if (this.units && !isBuy) {
+            order.units = `-${order.units}`;
+        }
+
+        order.side = this.side;
+        order.type = this.type;
+
+        if (order.type === "LIMIT") {
+            order.price = this.quote && this.quote.toString();
+            order.gtdTime = new Date(Date.now() + this.selectedExpire);
+        }
+
+        if (isMeasurePips) {
+            if (this.isLowerBound) {
+                order.priceBound =
+                    parseFloat(this.quote - this.step * this.lowerBound)
+                        .toString();
+            }
+            if (this.isUpperBound) {
+                order.priceBound =
+                    parseFloat(this.quote + this.step * this.upperBound)
+                        .toString();
+            }
+            if (isBuy) {
+                if (this.isTakeProfit) {
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price =
+                        parseFloat(this.quote + this.step * this.takeProfit)
+                            .toString();
+                }
+                if (this.isStopLoss) {
+                    order.stopLossOnFill = {};
+                    order.order.takeProfitOnFill.price =
+                        parseFloat(this.quote - this.step * this.stopLoss)
+                            .toString();
+                }
+            } else {
+                if (this.isTakeProfit) {
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price =
+                        parseFloat(this.quote - this.step * this.takeProfit)
+                            .toString();
+                }
+                if (this.isStopLoss) {
+                    order.stopLossOnFill = {};
+                    order.order.takeProfitOnFill.price =
+                        parseFloat(this.quote + this.step * this.stopLoss)
+                            .toString();
+                }
+            }
+        } else {
+            if (this.isLowerBound) {
+                order.priceBound = this.lowerBound.toString();
+            }
+            if (this.isUpperBound) {
+                order.priceBound = this.upperBound.toString();
+            }
+            if (this.isTakeProfit) {
+                order.takeProfitOnFill = {};
+                order.takeProfitOnFill.price = this.takeProfit.toString();
+            }
+            if (this.isStopLoss) {
+                order.stopLossOnFill = {};
+                order.stopLossOnFill.price = this.stopLoss.toString();
+            }
+        }
+        if (this.isTrailingStop) {
+            order.trailingStopLossOnFill = {};
+            order.trailingStopLossOnFill.distance =
+                (this.step * this.trailingStop).toString();
+        }
+
+        if (action === "submit") {
+            this.OrdersService.putOrder(order).then(transaction => {
+                let opened,
+                    canceled,
+                    side,
+                    message;
+
+                if (transaction.code && transaction.message) {
+                    message = "ERROR " +
+                        `${transaction.code} ${transaction.message}`;
+
+                    this.ToastService.show(message);
+                } else if (transaction.errorMessage) {
+                    message = `ERROR ${transaction.errorMessage}`;
+
+                    this.ToastService.show(message);
+                } else if (transaction.orderCancelTransaction) {
+                    canceled = transaction.orderCancelTransaction;
+
+                    message = `ERROR ${canceled.reason}`;
+
+                    this.ToastService.show(message);
+                } else {
+                    opened = transaction.orderFillTransaction ||
+                        transaction.orderFillTransaction ||
+                        transaction.orderCreateTransaction;
+
+                    side = opened.units > 0 ? "buy" : "sell";
+                    message = `${side} ` +
+                        `${opened.instrument} ` +
+                        `#${opened.id} ` +
+                        `@${opened.price} ` +
+                        `for ${opened.units}`;
+
+                    this.ToastService.show(message);
+                }
+            });
+        }
+    }
+}
+OrderDialogController.$inject = [
+    "$mdDialog", "ToastService",
+    "QuotesService", "OrdersService", "AccountsService"
+];
+
+const orderDialogComponent = {
+    templateUrl: "app/components/order-dialog/order-dialog.html",
+    controller: OrderDialogController,
+    bindings: {
+        params: "<"
+    }
+};
+
+const orderDialog = angular
+    .module("components.order-dialog", [])
+    .component("orderDialog", orderDialogComponent)
+    .name;
+
+class OrdersController {
+    constructor($mdDialog, ToastService, OrdersService) {
+        this.$mdDialog = $mdDialog;
+        this.ToastService = ToastService;
+        this.OrdersService = OrdersService;
+    }
+
+    $onInit() {
+        this.orders = this.OrdersService.getOrders();
+
+        this.OrdersService.refresh();
+    }
+
+    closeOrder(event, id) {
+        const confirm = this.$mdDialog.confirm()
+            .textContent("Are you sure to close the order?")
+            .ariaLabel("Order closing confirmation")
+            .ok("Ok")
+            .cancel("Cancel")
+            .targetEvent(event);
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.OrdersService.closeOrder(id).then(order => {
+                const message = "Closed " +
+                    `#${order.orderCancelTransaction.orderID}`;
+
+                this.ToastService.show(message);
+            });
+        });
+    }
+}
+OrdersController.$inject = ["$mdDialog", "ToastService", "OrdersService"];
+
+const ordersComponent = {
+    templateUrl: "app/components/orders/orders.html",
+    controller: OrdersController
+};
+
+class OrdersService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
+
+        this.orders = [];
+    }
+
+    getOrders() {
+        return this.orders;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.$http.post("/api/orders", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(res => {
+                this.orders.length = 0;
+                angular.extend(this.orders, res.data);
+            });
+        });
+    }
+
+    putOrder(order) {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/order", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                instrument: order.instrument,
+                units: order.units,
+                side: order.side,
+                type: order.type,
+                expiry: order.expiry,
+                price: order.price,
+                priceBound: order.lowerBound || order.upperBound,
+                stopLossOnFill: order.stopLossOnFill,
+                takeProfitOnFill: order.takeProfitOnFill,
+                trailingStopLossOnFill: order.trailingStopLossOnFill
+            }).then(trade => trade.data)
+            .catch(err => err.data)
+        );
+    }
+
+    closeOrder(id) {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/closeorder", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                id
+            }).then(order => order.data)
+            .catch(err => err.data)
+        );
+    }
+
+    updateOrders(tick) {
+        const account = this.AccountsService.getAccount(),
+            pips = account.pips;
+
+        this.orders.forEach((order, index) => {
+            let current;
+
+            if (order.instrument === tick.instrument) {
+
+                if (order.units > 0) {
+                    current = tick.ask;
+                }
+                if (order.units < 0) {
+                    current = tick.bid;
+                }
+
+                this.orders[index].current = current;
+                this.orders[index].distance = (Math.abs(current - order.price) /
+                    pips[order.instrument]);
+            }
+        });
+    }
+}
+OrdersService.$inject = ["$http", "SessionService", "AccountsService"];
+
+const orders = angular
+    .module("components.orders", [])
+    .component("orders", ordersComponent)
+    .service("OrdersService", OrdersService)
+    .name;
+
+class PluginsController {
+    constructor(PluginsService) {
+        this.PluginsService = PluginsService;
+    }
+
+    $onInit() {
+        this.plugins = this.PluginsService.getPlugins();
+        this.pluginsInfo = this.PluginsService.getPluginsInfo();
+
+        this.PluginsService.refresh();
+    }
+
+    engage() {
+        this.PluginsService.engagePlugins(this.plugins);
+    }
+}
+PluginsController.$inject = ["PluginsService"];
+
+const pluginsComponent = {
+    templateUrl: "app/components/plugins/plugins.html",
+    controller: PluginsController
+};
+
+class PluginsService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
+
+        this.plugins = {};
+        this.pluginsInfo = {
+            count: 0
+        };
+    }
+
+    getPlugins() {
+        return this.plugins;
+    }
+
+    getPluginsInfo() {
+        return this.pluginsInfo;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.$http.post("/api/plugins", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(res => {
+                let name;
+
+                for (name in this.plugins) {
+                    if (this.plugins.hasOwnProperty(name)) {
+                        delete this.plugins[name];
+                    }
+                }
+                angular.extend(this.plugins, res.data);
+                this.pluginsInfo.count = Object.keys(this.plugins).length;
+
+                Object.keys(this.plugins).forEach(key => {
+                    if (this.plugins[key] === "enabled") {
+                        this.plugins[key] = true;
+                    } else {
+                        this.plugins[key] = false;
+                    }
+                });
+            });
+        });
+    }
+
+    engagePlugins(plugs) {
+        this.SessionService.isLogged().then(credentials => {
+            const account = this.AccountsService.getAccount();
+
+            this.$http.post("/api/engageplugins", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                plugins: plugs,
+                config: {
+                    pips: account.pips
+                }
+            });
+        });
+    }
+}
+PluginsService.$inject = ["$http", "SessionService", "AccountsService"];
+
+const plugins = angular
+    .module("components.plugins", [])
+    .component("plugins", pluginsComponent)
+    .service("PluginsService", PluginsService)
+    .name;
+
+class PositionsController {
+    constructor(PositionsService) {
+        this.PositionsService = PositionsService;
+    }
+
+    $onInit() {
+        this.PositionsService.getPositions().then(positions => {
+            this.positions = positions;
+        });
+    }
+}
+PositionsController.$inject = ["PositionsService"];
+
+const positionsComponent = {
+    templateUrl: "app/components/positions/positions.html",
+    controller: PositionsController
+};
+
+class PositionsService {
+    constructor($http, SessionService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+    }
+
+    getPositions() {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/positions", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(positions => {
+                const data = [];
+
+                positions.data.forEach(position => {
+                    const longUnits = position.long &&
+                        parseInt(position.long.units, 10);
+                    const shortUnits = position.short &&
+                        parseInt(position.short.units, 10);
+                    const units = longUnits || shortUnits;
+                    const side = units > 0 ? "buy" : "sell";
+                    const avgPrice = (longUnits && position.long.averagePrice) ||
+                        (shortUnits && position.short.averagePrice);
+
+                    data.push({
+                        side,
+                        instrument: position.instrument,
+                        units,
+                        avgPrice
+                    });
+                });
+
+                return data;
+            }).catch(err => err.data)
+        );
+    }
+}
+PositionsService.$inject = ["$http", "SessionService"];
+
+const positions = angular
+    .module("components.positions", [])
+    .component("positions", positionsComponent)
+    .service("PositionsService", PositionsService)
+    .name;
+
+class QuotesController {
+    constructor(QuotesService) {
+        this.QuotesService = QuotesService;
+    }
+
+    $onInit() {
+        this.quotes = this.QuotesService.getQuotes();
+    }
+}
+QuotesController.$inject = ["QuotesService"];
+
+const quotesComponent = {
+    templateUrl: "app/components/quotes/quotes.html",
+    controller: QuotesController
+};
+
+class QuotesService {
+    constructor(AccountsService) {
+        this.AccountsService = AccountsService;
+
+        this.quotes = {};
+    }
+
+    getQuotes() {
+        return this.quotes;
+    }
+
+    updateTick(tick) {
+        const account = this.AccountsService.getAccount(),
+            streamingInstruments = account.streamingInstruments,
+            pips = account.pips,
+            instrument = tick.instrument;
+
+        this.quotes[instrument] = {
+            time: tick.time,
+            ask: tick.ask,
+            bid: tick.bid,
+            spread: ((tick.ask - tick.bid) / pips[instrument]).toFixed(1)
+        };
+
+
+        if (!angular.equals(streamingInstruments, Object.keys(this.quotes))) {
+            streamingInstruments.forEach(instr => {
+                let temp;
+
+                if (this.quotes.hasOwnProperty(instr)) {
+                    temp = this.quotes[instr];
+                    delete this.quotes[instr];
+                    this.quotes[instr] = temp;
+                }
+            });
+        }
+    }
+
+    reset() {
+        let key;
+
+        for (key in this.quotes) {
+            if (this.quotes.hasOwnProperty(key)) {
+                delete this.quotes[key];
+            }
+        }
+    }
+}
+QuotesService.$inject = ["AccountsService"];
+
+const quotes = angular
+    .module("components.quotes", [])
+    .component("quotes", quotesComponent)
+    .service("QuotesService", QuotesService)
+    .name;
+
+class SessionService {
+    constructor($q) {
+        this.deferred = $q.defer();
+        this.credentials = {
+            environment: null,
+            token: null,
+            accountId: null
+        };
+    }
+
+    setCredentials(session) {
+        this.credentials.environment = session.environment;
+        this.credentials.token = session.token;
+        this.credentials.accountId = session.accountId;
+
+        this.deferred.resolve(this.credentials);
+    }
+
+    isLogged() {
+        return this.deferred.promise;
+    }
+}
+SessionService.$inject = ["$q"];
+
+const session = angular
+    .module("components.session", [])
+    .service("SessionService", SessionService)
+    .name;
+
+class SettingsDialogController {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    hide() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
+    answer(settings) {
+        this.$mdDialog.hide(settings);
+    }
+}
+SettingsDialogController.$inject = ["$mdDialog"];
+
+const settingsDialogComponent = {
+    templateUrl: "app/components/settings-dialog/settings-dialog.html",
+    controller: SettingsDialogController,
+    bindings: {
+        instruments: "<"
+    }
+};
+
+const settingsDialog = angular
+    .module("components.settings-dialog", [])
+    .component("settingsDialog", settingsDialogComponent)
+    .name;
+
+// Inspired by http://bl.ocks.org/vicapow/9904319
+function slChartDirective() {
+    const data = {},
+        directive = {
+            restrict: "E",
+            link,
+            scope: {
+                instrument: "=",
+                data: "=",
+                length: "="
+            },
+            replace: true,
+            template: "<svg class='sl'></svg>",
+            transclude: true
+        };
+
+    return directive;
+
+    function link(scope, element) {
+
+        scope.$watch("data", quote => {
+            redraw(quote);
+        });
+
+        function redraw(quote) {
+            const svg = d3.select(element[0]),
+                node = svg.node(),
+                instrument = scope.instrument,
+                w = node.clientWidth,
+                h = getComputedStyle(node)["font-size"].replace("px", "");
+
+            svg.selectAll("*").remove();
+
+            if (!data[instrument]) {
+                data[instrument] = [];
+            }
+
+            data[instrument].push(
+                (parseFloat(quote.bid) +
+                    parseFloat(quote.ask)) / 2);
+
+            data[instrument] = data[instrument].slice(-scope.length);
+
+            if (data[instrument][0] > data[instrument].slice(-1)) {
+                node.style.stroke = "red";
+            } else {
+                node.style.stroke = "green";
+            }
+            node.style.height = `${h}px`;
+
+            const min$$1 = d3.min(data[instrument]);
+            const max$$1 = d3.max(data[instrument]);
+
+            const x = d3.scaleLinear()
+                .domain([0, data[instrument].length - 1]).range([0, w]);
+            const y = d3.scaleLinear()
+                .domain([min$$1, max$$1]).range([h, 0]);
+
+            const paths = data[instrument]
+                .map((d, i) => [x(i), y(d)])
+                .join("L");
+
+            svg.append("path").attr("d", `M${paths}`);
+        }
+    }
+}
+slChartDirective.$inject = [];
+
+const slChart = angular
+    .module("components.sl-chart", [])
+    .directive("slChart", slChartDirective)
+    .name;
+
+class StreamingService {
+    constructor($timeout, $http, ToastService,
+            QuotesService, ActivityService, TradesService,
+            OrdersService, AccountsService, PluginsService) {
+        this.$timeout = $timeout;
+        this.$http = $http;
+        this.ToastService = ToastService;
+        this.QuotesService = QuotesService;
+        this.ActivityService = ActivityService;
+        this.TradesService = TradesService;
+        this.OrdersService = OrdersService;
+        this.AccountsService = AccountsService;
+        this.PluginsService = PluginsService;
+    }
+
+    startStream(data) {
+        this.$http.post("/api/startstream", {
+            environment: data.environment,
+            accessToken: data.accessToken,
+            accountId: data.accountId,
+            instruments: data.instruments
+        }).then(() => {
+            this.getStream();
+        }).catch(err => {
+            this.ToastService.show(err);
+        });
+    }
+
+    getStream() {
+        const ws = new WebSocket("ws://localhost:8000/stream");
+
+        ws.onmessage = event => {
+            let data,
+                isTick,
+                tick,
+                isTransaction,
+                transaction,
+                refreshPlugins;
+
+            this.$timeout(() => {
+                try {
+                    data = angular.fromJson(event.data);
+
+                    isTick = data.closeoutAsk && data.closeoutBid;
+                    isTransaction = data.accountID;
+                    refreshPlugins = data.refreshPlugins;
+
+                    if (isTick) {
+                        tick = {
+                            time: data.time,
+                            instrument: data.instrument,
+                            ask: data.closeoutAsk,
+                            bid: data.closeoutBid
+                        };
+
+                        this.QuotesService.updateTick(tick);
+                        this.TradesService.updateTrades(tick);
+                        this.OrdersService.updateOrders(tick);
+                    }
+
+                    if (isTransaction) {
+                        transaction = data;
+                        this.ActivityService.addActivity(transaction);
+
+                        this.TradesService.refresh();
+                        this.OrdersService.refresh();
+                        this.AccountsService.refresh();
+                    }
+
+                    if (refreshPlugins) {
+                        this.PluginsService.refresh();
+                    }
+                } catch (e) {
+
+                    // Discard "incomplete" json
+                    // console.log(e.name + ": " + e.message);
+                }
+            });
+        };
+    }
+}
+StreamingService.$inject = [
+    "$timeout", "$http", "ToastService",
+    "QuotesService", "ActivityService", "TradesService",
+    "OrdersService", "AccountsService", "PluginsService"
+];
+
+const streaming = angular
+    .module("components.streaming", [])
+    .service("StreamingService", StreamingService)
+    .name;
+
+class ToastService {
+    constructor($mdToast) {
+        this.$mdToast = $mdToast;
+    }
+
+    show(message) {
+        this.$mdToast.show(
+            this.$mdToast.simple()
+                .textContent(message)
+                .action("CLOSE")
+                .position("right bottom")
+                .hideDelay(10000)
+        );
+    }
+}
+ToastService.$inject = ["$mdToast"];
+
+const toast = angular
+    .module("components.toast", [])
+    .service("ToastService", ToastService)
+    .name;
+
+class TokenDialogController {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    $onInit() {
+        this.environment = "practice";
+    }
+
+    hide() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+
+    answer(token) {
+        this.$mdDialog.hide(token);
+    }
+}
+TokenDialogController.$inject = ["$mdDialog"];
+
+const tokenDialogComponent = {
+    templateUrl: "app/components/token-dialog/token-dialog.html",
+    controller: TokenDialogController
+};
+
+const tokenDialog = angular
+    .module("components.token-dialog", [])
+    .component("tokenDialog", tokenDialogComponent)
+    .name;
+
+class TradesController {
+    constructor($mdDialog, ToastService, TradesService) {
+        this.$mdDialog = $mdDialog;
+        this.ToastService = ToastService;
+        this.TradesService = TradesService;
+    }
+
+    $onInit() {
+        this.trades = this.TradesService.getTrades();
+
+        this.TradesService.refresh();
+    }
+
+    closeTrade(event, id) {
+        const confirm = this.$mdDialog.confirm()
+            .textContent("Are you sure to close the trade?")
+            .ariaLabel("Trade closing confirmation")
+            .ok("Ok")
+            .cancel("Cancel")
+            .targetEvent(event);
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.TradesService.closeTrade(id).then(trade => {
+                const message = "Closed " +
+                    `${(trade.units > 0 ? "sell" : "buy")} ` +
+                    `${trade.instrument} ` +
+                    `#${trade.id} ` +
+                    `@${trade.price} ` +
+                    `P&L ${trade.pl}`;
+
+                this.ToastService.show(message);
+            }).catch(err => {
+                const message = `ERROR ${err.code} ${err.message}`;
+
+                this.ToastService.show(message);
+            });
+
+        });
+    }
+}
+TradesController.$inject = ["$mdDialog", "ToastService", "TradesService"];
+
+const tradesComponent = {
+    templateUrl: "app/components/trades/trades.html",
+    controller: TradesController
+};
+
+class TradesService {
+    constructor($http, SessionService, AccountsService) {
+        this.$http = $http;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
+
+        this.trades = [];
+    }
+
+    getTrades() {
+        return this.trades;
+    }
+
+    refresh() {
+        this.SessionService.isLogged().then(credentials => {
+            this.$http.post("/api/trades", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            }).then(res => {
+                this.trades.length = 0;
+                angular.extend(this.trades, res.data);
+                this.trades.forEach(trade => {
+                    trade.side = trade.currentUnits > 0 ? "buy" : "sell";
+                });
+            });
+        });
+    }
+
+    closeTrade(id) {
+        return this.SessionService.isLogged().then(
+            credentials => this.$http.post("/api/closetrade", {
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                id
+            }).then(order => order.data)
+            .catch(err => err.data)
+        );
+    }
+
+    updateTrades(tick) {
+        const account = this.AccountsService.getAccount(),
+            pips = account.pips;
+
+        this.trades.forEach((trade, index) => {
+            let current,
+                side;
+
+            if (trade.instrument === tick.instrument) {
+                side = trade.currentUnits > 0 ? "buy" : "sell";
+
+                if (side === "buy") {
+                    current = tick.bid;
+                    this.trades[index].profitPips =
+                        ((current - trade.price) / pips[trade.instrument]);
+                }
+                if (side === "sell") {
+                    current = tick.ask;
+                    this.trades[index].profitPips =
+                        ((trade.price - current) / pips[trade.instrument]);
+                }
+
+                this.trades[index].current = current;
+            }
+        });
+    }
+}
+TradesService.$inject = ["$http", "SessionService", "AccountsService"];
+
+const trades = angular
+    .module("components.trades", [])
+    .component("trades", tradesComponent)
+    .service("TradesService", TradesService)
+    .name;
+
+const components = angular
+    .module("components", [
+        account,
+        accountsBottomsheet,
+        activity,
+        charts,
+        dualColor,
+        exposure,
+        header,
+        highlighter,
+        news,
+        ohlcChart,
+        orderDialog,
+        orders,
+        plugins,
+        positions,
+        quotes,
+        session,
+        settingsDialog,
+        slChart,
+        streaming,
+        toast,
+        tokenDialog,
+        trades
+    ])
+    .name;
+
+const root = angular
+    .module("root", [
+        common,
+        components
+    ])
+    .component("root", rootComponent)
+    .name;
+
+exports.root = root;
+
+}((this.app = this.app || {}),angular,d3,techan));

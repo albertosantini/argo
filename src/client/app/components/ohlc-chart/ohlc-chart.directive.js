@@ -1,5 +1,5 @@
-// import * as d3 from "d3";
-// import techan from "techan";
+import * as d3 from "d3";
+import techan from "techan";
 
 export function ohlcChartDirective() {
     const directive = {

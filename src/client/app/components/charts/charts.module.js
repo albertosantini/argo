@@ -1,5 +1,3 @@
-import "./charts.css";
-
 import angular from "angular";
 
 import { chartsComponent } from "./charts.component";

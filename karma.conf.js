@@ -8,7 +8,10 @@ module.exports = config => {
         frameworks: ["mocha", "chai"],
 
         files: [
-            "build/vendor.bundle.js",
+            "node_modules/angular/angular.min.js",
+            "node_modules/d3/build/d3.min.js",
+            "node_modules/techan/dist/techan.min.js",
+
             "node_modules/angular-mocks/angular-mocks.js",
 
             "build/app.bundle.js",
