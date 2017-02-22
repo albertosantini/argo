@@ -13,7 +13,7 @@ through the powerful [API][] to develop trading strategies.
 
 After installing [Node.js](https://nodejs.org/) (required), you can install **Argo**.
 
-- Release 3.x for legacy accounts.
+- Release 3.x for legacy accounts: if your account id contains only digits (ie. 2534233), it is a legacy account.
 - Release 4.x (or higher) for v20 accounts.
 
 ```
