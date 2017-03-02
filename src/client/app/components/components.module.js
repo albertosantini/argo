@@ -19,7 +19,7 @@ import { session } from "./session/session.module";
 import { settingsDialog } from "./settings-dialog/settings-dialog.module";
 import { slChart } from "./sl-chart/sl-chart.module";
 import { streaming } from "./streaming/streaming.module";
-import { toast } from "./toast/toast.module";
+import { toasts } from "./toasts/toasts.module";
 import { tokenDialog } from "./token-dialog/token-dialog.module";
 import { trades } from "./trades/trades.module";
 
@@ -44,7 +44,7 @@ export const components = angular
         settingsDialog,
         slChart,
         streaming,
-        toast,
+        toasts,
         tokenDialog,
         trades
     ])

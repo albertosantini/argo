@@ -467,13 +467,13 @@ const exposure = angular
 
 class HeaderController {
     constructor($window, $rootScope, $mdDialog, $mdBottomSheet,
-            ToastService, AccountsService, SessionService,
+            ToastsService, AccountsService, SessionService,
             QuotesService, StreamingService) {
         this.$window = $window;
         this.$rootScope = $rootScope;
         this.$mdDialog = $mdDialog;
         this.$mdBottomSheet = $mdBottomSheet;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.SessionService = SessionService;
         this.QuotesService = QuotesService;
@@ -554,12 +554,12 @@ class HeaderController {
                     });
                 });
             }, err => {
-                this.ToastService.show(err);
+                this.ToastsService.addToast(err);
             });
         })
         .catch(err => {
             if (err) {
-                this.ToastService.show(err);
+                this.ToastsService.addToast(err);
             }
         });
     }
@@ -604,7 +604,7 @@ class HeaderController {
             })
             .catch(err => {
                 if (err) {
-                    this.ToastService.show(err);
+                    this.ToastsService.addToast(err);
                 }
             });
         });
@@ -612,7 +612,7 @@ class HeaderController {
 }
 HeaderController.$inject = [
     "$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
-    "ToastService", "AccountsService", "SessionService",
+    "ToastsService", "AccountsService", "SessionService",
     "QuotesService", "StreamingService"
 ];
 
@@ -1060,10 +1060,10 @@ const ohlcChart = angular
     .name;
 
 class OrderDialogController {
-    constructor($mdDialog, ToastService,
+    constructor($mdDialog, ToastsService,
             QuotesService, OrdersService, AccountsService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.QuotesService = QuotesService;
         this.OrdersService = OrdersService;
         this.AccountsService = AccountsService;
@@ -1249,17 +1249,17 @@ class OrderDialogController {
                     message = "ERROR " +
                         `${transaction.code} ${transaction.message}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else if (transaction.errorMessage) {
                     message = `ERROR ${transaction.errorMessage}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else if (transaction.orderCancelTransaction) {
                     canceled = transaction.orderCancelTransaction;
 
                     message = `ERROR ${canceled.reason}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else {
                     opened = transaction.orderFillTransaction ||
                         transaction.orderFillTransaction ||
@@ -1272,14 +1272,14 @@ class OrderDialogController {
                         `@${opened.price} ` +
                         `for ${opened.units}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 }
             });
         }
     }
 }
 OrderDialogController.$inject = [
-    "$mdDialog", "ToastService",
+    "$mdDialog", "ToastsService",
     "QuotesService", "OrdersService", "AccountsService"
 ];
 
@@ -1297,9 +1297,9 @@ const orderDialog = angular
     .name;
 
 class OrdersController {
-    constructor($mdDialog, ToastService, OrdersService) {
+    constructor($mdDialog, ToastsService, OrdersService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.OrdersService = OrdersService;
     }
 
@@ -1322,12 +1322,12 @@ class OrdersController {
                 const message = "Closed " +
                     `#${order.orderCancelTransaction.orderID}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             });
         });
     }
 }
-OrdersController.$inject = ["$mdDialog", "ToastService", "OrdersService"];
+OrdersController.$inject = ["$mdDialog", "ToastsService", "OrdersService"];
 
 const ordersComponent = {
     templateUrl: "app/components/orders/orders.html",
@@ -1790,12 +1790,12 @@ const slChart = angular
     .name;
 
 class StreamingService {
-    constructor($timeout, $http, ToastService,
+    constructor($timeout, $http, ToastsService,
             QuotesService, ActivityService, TradesService,
             OrdersService, AccountsService, PluginsService) {
         this.$timeout = $timeout;
         this.$http = $http;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.QuotesService = QuotesService;
         this.ActivityService = ActivityService;
         this.TradesService = TradesService;
@@ -1813,7 +1813,7 @@ class StreamingService {
         }).then(() => {
             this.getStream();
         }).catch(err => {
-            this.ToastService.show(err);
+            this.ToastsService.addToast(err);
         });
     }
 
@@ -1871,7 +1871,7 @@ class StreamingService {
     }
 }
 StreamingService.$inject = [
-    "$timeout", "$http", "ToastService",
+    "$timeout", "$http", "ToastsService",
     "QuotesService", "ActivityService", "TradesService",
     "OrdersService", "AccountsService", "PluginsService"
 ];
@@ -1881,26 +1881,58 @@ const streaming = angular
     .service("StreamingService", StreamingService)
     .name;
 
-class ToastService {
-    constructor($mdToast) {
-        this.$mdToast = $mdToast;
+class ToastsController {
+    constructor(ToastsService) {
+        this.ToastsService = ToastsService;
     }
 
-    show(message) {
-        this.$mdToast.show(
-            this.$mdToast.simple()
-                .textContent(message)
-                .action("CLOSE")
-                .position("right bottom")
-                .hideDelay(10000)
-        );
+    $onInit() {
+        this.toasts = this.ToastsService.getToasts();
     }
 }
-ToastService.$inject = ["$mdToast"];
+ToastsController.$inject = ["ToastsService"];
 
-const toast = angular
-    .module("components.toast", [])
-    .service("ToastService", ToastService)
+const toastsComponent = {
+    templateUrl: "app/components/toasts/toasts.html",
+    controller: ToastsController
+};
+
+class ToastsService {
+    constructor($timeout) {
+        this.$timeout = $timeout;
+
+        this.toasts = [];
+        this.timeout = null;
+    }
+
+    getToasts() {
+        return this.toasts;
+    }
+
+    addToast(message) {
+        this.toasts.splice(0, 0, {
+            date: new Date(),
+            message
+        });
+
+        if (this.timeout) {
+            this.$timeout.cancel(this.timeout);
+        }
+        this.timeout = this.reset();
+    }
+
+    reset() {
+        return this.$timeout(() => {
+            this.toasts.length = 0;
+        }, 10000);
+    }
+}
+ToastsService.$inject = ["$timeout"];
+
+const toasts = angular
+    .module("components.toasts", [])
+    .component("toasts", toastsComponent)
+    .service("ToastsService", ToastsService)
     .name;
 
 class TokenDialogController {
@@ -1937,9 +1969,9 @@ const tokenDialog = angular
     .name;
 
 class TradesController {
-    constructor($mdDialog, ToastService, TradesService) {
+    constructor($mdDialog, ToastsService, TradesService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.TradesService = TradesService;
     }
 
@@ -1966,17 +1998,17 @@ class TradesController {
                     `@${trade.price} ` +
                     `P&L ${trade.pl}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             }).catch(err => {
                 const message = `ERROR ${err.code} ${err.message}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             });
 
         });
     }
 }
-TradesController.$inject = ["$mdDialog", "ToastService", "TradesService"];
+TradesController.$inject = ["$mdDialog", "ToastsService", "TradesService"];
 
 const tradesComponent = {
     templateUrl: "app/components/trades/trades.html",
@@ -2080,7 +2112,7 @@ const components = angular
         settingsDialog,
         slChart,
         streaming,
-        toast,
+        toasts,
         tokenDialog,
         trades
     ])

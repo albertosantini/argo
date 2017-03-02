@@ -1,8 +1,8 @@
 export class OrderDialogController {
-    constructor($mdDialog, ToastService,
+    constructor($mdDialog, ToastsService,
             QuotesService, OrdersService, AccountsService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.QuotesService = QuotesService;
         this.OrdersService = OrdersService;
         this.AccountsService = AccountsService;
@@ -188,17 +188,17 @@ export class OrderDialogController {
                     message = "ERROR " +
                         `${transaction.code} ${transaction.message}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else if (transaction.errorMessage) {
                     message = `ERROR ${transaction.errorMessage}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else if (transaction.orderCancelTransaction) {
                     canceled = transaction.orderCancelTransaction;
 
                     message = `ERROR ${canceled.reason}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 } else {
                     opened = transaction.orderFillTransaction ||
                         transaction.orderFillTransaction ||
@@ -211,13 +211,13 @@ export class OrderDialogController {
                         `@${opened.price} ` +
                         `for ${opened.units}`;
 
-                    this.ToastService.show(message);
+                    this.ToastsService.addToast(message);
                 }
             });
         }
     }
 }
 OrderDialogController.$inject = [
-    "$mdDialog", "ToastService",
+    "$mdDialog", "ToastsService",
     "QuotesService", "OrdersService", "AccountsService"
 ];

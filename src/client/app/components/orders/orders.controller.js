@@ -1,7 +1,7 @@
 export class OrdersController {
-    constructor($mdDialog, ToastService, OrdersService) {
+    constructor($mdDialog, ToastsService, OrdersService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.OrdersService = OrdersService;
     }
 
@@ -24,9 +24,9 @@ export class OrdersController {
                 const message = "Closed " +
                     `#${order.orderCancelTransaction.orderID}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             });
         });
     }
 }
-OrdersController.$inject = ["$mdDialog", "ToastService", "OrdersService"];
+OrdersController.$inject = ["$mdDialog", "ToastsService", "OrdersService"];

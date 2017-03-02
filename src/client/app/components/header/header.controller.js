@@ -2,13 +2,13 @@ import angular from "angular";
 
 export class HeaderController {
     constructor($window, $rootScope, $mdDialog, $mdBottomSheet,
-            ToastService, AccountsService, SessionService,
+            ToastsService, AccountsService, SessionService,
             QuotesService, StreamingService) {
         this.$window = $window;
         this.$rootScope = $rootScope;
         this.$mdDialog = $mdDialog;
         this.$mdBottomSheet = $mdBottomSheet;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.SessionService = SessionService;
         this.QuotesService = QuotesService;
@@ -89,12 +89,12 @@ export class HeaderController {
                     });
                 });
             }, err => {
-                this.ToastService.show(err);
+                this.ToastsService.addToast(err);
             });
         })
         .catch(err => {
             if (err) {
-                this.ToastService.show(err);
+                this.ToastsService.addToast(err);
             }
         });
     }
@@ -139,7 +139,7 @@ export class HeaderController {
             })
             .catch(err => {
                 if (err) {
-                    this.ToastService.show(err);
+                    this.ToastsService.addToast(err);
                 }
             });
         });
@@ -147,6 +147,6 @@ export class HeaderController {
 }
 HeaderController.$inject = [
     "$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
-    "ToastService", "AccountsService", "SessionService",
+    "ToastsService", "AccountsService", "SessionService",
     "QuotesService", "StreamingService"
 ];

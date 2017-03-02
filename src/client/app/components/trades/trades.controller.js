@@ -1,7 +1,7 @@
 export class TradesController {
-    constructor($mdDialog, ToastService, TradesService) {
+    constructor($mdDialog, ToastsService, TradesService) {
         this.$mdDialog = $mdDialog;
-        this.ToastService = ToastService;
+        this.ToastsService = ToastsService;
         this.TradesService = TradesService;
     }
 
@@ -28,14 +28,14 @@ export class TradesController {
                     `@${trade.price} ` +
                     `P&L ${trade.pl}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             }).catch(err => {
                 const message = `ERROR ${err.code} ${err.message}`;
 
-                this.ToastService.show(message);
+                this.ToastsService.addToast(message);
             });
 
         });
     }
 }
-TradesController.$inject = ["$mdDialog", "ToastService", "TradesService"];
+TradesController.$inject = ["$mdDialog", "ToastsService", "TradesService"];
