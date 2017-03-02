@@ -22,8 +22,8 @@
     },
     "dependencies": {
         "async": "~2.1.5",
-        "body-parser": "~1.16.1",
-        "express": "~4.14.1",
+        "body-parser": "~1.17.0",
+        "express": "~4.15.0",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
         "limiter": "~1.1.0",
@@ -35,12 +35,12 @@
         "angular-messages": "~1.6.2",
         "angular-mocks": "~1.6.2",
         "angular-material": "~1.1.3",
-        "d3": "~4.6.0",
+        "d3": "~4.7.0",
         "techan": "~0.8.0",
         "tachyons": "~4.6.2"
     },
     "optionalDependencies": {
-        "electron": "~1.4.15"
+        "electron": "~1.6.1"
     },
     "scripts": {
         "test": "npm run lint && npm run karma",
@@ -54,7 +54,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
-        "eslint": "^3.16.0",
+        "eslint": "^3.16.1",
         "eslint-plugin-angular": "^1.6.1",
         "mocha": "^3.2.0",
         "chai": "^3.5.0",
