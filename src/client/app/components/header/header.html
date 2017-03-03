@@ -32,8 +32,8 @@
     </div>
 
 
-    <div layout="row" layout-align="space-around center" flex="5">
-        <div ng-if="$ctrl.isLoadingView" class="spinner"></div>
+    <div class="flex flex-row items-center min-w-5">
+        <span ng-class="{spinner: $ctrl.isLoadingView}"></span>
     </div>
 
 </md-toolbar>

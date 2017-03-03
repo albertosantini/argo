@@ -38,6 +38,8 @@ span {
             animation: 0.5s linear all;
 }
 
+.min-w-5 { min-width: 5%; }
+
 .spinner {
   width: 32px;
   height: 32px;
