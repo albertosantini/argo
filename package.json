@@ -27,7 +27,7 @@
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
         "limiter": "~1.1.0",
-        "request": "~2.79.0",
+        "request": "~2.80.0",
 
         "angular": "~1.6.2",
         "angular-animate": "~1.6.2",
@@ -54,7 +54,7 @@
     },
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
-        "eslint": "^3.16.1",
+        "eslint": "^3.17.0",
         "eslint-plugin-angular": "^1.6.1",
         "mocha": "^3.2.0",
         "chai": "^3.5.0",
