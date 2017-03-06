@@ -6,12 +6,7 @@ body {
     height: 64px;
 }
 
-.tabpanel-container {
-    display: block;
-    margin-top: 20px;
-}
-
-.tabpanel-container md-content {
+ng-switch md-content {
     height: 135px;
 }
 
@@ -39,6 +34,8 @@ span {
 }
 
 .min-w-5 { min-width: 5%; }
+.min-w-25 { min-width: 25%; }
+.min-w-75 { min-width: 75%; }
 
 .spinner {
   width: 32px;

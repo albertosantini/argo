@@ -1,95 +1,46 @@
 <header></header>
 
-<md-tabs class="md-accent" md-dynamic-height md-center-tabs md-whiteframe="1"
-    md-selected="$ctrl.tabSelectedIndex">
-    <md-tab id="tab1" aria-controls="tab1-content">Trades</md-tab>
-    <md-tab id="tab2" aria-controls="tab2-content">Orders</md-tab>
-    <md-tab id="tab3" aria-controls="tab3-content">Positions</md-tab>
-    <md-tab id="tab4" aria-controls="tab4-content">Exposure</md-tab>
-    <md-tab id="tab5" aria-controls="tab5-content">Activity</md-tab>
-    <md-tab id="tab6" aria-controls="tab6-content">News</md-tab>
-    <md-tab id="tab7" aria-controls="tab7-content">Plugins</md-tab>
-</md-tabs>
-<ng-switch on="$ctrl.tabSelectedIndex" class="tabpanel-container" layout-margin>
-    <div role="tabpanel"
-         id="tab1-content"
-         aria-labelledby="tab1"
-         ng-switch-when="0"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
+<nav class="bt bb tc mw9 center shadow-2">
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 0"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 0}">Trades</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 1"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 1}">Orders</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 2"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 2}">Positions</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 3"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 3}">Exposures</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 4"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 4}">Activity</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 5"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 5}">News</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
+        href ng-click="$ctrl.tabSelectedIndex = 6"
+        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 6}">Plugins</a>
+</nav>
 
-        <trades></trades>
-    </div>
-
-    <div role="tabpanel"
-         id="tab2-content"
-         aria-labelledby="tab2"
-         ng-switch-when="1"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-        <orders></orders>
-    </div>
-
-    <div role="tabpanel"
-         id="tab3-content"
-         aria-labelledby="tab3"
-         ng-switch-when="2"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-        <positions></positions>
-    </div>
-
-    <div role="tabpanel"
-         id="tab4-content"
-         aria-labelledby="tab4"
-         ng-switch-when="3"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-        <exposure></exposure>
-    </div>
-
-    <div role="tabpanel"
-         id="tab5-content"
-         aria-labelledby="tab5"
-         ng-switch-when="4"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-         <activity></activity>
-    </div>
-
-    <div role="tabpanel"
-         id="tab6-content"
-         aria-labelledby="tab6"
-         ng-switch-when="5"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-        <news></news>
-    </div>
-
-    <div role="tabpanel"
-         id="tab7-content"
-         aria-labelledby="tab7"
-         ng-switch-when="6"
-         md-swipe-left="$ctrl.next()"
-         md-swipe-right="$ctrl.previous()">
-
-        <plugins></plugins>
-    </div>
-
+<ng-switch on="$ctrl.tabSelectedIndex">
+    <trades ng-switch-when="0"></trades>
+    <orders ng-switch-when="1"></orders>
+    <positions ng-switch-when="2"></positions>
+    <exposure ng-switch-when="3"></exposure>
+    <activity ng-switch-when="4"></activity>
+    <news ng-switch-when="5"></news>
+    <plugins ng-switch-when="6"></plugins>
 </ng-switch>
 
-<div layout="row" layout-sm="column" layout-md="column" layout-padding>
-    <div layout="column" flex-gt-md="25" flex-sm="95">
+<div class="flex flex-wrap flex-row ma2 pa2">
+    <div class="flex flex-wrap flex-column min-w-25">
         <account></account>
         <quotes></quotes>
         <toasts></toasts>
     </div>
-    <div layout="column" flex-gt-md="75" hide-sm>
+    <div class="flex flex-wrap flex-column min-w-75">
         <charts></charts>
     </div>
 </div>
