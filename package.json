@@ -22,8 +22,8 @@
     },
     "dependencies": {
         "async": "~2.1.5",
-        "body-parser": "~1.17.0",
-        "express": "~4.15.0",
+        "body-parser": "~1.17.1",
+        "express": "~4.15.2",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
         "limiter": "~1.1.0",
@@ -55,7 +55,7 @@
     "devDependencies": {
         "conventional-changelog-cli": "^1.2.0",
         "eslint": "^3.17.0",
-        "eslint-plugin-angular": "^1.6.1",
+        "eslint-plugin-angular": "^1.6.2",
         "mocha": "^3.2.0",
         "chai": "^3.5.0",
         "karma": "^1.5.0",
