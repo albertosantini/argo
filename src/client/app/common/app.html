@@ -3,35 +3,35 @@
 <nav class="bt bb tc mw9 center shadow-2">
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 0"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 0}">Trades</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 0}">Trades</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 1"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 1}">Orders</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 1}">Orders</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 2"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 2}">Positions</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 2}">Positions</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 3"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 3}">Exposures</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 3}">Exposures</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 4"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 4}">Activity</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 4}">Activity</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 5"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 5}">News</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 5}">News</a>
     <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l"
         href ng-click="$ctrl.tabSelectedIndex = 6"
-        ng-class="{'bg-light-blue': $ctrl.tabSelectedIndex === 6}">Plugins</a>
+        ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 6}">Plugins</a>
 </nav>
 
 <ng-switch on="$ctrl.tabSelectedIndex">
-    <trades ng-switch-when="0"></trades>
-    <orders ng-switch-when="1"></orders>
-    <positions ng-switch-when="2"></positions>
-    <exposure ng-switch-when="3"></exposure>
-    <activity ng-switch-when="4"></activity>
-    <news ng-switch-when="5"></news>
-    <plugins ng-switch-when="6"></plugins>
+    <trades ng-switch-when="0" class="ma2 pa2"></trades>
+    <orders ng-switch-when="1" class="ma2 pa2"></orders>
+    <positions ng-switch-when="2" class="ma2 pa2"></positions>
+    <exposure ng-switch-when="3" class="ma2 pa2"></exposure>
+    <activity ng-switch-when="4" class="ma2 pa2"></activity>
+    <news ng-switch-when="5" class="ma2 pa2"></news>
+    <plugins ng-switch-when="6" class="ma2 pa2"></plugins>
 </ng-switch>
 
 <div class="flex flex-wrap flex-row ma2 pa2">
