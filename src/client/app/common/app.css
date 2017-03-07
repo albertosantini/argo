@@ -6,10 +6,6 @@ body {
     height: 64px;
 }
 
-ng-switch md-content {
-    height: 135px;
-}
-
 div[ui-view="quotes"] md-content {
     height: 250px;
 }

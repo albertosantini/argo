@@ -1,39 +1,37 @@
-<div ng-show="$ctrl.orders.length" layout="row" layout-align="space-around center">
-    <b flex="5">Type</b>
-    <b flex="10">Ticket</b>
-    <b flex="10">Market</b>
-    <b flex="5">Units</b>
-    <b flex="5">S/L</b>
-    <b flex="5">T/P</b>
-    <b flex="5">T/S</b>
-    <b flex="10">Price</b>
-    <b flex="10">Current</b>
-    <b flex="5">Distance</b>
-    <b flex="20">Expiry</b>
+<div class="h4 overflow-auto">
+    <p ng-hide="$ctrl.orders.length" class="f6 w-100 mw8 center b">No orders.</p>
+
+    <table ng-show="$ctrl.orders.length" class="f6 w-100 mw8 center" cellpsacing="0">
+        <thead>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Type</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Ticket</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Units</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">S/L</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/P</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/S</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Price</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Current</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Distance</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Expiry</th>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="order in $ctrl.orders">
+                <td class="pv1 pr1 bb b--black-20">{{ order.side }}</td>
+                <td class="pv1 pr1 bb b--black-20">
+                    <a href ng-click="$ctrl.closeOrder($event, order.id)">{{ order.id }}</a>
+                </td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.instrument }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.units | number }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.stopLossOnFill.price || order.type }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.takeProfitOnFill.price }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ order.price | number:4 }}</td>
+                <td class="pv1 pr1 bb b--black-20"">{{ order.current | number:4 }}</td>
+                <td class="pv1 pr1 bb b--black-20"">{{ order.distance | number:1 }}</td>
+                <td class="pv1 pr1 bb b--black-20"">{{ order.expiry | date:"MMM d, HH:mm" }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<md-content>
-
-    <md-card ng-repeat="order in $ctrl.orders">
-
-        <div layout="row" layout-align="space-around center">
-            <span flex="5">{{ order.side }}</span>
-            <a flex="10" href="" ng-click="$ctrl.closeOrder($event, order.id)">{{ order.id }}</a>
-            <span flex="10">{{ order.instrument }}</span>
-            <span flex="5">{{ order.units | number }}</span>
-            <span flex="5">{{ order.stopLossOnFill.price || order.type }}</span>
-            <span flex="5">{{ order.takeProfitOnFill.price }}</span>
-            <span flex="5">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</span>
-            <span flex="10">{{ order.price | number:4 }}</span>
-            <span flex="10">{{ order.current | number:4 }}</span>
-            <span flex="5">{{ order.distance | number:1 }}</span>
-            <span flex="20">{{ order.expiry | date:"MMM d, HH:mm" }}</span>
-        </div>
-
-    </md-card>
-
-    <md-card ng-show="!$ctrl.orders.length">
-        No orders.
-    </md-card>
-
-</md-content>

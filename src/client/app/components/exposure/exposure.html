@@ -1,25 +1,19 @@
-<div ng-show="$ctrl.exposures.length" layout="row">
-    <b flex="5">Type</b>
-    <b flex="10">Market</b>
-    <b flex="10">Units</b>
-    <!-- <b flex="10">USD</b> -->
+<div class="h4 overflow-auto">
+    <p ng-hide="$ctrl.exposures.length" class="f6 w-100 mw8 center b">No exposures.</p>
+
+    <table ng-show="$ctrl.exposures.length" class="f6 w-100 mw8 center" cellpsacing="0">
+        <thead>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Type</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Units</th>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="exposure in $ctrl.exposures">
+                <td class="pv1 pr1 bb b--black-20">{{ exposure.type }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ exposure.market }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ exposure.units | number:0 }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<md-content>
-
-    <md-card ng-repeat="exposure in $ctrl.exposures">
-
-        <div layout="row">
-            <span flex="5">{{ exposure.type }}</span>
-            <span flex="10">{{ exposure.market }}</span>
-            <span flex="10">{{ exposure.units | number:0 }}</span>
-            <!-- <span flex="10">{{ exposure.usd }}</span> -->
-        </div>
-
-    </md-card>
-
-    <md-card ng-show="!$ctrl.exposures.length">
-        No exposures.
-    </md-card>
-
-</md-content>

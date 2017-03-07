@@ -1,35 +1,32 @@
-<div ng-show="$ctrl.activities.length" layout="row">
-    <b flex="10">Ticket</b>
-    <b flex="25">Type</b>
-    <b flex="10">Market</b>
-    <b flex="5">Units</b>
-    <b flex="10">Price</b>
-    <b flex="5">Profit</b>
-    <b flex="10">Balance</b>
-    <b flex="10">Date/Time</b>
+<div class="h4 overflow-auto">
+    <p ng-hide="$ctrl.activities.length" class="f6 w-100 mw8 center b">No activities.</p>
+
+    <table ng-show="$ctrl.activities.length" class="f6 w-100 mw8 center" cellpsacing="0">
+        <thead>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Ticket</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Type</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Units</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Price</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Profit</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Balance</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Date/Time</th>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="activity in $ctrl.activities">
+                <td class="pv1 pr1 bb b--black-20">{{ activity.id }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.type }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.instrument }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.units | number }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.price }}</td>
+                <td class="pv1 pr1 bb b--black-20"
+                    ng-class="activity.pl >= 0 ? 'highlight-green' : 'highlight-red'">
+                    {{ activity.pl | number:4 }}
+                </td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.accountBalance | number:2 }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ activity.time | date:"MMM d, HH:mm" }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<md-content>
-
-    <md-card ng-repeat="activity in $ctrl.activities">
-
-        <div layout="row">
-            <span flex="10">{{ activity.id }}</span>
-            <span flex="25">{{ activity.type }}</span>
-            <span flex="10">{{ activity.instrument }}</span>
-            <span flex="5">{{ activity.units | number }}</span>
-            <span flex="10">{{ activity.price }}</span>
-            <span flex="10" ng-class="activity.pl >= 0 ? 'highlight-green' : 'highlight-red'">
-                {{ activity.pl | number:4 }}
-            </span>
-            <span flex="10">{{ activity.accountBalance | number:2 }}</span>
-            <span flex="10">{{ activity.time | date:"MMM d, HH:mm" }}</span>
-        </div>
-
-    </md-card>
-
-    <md-card ng-show="!$ctrl.activities.length">
-        No activities.
-    </md-card>
-
-</md-content>

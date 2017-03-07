@@ -1,14 +1,14 @@
-<md-content>
-    <md-card ng-repeat="(plugin, value) in $ctrl.plugins">
+<div class="h4 overflow-auto">
+    <p ng-show="$ctrl.pluginsInfo.count === 0" class="f6 w-100 mw8 center b">No plugins.</p>
 
-        <md-switch ng-model="$ctrl.plugins[plugin]" ng-change="$ctrl.engage()" aria-label="plugin">
-            {{ plugin }}
-        </md-switch>
-
-    </md-card>
-
-    <md-card ng-show="$ctrl.pluginsInfo.count === 0">
-        No plugins.
-    </md-card>
-
-</md-content>
+    <table ng-hide="$ctrl.pluginsInfo.count === 0" class="f6 w-100 mw8 center" cellpsacing="0">
+        <tbody>
+            <tr ng-repeat="(plugin, value) in $ctrl.plugins">
+                <td class="pv1 pr1 bb b--black-20">
+                    <input type="checkbox" ng-model="$ctrl.plugins[plugin]" ng-change="$ctrl.engage()">
+                </td>
+                <td class="pv1 pr1 bb b--black-20">{{ plugin }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

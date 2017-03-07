@@ -1,31 +1,27 @@
-<div ng-show="$ctrl.news.length" layout="row">
-    <b flex="10">Date/Time</b>
-    <b flex="10">Market</b>
-    <b flex="30">Event</b>
-    <b flex="10">Previous</b>
-    <b flex="10">Forecast</b>
-    <b flex="10">Actual</b>
-    <b flex="10">Unit</b>
+<div class="h4 overflow-auto">
+    <p ng-hide="$ctrl.news.length" class="f6 w-100 mw8 center b">No news.</p>
+
+    <table ng-show="$ctrl.news.length" class="f6 w-100 mw8 center" cellpsacing="0">
+        <thead>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Date/Time</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Event</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Previous</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Forecast</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Actual</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Unit</th>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="news in $ctrl.news">
+                <td class="pv1 pr1 bb b--black-20">{{ news.timestamp | date:"MMM d, HH:mm" }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.currency }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.title }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.previous | number }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.forecast | number }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.actual | number }}</td>
+                <td class="pv1 pr1 bb b--black-20">{{ news.unit }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<md-content>
-
-    <md-card ng-repeat="news in $ctrl.news">
-
-        <div layout="row">
-            <span flex="10">{{ news.timestamp | date:"MMM d, HH:mm" }}</span>
-            <span flex="10">{{ news.currency }}</span>
-            <span flex="30">{{ news.title }}</span>
-            <span flex="10">{{ news.previous | number }}</span>
-            <span flex="10">{{ news.forecast | number }}</span>
-            <span flex="10">{{ news.actual | number }}</span>
-            <span flex="10">{{ news.unit }}</span>
-        </div>
-
-    </md-card>
-
-    <md-card ng-show="!$ctrl.news.length">
-        No news.
-    </md-card>
-
-</md-content>
