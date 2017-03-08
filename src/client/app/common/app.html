@@ -24,23 +24,23 @@
         ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 6}">Plugins</a>
 </nav>
 
-<ng-switch on="$ctrl.tabSelectedIndex">
-    <trades ng-switch-when="0" class="ma2 pa2"></trades>
-    <orders ng-switch-when="1" class="ma2 pa2"></orders>
-    <positions ng-switch-when="2" class="ma2 pa2"></positions>
-    <exposure ng-switch-when="3" class="ma2 pa2"></exposure>
-    <activity ng-switch-when="4" class="ma2 pa2"></activity>
-    <news ng-switch-when="5" class="ma2 pa2"></news>
-    <plugins ng-switch-when="6" class="ma2 pa2"></plugins>
-</ng-switch>
-
 <div class="flex flex-wrap flex-row ma2 pa2">
     <div class="flex flex-wrap flex-column min-w-25">
-        <account></account>
-        <quotes></quotes>
+        <account class="mb4"></account>
+        <quotes class="mb4"></quotes>
         <toasts></toasts>
     </div>
     <div class="flex flex-wrap flex-column min-w-75">
+        <ng-switch on="$ctrl.tabSelectedIndex">
+            <trades ng-switch-when="0" class="ma2 pa2"></trades>
+            <orders ng-switch-when="1" class="ma2 pa2"></orders>
+            <positions ng-switch-when="2" class="ma2 pa2"></positions>
+            <exposure ng-switch-when="3" class="ma2 pa2"></exposure>
+            <activity ng-switch-when="4" class="ma2 pa2"></activity>
+            <news ng-switch-when="5" class="ma2 pa2"></news>
+            <plugins ng-switch-when="6" class="ma2 pa2"></plugins>
+        </ng-switch>
+
         <charts></charts>
     </div>
 </div>

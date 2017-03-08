@@ -1,62 +1,39 @@
-body {
-    font-family: "Arimo", serif;
-}
+.arimo { font-family: "Arimo", serif; }
 
-.logo {
-    height: 64px;
-}
+.logo { height: 64px; }
 
-div[ui-view="quotes"] md-content {
-    height: 250px;
-}
-
-span[flex], b[flex], a[flex] {
-    text-align: right;
-}
-
-.highlight-red {
-    color: red;
-}
-
-.highlight-green {
-    color: green;
-}
-
-span {
-    -webkit-animation: 0.5s linear all;
-       -moz-animation: 0.5s linear all;
-         -o-animation: 0.5s linear all;
-            animation: 0.5s linear all;
-}
+.highlight-red { color: red; }
+.highlight-green { color: green; }
 
 .min-w-5 { min-width: 5%; }
 .min-w-25 { min-width: 25%; }
 .min-w-75 { min-width: 75%; }
+.min-w-95 { min-width: 95%; }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  background-color: #FFF;
+    width: 32px;
+    height: 32px;
+    background-color: #000;
 
-  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
-  animation: sk-rotateplane 1.2s infinite ease-in-out;
+    -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+    animation: sk-rotateplane 1.2s infinite ease-in-out;
 }
 
 @-webkit-keyframes sk-rotateplane {
-  0% { -webkit-transform: perspective(120px) }
-  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+    0% { -webkit-transform: perspective(120px) }
+    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
 }
 
 @keyframes sk-rotateplane {
-  0% {
-    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-  } 50% {
-    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-  } 100% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-  }
+    0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+    } 50% {
+        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+    } 100% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    }
 }
