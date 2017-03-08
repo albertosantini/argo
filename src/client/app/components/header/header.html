@@ -1,39 +1,37 @@
-<md-toolbar layout="row" md-whiteframe="3">
+<nav class="flex flex-row bt bb tc mw9 center shadow-2">
 
-    <div layout="row" layout-sm="column" layout-align="space-around center" flex="95">
-        <a class="logo" href="http://argo.js.org/">
-            <img alt="Argo" src="img/logo.png">
-        </a>
+    <div class="flex flex-wrap flex-row justify-around items-center min-w-95">
+            <a class="logo" href="http://argo.js.org/">
+                <img alt="Argo" src="img/logo.png">
+            </a>
 
-        <span hide-sm>Argo Interface for OANDA Trading Platform</span>
+            <span class="b">Argo Interface for OANDA Trading Platform</span>
 
-        <div ng-show="$ctrl.token || $ctrl.environment">
-            Active environment: {{ $ctrl.environment }}
-        </div>
+            <div ng-show="$ctrl.token || $ctrl.environment">
+                Active environment: <span class="b">{{ $ctrl.environment }}</span>
+            </div>
 
-        <div ng-show="$ctrl.accountId">
-            Account Id: {{ $ctrl.accountId }}
-        </div>
+            <div ng-show="$ctrl.accountId">
+                Account Id: <span class="b">{{ $ctrl.accountId }}</span>
+            </div>
 
-        <div ng-hide="$ctrl.token">
-            Please, insert the access token.
-        </div>
+            <div ng-hide="$ctrl.token">
+                Please, insert the access token.
+            </div>
 
-        <div layout-sm="row">
-            <md-button ng-show="$ctrl.accountId" class="md-raised md-accent"
-                ng-click="$ctrl.openSettingsDialog($event)">
-                Settings
-            </md-button>
-
-            <md-button class="md-raised md-accent" ng-click="$ctrl.openTokenDialog($event)">
-                Token
-            </md-button>
-        </div>
+            <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+                ng-show="$ctrl.accountId"
+                href ng-click="$ctrl.openSettingsDialog($event)">
+              <span class="pl1">Settings</span>
+            </a>
+            <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+                href ng-click="$ctrl.openTokenDialog($event)">
+              <span class="pl1">Token</span>
+            </a>
     </div>
-
 
     <div class="flex flex-row items-center min-w-5">
         <span ng-class="{spinner: $ctrl.isLoadingView}"></span>
     </div>
 
-</md-toolbar>
+</nav>
