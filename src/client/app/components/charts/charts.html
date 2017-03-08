@@ -1,34 +1,24 @@
-<md-content ng-show="$ctrl.account.streamingInstruments">
+<div ng-show="$ctrl.account.streamingInstruments">
 
-    <div layout="row" layout-align="space-around start">
-        <md-input-container>
-            <md-select ng-model="$ctrl.selectedInstrument" aria-label="Instrument"
-                ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)">
-                <md-option ng-value="instrument"
-                    ng-selected="instrument == $ctrl.selectedInstrument || $index == 0"
-                    ng-repeat="instrument in $ctrl.account.streamingInstruments">
-                    {{ instrument }}
-                </md-option>
-            </md-select>
-        </md-input-container>
+    <div class="flex flex-wrap flex-row justify-center justify-around">
+        <select ng-model="$ctrl.selectedInstrument"
+            ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)"
+            ng-options="instrument for instrument in $ctrl.account.streamingInstruments">
+        </select>
 
-        <md-input-container>
-            <md-select ng-model="$ctrl.selectedGranularity" aria-label="Granularity"
-                ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)">
-                <md-option ng-value="granularity"
-                    ng-selected="granularity == $ctrl.selectedGranularity"
-                    ng-repeat="granularity in $ctrl.granularities">
-                    {{ granularity }}
-                </md-option>
-            </md-select>
-        </md-input-container>
+        <select ng-model="$ctrl.selectedGranularity"
+            ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)"
+            ng-options="granularity for granularity in $ctrl.granularities">
+        </select>
 
-        <md-button class="md-raised" ng-click="$ctrl.openOrderDialog($event, 'buy')">
-            Buy
-        </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.openOrderDialog($event, 'sell')">
-            Sell
-        </md-button>
+        <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+            href ng-click="$ctrl.openOrderDialog($event, 'buy')">
+          <span class="pl1">Buy</span>
+        </a>
+        <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+            href ng-click="$ctrl.openOrderDialog($event, 'buy')">
+          <span class="pl1">Sell</span>
+        </a>
     </div>
 
     <ohlc-chart
@@ -39,4 +29,4 @@
         trades="$ctrl.trades">
     </ohlc-chart>
 
-</md-content>
+</div>
