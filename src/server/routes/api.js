@@ -135,7 +135,7 @@ function getCandles(req, response) {
             let lines = "Date,Open,High,Low,Close,Volume\n";
 
             body = JSON.parse(body);
-            if (!err && !body.code) {
+            if (!err && !body.errorMessage && !body.code) {
                 const candles = body.candles;
 
                 candles.forEach(candle => {
@@ -155,7 +155,7 @@ function getCandles(req, response) {
 
             } else {
                 processApiError("getCandles",
-                    err, body.code, body.message, response);
+                    err || body.errorMessage, body.code, body.message, response);
             }
         });
     }
@@ -384,7 +384,7 @@ function processApi(apiName, err, body, response, property) {
         if (typeof body === "string") {
             body = JSON.parse(body);
         }
-        if (!err && !body.errorCode) {
+        if (!err && !body.errorMessage && !body.errorCode) {
             if (property) {
                 obj = body[property];
             } else {
@@ -393,7 +393,7 @@ function processApi(apiName, err, body, response, property) {
 
             response.json(obj);
         } else {
-            processApiError(apiName, err, body.errorCode,
+            processApiError(apiName, err || body.errorMessage, body.errorCode,
                 body.errorMessage, response);
         }
     } catch (e) {
