@@ -5,7 +5,8 @@ import { appConfig } from "./app.config";
 
 export const app = angular
     .module("common.app", [
-        "ngMaterial"
+        "ngMaterial",
+        "simple-modal"
     ])
     .component("app", appComponent)
     .config(appConfig)

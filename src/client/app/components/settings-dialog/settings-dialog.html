@@ -1,17 +1,20 @@
-<md-dialog-content>
-    <md-subheader class="md-sticky-no-effect">Settings Dialog</md-subheader>
+<main class="pa4 black-80 bg-white h5 overflow-y-auto">
+    <form class="measure center">
+        <fieldset id="login" class="ba b--transparent ph0 mh0">
+            <legend class="f4 fw6 ph0 mh0 center">Settings Dialog</legend>
+            <span class="flex flex-row flex-wrap" ng-repeat="(instrument, value) in $ctrl.instruments">
+                <input type="checkbox" ng-model="$ctrl.instruments[instrument]">{{ instrument }}
+            </span>
+        </fieldset>
+    </form>
 
-    <span ng-repeat="(instrument, value) in $ctrl.instruments">
-        <md-switch ng-model="$ctrl.instruments[instrument]" aria-label="instrument">{{ instrument }}</md-switch>
-    </span>
-</md-dialog-content>
+    <div class="flex flex-row items-center justify-around">
+        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+            type="submit" value="Cancel"
+            ng-click="$ctrl.answer()">
 
-<md-dialog-actions layout="row">
-    <span flex></span>
-    <md-button ng-click="$ctrl.cancel()">
-        Cancel
-    </md-button>
-    <md-button ng-click="$ctrl.answer($ctrl.instruments)" class="md-primary">
-        Ok
-    </md-button>
-</md-dialog-actions>
+        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+            type="submit" value="Ok"
+            ng-click="$ctrl.answer($ctrl.instruments)">
+    </div>
+</main>

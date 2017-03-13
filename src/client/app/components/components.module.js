@@ -1,7 +1,6 @@
 import angular from "angular";
 
 import { account } from "./account/account.module";
-import { accountsBottomsheet } from "./accounts-bottomsheet/accounts-bottomsheet.module";
 import { activity } from "./activity/activity.module";
 import { charts } from "./charts/charts.module";
 import { dualColor } from "./dual-color/dual-color.module";
@@ -26,7 +25,6 @@ import { trades } from "./trades/trades.module";
 export const components = angular
     .module("components", [
         account,
-        accountsBottomsheet,
         activity,
         charts,
         dualColor,

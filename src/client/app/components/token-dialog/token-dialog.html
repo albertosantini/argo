@@ -1,5 +1,5 @@
-<main class="pa4 black-80">
-    <form class="measure center">
+<main class="pa4 black-80 bg-white">
+    <form ng-hide="$ctrl.accounts.length" class="measure center">
         <fieldset id="login" class="ba b--transparent ph0 mh0">
             <legend class="f4 fw6 ph0 mh0 center">Token Dialog</legend>
 
@@ -13,7 +13,7 @@
             </div>
 
             <div class="mv3">
-                <input class="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                <input class="b pa2 ba bg-transparent w-100"
                     placeholder="Token" name="token" id="token" ng-model="$ctrl.token">
             </div>
         </fieldset>
@@ -21,11 +21,24 @@
         <div class="flex flex-row items-center justify-around">
             <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit" value="Reset"
-                ng-click="$ctrl.answer()">
+                ng-click="$ctrl.login()">
 
             <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit" value="Ok"
-                ng-click="$ctrl.answer({'environment': $ctrl.environment, 'token': $ctrl.token})">
+                ng-click="$ctrl.login({'environment': $ctrl.environment, 'token': $ctrl.token})">
+        </div>
+    </form>
+
+    <form ng-show="$ctrl.accounts.length" class="measure center">
+        <fieldset id="login" class="ba b--transparent ph0 mh0">
+            <legend class="f4 fw6 ph0 mh0 center">Accounts List</legend>
+        </fieldset>
+
+        <div class="flex flex-row items-center justify-around">
+            <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                type="submit" value="{{ account.id }}"
+                ng-repeat="account in $ctrl.accounts"
+                ng-click="$ctrl.selectAccount($index)">
         </div>
     </form>
 </main>
