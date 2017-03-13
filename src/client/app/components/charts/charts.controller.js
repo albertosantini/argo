@@ -1,10 +1,11 @@
 import angular from "angular";
 
 export class ChartsController {
-    constructor($rootScope, $mdDialog, AccountsService,
+    constructor($rootScope, $mdDialog, ToastsService, AccountsService,
             ChartsService, QuotesService, TradesService) {
         this.$rootScope = $rootScope;
         this.$mdDialog = $mdDialog;
+        this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -55,6 +56,8 @@ export class ChartsController {
             granularity
         }).then(candles => {
             this.data = candles;
+        }).catch(err => {
+            this.ToastsService.addToast(err);
         });
     }
 
@@ -76,5 +79,7 @@ export class ChartsController {
         });
     }
 }
-ChartsController.$inject = ["$rootScope", "$mdDialog", "AccountsService",
-    "ChartsService", "QuotesService", "TradesService"];
+ChartsController.$inject = [
+    "$rootScope", "$mdDialog", "ToastsService", "AccountsService",
+    "ChartsService", "QuotesService", "TradesService"
+];

@@ -293,7 +293,7 @@ export function ohlcChartDirective() {
 
             data = d3.csvParse(csv).map(
                 d => ({
-                    date: new Date(d.Date),
+                    date: new Date(+d.Date),
                     open: +d.Open,
                     high: +d.High,
                     low: +d.Low,
