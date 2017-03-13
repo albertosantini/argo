@@ -1,7 +1,7 @@
-(function (exports,angular,d3,techan) {
+(function (exports,angular$1,d3,techan) {
 'use strict';
 
-angular = 'default' in angular ? angular['default'] : angular;
+angular$1 = 'default' in angular$1 ? angular$1['default'] : angular$1;
 techan = 'default' in techan ? techan['default'] : techan;
 
 const rootComponent = {
@@ -59,15 +59,16 @@ function appConfig($httpProvider, $locationProvider) {
 }
 appConfig.$inject = ["$httpProvider", "$locationProvider"];
 
-const app = angular
+const app = angular$1
     .module("common.app", [
-        "ngMaterial"
+        "ngMaterial",
+        "simple-modal"
     ])
     .component("app", appComponent)
     .config(appConfig)
     .name;
 
-const common = angular
+const common = angular$1
     .module("common", [
         app
     ])
@@ -129,7 +130,7 @@ class AccountsService {
             }
 
             if (!accounts.length) {
-                angular.merge(this.account, response.data.account);
+                angular$1.merge(this.account, response.data.account);
 
                 this.account.timestamp = new Date();
 
@@ -144,7 +145,7 @@ class AccountsService {
                     }).then(instruments => {
                         this.account.instruments = instruments.data;
                         this.account.pips = {};
-                        angular.forEach(this.account.instruments, i => {
+                        angular$1.forEach(this.account.instruments, i => {
                             this.account.pips[i.name] =
                                 Math.pow(10, i.pipLocation);
                         });
@@ -165,36 +166,10 @@ class AccountsService {
 }
 AccountsService.$inject = ["$http", "SessionService"];
 
-const account = angular
+const account = angular$1
     .module("components.account", [])
     .component("account", accountComponent)
     .service("AccountsService", AccountsService)
-    .name;
-
-class AccountsBottomsheetController {
-    constructor($mdBottomSheet) {
-        this.$mdBottomSheet = $mdBottomSheet;
-    }
-
-    onAccountClick($index) {
-        const account = this.accounts[$index];
-
-        this.$mdBottomSheet.hide(account);
-    }
-}
-AccountsBottomsheetController.$inject = ["$mdBottomSheet"];
-
-const accountsBottomsheetComponent = {
-    templateUrl: "app/components/accounts-bottomsheet/accounts-bottomsheet.html",
-    controller: AccountsBottomsheetController,
-    bindings: {
-        accounts: "<"
-    }
-};
-
-const accountsBottomsheet = angular
-    .module("components.accounts-bottomsheet", [])
-    .component("accountsBottomsheet", accountsBottomsheetComponent)
     .name;
 
 class ActivityController {
@@ -257,17 +232,18 @@ class ActivityService {
 }
 ActivityService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const activity = angular
+const activity = angular$1
     .module("components.activity", [])
     .component("activity", activityComponent)
     .service("ActivityService", ActivityService)
     .name;
 
 class ChartsController {
-    constructor($rootScope, $mdDialog, AccountsService,
+    constructor($rootScope, $mdDialog, ToastsService, AccountsService,
             ChartsService, QuotesService, TradesService) {
         this.$rootScope = $rootScope;
         this.$mdDialog = $mdDialog;
+        this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -318,12 +294,14 @@ class ChartsController {
             granularity
         }).then(candles => {
             this.data = candles;
+        }).catch(err => {
+            this.ToastsService.addToast(err);
         });
     }
 
 
     openOrderDialog(event, side) {
-        const scope = angular.extend(this.$rootScope.$new(true), {
+        const scope = angular$1.extend(this.$rootScope.$new(true), {
             params: {
                 side,
                 selectedInstrument: this.selectedInstrument,
@@ -339,8 +317,10 @@ class ChartsController {
         });
     }
 }
-ChartsController.$inject = ["$rootScope", "$mdDialog", "AccountsService",
-    "ChartsService", "QuotesService", "TradesService"];
+ChartsController.$inject = [
+    "$rootScope", "$mdDialog", "ToastsService", "AccountsService",
+    "ChartsService", "QuotesService", "TradesService"
+];
 
 const chartsComponent = {
     templateUrl: "app/components/charts/charts.html",
@@ -358,8 +338,9 @@ class ChartsService {
             const instrument = opt && opt.instrument || "EUR_USD",
                 granularity = opt && opt.granularity || "M5",
                 count = opt && opt.count || 251,
-                alignmentTimezone = opt && opt.alignmentTimezone ||
-                    "America/New_York",
+
+                // alignmentTimezone = opt && opt.alignmentTimezone ||
+                //     "America/New_York",
                 dailyAlignment = opt && opt.dailyAlignment || "0";
 
             return this.$http.post("/api/candles", {
@@ -368,7 +349,8 @@ class ChartsService {
                 instrument,
                 granularity,
                 count,
-                alignmentTimezone,
+
+                // alignmentTimezone,
                 dailyAlignment
             }).then(candles => candles.data)
             .catch(err => err.data);
@@ -377,7 +359,7 @@ class ChartsService {
 }
 ChartsService.$inject = ["$http", "SessionService"];
 
-const charts = angular
+const charts = angular$1
     .module("components.charts", [])
     .component("charts", chartsComponent)
     .service("ChartsService", ChartsService)
@@ -408,7 +390,7 @@ function dualColorDirective() {
 }
 dualColorDirective.$inject = [];
 
-const dualColor = angular
+const dualColor = angular$1
     .module("components.dual-color", [])
     .directive("dualColor", dualColorDirective)
     .name;
@@ -452,19 +434,18 @@ const exposureComponent = {
     controller: ExposureController
 };
 
-const exposure = angular
+const exposure = angular$1
     .module("components.exposure", [])
     .component("exposure", exposureComponent)
     .name;
 
 class HeaderController {
-    constructor($window, $rootScope, $mdDialog, $mdBottomSheet,
-            ToastsService, AccountsService, SessionService,
+    constructor($window, $rootScope, modalService, ToastsService,
+            AccountsService, SessionService,
             QuotesService, StreamingService) {
         this.$window = $window;
         this.$rootScope = $rootScope;
-        this.$mdDialog = $mdDialog;
-        this.$mdBottomSheet = $mdBottomSheet;
+        this.modalService = modalService;
         this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.SessionService = SessionService;
@@ -473,138 +454,73 @@ class HeaderController {
     }
 
     $onInit() {
-        const instrsStorage = this.$window.localStorage.getItem("argo.instruments");
-
-        this.instrs = angular.fromJson(instrsStorage) || {
-            EUR_USD: true,
-            USD_JPY: true,
-            GBP_USD: true,
-            EUR_GBP: true,
-            USD_CHF: true,
-            EUR_JPY: true,
-            EUR_CHF: true,
-            USD_CAD: true,
-            AUD_USD: true,
-            GBP_JPY: true
-        };
-
-        this.isLoadingViewWatcher = this.$rootScope.$watch("isLoadingView", () => {
+        this.$rootScope.$watch("isLoadingView", () => {
             this.isLoadingView = this.$rootScope.isLoadingView;
         });
     }
 
-    openTokenDialog(event) {
-        this.$mdDialog.show({
-            template: "<token-dialog aria-label='Token Dialog'></token-dialog>",
-            targetEvent: event
-        }).then(tokenInfo => {
-            if (tokenInfo) {
-                this.environment = tokenInfo.environment;
-                this.token = tokenInfo.token;
-            } else {
-                this.environment = "";
-                this.token = "";
-                this.accountId = "";
-            }
-
-            this.AccountsService.getAccounts({
-                environment: this.environment,
-                token: this.token
-            }).then(accounts => {
-                const scope = angular.extend(this.$rootScope.$new(true), {
-                    accounts
-                });
-
-                this.$mdBottomSheet.show({
-                    template: "<accounts-bottomsheet accounts='accounts'></accounts-bottomsheet>",
-                    scope,
-                    preserveScope: true,
-                    targetEvent: event
-                }).then(accountSelected => {
-                    this.accountId = accountSelected.id;
-
-                    this.SessionService.setCredentials({
-                        environment: this.environment,
-                        token: this.token,
-                        accountId: this.accountId
-                    });
-
-                    this.AccountsService.getAccounts({
-                        environment: this.environment,
-                        token: this.token,
-                        accountId: this.accountId
-                    }).then(() => {
-                        const instruments = this.AccountsService
-                            .setStreamingInstruments(this.instrs);
-
-                        this.StreamingService.startStream({
-                            environment: this.environment,
-                            accessToken: this.token,
-                            accountId: this.accountId,
-                            instruments
-                        });
-                    });
-                });
-            }, err => {
-                this.ToastsService.addToast(err);
-            });
-        })
-        .catch(err => {
-            if (err) {
-                this.ToastsService.addToast(err);
+    openTokenDialog() {
+        this.modalService.open({
+            template: `<token-dialog
+                close-modal="closeModal(tokenInfo)"></token-dialog>`,
+            onClose: tokenInfo => {
+                if (tokenInfo) {
+                    this.token = tokenInfo.token;
+                    this.environment = tokenInfo.environment;
+                    this.accountId = tokenInfo.accountId;
+                    this.instrs = tokenInfo.instrs;
+                }
             }
         });
     }
 
-    openSettingsDialog(event) {
+    openSettingsDialog() {
         this.SessionService.isLogged().then(credentials => {
             const allInstrs = this.AccountsService.getAccount().instruments;
 
-            angular.forEach(allInstrs, instrument => {
+            angular$1.forEach(allInstrs, instrument => {
                 if (!this.instrs.hasOwnProperty(instrument.name)) {
                     this.instrs[instrument.name] = false;
                 }
             });
 
-            const scope = angular.extend(this.$rootScope.$new(true), {
-                instruments: this.instrs
-            });
+            this.modalService.open({
+                template: `<settings-dialog
+                    close-modal="closeModal(settingsInfo)"
+                    instruments="instruments"></settings-dialog>`,
+                scope: {
+                    instruments: this.instrs
+                },
+                onClose: settingsInfo => {
+                    let instruments;
 
-            this.$mdDialog.show({
-                template: "<settings-dialog aria-label='Settings Dialog' instruments='instruments'></settings-dialog>",
-                scope,
-                preserveScope: true,
-                targetEvent: event
-            }).then(settingsInfo => {
-                let instruments;
+                    if (settingsInfo) {
+                        this.$window.localStorage.setItem("argo.instruments",
+                            angular$1.toJson(settingsInfo));
+                        instruments = this.AccountsService
+                            .setStreamingInstruments(settingsInfo);
 
-                if (settingsInfo) {
-                    this.$window.localStorage.setItem("argo.instruments",
-                        angular.toJson(settingsInfo));
-                    instruments = this.AccountsService
-                        .setStreamingInstruments(settingsInfo);
+                        this.QuotesService.reset();
 
-                    this.QuotesService.reset();
-
-                    this.StreamingService.startStream({
-                        environment: credentials.environment,
-                        accessToken: credentials.token,
-                        accountId: credentials.accountId,
-                        instruments
-                    });
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    this.ToastsService.addToast(err);
+                        this.StreamingService.startStream({
+                            environment: credentials.environment,
+                            accessToken: credentials.token,
+                            accountId: credentials.accountId,
+                            instruments
+                        });
+                    }
                 }
             });
+        }).catch(err => {
+            if (err) {
+                this.ToastsService.addToast(err);
+            }
         });
     }
 }
 HeaderController.$inject = [
-    "$window", "$rootScope", "$mdDialog", "$mdBottomSheet",
-    "ToastsService", "AccountsService", "SessionService",
+    "$window", "$rootScope", "modalService", "ToastsService",
+    "AccountsService", "SessionService",
     "QuotesService", "StreamingService"
 ];
 
@@ -613,7 +529,7 @@ const headerComponent = {
     controller: HeaderController
 };
 
-const header = angular
+const header = angular$1
     .module("components.header", [])
     .component("header", headerComponent)
     .name;
@@ -645,7 +561,7 @@ function highlighterDirective($timeout) {
 }
 highlighterDirective.$inject = ["$timeout"];
 
-const highlighter = angular
+const highlighter = angular$1
     .module("components.highlighter", [])
     .directive("highlighter", highlighterDirective)
     .name;
@@ -686,7 +602,7 @@ class NewsService {
 }
 NewsService.$inject = ["$http", "SessionService"];
 
-const news = angular
+const news = angular$1
     .module("components.news", [])
     .component("news", newsComponent)
     .service("NewsService", NewsService)
@@ -984,7 +900,7 @@ function ohlcChartDirective() {
 
             data = d3.csvParse(csv).map(
                 d => ({
-                    date: new Date(d.Date),
+                    date: new Date(+d.Date),
                     open: +d.Open,
                     high: +d.High,
                     low: +d.Low,
@@ -1046,7 +962,7 @@ function ohlcChartDirective() {
 }
 ohlcChartDirective.$inject = [];
 
-const ohlcChart = angular
+const ohlcChart = angular$1
     .module("components.ohlc-chart", [])
     .directive("ohlcChart", ohlcChartDirective)
     .name;
@@ -1283,7 +1199,7 @@ const orderDialogComponent = {
     }
 };
 
-const orderDialog = angular
+const orderDialog = angular$1
     .module("components.order-dialog", [])
     .component("orderDialog", orderDialogComponent)
     .name;
@@ -1347,7 +1263,7 @@ class OrdersService {
                 accountId: credentials.accountId
             }).then(res => {
                 this.orders.length = 0;
-                angular.extend(this.orders, res.data);
+                angular$1.extend(this.orders, res.data);
             });
         });
     }
@@ -1410,7 +1326,7 @@ class OrdersService {
 }
 OrdersService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const orders = angular
+const orders = angular$1
     .module("components.orders", [])
     .component("orders", ordersComponent)
     .service("OrdersService", OrdersService)
@@ -1473,7 +1389,7 @@ class PluginsService {
                         delete this.plugins[name];
                     }
                 }
-                angular.extend(this.plugins, res.data);
+                angular$1.extend(this.plugins, res.data);
                 this.pluginsInfo.count = Object.keys(this.plugins).length;
 
                 Object.keys(this.plugins).forEach(key => {
@@ -1505,7 +1421,7 @@ class PluginsService {
 }
 PluginsService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const plugins = angular
+const plugins = angular$1
     .module("components.plugins", [])
     .component("plugins", pluginsComponent)
     .service("PluginsService", PluginsService)
@@ -1569,7 +1485,7 @@ class PositionsService {
 }
 PositionsService.$inject = ["$http", "SessionService"];
 
-const positions = angular
+const positions = angular$1
     .module("components.positions", [])
     .component("positions", positionsComponent)
     .service("PositionsService", PositionsService)
@@ -1616,7 +1532,7 @@ class QuotesService {
         };
 
 
-        if (!angular.equals(streamingInstruments, Object.keys(this.quotes))) {
+        if (!angular$1.equals(streamingInstruments, Object.keys(this.quotes))) {
             streamingInstruments.forEach(instr => {
                 let temp;
 
@@ -1641,7 +1557,7 @@ class QuotesService {
 }
 QuotesService.$inject = ["AccountsService"];
 
-const quotes = angular
+const quotes = angular$1
     .module("components.quotes", [])
     .component("quotes", quotesComponent)
     .service("QuotesService", QuotesService)
@@ -1671,39 +1587,28 @@ class SessionService {
 }
 SessionService.$inject = ["$q"];
 
-const session = angular
+const session = angular$1
     .module("components.session", [])
     .service("SessionService", SessionService)
     .name;
 
 class SettingsDialogController {
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    hide() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
-    answer(settings) {
-        this.$mdDialog.hide(settings);
+    answer(settingsInfo) {
+        this.closeModal({ settingsInfo });
     }
 }
-SettingsDialogController.$inject = ["$mdDialog"];
+SettingsDialogController.$inject = [];
 
 const settingsDialogComponent = {
     templateUrl: "app/components/settings-dialog/settings-dialog.html",
     controller: SettingsDialogController,
     bindings: {
-        instruments: "<"
+        instruments: "<",
+        closeModal: "&"
     }
 };
 
-const settingsDialog = angular
+const settingsDialog = angular$1
     .module("components.settings-dialog", [])
     .component("settingsDialog", settingsDialogComponent)
     .name;
@@ -1776,7 +1681,7 @@ function slChartDirective() {
 }
 slChartDirective.$inject = [];
 
-const slChart = angular
+const slChart = angular$1
     .module("components.sl-chart", [])
     .directive("slChart", slChartDirective)
     .name;
@@ -1822,7 +1727,7 @@ class StreamingService {
 
             this.$timeout(() => {
                 try {
-                    data = angular.fromJson(event.data);
+                    data = angular$1.fromJson(event.data);
 
                     isTick = data.closeoutAsk && data.closeoutBid;
                     isTransaction = data.accountID;
@@ -1868,7 +1773,7 @@ StreamingService.$inject = [
     "OrdersService", "AccountsService", "PluginsService"
 ];
 
-const streaming = angular
+const streaming = angular$1
     .module("components.streaming", [])
     .service("StreamingService", StreamingService)
     .name;
@@ -1921,41 +1826,106 @@ class ToastsService {
 }
 ToastsService.$inject = ["$timeout"];
 
-const toasts = angular
+const toasts = angular$1
     .module("components.toasts", [])
     .component("toasts", toastsComponent)
     .service("ToastsService", ToastsService)
     .name;
 
 class TokenDialogController {
-    constructor($mdDialog) {
-        this.$mdDialog = $mdDialog;
+    constructor($window, ToastsService, SessionService, AccountsService, StreamingService) {
+        this.$window = $window;
+        this.ToastsService = ToastsService;
+        this.SessionService = SessionService;
+        this.AccountsService = AccountsService;
+        this.StreamingService = StreamingService;
     }
 
     $onInit() {
+        const instrsStorage = this.$window.localStorage.getItem("argo.instruments");
+
+        this.instrs = angular.fromJson(instrsStorage) || {
+            EUR_USD: true,
+            USD_JPY: true,
+            GBP_USD: true,
+            EUR_GBP: true,
+            USD_CHF: true,
+            EUR_JPY: true,
+            EUR_CHF: true,
+            USD_CAD: true,
+            AUD_USD: true,
+            GBP_JPY: true
+        };
+
         this.environment = "practice";
+        this.accounts = [];
     }
 
-    hide() {
-        this.$mdDialog.hide();
+
+    login(tokenInfo) {
+        if (tokenInfo) {
+            this.environment = tokenInfo.environment;
+            this.token = tokenInfo.token;
+        } else {
+            this.environment = "";
+            this.token = "";
+            this.accountId = "";
+        }
+
+        this.AccountsService.getAccounts({
+            environment: this.environment,
+            token: this.token
+        }).then(accounts => {
+            angular.extend(this.accounts, accounts);
+        }, err => {
+            this.ToastsService.addToast(err);
+        });
     }
 
-    cancel() {
-        this.$mdDialog.cancel();
+    selectAccount(accountSelected) {
+        this.accountId = this.accounts[accountSelected].id;
+
+        const tokenInfo = {
+            environment: this.environment,
+            token: this.token,
+            accountId: this.accountId,
+            instrs: this.instrs
+        };
+
+        this.SessionService.setCredentials(tokenInfo);
+
+        this.AccountsService.getAccounts(tokenInfo).then(() => {
+            const instruments = this.AccountsService
+                .setStreamingInstruments(this.instrs);
+
+            this.StreamingService.startStream({
+                environment: this.environment,
+                accessToken: this.token,
+                accountId: this.accountId,
+                instruments
+            });
+
+            this.closeModal({ tokenInfo });
+        }).catch(err => {
+            this.ToastsService.addToast(err);
+        });
     }
 
-    answer(token) {
-        this.$mdDialog.hide(token);
-    }
 }
-TokenDialogController.$inject = ["$mdDialog"];
+TokenDialogController.$inject = [
+    "$window", "ToastsService", "SessionService",
+    "AccountsService", "StreamingService"
+];
 
 const tokenDialogComponent = {
     templateUrl: "app/components/token-dialog/token-dialog.html",
-    controller: TokenDialogController
+    controller: TokenDialogController,
+    bindings: {
+        closeModal: "&"
+    }
 };
 
-const tokenDialog = angular
+const tokenDialog = angular$1
     .module("components.token-dialog", [])
     .component("tokenDialog", tokenDialogComponent)
     .name;
@@ -2028,7 +1998,7 @@ class TradesService {
                 accountId: credentials.accountId
             }).then(res => {
                 this.trades.length = 0;
-                angular.extend(this.trades, res.data);
+                angular$1.extend(this.trades, res.data);
                 this.trades.forEach(trade => {
                     trade.side = trade.currentUnits > 0 ? "buy" : "sell";
                 });
@@ -2077,16 +2047,15 @@ class TradesService {
 }
 TradesService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const trades = angular
+const trades = angular$1
     .module("components.trades", [])
     .component("trades", tradesComponent)
     .service("TradesService", TradesService)
     .name;
 
-const components = angular
+const components = angular$1
     .module("components", [
         account,
-        accountsBottomsheet,
         activity,
         charts,
         dualColor,
@@ -2110,7 +2079,7 @@ const components = angular
     ])
     .name;
 
-const root = angular
+const root = angular$1
     .module("root", [
         common,
         components
