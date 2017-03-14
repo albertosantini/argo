@@ -338,9 +338,6 @@ class ChartsService {
             const instrument = opt && opt.instrument || "EUR_USD",
                 granularity = opt && opt.granularity || "M5",
                 count = opt && opt.count || 251,
-
-                // alignmentTimezone = opt && opt.alignmentTimezone ||
-                //     "America/New_York",
                 dailyAlignment = opt && opt.dailyAlignment || "0";
 
             return this.$http.post("/api/candles", {
@@ -349,8 +346,6 @@ class ChartsService {
                 instrument,
                 granularity,
                 count,
-
-                // alignmentTimezone,
                 dailyAlignment
             }).then(candles => candles.data)
             .catch(err => err.data);
@@ -900,7 +895,7 @@ function ohlcChartDirective() {
 
             data = d3.csvParse(csv).map(
                 d => ({
-                    date: new Date(+d.Date),
+                    date: new Date(+d.Date * 1000),
                     open: +d.Open,
                     high: +d.High,
                     low: +d.Low,

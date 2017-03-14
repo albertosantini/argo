@@ -9,9 +9,6 @@ export class ChartsService {
             const instrument = opt && opt.instrument || "EUR_USD",
                 granularity = opt && opt.granularity || "M5",
                 count = opt && opt.count || 251,
-
-                // alignmentTimezone = opt && opt.alignmentTimezone ||
-                //     "America/New_York",
                 dailyAlignment = opt && opt.dailyAlignment || "0";
 
             return this.$http.post("/api/candles", {
@@ -20,8 +17,6 @@ export class ChartsService {
                 instrument,
                 granularity,
                 count,
-
-                // alignmentTimezone,
                 dailyAlignment
             }).then(candles => candles.data)
             .catch(err => err.data);
