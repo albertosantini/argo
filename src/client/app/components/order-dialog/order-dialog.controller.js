@@ -184,9 +184,8 @@ export class OrderDialogController {
                     side,
                     message;
 
-                if (transaction.code && transaction.message) {
-                    message = "ERROR " +
-                        `${transaction.code} ${transaction.message}`;
+                if (transaction.message) {
+                    message = `ERROR ${transaction.message}`;
 
                     this.ToastsService.addToast(message);
                 } else if (transaction.errorMessage) {
