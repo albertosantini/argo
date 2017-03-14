@@ -21,11 +21,15 @@ export class OrdersController {
 
         this.$mdDialog.show(confirm).then(() => {
             this.OrdersService.closeOrder(id).then(order => {
-                const message = "Closed " +
-                    `#${order.orderCancelTransaction.orderID}`;
+                const message = `Closed #${order.orderCancelTransaction.orderID}`;
+
+                this.ToastsService.addToast(message);
+            }).catch(err => {
+                const message = `ERROR ${err.code} ${err.message}`;
 
                 this.ToastsService.addToast(message);
             });
+
         });
     }
 }
