@@ -1148,9 +1148,8 @@ class OrderDialogController {
                     side,
                     message;
 
-                if (transaction.code && transaction.message) {
-                    message = "ERROR " +
-                        `${transaction.code} ${transaction.message}`;
+                if (transaction.message) {
+                    message = `ERROR ${transaction.message}`;
 
                     this.ToastsService.addToast(message);
                 } else if (transaction.errorMessage) {
@@ -1222,11 +1221,15 @@ class OrdersController {
 
         this.$mdDialog.show(confirm).then(() => {
             this.OrdersService.closeOrder(id).then(order => {
-                const message = "Closed " +
-                    `#${order.orderCancelTransaction.orderID}`;
+                const message = `Closed #${order.orderCancelTransaction.orderID}`;
+
+                this.ToastsService.addToast(message);
+            }).catch(err => {
+                const message = `ERROR ${err.code} ${err.message}`;
 
                 this.ToastsService.addToast(message);
             });
+
         });
     }
 }
