@@ -19,7 +19,7 @@
             <tr ng-repeat="trade in $ctrl.trades">
                 <td class="pv1 pr1 bb b--black-20">{{ trade.side }}</td>
                 <td class="pv1 pr1 bb b--black-20">
-                    <a href ng-click="$ctrl.closeTrade($event, trade.id)">{{ trade.id }}</a>
+                    <a href ng-click="$ctrl.closeTrade(trade.id)">{{ trade.id }}</a>
                 </td>
                 <td class="pv1 pr1 bb b--black-20">{{ trade.instrument }}</td>
                 <td class="pv1 pr1 bb b--black-20">{{ trade.currentUnits | number }}</td>

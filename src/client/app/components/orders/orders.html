@@ -20,7 +20,7 @@
             <tr ng-repeat="order in $ctrl.orders">
                 <td class="pv1 pr1 bb b--black-20">{{ order.side }}</td>
                 <td class="pv1 pr1 bb b--black-20">
-                    <a href ng-click="$ctrl.closeOrder($event, order.id)">{{ order.id }}</a>
+                    <a href ng-click="$ctrl.closeOrder(order.id)">{{ order.id }}</a>
                 </td>
                 <td class="pv1 pr1 bb b--black-20">{{ order.instrument }}</td>
                 <td class="pv1 pr1 bb b--black-20">{{ order.units | number }}</td>

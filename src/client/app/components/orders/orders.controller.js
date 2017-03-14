@@ -1,6 +1,6 @@
 export class OrdersController {
-    constructor($mdDialog, ToastsService, OrdersService) {
-        this.$mdDialog = $mdDialog;
+    constructor(modalService, ToastsService, OrdersService) {
+        this.modalService = modalService;
         this.ToastsService = ToastsService;
         this.OrdersService = OrdersService;
     }
@@ -11,26 +11,50 @@ export class OrdersController {
         this.OrdersService.refresh();
     }
 
-    closeOrder(event, id) {
-        const confirm = this.$mdDialog.confirm()
-            .textContent("Are you sure to close the order?")
-            .ariaLabel("Order closing confirmation")
-            .ok("Ok")
-            .cancel("Cancel")
-            .targetEvent(event);
+    closeOrder(id) {
+        this.modalService.open({
+            template: `
+                <main class="pa4 black-80 bg-white">
+                    <form class="measure center">
+                        <fieldset id="login" class="ba b--transparent ph0 mh0">
+                            <legend class="f4 fw6 ph0 mh0 center">Are you sure to close the order?</legend>
+                        </fieldset>
+                    </form>
+                    <div class="flex flex-row items-center justify-around">
+                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="submit" value="Cancel"
+                            ng-click="closeModal()">
 
-        this.$mdDialog.show(confirm).then(() => {
-            this.OrdersService.closeOrder(id).then(order => {
-                const message = `Closed #${order.orderCancelTransaction.orderID}`;
+                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="submit" value="Ok"
+                            ng-click="closeModal(id)">
+                    </div>
+                    </form>
+                </main>
+            `,
+            scope: {
+                id
+            },
+            onClose: orderId => {
+                if (!orderId) {
+                    return;
+                }
 
-                this.ToastsService.addToast(message);
-            }).catch(err => {
-                const message = `ERROR ${err.code} ${err.message}`;
+                this.OrdersService.closeOrder(orderId).then(order => {
+                    let message = `Closed #${order.orderCancelTransaction.orderID}`;
 
-                this.ToastsService.addToast(message);
-            });
+                    if (order.errorMessage || order.message) {
+                        message = `ERROR ${order.errorMessage || order.message}`;
+                    }
 
+                    this.ToastsService.addToast(message);
+                }).catch(err => {
+                    const message = `ERROR ${err.code} ${err.message}`;
+
+                    this.ToastsService.addToast(message);
+                });
+            }
         });
     }
 }
-OrdersController.$inject = ["$mdDialog", "ToastsService", "OrdersService"];
+OrdersController.$inject = ["modalService", "ToastsService", "OrdersService"];

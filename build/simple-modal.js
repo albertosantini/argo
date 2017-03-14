@@ -35,7 +35,7 @@
             let modalTemplate = prepareContentsTemplate(template);
             let modalScope = prepareScope(scope, onClose, backdropClosing);
             let modalDDO = new ModalDDO(modalScope, controller, modalTemplate);
-            const suffix = registerModalDirective(modalDDO);
+            const suffix = registerModalDirective(modalDDO, scope);
             let modalEl = buildModal(suffix);
             showModal(modalEl);
             return {close: modalEl.scope().closeModal};
@@ -98,8 +98,8 @@
                 </div>`;
         }
 
-        function registerModalDirective(modalDDO) {
-            const suffix = hash(modalDDO.template);
+        function registerModalDirective(modalDDO, scope) {
+            const suffix = hash(modalDDO.template + JSON.stringify(scope));
 
             cachedCompileProvider.directive(`nsmModalWrapper${suffix}`, function() {
                 return modalDDO;
