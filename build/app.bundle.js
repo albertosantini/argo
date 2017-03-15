@@ -61,7 +61,6 @@ appConfig.$inject = ["$httpProvider", "$locationProvider"];
 
 const app = angular$1
     .module("common.app", [
-        "ngMaterial",
         "simple-modal"
     ])
     .component("app", appComponent)
