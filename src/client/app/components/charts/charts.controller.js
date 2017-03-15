@@ -1,11 +1,8 @@
-import angular from "angular";
-
 export class ChartsController {
-    constructor($rootScope, $mdDialog, ToastsService, AccountsService,
+    constructor(ToastsService, modalService, AccountsService,
             ChartsService, QuotesService, TradesService) {
-        this.$rootScope = $rootScope;
-        this.$mdDialog = $mdDialog;
         this.ToastsService = ToastsService;
+        this.modalService = modalService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -62,24 +59,20 @@ export class ChartsController {
     }
 
 
-    openOrderDialog(event, side) {
-        const scope = angular.extend(this.$rootScope.$new(true), {
-            params: {
-                side,
-                selectedInstrument: this.selectedInstrument,
-                instruments: this.account.streamingInstruments
+    openOrderDialog(side) {
+        this.modalService.open({
+            template: "<order-dialog close-modal='closeModal()' params='params'></order-dialog>",
+            scope: {
+                params: {
+                    side,
+                    selectedInstrument: this.selectedInstrument,
+                    instruments: this.account.streamingInstruments
+                }
             }
-        });
-
-        this.$mdDialog.show({
-            template: "<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",
-            scope,
-            preserveScope: true,
-            targetEvent: event
         });
     }
 }
 ChartsController.$inject = [
-    "$rootScope", "$mdDialog", "ToastsService", "AccountsService",
+    "ToastsService", "modalService", "AccountsService",
     "ChartsService", "QuotesService", "TradesService"
 ];

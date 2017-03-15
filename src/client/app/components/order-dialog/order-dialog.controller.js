@@ -1,7 +1,5 @@
 export class OrderDialogController {
-    constructor($mdDialog, ToastsService,
-            QuotesService, OrdersService, AccountsService) {
-        this.$mdDialog = $mdDialog;
+    constructor(ToastsService, QuotesService, OrdersService, AccountsService) {
         this.ToastsService = ToastsService;
         this.QuotesService = QuotesService;
         this.OrdersService = OrdersService;
@@ -86,20 +84,10 @@ export class OrderDialogController {
         }
     }
 
-    hide() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
     answer(action) {
         const order = {},
             isBuy = this.side === "buy",
             isMeasurePips = this.measure === "pips";
-
-        this.$mdDialog.hide(action);
 
         this.step = parseFloat(this.pips[this.selectedInstrument]);
 
@@ -177,6 +165,8 @@ export class OrderDialogController {
                 (this.step * this.trailingStop).toString();
         }
 
+        this.closeModal();
+
         if (action === "submit") {
             this.OrdersService.putOrder(order).then(transaction => {
                 let opened,
@@ -216,7 +206,4 @@ export class OrderDialogController {
         }
     }
 }
-OrderDialogController.$inject = [
-    "$mdDialog", "ToastsService",
-    "QuotesService", "OrdersService", "AccountsService"
-];
+OrderDialogController.$inject = ["ToastsService", "QuotesService", "OrdersService", "AccountsService"];

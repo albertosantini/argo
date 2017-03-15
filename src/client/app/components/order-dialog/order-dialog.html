@@ -1,105 +1,114 @@
-<md-dialog-content layout-padding>
-    <md-subheader class="md-sticky-no-effect">Order Dialog</md-subheader>
+<main class="pa4 black-80 bg-white">
+    <form class="measure center">
+        <fieldset id="order" class="ba b--transparent ph0 mh0">
+            <legend class="f4 fw6 ph0 mh0 center">Order Dialog</legend>
 
-    <div layout="row">
-        <div flex="45" layout="column" layout-margin>
+            <div class="flex flex-row items-center mb2 justify-between">
+                <div class="mb2 min-w-45">
 
-            <md-radio-group ng-model="$ctrl.type" layout layout-align="space-between center">
-                  <md-radio-button value="MARKET">Market Order</md-radio-button>
-                  <md-radio-button value="LIMIT">Limit Order</md-radio-button>
-            </md-radio-group>
+                    <div class="mb2">
+                        <label for="marketOrder" class="lh-copy">Market Order</label>
+                        <input class="mr2" type="radio" name="marketOrder" ng-model="$ctrl.type" value="MARKET">
+                    </div>
 
-            <md-radio-group ng-model="$ctrl.side" layout layout-align="space-between center">
-                  <md-radio-button value="buy">Buy</md-radio-button>
-                  <md-radio-button value="sell">Sell</md-radio-button>
-            </md-radio-group>
+                    <div class="mb2">
+                        <label for="limitOrder" class="lh-copy">Limit Order</label>
+                        <input class="mr2" type="radio" name="marketOrder" ng-model="$ctrl.type" value="LIMIT">
+                    </div>
 
-            <md-input-container layout layout-align="center center">
-                <md-select ng-model="$ctrl.selectedInstrument" placeholder="Market"
-                    ng-change="$ctrl.changeMarket($ctrl.selectedInstrument)">
-                    <md-option ng-value="instrument" ng-repeat="instrument in $ctrl.instruments">
-                        {{ instrument }}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+                    <div class="mb2">
+                        <label for="buy" class="lh-copy">Buy</label>
+                        <input class="mr2" type="radio" name="buy" ng-model="$ctrl.side" value="buy">
+                        <label for="sell" class="lh-copy">Sell</label>
+                        <input class="mr2" type="radio" name="sell" ng-model="$ctrl.side" value="sell">
+                    </div>
 
-            <md-input-container layout layout-align="center center">
-                <label flex="10">Units</label>
-                <input ng-model="$ctrl.units" flex="30">
-            </md-input-container>
+                    <div class="mb2">
+                        <select ng-model="$ctrl.selectedInstrument" placeholder="Market"
+                            ng-change="$ctrl.changeMarket($ctrl.selectedInstrument)"
+                            ng-options="instrument for instrument in $ctrl.instruments">
+                        </select>
+                    </div>
 
-            <div layout layout-align="space-between center">
-                <span>Quote</span>
-                <input type="number" ng-model="$ctrl.quote" ng-disabled="$ctrl.type == 'MARKET'" flex="30"
-                    step="{{ $ctrl.step }}" aria-label="lower" aria-controls="quote-slider">
+                    <div class="mb2">
+                        <label>Units</label>
+                        <input ng-model="$ctrl.units" class="min-w-30">
+                    </div>
+
+                    <div class="mb2">
+                        <label>Quote</label>
+                        <input class="min-w-30"
+                            type="number" ng-model="$ctrl.quote"
+                            ng-disabled="$ctrl.type == 'MARKET'" step="{{ $ctrl.step }}">
+                    </div>
+
+                    <div class="mb2">
+                        <select ng-show="$ctrl.type == 'LIMIT'"
+                            ng-model="$ctrl.selectedExpire" placeholder="Expires"
+                            ng-options="expire.label for expire in $ctrl.expires" ng-value="expire.value">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb2 min-w-45">
+
+                    <div class="mb2">
+                        <label for="price" class="lh-copy">Price</label>
+                        <input class="mr2" type="radio" name="price"
+                            ng-model="$ctrl.measure" value="price" ng-change="$ctrl.changeMeasure($ctrl.measure)">
+                        <label for="pips" class="lh-copy">PIPS</label>
+                        <input class="mr2" type="radio" name="pips"
+                            ng-model="$ctrl.measure" value="pips" ng-change="$ctrl.changeMeasure($ctrl.measure)">
+                    </div>
+
+                    <div class="mb2">
+                        <label for="lowerBound" class="lh-copy">Lower Bound</label>
+                        <input type="checkbox" ng-model="$ctrl.isLowerBound">
+                        <input name="lowerBound" type="number" ng-model="$ctrl.lowerBound" min="0" ng-disabled="!$ctrl.isLowerBound"
+                            step="{{ $ctrl.step }}" class="min-w-30">
+                    </div>
+
+                    <div class="mb2">
+                        <label for="upperBound" class="lh-copy">Upper Bound</label>
+                        <input type="checkbox" ng-model="$ctrl.isUpperBound">
+                        <input name="upperBound" type="number" ng-model="$ctrl.upperBound" min="0" ng-disabled="!$ctrl.isUpperBound"
+                            step="{{ $ctrl.step }}" class="min-w-30">
+                    </div>
+
+                    <div class="mb2">
+                        <label for="takeProfit" class="lh-copy">Take Profit</label>
+                        <input type="checkbox" ng-model="$ctrl.isTakeProfit">
+                        <input name="takeProfit" type="number" ng-model="$ctrl.takeProfit" min="0" ng-disabled="!$ctrl.isTakeProfit"
+                            step="{{ $ctrl.step }}" class="min-w-30">
+                    </div>
+
+                    <div class="mb2">
+                        <label for="stopLoss" class="lh-copy">Stop Loss</label>
+                        <input type="checkbox" ng-model="$ctrl.isStopLoss">
+                        <input name="stopLoss" type="number" ng-model="$ctrl.stopLoss" min="0" ng-disabled="!$ctrl.isStopLoss"
+                            step="{{ $ctrl.step }}" class="min-w-30">
+                    </div>
+
+                    <div class="mb2">
+                    <label for="trailingStop" class="lh-copy">Trailing Stop</label>
+                    <input type="checkbox" ng-model="$ctrl.isTrailingStop">
+                    <input name="trailingStop" type="number" ng-model="$ctrl.trailingStop" min="0" ng-disabled="!$ctrl.isTrailingStop"
+                        step="1" class="min-w-30">
+                    </div>
+
+                </div>
+
             </div>
 
-            <md-input-container layout layout-align="center center">
-                <md-select ng-show="$ctrl.type == 'LIMIT'"
-                    ng-model="$ctrl.selectedExpire" placeholder="Expires">
-                    <md-option ng-value="expire.value" ng-repeat="expire in $ctrl.expires">
-                        {{ expire.label }}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        </fieldset>
 
+        <div class="flex flex-row items-center justify-around">
+            <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                type="submit" value="Submit" ng-click="$ctrl.answer('submit')">
+
+            <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                type="submit" value="Close" ng-click="$ctrl.answer('close')">
         </div>
-        <div flex="45" layout="column" layout-margin>
 
-            <md-radio-group ng-model="$ctrl.measure"
-                ng-change="$ctrl.changeMeasure($ctrl.measure)"
-                layout layout-align="space-between center">
-                  <md-radio-button value="price">Price</md-radio-button>
-                  <md-radio-button value="pips">PIPS</md-radio-button>
-            </md-radio-group>
-
-            <div layout layout-align="space-between center">
-                <md-checkbox md-no-ink aria-label="Lower Bound" ng-model="$ctrl.isLowerBound" class="md-primary">
-                    Lower Bound
-                </md-checkbox>
-                <input type="number" ng-model="$ctrl.lowerBound" min="0" ng-disabled="!$ctrl.isLowerBound"
-                    step="{{ $ctrl.step }}" aria-label="lower" aria-controls="lower-slider" flex="30">
-            </div>
-            <div layout layout-align="space-between center">
-                <md-checkbox md-no-ink aria-label="Upper Bound" ng-model="$ctrl.isUpperBound" class="md-primary">
-                    Upper Bound
-                </md-checkbox>
-                <input type="number" ng-model="$ctrl.upperBound" min="0" ng-disabled="!$ctrl.isUpperBound"
-                    step="{{ $ctrl.step }}" aria-label="upper" aria-controls="upper-slider"flex="30">
-            </div>
-            <div layout layout-align="space-between center">
-                <md-checkbox md-no-ink aria-label="Take Profit" ng-model="$ctrl.isTakeProfit" class="md-primary">
-                    Take Profit
-                </md-checkbox>
-                <input type="number" ng-model="$ctrl.takeProfit" min="0" ng-disabled="!$ctrl.isTakeProfit"
-                    step="{{ $ctrl.step }}" aria-label="take" aria-controls="take-slider" flex="30">
-            </div>
-            <div layout layout-align="space-between center">
-                <md-checkbox md-no-ink aria-label="Stop Loss" ng-model="$ctrl.isStopLoss" class="md-primary">
-                    Stop Loss
-                </md-checkbox>
-                <input type="number" ng-model="$ctrl.stopLoss" min="0" ng-disabled="!$ctrl.isStopLoss"
-                    step="{{ $ctrl.step }}" aria-label="stop" aria-controls="stop-slider" flex="30">
-            </div>
-            <div layout layout-align="space-between center">
-                <md-checkbox md-no-ink aria-label="Trailing Stop" ng-model="$ctrl.isTrailingStop" class="md-primary">
-                    Trailing Stop
-                </md-checkbox>
-                <input type="number" ng-model="$ctrl.trailingStop" min="0" ng-disabled="!$ctrl.isTrailingStop"
-                    step="1" aria-label="trailing" aria-controls="trailing-slider" flex="30">
-            </div>
-
-        </div>
-    </div>
-
-</md-dialog-content>
-
-<md-dialog-actions layout="row">
-    <span flex></span>
-    <md-button ng-click="$ctrl.answer('submit')" class="md-primary">
-        Submit
-    </md-button>
-    <md-button ng-click="$ctrl.answer('close')">
-        Close
-    </md-button>
-</md-dialog-actions>
+    </form>
+</main>

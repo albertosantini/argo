@@ -6,7 +6,10 @@
 .highlight-green { color: green; }
 
 .min-w-5 { min-width: 5%; }
+.min-w-10 { min-width: 10%; }
 .min-w-25 { min-width: 25%; }
+.min-w-30 { min-width: 30%; }
+.min-w-45 { min-width: 45%; }
 .min-w-75 { min-width: 75%; }
 .min-w-95 { min-width: 95%; }
 

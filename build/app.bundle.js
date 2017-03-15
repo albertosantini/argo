@@ -239,11 +239,10 @@ const activity = angular$1
     .name;
 
 class ChartsController {
-    constructor($rootScope, $mdDialog, ToastsService, AccountsService,
+    constructor(ToastsService, modalService, AccountsService,
             ChartsService, QuotesService, TradesService) {
-        this.$rootScope = $rootScope;
-        this.$mdDialog = $mdDialog;
         this.ToastsService = ToastsService;
+        this.modalService = modalService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -300,25 +299,21 @@ class ChartsController {
     }
 
 
-    openOrderDialog(event, side) {
-        const scope = angular$1.extend(this.$rootScope.$new(true), {
-            params: {
-                side,
-                selectedInstrument: this.selectedInstrument,
-                instruments: this.account.streamingInstruments
+    openOrderDialog(side) {
+        this.modalService.open({
+            template: "<order-dialog close-modal='closeModal()' params='params'></order-dialog>",
+            scope: {
+                params: {
+                    side,
+                    selectedInstrument: this.selectedInstrument,
+                    instruments: this.account.streamingInstruments
+                }
             }
-        });
-
-        this.$mdDialog.show({
-            template: "<order-dialog aria-label='Order Dialog' params='params'></order-dialog>",
-            scope,
-            preserveScope: true,
-            targetEvent: event
         });
     }
 }
 ChartsController.$inject = [
-    "$rootScope", "$mdDialog", "ToastsService", "AccountsService",
+    "ToastsService", "modalService", "AccountsService",
     "ChartsService", "QuotesService", "TradesService"
 ];
 
@@ -963,9 +958,7 @@ const ohlcChart = angular$1
     .name;
 
 class OrderDialogController {
-    constructor($mdDialog, ToastsService,
-            QuotesService, OrdersService, AccountsService) {
-        this.$mdDialog = $mdDialog;
+    constructor(ToastsService, QuotesService, OrdersService, AccountsService) {
         this.ToastsService = ToastsService;
         this.QuotesService = QuotesService;
         this.OrdersService = OrdersService;
@@ -1050,20 +1043,10 @@ class OrderDialogController {
         }
     }
 
-    hide() {
-        this.$mdDialog.hide();
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
     answer(action) {
         const order = {},
             isBuy = this.side === "buy",
             isMeasurePips = this.measure === "pips";
-
-        this.$mdDialog.hide(action);
 
         this.step = parseFloat(this.pips[this.selectedInstrument]);
 
@@ -1141,6 +1124,8 @@ class OrderDialogController {
                 (this.step * this.trailingStop).toString();
         }
 
+        this.closeModal();
+
         if (action === "submit") {
             this.OrdersService.putOrder(order).then(transaction => {
                 let opened,
@@ -1180,15 +1165,13 @@ class OrderDialogController {
         }
     }
 }
-OrderDialogController.$inject = [
-    "$mdDialog", "ToastsService",
-    "QuotesService", "OrdersService", "AccountsService"
-];
+OrderDialogController.$inject = ["ToastsService", "QuotesService", "OrdersService", "AccountsService"];
 
 const orderDialogComponent = {
     templateUrl: "app/components/order-dialog/order-dialog.html",
     controller: OrderDialogController,
     bindings: {
+        closeModal: "&",
         params: "<"
     }
 };

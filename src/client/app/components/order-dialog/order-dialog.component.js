@@ -4,6 +4,7 @@ export const orderDialogComponent = {
     templateUrl: "app/components/order-dialog/order-dialog.html",
     controller: OrderDialogController,
     bindings: {
+        closeModal: "&",
         params: "<"
     }
 };
