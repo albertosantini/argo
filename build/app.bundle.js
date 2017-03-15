@@ -1977,7 +1977,7 @@ class TradesController {
                     <div class="flex flex-row items-center justify-around">
                         <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                             type="submit" value="Cancel"
-                            ng-click="closeModal()"">
+                            ng-click="closeModal()">
 
                         <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                             type="submit" value="Ok"
