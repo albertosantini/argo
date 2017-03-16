@@ -9,8 +9,11 @@ export class NewsService {
             credentials => this.$http.post("/api/calendar", {
                 environment: credentials.environment,
                 token: credentials.token
-            }).then(news => news.data)
-            .catch(err => err.data)
+            }).then(news => news.data.map(item => {
+                item.timestamp = item.timestamp * 1000;
+
+                return item;
+            })).catch(err => err.data)
         );
     }
 }
