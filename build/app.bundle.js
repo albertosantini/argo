@@ -1883,9 +1883,18 @@ class TokenDialogController {
             environment: this.environment,
             token: this.token
         }).then(accounts => {
+            const message = "If your account id contains only digits " +
+                "(ie. 2534233), it is a legacy account and you should use " +
+                "release 3.x. For v20 accounts use release 4.x or higher. " +
+                "Check your token.";
+
+            if (!accounts.length) {
+                throw new Error(message);
+            }
             angular.extend(this.accounts, accounts);
-        }, err => {
+        }).catch(err => {
             this.ToastsService.addToast(err);
+            this.closeModal();
         });
     }
 
