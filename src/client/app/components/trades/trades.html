@@ -3,32 +3,32 @@
 
     <table ng-show="$ctrl.trades.length" class="f6 w-100 mw8 center" cellpsacing="0">
         <thead>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Type</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Ticket</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Units</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">S/L</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/P</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/S</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Price</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Current</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Profit (PIPS)</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Ticket</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">S/L</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/P</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/S</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Price</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Current</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Profit (PIPS)</th>
         </thead>
 
         <tbody>
             <tr ng-repeat="trade in $ctrl.trades">
-                <td class="pv1 pr1 bb b--black-20">{{ trade.side }}</td>
-                <td class="pv1 pr1 bb b--black-20">
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.side }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">
                     <a href ng-click="$ctrl.closeTrade(trade.id)">{{ trade.id }}</a>
                 </td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.instrument }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.currentUnits | number }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.stopLossOrder.price }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.takeProfitOrder.price }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.trailingStopLossOrder.distance }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ trade.price }}</td>
-                <td class="pv1 pr1 bb b--black-20"">{{ trade.current }}</td>
-                <td class="pv1 pr1 bb b--black-20"
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.instrument }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.currentUnits | number }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.stopLossOrder.price }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.takeProfitOrder.price }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.trailingStopLossOrder.distance }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.price }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ trade.current }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr"
                     dual-color="trade.profitPips">
                     {{ trade.profitPips | number:1}}
                 </td>

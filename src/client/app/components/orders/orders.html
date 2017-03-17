@@ -3,34 +3,34 @@
 
     <table ng-show="$ctrl.orders.length" class="f6 w-100 mw8 center" cellpsacing="0">
         <thead>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Type</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Ticket</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Market</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Units</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">S/L</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/P</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">T/S</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Price</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Current</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Distance</th>
-            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Expiry</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Ticket</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">S/L</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/P</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/S</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Price</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Current</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Distance</th>
+            <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Expiry</th>
         </thead>
 
         <tbody>
             <tr ng-repeat="order in $ctrl.orders">
-                <td class="pv1 pr1 bb b--black-20">{{ order.side }}</td>
-                <td class="pv1 pr1 bb b--black-20">
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.side }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">
                     <a href ng-click="$ctrl.closeOrder(order.id)">{{ order.id }}</a>
                 </td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.instrument }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.units | number }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.stopLossOnFill.price || order.type }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.takeProfitOnFill.price }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</td>
-                <td class="pv1 pr1 bb b--black-20">{{ order.price | number:4 }}</td>
-                <td class="pv1 pr1 bb b--black-20"">{{ order.current | number:4 }}</td>
-                <td class="pv1 pr1 bb b--black-20"">{{ order.distance | number:1 }}</td>
-                <td class="pv1 pr1 bb b--black-20"">{{ order.expiry | date:"MMM d, HH:mm" }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.instrument }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.units | number }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.stopLossOnFill.price || order.type }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.takeProfitOnFill.price }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.price | number:4 }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.current | number:4 }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.distance | number:1 }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.expiry | date:"MMM d, HH:mm" }}</td>
             </tr>
         </tbody>
     </table>
