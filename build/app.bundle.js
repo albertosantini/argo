@@ -1046,6 +1046,21 @@ class OrderDialogController {
     }
 
     answer(action) {
+        if (action === "close") {
+            this.closeModal();
+
+            return;
+        }
+
+        if (!this.pips) {
+            this.ToastsService .addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
+            this.closeModal();
+
+            return;
+        }
+
+        this.closeModal();
+
         const order = {},
             isBuy = this.side === "buy",
             isMeasurePips = this.measure === "pips";
@@ -1126,45 +1141,41 @@ class OrderDialogController {
                 (this.step * this.trailingStop).toString();
         }
 
-        this.closeModal();
+        this.OrdersService.putOrder(order).then(transaction => {
+            let opened,
+                canceled,
+                side,
+                message;
 
-        if (action === "submit") {
-            this.OrdersService.putOrder(order).then(transaction => {
-                let opened,
-                    canceled,
-                    side,
-                    message;
+            if (transaction.message) {
+                message = `ERROR ${transaction.message}`;
 
-                if (transaction.message) {
-                    message = `ERROR ${transaction.message}`;
+                this.ToastsService.addToast(message);
+            } else if (transaction.errorMessage) {
+                message = `ERROR ${transaction.errorMessage}`;
 
-                    this.ToastsService.addToast(message);
-                } else if (transaction.errorMessage) {
-                    message = `ERROR ${transaction.errorMessage}`;
+                this.ToastsService.addToast(message);
+            } else if (transaction.orderCancelTransaction) {
+                canceled = transaction.orderCancelTransaction;
 
-                    this.ToastsService.addToast(message);
-                } else if (transaction.orderCancelTransaction) {
-                    canceled = transaction.orderCancelTransaction;
+                message = `ERROR ${canceled.reason}`;
 
-                    message = `ERROR ${canceled.reason}`;
+                this.ToastsService.addToast(message);
+            } else {
+                opened = transaction.orderFillTransaction ||
+                    transaction.orderFillTransaction ||
+                    transaction.orderCreateTransaction;
 
-                    this.ToastsService.addToast(message);
-                } else {
-                    opened = transaction.orderFillTransaction ||
-                        transaction.orderFillTransaction ||
-                        transaction.orderCreateTransaction;
+                side = opened.units > 0 ? "buy" : "sell";
+                message = `${side} ` +
+                    `${opened.instrument} ` +
+                    `#${opened.id} ` +
+                    `@${opened.price} ` +
+                    `for ${opened.units}`;
 
-                    side = opened.units > 0 ? "buy" : "sell";
-                    message = `${side} ` +
-                        `${opened.instrument} ` +
-                        `#${opened.id} ` +
-                        `@${opened.price} ` +
-                        `for ${opened.units}`;
-
-                    this.ToastsService.addToast(message);
-                }
-            });
-        }
+                this.ToastsService.addToast(message);
+            }
+        });
     }
 }
 OrderDialogController.$inject = ["ToastsService", "QuotesService", "OrdersService", "AccountsService"];
