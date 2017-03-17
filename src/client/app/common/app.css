@@ -15,6 +15,7 @@
 
 @media screen and (max-width: 30em) {
     .dn-s { display: none; }
+    .flex-wrap-s { flex-wrap: wrap; }
 }
 
 .spinner {
