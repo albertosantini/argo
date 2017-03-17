@@ -10,8 +10,15 @@
 .min-w-25 { min-width: 25%; }
 .min-w-30 { min-width: 30%; }
 .min-w-45 { min-width: 45%; }
+.min-w-70 { min-width: 70%; }
 .min-w-75 { min-width: 75%; }
 .min-w-95 { min-width: 95%; }
+
+@media screen and (max-width: 30em) {
+    .dn-s {
+        display: none;
+    }
+}
 
 .spinner {
     width: 32px;
