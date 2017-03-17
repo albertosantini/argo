@@ -24,13 +24,13 @@
         ng-class="{'bg-blue': $ctrl.tabSelectedIndex === 6}">Plugins</a>
 </nav>
 
-<div class="flex flex-wrap flex-row ma2 pa2">
+<div class="flex flex-row ma2 pa2">
     <div class="flex flex-wrap flex-column min-w-25">
         <account class="mb4"></account>
         <quotes class="mb4"></quotes>
         <toasts></toasts>
     </div>
-    <div class="flex flex-wrap flex-column min-w-70">
+    <div class="flex flex-wrap flex-column min-w-75">
         <ng-switch on="$ctrl.tabSelectedIndex">
             <trades ng-switch-when="0" class="ma2 pa2"></trades>
             <orders ng-switch-when="1" class="ma2 pa2"></orders>
