@@ -24,7 +24,7 @@
                 </td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ order.instrument }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ order.units | number }}</td>
-                <td class="pv1 pr1 bb b--black-20 tr">{{ order.stopLossOnFill.price || order.type }}</td>
+                <td class="pv1 pr1 bb b--black-20 tr">{{ order.stopLossOnFill.price }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ order.takeProfitOnFill.price }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ order.trailingStopLossOnFill.distance || order.trailingStopValue }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ order.price | number:4 }}</td>
