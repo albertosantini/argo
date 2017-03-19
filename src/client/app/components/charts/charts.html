@@ -1,4 +1,11 @@
 <div ng-show="$ctrl.account.streamingInstruments">
+    <ohlc-chart class="dn-s"
+        instrument="$ctrl.selectedInstrument"
+        granularity="$ctrl.selectedGranularity"
+        data="$ctrl.data"
+        feed="$ctrl.feed",
+        trades="$ctrl.trades">
+    </ohlc-chart>
 
     <div class="flex flex-wrap flex-row justify-center justify-around">
         <select ng-model="$ctrl.selectedInstrument"
@@ -20,12 +27,4 @@
           <span class="pl1">Sell</span>
         </a>
     </div>
-
-    <ohlc-chart class="dn-s"
-        instrument="$ctrl.selectedInstrument"
-        granularity="$ctrl.selectedGranularity"
-        data="$ctrl.data"
-        feed="$ctrl.feed",
-        trades="$ctrl.trades">
-    </ohlc-chart>
 </div>
