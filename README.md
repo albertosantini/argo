@@ -56,6 +56,16 @@ Tested locally with Node.js 7.x, AngularJS 1.6.x.
 
 ## [Contributing](CONTRIBUTING.md)
 
+## Development Notes
+
+After modifying js files in `src` folder, you need to build the application bundle:
+
+`npm run rollup`
+
+If `d3` dep is updated, you need to build the `d3-techan` bundle:
+
+`nom run rollup-d3`
+
 ## Disclaimer
 
 NOT INVESTMENT ADVICE AND WILL LOSE LOTS OF MONEY SO PROCEED WITH CAUTION.
