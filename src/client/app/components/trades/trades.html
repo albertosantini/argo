@@ -29,7 +29,7 @@
                 <td class="pv1 pr1 bb b--black-20 tr">{{ trade.price }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr">{{ trade.current }}</td>
                 <td class="pv1 pr1 bb b--black-20 tr"
-                    dual-color="trade.profitPips">
+                    ng-class="trade.profitPips >= 0 ? 'green' : 'red'">
                     {{ trade.profitPips | number:1}}
                 </td>
             </tr>

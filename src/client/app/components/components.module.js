@@ -3,7 +3,6 @@ import angular from "angular";
 import { account } from "./account/account.module";
 import { activity } from "./activity/activity.module";
 import { charts } from "./charts/charts.module";
-import { dualColor } from "./dual-color/dual-color.module";
 import { exposure } from "./exposure/exposure.module";
 import { header } from "./header/header.module";
 import { highlighter } from "./highlighter/highlighter.module";
@@ -28,7 +27,6 @@ export const components = angular
         account,
         activity,
         charts,
-        dualColor,
         exposure,
         header,
         highlighter,
