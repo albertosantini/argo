@@ -9,7 +9,7 @@ module.exports = config => {
 
         files: [
             "node_modules/angular/angular.min.js",
-            "node_modules/d3/build/d3.min.js",
+            "build/d3-techan.min.js",
             "node_modules/techan/dist/techan.min.js",
 
             "node_modules/angular-mocks/angular-mocks.js",
