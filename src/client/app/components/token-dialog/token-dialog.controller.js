@@ -27,7 +27,6 @@ export class TokenDialogController {
         this.accounts = [];
     }
 
-
     login(tokenInfo) {
         if (tokenInfo) {
             this.environment = tokenInfo.environment;
@@ -83,6 +82,7 @@ export class TokenDialogController {
             this.closeModal({ tokenInfo });
         }).catch(err => {
             this.ToastsService.addToast(err);
+            this.closeModal();
         });
     }
 

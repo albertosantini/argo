@@ -21,6 +21,7 @@ import { streaming } from "./streaming/streaming.module";
 import { toasts } from "./toasts/toasts.module";
 import { tokenDialog } from "./token-dialog/token-dialog.module";
 import { trades } from "./trades/trades.module";
+import { yesnoDialog } from "./yesno-dialog/yesno-dialog.module";
 
 export const components = angular
     .module("components", [
@@ -44,6 +45,7 @@ export const components = angular
         streaming,
         toasts,
         tokenDialog,
-        trades
+        trades,
+        yesnoDialog
     ])
     .name;

@@ -1,12 +1,11 @@
 import angular from "angular";
 
 export class HeaderController {
-    constructor($window, $rootScope, modalService, ToastsService,
+    constructor($window, $rootScope, ToastsService,
             AccountsService, SessionService,
             QuotesService, StreamingService) {
         this.$window = $window;
         this.$rootScope = $rootScope;
-        this.modalService = modalService;
         this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.SessionService = SessionService;
@@ -21,18 +20,18 @@ export class HeaderController {
     }
 
     openTokenDialog() {
-        this.modalService.open({
-            template: `<token-dialog
-                close-modal="closeModal(tokenInfo)"></token-dialog>`,
-            onClose: tokenInfo => {
-                if (tokenInfo) {
-                    this.token = tokenInfo.token;
-                    this.environment = tokenInfo.environment;
-                    this.accountId = tokenInfo.accountId;
-                    this.instrs = tokenInfo.instrs;
-                }
-            }
-        });
+        this.openTokenModal = true;
+    }
+
+    closeTokenDialog(tokenInfo) {
+        this.openTokenModal = false;
+
+        if (tokenInfo) {
+            this.token = tokenInfo.token;
+            this.environment = tokenInfo.environment;
+            this.accountId = tokenInfo.accountId;
+            this.instrs = tokenInfo.instrs;
+        }
     }
 
     openSettingsDialog() {
@@ -45,42 +44,40 @@ export class HeaderController {
                 }
             });
 
-            this.modalService.open({
-                template: `<settings-dialog
-                    close-modal="closeModal(settingsInfo)"
-                    instruments="instruments"></settings-dialog>`,
-                scope: {
-                    instruments: this.instrs
-                },
-                onClose: settingsInfo => {
-                    let instruments;
-
-                    if (settingsInfo) {
-                        this.$window.localStorage.setItem("argo.instruments",
-                            angular.toJson(settingsInfo));
-                        instruments = this.AccountsService
-                            .setStreamingInstruments(settingsInfo);
-
-                        this.QuotesService.reset();
-
-                        this.StreamingService.startStream({
-                            environment: credentials.environment,
-                            accessToken: credentials.token,
-                            accountId: credentials.accountId,
-                            instruments
-                        });
-                    }
-                }
-            });
+            this.credentials = credentials;
+            this.openSettingsModal = true;
         }).catch(err => {
             if (err) {
                 this.ToastsService.addToast(err);
             }
         });
     }
+
+    closeSettingsDialog(settingsInfo) {
+        let instruments;
+
+        this.openSettingsModal = false;
+
+        if (settingsInfo) {
+            this.$window.localStorage.setItem("argo.instruments",
+                angular.toJson(settingsInfo));
+            instruments = this.AccountsService
+                .setStreamingInstruments(settingsInfo);
+
+            this.QuotesService.reset();
+
+            this.StreamingService.startStream({
+                environment: this.credentials.environment,
+                accessToken: this.credentials.token,
+                accountId: this.credentials.accountId,
+                instruments
+            });
+        }
+    }
+
 }
 HeaderController.$inject = [
-    "$window", "$rootScope", "modalService", "ToastsService",
+    "$window", "$rootScope", "ToastsService",
     "AccountsService", "SessionService",
     "QuotesService", "StreamingService"
 ];

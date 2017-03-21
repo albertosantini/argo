@@ -1,8 +1,7 @@
 export class ChartsController {
-    constructor(ToastsService, modalService, AccountsService,
-            ChartsService, QuotesService, TradesService) {
+    constructor(ToastsService, AccountsService, ChartsService,
+            QuotesService, TradesService) {
         this.ToastsService = ToastsService;
-        this.modalService = modalService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -45,6 +44,12 @@ export class ChartsController {
         this.trades = this.TradesService.getTrades();
 
         this.changeChart(this.selectedInstrument, this.selectedGranularity);
+
+        this.orderParams = {
+            side: "buy",
+            selectedInstrument: this.selectedInstrument,
+            instruments: this.account.streamingInstruments
+        };
     }
 
     changeChart(instrument, granularity) {
@@ -60,19 +65,16 @@ export class ChartsController {
 
 
     openOrderDialog(side) {
-        this.modalService.open({
-            template: "<order-dialog close-modal='closeModal()' params='params'></order-dialog>",
-            scope: {
-                params: {
-                    side,
-                    selectedInstrument: this.selectedInstrument,
-                    instruments: this.account.streamingInstruments
-                }
-            }
+        angular.extend(this.orderParams, {
+            side,
+            selectedInstrument: this.selectedInstrument,
+            instruments: this.account.streamingInstruments
         });
+
+        this.openOrderModal = true;
     }
 }
 ChartsController.$inject = [
-    "ToastsService", "modalService", "AccountsService",
-    "ChartsService", "QuotesService", "TradesService"
+    "ToastsService", "AccountsService", "ChartsService",
+    "QuotesService", "TradesService"
 ];

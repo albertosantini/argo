@@ -86,19 +86,19 @@ export class OrderDialogController {
 
     answer(action) {
         if (action === "close") {
-            this.closeModal();
+            this.openModal = false;
 
             return;
         }
 
         if (!this.pips) {
             this.ToastsService .addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
-            this.closeModal();
+            this.openModal = false;
 
             return;
         }
 
-        this.closeModal();
+        this.openModal = false;
 
         const order = {},
             isBuy = this.side === "buy",

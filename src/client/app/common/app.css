@@ -13,6 +13,8 @@
 .min-w-75 { min-width: 75%; }
 .min-w-95 { min-width: 95%; }
 
+.absolute-center { top: 50%; left: 50%; transform: translateY(-50%) translateX(-50%); }
+
 @media screen and (max-width: 30em) {
     .dn-s { display: none; }
     .flex-wrap-s { flex-wrap: wrap; }

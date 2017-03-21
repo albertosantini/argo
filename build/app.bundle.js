@@ -60,9 +60,7 @@ function appConfig($httpProvider, $locationProvider) {
 appConfig.$inject = ["$httpProvider", "$locationProvider"];
 
 const app = angular$1
-    .module("common.app", [
-        "simple-modal"
-    ])
+    .module("common.app", [])
     .component("app", appComponent)
     .config(appConfig)
     .name;
@@ -238,10 +236,9 @@ const activity = angular$1
     .name;
 
 class ChartsController {
-    constructor(ToastsService, modalService, AccountsService,
-            ChartsService, QuotesService, TradesService) {
+    constructor(ToastsService, AccountsService, ChartsService,
+            QuotesService, TradesService) {
         this.ToastsService = ToastsService;
-        this.modalService = modalService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
         this.QuotesService = QuotesService;
@@ -284,6 +281,12 @@ class ChartsController {
         this.trades = this.TradesService.getTrades();
 
         this.changeChart(this.selectedInstrument, this.selectedGranularity);
+
+        this.orderParams = {
+            side: "buy",
+            selectedInstrument: this.selectedInstrument,
+            instruments: this.account.streamingInstruments
+        };
     }
 
     changeChart(instrument, granularity) {
@@ -299,21 +302,18 @@ class ChartsController {
 
 
     openOrderDialog(side) {
-        this.modalService.open({
-            template: "<order-dialog close-modal='closeModal()' params='params'></order-dialog>",
-            scope: {
-                params: {
-                    side,
-                    selectedInstrument: this.selectedInstrument,
-                    instruments: this.account.streamingInstruments
-                }
-            }
+        angular.extend(this.orderParams, {
+            side,
+            selectedInstrument: this.selectedInstrument,
+            instruments: this.account.streamingInstruments
         });
+
+        this.openOrderModal = true;
     }
 }
 ChartsController.$inject = [
-    "ToastsService", "modalService", "AccountsService",
-    "ChartsService", "QuotesService", "TradesService"
+    "ToastsService", "AccountsService", "ChartsService",
+    "QuotesService", "TradesService"
 ];
 
 const chartsComponent = {
@@ -429,12 +429,11 @@ const exposure = angular$1
     .name;
 
 class HeaderController {
-    constructor($window, $rootScope, modalService, ToastsService,
+    constructor($window, $rootScope, ToastsService,
             AccountsService, SessionService,
             QuotesService, StreamingService) {
         this.$window = $window;
         this.$rootScope = $rootScope;
-        this.modalService = modalService;
         this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.SessionService = SessionService;
@@ -449,18 +448,18 @@ class HeaderController {
     }
 
     openTokenDialog() {
-        this.modalService.open({
-            template: `<token-dialog
-                close-modal="closeModal(tokenInfo)"></token-dialog>`,
-            onClose: tokenInfo => {
-                if (tokenInfo) {
-                    this.token = tokenInfo.token;
-                    this.environment = tokenInfo.environment;
-                    this.accountId = tokenInfo.accountId;
-                    this.instrs = tokenInfo.instrs;
-                }
-            }
-        });
+        this.openTokenModal = true;
+    }
+
+    closeTokenDialog(tokenInfo) {
+        this.openTokenModal = false;
+
+        if (tokenInfo) {
+            this.token = tokenInfo.token;
+            this.environment = tokenInfo.environment;
+            this.accountId = tokenInfo.accountId;
+            this.instrs = tokenInfo.instrs;
+        }
     }
 
     openSettingsDialog() {
@@ -473,42 +472,40 @@ class HeaderController {
                 }
             });
 
-            this.modalService.open({
-                template: `<settings-dialog
-                    close-modal="closeModal(settingsInfo)"
-                    instruments="instruments"></settings-dialog>`,
-                scope: {
-                    instruments: this.instrs
-                },
-                onClose: settingsInfo => {
-                    let instruments;
-
-                    if (settingsInfo) {
-                        this.$window.localStorage.setItem("argo.instruments",
-                            angular$1.toJson(settingsInfo));
-                        instruments = this.AccountsService
-                            .setStreamingInstruments(settingsInfo);
-
-                        this.QuotesService.reset();
-
-                        this.StreamingService.startStream({
-                            environment: credentials.environment,
-                            accessToken: credentials.token,
-                            accountId: credentials.accountId,
-                            instruments
-                        });
-                    }
-                }
-            });
+            this.credentials = credentials;
+            this.openSettingsModal = true;
         }).catch(err => {
             if (err) {
                 this.ToastsService.addToast(err);
             }
         });
     }
+
+    closeSettingsDialog(settingsInfo) {
+        let instruments;
+
+        this.openSettingsModal = false;
+
+        if (settingsInfo) {
+            this.$window.localStorage.setItem("argo.instruments",
+                angular$1.toJson(settingsInfo));
+            instruments = this.AccountsService
+                .setStreamingInstruments(settingsInfo);
+
+            this.QuotesService.reset();
+
+            this.StreamingService.startStream({
+                environment: this.credentials.environment,
+                accessToken: this.credentials.token,
+                accountId: this.credentials.accountId,
+                instruments
+            });
+        }
+    }
+
 }
 HeaderController.$inject = [
-    "$window", "$rootScope", "modalService", "ToastsService",
+    "$window", "$rootScope", "ToastsService",
     "AccountsService", "SessionService",
     "QuotesService", "StreamingService"
 ];
@@ -1047,19 +1044,19 @@ class OrderDialogController {
 
     answer(action) {
         if (action === "close") {
-            this.closeModal();
+            this.openModal = false;
 
             return;
         }
 
         if (!this.pips) {
             this.ToastsService .addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
-            this.closeModal();
+            this.openModal = false;
 
             return;
         }
 
-        this.closeModal();
+        this.openModal = false;
 
         const order = {},
             isBuy = this.side === "buy",
@@ -1184,7 +1181,7 @@ const orderDialogComponent = {
     templateUrl: "app/components/order-dialog/order-dialog.html",
     controller: OrderDialogController,
     bindings: {
-        closeModal: "&",
+        openModal: "=",
         params: "<"
     }
 };
@@ -1195,8 +1192,7 @@ const orderDialog = angular$1
     .name;
 
 class OrdersController {
-    constructor(modalService, ToastsService, OrdersService) {
-        this.modalService = modalService;
+    constructor(ToastsService, OrdersService) {
         this.ToastsService = ToastsService;
         this.OrdersService = OrdersService;
     }
@@ -1207,53 +1203,35 @@ class OrdersController {
         this.OrdersService.refresh();
     }
 
-    closeOrder(id) {
-        this.modalService.open({
-            template: `
-                <main class="pa4 black-80 bg-white">
-                    <form class="measure center">
-                        <fieldset id="login" class="ba b--transparent ph0 mh0">
-                            <legend class="f4 fw6 ph0 mh0 center">Are you sure to close the order?</legend>
-                        </fieldset>
-                    </form>
-                    <div class="flex flex-row items-center justify-around">
-                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit" value="Cancel"
-                            ng-click="closeModal()">
+    closeOrder(orderId) {
+        this.openCloseOrderModal = true;
+        this.closingOrderId = orderId;
+    }
 
-                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit" value="Ok"
-                            ng-click="closeModal(id)">
-                    </div>
-                    </form>
-                </main>
-            `,
-            scope: {
-                id
-            },
-            onClose: orderId => {
-                if (!orderId) {
-                    return;
-                }
+    closeOrderDialog(answer) {
+        this.openCloseOrderModal = false;
 
-                this.OrdersService.closeOrder(orderId).then(order => {
-                    let message = `Closed #${order.orderCancelTransaction.orderID}`;
+        if (!answer) {
+            return;
+        }
 
-                    if (order.errorMessage || order.message) {
-                        message = `ERROR ${order.errorMessage || order.message}`;
-                    }
+        this.OrdersService.closeOrder(this.closingOrderId).then(order => {
+            let message = `Closed #${order.orderCancelTransaction.orderID}`;
 
-                    this.ToastsService.addToast(message);
-                }).catch(err => {
-                    const message = `ERROR ${err.code} ${err.message}`;
-
-                    this.ToastsService.addToast(message);
-                });
+            if (order.errorMessage || order.message) {
+                message = `ERROR ${order.errorMessage || order.message}`;
             }
+
+            this.ToastsService.addToast(message);
+        }).catch(err => {
+            const message = `ERROR ${err.code} ${err.message}`;
+
+            this.ToastsService.addToast(message);
         });
     }
+
 }
-OrdersController.$inject = ["modalService", "ToastsService", "OrdersService"];
+OrdersController.$inject = ["ToastsService", "OrdersService"];
 
 const ordersComponent = {
     templateUrl: "app/components/orders/orders.html",
@@ -1621,8 +1599,9 @@ const settingsDialogComponent = {
     templateUrl: "app/components/settings-dialog/settings-dialog.html",
     controller: SettingsDialogController,
     bindings: {
-        instruments: "<",
-        closeModal: "&"
+        openModal: "=",
+        closeModal: "&",
+        instruments: "<"
     }
 };
 
@@ -1879,7 +1858,6 @@ class TokenDialogController {
         this.accounts = [];
     }
 
-
     login(tokenInfo) {
         if (tokenInfo) {
             this.environment = tokenInfo.environment;
@@ -1935,6 +1913,7 @@ class TokenDialogController {
             this.closeModal({ tokenInfo });
         }).catch(err => {
             this.ToastsService.addToast(err);
+            this.closeModal();
         });
     }
 
@@ -1948,6 +1927,7 @@ const tokenDialogComponent = {
     templateUrl: "app/components/token-dialog/token-dialog.html",
     controller: TokenDialogController,
     bindings: {
+        openModal: "=",
         closeModal: "&"
     }
 };
@@ -1958,8 +1938,7 @@ const tokenDialog = angular$1
     .name;
 
 class TradesController {
-    constructor(modalService, ToastsService, TradesService) {
-        this.modalService = modalService;
+    constructor(ToastsService, TradesService) {
         this.ToastsService = ToastsService;
         this.TradesService = TradesService;
     }
@@ -1970,59 +1949,41 @@ class TradesController {
         this.TradesService.refresh();
     }
 
-    closeTrade(id) {
-        this.modalService.open({
-            template: `
-                <main class="pa4 black-80 bg-white">
-                    <form class="measure center">
-                        <fieldset id="login" class="ba b--transparent ph0 mh0">
-                            <legend class="f4 fw6 ph0 mh0 center">Are you sure to close the trade?</legend>
-                        </fieldset>
-                    </form>
-                    <div class="flex flex-row items-center justify-around">
-                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit" value="Cancel"
-                            ng-click="closeModal()">
+    closeTrade(tradeId) {
+        this.openCloseTradeModal = true;
+        this.closingTradeId = tradeId;
+    }
 
-                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit" value="Ok"
-                            ng-click="closeModal(id)">
-                    </div>
-                    </form>
-                </main>
-            `,
-            scope: {
-                id
-            },
-            onClose: tradeId => {
-                if (!tradeId) {
-                    return;
-                }
+    closeTradeDialog(answer) {
+        this.openCloseTradeModal = false;
 
-                this.TradesService.closeTrade(tradeId).then(trade => {
-                    let message = "Closed " +
-                            `${(trade.units > 0 ? "sell" : "buy")} ` +
-                            `${trade.instrument} ` +
-                            `#${trade.id} ` +
-                            `@${trade.price} ` +
-                            `P&L ${trade.pl}`;
+        if (!answer) {
+            return;
+        }
 
-                    if (trade.errorMessage || trade.message) {
-                        message = `ERROR ${trade.errorMessage || trade.message}`;
-                    }
+        this.TradesService.closeTrade(this.closingTradeId).then(trade => {
+            let message = "Closed " +
+                    `${(trade.units > 0 ? "sell" : "buy")} ` +
+                    `${trade.instrument} ` +
+                    `#${trade.id} ` +
+                    `@${trade.price} ` +
+                    `P&L ${trade.pl}`;
 
-
-                    this.ToastsService.addToast(message);
-                }).catch(err => {
-                    const message = `ERROR ${err.code} ${err.message}`;
-
-                    this.ToastsService.addToast(message);
-                });
+            if (trade.errorMessage || trade.message) {
+                message = `ERROR ${trade.errorMessage || trade.message}`;
             }
+
+
+            this.ToastsService.addToast(message);
+        }).catch(err => {
+            const message = `ERROR ${err.code} ${err.message}`;
+
+            this.ToastsService.addToast(message);
         });
     }
+
 }
-TradesController.$inject = ["modalService", "ToastsService", "TradesService"];
+TradesController.$inject = ["ToastsService", "TradesService"];
 
 const tradesComponent = {
     templateUrl: "app/components/trades/trades.html",
@@ -2105,6 +2066,25 @@ const trades = angular$1
     .service("TradesService", TradesService)
     .name;
 
+class YesNoDialogController {
+}
+YesNoDialogController.$inject = [];
+
+const yesnoDialogComponent = {
+    templateUrl: "app/components/yesno-dialog/yesno-dialog.html",
+    controller: YesNoDialogController,
+    bindings: {
+        openModal: "=",
+        closeModal: "&",
+        text: "@"
+    }
+};
+
+const yesnoDialog = angular$1
+    .module("components.yesno-dialog", [])
+    .component("yesnoDialog", yesnoDialogComponent)
+    .name;
+
 const components = angular$1
     .module("components", [
         account,
@@ -2127,7 +2107,8 @@ const components = angular$1
         streaming,
         toasts,
         tokenDialog,
-        trades
+        trades,
+        yesnoDialog
     ])
     .name;
 

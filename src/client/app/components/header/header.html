@@ -35,3 +35,10 @@
     </div>
 
 </nav>
+
+<token-dialog open-modal="$ctrl.openTokenModal"
+    close-modal="$ctrl.closeTokenDialog(tokenInfo)">
+</token-dialog>
+<settings-dialog open-modal="$ctrl.openSettingsModal"
+    close-modal="$ctrl.closeSettingsDialog(settingsInfo)" instruments="$ctrl.instrs">
+</settings-dialog>
