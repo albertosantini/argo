@@ -43,6 +43,10 @@ function ascendingComparator(f) {
 var ascendingBisect = bisector(ascending);
 var bisectRight = ascendingBisect.right;
 
+function pair(a, b) {
+  return [a, b];
+}
+
 var number = function(x) {
   return x === null ? NaN : +x;
 };
@@ -185,14 +189,12 @@ var bottom = 3;
 var left = 4;
 var epsilon = 1e-6;
 
-function translateX(scale0, scale1, d) {
-  var x = scale0(d);
-  return "translate(" + (isFinite(x) ? x : scale1(d)) + ",0)";
+function translateX(x) {
+  return "translate(" + x + ",0)";
 }
 
-function translateY(scale0, scale1, d) {
-  var y = scale0(d);
-  return "translate(0," + (isFinite(y) ? y : scale1(d)) + ")";
+function translateY(y) {
+  return "translate(0," + y + ")";
 }
 
 function center(scale) {
@@ -213,13 +215,15 @@ function axis(orient, scale) {
       tickFormat = null,
       tickSizeInner = 6,
       tickSizeOuter = 6,
-      tickPadding = 3;
+      tickPadding = 3,
+      k = orient === top || orient === left ? -1 : 1,
+      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+      transform = orient === top || orient === bottom ? translateX : translateY;
 
   function axis(context) {
     var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
         format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$1) : tickFormat,
         spacing = Math.max(tickSizeInner, 0) + tickPadding,
-        transform = orient === top || orient === bottom ? translateX : translateY,
         range = scale.range(),
         range0 = range[0] + 0.5,
         range1 = range[range.length - 1] + 0.5,
@@ -230,9 +234,7 @@ function axis(orient, scale) {
         tickExit = tick.exit(),
         tickEnter = tick.enter().append("g").attr("class", "tick"),
         line = tick.select("line"),
-        text = tick.select("text"),
-        k = orient === top || orient === left ? -1 : 1,
-        x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x");
+        text = tick.select("text");
 
     path = path.merge(path.enter().insert("path", ".tick")
         .attr("class", "domain")
@@ -260,11 +262,11 @@ function axis(orient, scale) {
 
       tickExit = tickExit.transition(context)
           .attr("opacity", epsilon)
-          .attr("transform", function(d) { return transform(position, this.parentNode.__axis || position, d); });
+          .attr("transform", function(d) { return isFinite(d = position(d)) ? transform(d) : this.getAttribute("transform"); });
 
       tickEnter
           .attr("opacity", epsilon)
-          .attr("transform", function(d) { return transform(this.parentNode.__axis || position, position, d); });
+          .attr("transform", function(d) { var p = this.parentNode.__axis; return transform(p && isFinite(p = p(d)) ? p : position(d)); });
     }
 
     tickExit.remove();
@@ -276,7 +278,7 @@ function axis(orient, scale) {
 
     tick
         .attr("opacity", 1)
-        .attr("transform", function(d) { return transform(position, position, d); });
+        .attr("transform", function(d) { return transform(position(d)); });
 
     line
         .attr(x + "2", k * tickSizeInner);
@@ -1571,6 +1573,14 @@ var formatGroup = function(grouping, thousands) {
   };
 };
 
+var formatNumerals = function(numerals) {
+  return function(value) {
+    return value.replace(/[0-9]/g, function(i) {
+      return numerals[+i];
+    });
+  };
+};
+
 var formatDefault = function(x, p) {
   x = x.toPrecision(p);
 
@@ -1631,9 +1641,11 @@ var formatTypes = {
 // [[fill]align][sign][symbol][0][width][,][.precision][type]
 var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
 
-var formatSpecifier = function(specifier) {
+function formatSpecifier(specifier) {
   return new FormatSpecifier(specifier);
-};
+}
+
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
 function FormatSpecifier(specifier) {
   if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
@@ -1681,16 +1693,17 @@ FormatSpecifier.prototype.toString = function() {
       + this.type;
 };
 
-var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
-
-function identity$2(x) {
+var identity$2 = function(x) {
   return x;
-}
+};
+
+var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
 var formatLocale = function(locale) {
   var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity$2,
       currency = locale.currency,
-      decimal = locale.decimal;
+      decimal = locale.decimal,
+      numerals = locale.numerals ? formatNumerals(locale.numerals) : identity$2;
 
   function newFormat(specifier) {
     specifier = formatSpecifier(specifier);
@@ -1735,27 +1748,12 @@ var formatLocale = function(locale) {
       } else {
         value = +value;
 
-        // Convert negative to positive, and compute the prefix.
-        // Note that -0 is not less than 0, but 1 / -0 is!
-        var valueNegative = (value < 0 || 1 / value < 0) && (value *= -1, true);
-
         // Perform the initial formatting.
-        value = formatType(value, precision);
+        var valueNegative = value < 0;
+        value = formatType(Math.abs(value), precision);
 
-        // If the original value was negative, it may be rounded to zero during
-        // formatting; treat this as (positive) zero.
-        if (valueNegative) {
-          i = -1, n = value.length;
-          valueNegative = false;
-          while (++i < n) {
-            if (c = value.charCodeAt(i), (48 < c && c < 58)
-                || (type === "x" && 96 < c && c < 103)
-                || (type === "X" && 64 < c && c < 71)) {
-              valueNegative = true;
-              break;
-            }
-          }
-        }
+        // If a negative value rounds to zero during formatting, treat as positive.
+        if (valueNegative && +value === 0) valueNegative = false;
 
         // Compute the prefix and suffix.
         valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
@@ -1787,11 +1785,13 @@ var formatLocale = function(locale) {
 
       // Reconstruct the final output based on the desired alignment.
       switch (align) {
-        case "<": return valuePrefix + value + valueSuffix + padding;
-        case "=": return valuePrefix + padding + value + valueSuffix;
-        case "^": return padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+        case "<": value = valuePrefix + value + valueSuffix + padding; break;
+        case "=": value = valuePrefix + padding + value + valueSuffix; break;
+        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+        default: value = padding + valuePrefix + value + valueSuffix; break;
       }
-      return padding + valuePrefix + value + valueSuffix;
+
+      return numerals(value);
     }
 
     format.toString = function() {
@@ -1981,14 +1981,17 @@ function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
 
+var reI = "\\s*([+-]?\\d+)\\s*";
+var reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*";
+var reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*";
 var reHex3 = /^#([0-9a-f]{3})$/;
 var reHex6 = /^#([0-9a-f]{6})$/;
-var reRgbInteger = /^rgb\(\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*\)$/;
-var reRgbPercent = /^rgb\(\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*\)$/;
-var reRgbaInteger = /^rgba\(\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
-var reRgbaPercent = /^rgba\(\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
-var reHslPercent = /^hsl\(\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*\)$/;
-var reHslaPercent = /^hsla\(\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
+var reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$");
+var reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$");
+var reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$");
+var reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$");
+var reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$");
+var reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
 
 var named = {
   aliceblue: 0xf0f8ff,
@@ -2517,7 +2520,7 @@ var rgb$1 = ((function rgbGamma(y) {
     var r = color$$1((start = rgb(start)).r, (end = rgb(end)).r),
         g = color$$1(start.g, end.g),
         b = color$$1(start.b, end.b),
-        opacity = color$$1(start.opacity, end.opacity);
+        opacity = nogamma(start.opacity, end.opacity);
     return function(t) {
       start.r = r(t);
       start.g = g(t);
@@ -3782,7 +3785,7 @@ var tauEpsilon = tau - epsilon$1;
 function Path() {
   this._x0 = this._y0 = // start of current subpath
   this._x1 = this._y1 = null; // end of current subpath
-  this._ = [];
+  this._ = "";
 }
 
 function path() {
@@ -3792,22 +3795,22 @@ function path() {
 Path.prototype = path.prototype = {
   constructor: Path,
   moveTo: function(x, y) {
-    this._.push("M", this._x0 = this._x1 = +x, ",", this._y0 = this._y1 = +y);
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
   },
   closePath: function() {
     if (this._x1 !== null) {
       this._x1 = this._x0, this._y1 = this._y0;
-      this._.push("Z");
+      this._ += "Z";
     }
   },
   lineTo: function(x, y) {
-    this._.push("L", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   quadraticCurveTo: function(x1, y1, x, y) {
-    this._.push("Q", +x1, ",", +y1, ",", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   bezierCurveTo: function(x1, y1, x2, y2, x, y) {
-    this._.push("C", +x1, ",", +y1, ",", +x2, ",", +y2, ",", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   arcTo: function(x1, y1, x2, y2, r) {
     x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
@@ -3824,9 +3827,7 @@ Path.prototype = path.prototype = {
 
     // Is this path empty? Move to (x1,y1).
     if (this._x1 === null) {
-      this._.push(
-        "M", this._x1 = x1, ",", this._y1 = y1
-      );
+      this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
     }
 
     // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
@@ -3836,9 +3837,7 @@ Path.prototype = path.prototype = {
     // Equivalently, is (x1,y1) coincident with (x2,y2)?
     // Or, is the radius zero? Line to (x1,y1).
     else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon$1) || !r) {
-      this._.push(
-        "L", this._x1 = x1, ",", this._y1 = y1
-      );
+      this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
     }
 
     // Otherwise, draw an arc!
@@ -3855,14 +3854,10 @@ Path.prototype = path.prototype = {
 
       // If the start tangent is not coincident with (x0,y0), line to.
       if (Math.abs(t01 - 1) > epsilon$1) {
-        this._.push(
-          "L", x1 + t01 * x01, ",", y1 + t01 * y01
-        );
+        this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
       }
 
-      this._.push(
-        "A", r, ",", r, ",0,0,", +(y01 * x20 > x01 * y20), ",", this._x1 = x1 + t21 * x21, ",", this._y1 = y1 + t21 * y21
-      );
+      this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
     }
   },
   arc: function(x, y, r, a0, a1, ccw) {
@@ -3879,42 +3874,35 @@ Path.prototype = path.prototype = {
 
     // Is this path empty? Move to (x0,y0).
     if (this._x1 === null) {
-      this._.push(
-        "M", x0, ",", y0
-      );
+      this._ += "M" + x0 + "," + y0;
     }
 
     // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
     else if (Math.abs(this._x1 - x0) > epsilon$1 || Math.abs(this._y1 - y0) > epsilon$1) {
-      this._.push(
-        "L", x0, ",", y0
-      );
+      this._ += "L" + x0 + "," + y0;
     }
 
     // Is this arc empty? We’re done.
     if (!r) return;
 
+    // Does the angle go the wrong way? Flip the direction.
+    if (da < 0) da = da % tau + tau;
+
     // Is this a complete circle? Draw two arcs to complete the circle.
     if (da > tauEpsilon) {
-      this._.push(
-        "A", r, ",", r, ",0,1,", cw, ",", x - dx, ",", y - dy,
-        "A", r, ",", r, ",0,1,", cw, ",", this._x1 = x0, ",", this._y1 = y0
-      );
+      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
     }
 
-    // Otherwise, draw an arc!
-    else {
-      if (da < 0) da = da % tau + tau;
-      this._.push(
-        "A", r, ",", r, ",0,", +(da >= pi), ",", cw, ",", this._x1 = x + r * Math.cos(a1), ",", this._y1 = y + r * Math.sin(a1)
-      );
+    // Is this arc non-empty? Draw an arc!
+    else if (da > epsilon$1) {
+      this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
     }
   },
   rect: function(x, y, w, h) {
-    this._.push("M", this._x0 = this._x1 = +x, ",", this._y0 = this._y1 = +y, "h", +w, "v", +h, "h", -w, "Z");
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
   },
   toString: function() {
-    return this._.join("");
+    return this._;
   }
 };
 
@@ -4250,7 +4238,7 @@ function inferColumns(rows) {
 }
 
 var dsv = function(delimiter) {
-  var reFormat = new RegExp("[\"" + delimiter + "\n]"),
+  var reFormat = new RegExp("[\"" + delimiter + "\n\r]"),
       delimiterCode = delimiter.charCodeAt(0);
 
   function parse(text, f) {
