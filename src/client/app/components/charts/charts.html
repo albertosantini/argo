@@ -1,13 +1,6 @@
 <div ng-show="$ctrl.account.streamingInstruments">
-    <ohlc-chart class="dn-s"
-        instrument="$ctrl.selectedInstrument"
-        granularity="$ctrl.selectedGranularity"
-        data="$ctrl.data"
-        feed="$ctrl.feed",
-        trades="$ctrl.trades">
-    </ohlc-chart>
 
-    <div class="flex flex-wrap flex-row justify-center justify-around">
+    <div class="flex flex-wrap flex-row justify-center justify-around mb2">
         <select ng-model="$ctrl.selectedInstrument"
             ng-change="$ctrl.changeChart($ctrl.selectedInstrument, $ctrl.selectedGranularity)"
             ng-options="instrument for instrument in $ctrl.account.streamingInstruments">
@@ -27,6 +20,15 @@
           <span class="pl1">Sell</span>
         </a>
     </div>
+
+    <ohlc-chart class="dn-s"
+        instrument="$ctrl.selectedInstrument"
+        granularity="$ctrl.selectedGranularity"
+        data="$ctrl.data"
+        feed="$ctrl.feed",
+        trades="$ctrl.trades">
+    </ohlc-chart>
+
 </div>
 
 <order-dialog ng-if="$ctrl.openOrderModal" open-modal="$ctrl.openOrderModal"
