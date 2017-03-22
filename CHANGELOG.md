@@ -1,3 +1,36 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/albertosantini/argo/compare/v4.4.0...v5.0.0) (2017-03-22)
+
+
+### Bug Fixes
+
+* **api:** improve error message handler ([5396ee6](https://github.com/albertosantini/argo/commit/5396ee6))
+* **app:** fix app layout ([c9f6f60](https://github.com/albertosantini/argo/commit/c9f6f60))
+* **charts:** fix alignmentTimezone in candles request ([3db5421](https://github.com/albertosantini/argo/commit/3db5421))
+* **charts:** fix candles chart ([e6a4a18](https://github.com/albertosantini/argo/commit/e6a4a18))
+* **charts:** fix sell button ([813776f](https://github.com/albertosantini/argo/commit/813776f))
+* **charts:** when mobile ohlc chart is hidden ([48aedcd](https://github.com/albertosantini/argo/commit/48aedcd))
+* **news:** fix timestamp ([3b77f8e](https://github.com/albertosantini/argo/commit/3b77f8e))
+* **order-dialog:** close if pips are not avalable ([f5ac2e0](https://github.com/albertosantini/argo/commit/f5ac2e0))
+* **order-dialog:** fix message error ([11b7b1b](https://github.com/albertosantini/argo/commit/11b7b1b))
+* **orders:** add error handling when closing ([5a01760](https://github.com/albertosantini/argo/commit/5a01760))
+* **orders:** fix order.type in wrong field ([2d2ed31](https://github.com/albertosantini/argo/commit/2d2ed31))
+* **spinner:** use tachyons in the spinner ([812eb36](https://github.com/albertosantini/argo/commit/812eb36))
+* **tabs:** align text right for contentv in tabs ([e8db1a3](https://github.com/albertosantini/argo/commit/e8db1a3))
+* **tabs:** center message whit no content ([cbba541](https://github.com/albertosantini/argo/commit/cbba541))
+* **token-dialog:** raise error if no account ([6595574](https://github.com/albertosantini/argo/commit/6595574))
+* **trades:** fix typo in closing dialog ([596f494](https://github.com/albertosantini/argo/commit/596f494))
+
+
+### Features
+
+* **build:** prepare d3 bundle for techan ([80f6308](https://github.com/albertosantini/argo/commit/80f6308))
+* **build:** remove simple-modal dep ([0724004](https://github.com/albertosantini/argo/commit/0724004))
+* **material:** remove material dep ([fc0a8b0](https://github.com/albertosantini/argo/commit/fc0a8b0))
+* **simple-modal:** add simple-modal script ([0e6718e](https://github.com/albertosantini/argo/commit/0e6718e))
+
+
+
 <a name="4.4.0"></a>
 # [4.4.0](https://github.com/albertosantini/argo/compare/v4.3.0...v4.4.0) (2017-02-22)
 
