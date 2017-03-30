@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global angular, assert, inject */
+
 describe("tradesService", () => {
     const api = "/api/trades";
 

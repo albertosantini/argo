@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global angular, assert, inject */
+
 describe("accountsService", () => {
     const api = "/api/account",
         apiInstruments = "/api/instruments";

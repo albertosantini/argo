@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global assert, expect, inject */
+
 describe("activityService", () => {
     const api = "/api/transactions";
     const activity = {

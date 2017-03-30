@@ -3,16 +3,6 @@ parserOptions:
 
 env:
     browser: true
-    mocha: true
-
-globals:
-    angular: false
-    d3: false
-    techan: false
-
-    assert: false
-    inject: false
-    expect: false
 
 plugins:
     - angular
@@ -50,7 +40,7 @@ rules:
     angular/no-services: ["error", ["$http", "$resource", "Restangular"]]
     angular/on-watch: "error"
     angular/rest-service: "off"
-    angular/service-name: "error"
+    angular/service-name: "off"
     angular/timeout-service: "error"
     angular/typecheck-array: "error"
     angular/typecheck-date: "error"

@@ -1,3 +1,5 @@
+import angular from "angular";
+
 export class ChartsController {
     constructor(ToastsService, AccountsService, ChartsService,
             QuotesService, TradesService) {

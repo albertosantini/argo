@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global assert, inject */
+
 describe("Exposure", () => {
     let $controller,
         tradesServiceMock;

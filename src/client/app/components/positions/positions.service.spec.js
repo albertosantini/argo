@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global assert, inject */
+
 describe("positionsService", () => {
     const api = "/api/positions";
 

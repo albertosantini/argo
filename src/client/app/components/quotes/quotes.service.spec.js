@@ -1,3 +1,6 @@
+/* eslint-env mocha */
+/* global assert, inject */
+
 describe("quotesService", () => {
     let AccountsService,
         quotesService;

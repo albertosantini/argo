@@ -1,3 +1,5 @@
+import angular from "angular";
+
 export class TokenDialogController {
     constructor($window, ToastsService, SessionService, AccountsService, StreamingService) {
         this.$window = $window;
