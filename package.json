@@ -29,8 +29,8 @@
         "limiter": "~1.1.0",
         "request": "~2.81.0",
 
-        "angular": "~1.6.3",
-        "angular-mocks": "~1.6.3",
+        "angular": "~1.6.4",
+        "angular-mocks": "~1.6.4",
         "d3": "~4.7.4",
         "techan": "~0.8.0",
         "tachyons": "~4.6.2"
@@ -60,7 +60,7 @@
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.0.0",
         "rollup": "^0.41.6",
-        "rollup-plugin-node-resolve": "^2.0.0",
-        "uglify-js": "^2.8.18"
+        "rollup-plugin-node-resolve": "^2.1.0",
+        "uglify-js": "^2.8.20"
     }
 }
