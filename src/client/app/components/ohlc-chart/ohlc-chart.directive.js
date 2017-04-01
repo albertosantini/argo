@@ -292,15 +292,19 @@ export function ohlcChartDirective() {
                 .attr("class", "crosshair ohlc");
 
             data = d3.csvParse(csv).map(
-                d => ({
-                    date: new Date(+d.Date * 1000),
-                    open: +d.Open,
-                    high: +d.High,
-                    low: +d.Low,
-                    close: +d.Close,
-                    volume: +d.Volume
-                })
-            );
+                d => {
+                    const date = isNaN(Date.parse(d.Date))
+                        ? new Date(+d.Date * 1000) : new Date(d.Date);
+
+                    return {
+                        date,
+                        open: +d.Open,
+                        high: +d.High,
+                        low: +d.Low,
+                        close: +d.Close,
+                        volume: +d.Volume
+                    };
+                });
 
             svg.select("g.candlestick").datum(data);
             svg.select("g.sma.ma-0").datum(sma0Calculator(data));

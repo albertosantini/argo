@@ -1,7 +1,7 @@
-(function (exports,angular$1,d3,techan) {
+(function (exports,angular,d3,techan) {
 'use strict';
 
-angular$1 = 'default' in angular$1 ? angular$1['default'] : angular$1;
+angular = 'default' in angular ? angular['default'] : angular;
 techan = 'default' in techan ? techan['default'] : techan;
 
 const rootComponent = {
@@ -59,13 +59,13 @@ function appConfig($httpProvider, $locationProvider) {
 }
 appConfig.$inject = ["$httpProvider", "$locationProvider"];
 
-const app = angular$1
+const app = angular
     .module("common.app", [])
     .component("app", appComponent)
     .config(appConfig)
     .name;
 
-const common = angular$1
+const common = angular
     .module("common", [
         app
     ])
@@ -127,7 +127,7 @@ class AccountsService {
             }
 
             if (!accounts.length) {
-                angular$1.merge(this.account, response.data.account);
+                angular.merge(this.account, response.data.account);
 
                 this.account.timestamp = new Date();
 
@@ -142,7 +142,7 @@ class AccountsService {
                     }).then(instruments => {
                         this.account.instruments = instruments.data;
                         this.account.pips = {};
-                        angular$1.forEach(this.account.instruments, i => {
+                        angular.forEach(this.account.instruments, i => {
                             this.account.pips[i.name] =
                                 Math.pow(10, i.pipLocation);
                         });
@@ -163,7 +163,7 @@ class AccountsService {
 }
 AccountsService.$inject = ["$http", "SessionService"];
 
-const account = angular$1
+const account = angular
     .module("components.account", [])
     .component("account", accountComponent)
     .service("AccountsService", AccountsService)
@@ -229,7 +229,7 @@ class ActivityService {
 }
 ActivityService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const activity = angular$1
+const activity = angular
     .module("components.activity", [])
     .component("activity", activityComponent)
     .service("ActivityService", ActivityService)
@@ -348,7 +348,7 @@ class ChartsService {
 }
 ChartsService.$inject = ["$http", "SessionService"];
 
-const charts = angular$1
+const charts = angular
     .module("components.charts", [])
     .component("charts", chartsComponent)
     .service("ChartsService", ChartsService)
@@ -393,7 +393,7 @@ const exposureComponent = {
     controller: ExposureController
 };
 
-const exposure = angular$1
+const exposure = angular
     .module("components.exposure", [])
     .component("exposure", exposureComponent)
     .name;
@@ -436,7 +436,7 @@ class HeaderController {
         this.SessionService.isLogged().then(credentials => {
             const allInstrs = this.AccountsService.getAccount().instruments;
 
-            angular$1.forEach(allInstrs, instrument => {
+            angular.forEach(allInstrs, instrument => {
                 if (!this.instrs.hasOwnProperty(instrument.name)) {
                     this.instrs[instrument.name] = false;
                 }
@@ -458,7 +458,7 @@ class HeaderController {
 
         if (settingsInfo) {
             this.$window.localStorage.setItem("argo.instruments",
-                angular$1.toJson(settingsInfo));
+                angular.toJson(settingsInfo));
             instruments = this.AccountsService
                 .setStreamingInstruments(settingsInfo);
 
@@ -485,7 +485,7 @@ const headerComponent = {
     controller: HeaderController
 };
 
-const header = angular$1
+const header = angular
     .module("components.header", [])
     .component("header", headerComponent)
     .name;
@@ -517,7 +517,7 @@ function highlighterDirective($timeout) {
 }
 highlighterDirective.$inject = ["$timeout"];
 
-const highlighter = angular$1
+const highlighter = angular
     .module("components.highlighter", [])
     .directive("highlighter", highlighterDirective)
     .name;
@@ -561,7 +561,7 @@ class NewsService {
 }
 NewsService.$inject = ["$http", "SessionService"];
 
-const news = angular$1
+const news = angular
     .module("components.news", [])
     .component("news", newsComponent)
     .service("NewsService", NewsService)
@@ -858,15 +858,19 @@ function ohlcChartDirective() {
                 .attr("class", "crosshair ohlc");
 
             data = d3.csvParse(csv).map(
-                d => ({
-                    date: new Date(+d.Date * 1000),
-                    open: +d.Open,
-                    high: +d.High,
-                    low: +d.Low,
-                    close: +d.Close,
-                    volume: +d.Volume
-                })
-            );
+                d => {
+                    const date = isNaN(Date.parse(d.Date))
+                        ? new Date(+d.Date * 1000) : new Date(d.Date);
+
+                    return {
+                        date,
+                        open: +d.Open,
+                        high: +d.High,
+                        low: +d.Low,
+                        close: +d.Close,
+                        volume: +d.Volume
+                    };
+                });
 
             svg.select("g.candlestick").datum(data);
             svg.select("g.sma.ma-0").datum(sma0Calculator(data));
@@ -921,7 +925,7 @@ function ohlcChartDirective() {
 }
 ohlcChartDirective.$inject = [];
 
-const ohlcChart = angular$1
+const ohlcChart = angular
     .module("components.ohlc-chart", [])
     .directive("ohlcChart", ohlcChartDirective)
     .name;
@@ -1156,7 +1160,7 @@ const orderDialogComponent = {
     }
 };
 
-const orderDialog = angular$1
+const orderDialog = angular
     .module("components.order-dialog", [])
     .component("orderDialog", orderDialogComponent)
     .name;
@@ -1229,7 +1233,7 @@ class OrdersService {
                 accountId: credentials.accountId
             }).then(res => {
                 this.orders.length = 0;
-                angular$1.extend(this.orders, res.data);
+                angular.extend(this.orders, res.data);
             });
         });
     }
@@ -1292,7 +1296,7 @@ class OrdersService {
 }
 OrdersService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const orders = angular$1
+const orders = angular
     .module("components.orders", [])
     .component("orders", ordersComponent)
     .service("OrdersService", OrdersService)
@@ -1355,7 +1359,7 @@ class PluginsService {
                         delete this.plugins[name];
                     }
                 }
-                angular$1.extend(this.plugins, res.data);
+                angular.extend(this.plugins, res.data);
                 this.pluginsInfo.count = Object.keys(this.plugins).length;
 
                 Object.keys(this.plugins).forEach(key => {
@@ -1387,7 +1391,7 @@ class PluginsService {
 }
 PluginsService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const plugins = angular$1
+const plugins = angular
     .module("components.plugins", [])
     .component("plugins", pluginsComponent)
     .service("PluginsService", PluginsService)
@@ -1451,7 +1455,7 @@ class PositionsService {
 }
 PositionsService.$inject = ["$http", "SessionService"];
 
-const positions = angular$1
+const positions = angular
     .module("components.positions", [])
     .component("positions", positionsComponent)
     .service("PositionsService", PositionsService)
@@ -1498,7 +1502,7 @@ class QuotesService {
         };
 
 
-        if (!angular$1.equals(streamingInstruments, Object.keys(this.quotes))) {
+        if (!angular.equals(streamingInstruments, Object.keys(this.quotes))) {
             streamingInstruments.forEach(instr => {
                 let temp;
 
@@ -1523,7 +1527,7 @@ class QuotesService {
 }
 QuotesService.$inject = ["AccountsService"];
 
-const quotes = angular$1
+const quotes = angular
     .module("components.quotes", [])
     .component("quotes", quotesComponent)
     .service("QuotesService", QuotesService)
@@ -1553,7 +1557,7 @@ class SessionService {
 }
 SessionService.$inject = ["$q"];
 
-const session = angular$1
+const session = angular
     .module("components.session", [])
     .service("SessionService", SessionService)
     .name;
@@ -1575,7 +1579,7 @@ const settingsDialogComponent = {
     }
 };
 
-const settingsDialog = angular$1
+const settingsDialog = angular
     .module("components.settings-dialog", [])
     .component("settingsDialog", settingsDialogComponent)
     .name;
@@ -1648,7 +1652,7 @@ function slChartDirective() {
 }
 slChartDirective.$inject = [];
 
-const slChart = angular$1
+const slChart = angular
     .module("components.sl-chart", [])
     .directive("slChart", slChartDirective)
     .name;
@@ -1694,7 +1698,7 @@ class StreamingService {
 
             this.$timeout(() => {
                 try {
-                    data = angular$1.fromJson(event.data);
+                    data = angular.fromJson(event.data);
 
                     isTick = data.closeoutAsk && data.closeoutBid;
                     isTransaction = data.accountID;
@@ -1740,7 +1744,7 @@ StreamingService.$inject = [
     "OrdersService", "AccountsService", "PluginsService"
 ];
 
-const streaming = angular$1
+const streaming = angular
     .module("components.streaming", [])
     .service("StreamingService", StreamingService)
     .name;
@@ -1793,7 +1797,7 @@ class ToastsService {
 }
 ToastsService.$inject = ["$timeout"];
 
-const toasts = angular$1
+const toasts = angular
     .module("components.toasts", [])
     .component("toasts", toastsComponent)
     .service("ToastsService", ToastsService)
@@ -1902,7 +1906,7 @@ const tokenDialogComponent = {
     }
 };
 
-const tokenDialog = angular$1
+const tokenDialog = angular
     .module("components.token-dialog", [])
     .component("tokenDialog", tokenDialogComponent)
     .name;
@@ -1981,7 +1985,7 @@ class TradesService {
                 accountId: credentials.accountId
             }).then(res => {
                 this.trades.length = 0;
-                angular$1.extend(this.trades, res.data);
+                angular.extend(this.trades, res.data);
                 this.trades.forEach(trade => {
                     trade.side = trade.currentUnits > 0 ? "buy" : "sell";
                 });
@@ -2030,7 +2034,7 @@ class TradesService {
 }
 TradesService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const trades = angular$1
+const trades = angular
     .module("components.trades", [])
     .component("trades", tradesComponent)
     .service("TradesService", TradesService)
@@ -2050,12 +2054,12 @@ const yesnoDialogComponent = {
     }
 };
 
-const yesnoDialog = angular$1
+const yesnoDialog = angular
     .module("components.yesno-dialog", [])
     .component("yesnoDialog", yesnoDialogComponent)
     .name;
 
-const components = angular$1
+const components = angular
     .module("components", [
         account,
         activity,
@@ -2081,7 +2085,7 @@ const components = angular$1
     ])
     .name;
 
-const root = angular$1
+const root = angular
     .module("root", [
         common,
         components
