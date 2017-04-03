@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/albertosantini/argo/compare/v5.0.0...v5.0.1) (2017-04-03)
+
+
+### Bug Fixes
+
+* **ohlc:** fix again date value for candles ([e59cadf](https://github.com/albertosantini/argo/commit/e59cadf))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/albertosantini/argo/compare/v4.4.0...v5.0.0) (2017-03-22)
 
