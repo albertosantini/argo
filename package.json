@@ -21,7 +21,7 @@
         "node": ">=6"
     },
     "dependencies": {
-        "async": "~2.2.0",
+        "async": "~2.3.0",
         "body-parser": "~1.17.1",
         "express": "~4.15.2",
         "faye-websocket": "~0.11.1",
@@ -33,7 +33,7 @@
         "angular-mocks": "~1.6.4",
         "d3": "~4.7.4",
         "techan": "~0.8.0",
-        "tachyons": "~4.6.2"
+        "tachyons": "~4.7.0"
     },
     "optionalDependencies": {
         "electron": "~1.6.2"
@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.0.0",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-js": "^2.8.20"
+        "uglify-js": "^2.8.21"
     }
 }
