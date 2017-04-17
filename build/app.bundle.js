@@ -109,11 +109,8 @@ class AccountsService {
         });
     }
 
-    getAccounts(data) {
-        const environment = data.environment || "practice",
-            token = data.token,
-            accountId = data.accountId,
-            api = accountId ? "/api/account" : "/api/accounts";
+    getAccounts({ environment = "practice", token, accountId } = {}) {
+        const api = accountId ? "/api/account" : "/api/accounts";
 
         return this.$http.post(api, {
             environment,
@@ -327,14 +324,14 @@ class ChartsService {
         this.SessionService = SessionService;
     }
 
-    getHistQuotes(opt) {
-        return this.SessionService.isLogged().then(credentials => {
-            const instrument = opt && opt.instrument || "EUR_USD",
-                granularity = opt && opt.granularity || "M5",
-                count = opt && opt.count || 251,
-                dailyAlignment = opt && opt.dailyAlignment || "0";
-
-            return this.$http.post("/api/candles", {
+    getHistQuotes({
+            instrument = "EUR_USD",
+            granularity = "M5",
+            count = 251,
+            dailyAlignment = "0"
+        } = {}) {
+        return this.SessionService.isLogged().then(credentials =>
+            this.$http.post("/api/candles", {
                 environment: credentials.environment,
                 token: credentials.token,
                 instrument,
@@ -342,8 +339,8 @@ class ChartsService {
                 count,
                 dailyAlignment
             }).then(candles => candles.data)
-            .catch(err => err.data);
-        });
+            .catch(err => err.data)
+        );
     }
 }
 ChartsService.$inject = ["$http", "SessionService"];
