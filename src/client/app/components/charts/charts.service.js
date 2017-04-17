@@ -5,11 +5,11 @@ export class ChartsService {
     }
 
     getHistQuotes({
-            instrument = "EUR_USD",
-            granularity = "M5",
-            count = 251,
-            dailyAlignment = "0"
-        } = {}) {
+        instrument = "EUR_USD",
+        granularity = "M5",
+        count = 251,
+        dailyAlignment = "0"
+    } = {}) {
         return this.SessionService.isLogged().then(credentials =>
             this.$http.post("/api/candles", {
                 environment: credentials.environment,
@@ -19,7 +19,7 @@ export class ChartsService {
                 count,
                 dailyAlignment
             }).then(candles => candles.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 }

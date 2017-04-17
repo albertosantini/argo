@@ -2,8 +2,9 @@ import angular from "angular";
 
 export class StreamingService {
     constructor($timeout, $http, ToastsService,
-            QuotesService, ActivityService, TradesService,
-            OrdersService, AccountsService, PluginsService) {
+        QuotesService, ActivityService, TradesService,
+        OrdersService, AccountsService, PluginsService) {
+
         this.$timeout = $timeout;
         this.$http = $http;
         this.ToastsService = ToastsService;

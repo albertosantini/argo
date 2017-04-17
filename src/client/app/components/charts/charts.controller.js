@@ -2,7 +2,8 @@ import angular from "angular";
 
 export class ChartsController {
     constructor(ToastsService, AccountsService, ChartsService,
-            QuotesService, TradesService) {
+        QuotesService, TradesService) {
+
         this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;

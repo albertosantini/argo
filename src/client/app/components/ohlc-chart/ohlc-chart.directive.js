@@ -239,7 +239,7 @@ export function ohlcChartDirective() {
 
             const defs = svg.append("defs")
                 .append("clipPath")
-                    .attr("id", "ohlcClip");
+                .attr("id", "ohlcClip");
 
             defs.append("rect")
                 .attr("x", 0)
@@ -276,14 +276,14 @@ export function ohlcChartDirective() {
 
             svg
                 .append("g")
-                    .attr("class", "y axis")
+                .attr("class", "y axis")
                 .append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "end")
-                    .text(`Price (${myInstrument} / ${myGranularity})`);
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("font-weight", "bold")
+                .style("text-anchor", "end")
+                .text(`Price (${myInstrument} / ${myGranularity})`);
 
             svg.append("g")
                 .attr("class", "volume axis");

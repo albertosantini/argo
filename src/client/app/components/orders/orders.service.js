@@ -43,7 +43,7 @@ export class OrdersService {
                 takeProfitOnFill: order.takeProfitOnFill,
                 trailingStopLossOnFill: order.trailingStopLossOnFill
             }).then(trade => trade.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 
@@ -55,7 +55,7 @@ export class OrdersService {
                 accountId: credentials.accountId,
                 id
             }).then(order => order.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 

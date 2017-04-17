@@ -2,8 +2,8 @@ import angular from "angular";
 
 export class HeaderController {
     constructor($window, $rootScope, ToastsService,
-            AccountsService, SessionService,
-            QuotesService, StreamingService) {
+        AccountsService, SessionService, QuotesService, StreamingService) {
+
         this.$window = $window;
         this.$rootScope = $rootScope;
         this.ToastsService = ToastsService;

@@ -37,7 +37,7 @@ export class TradesService {
                 accountId: credentials.accountId,
                 id
             }).then(order => order.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 
