@@ -22,11 +22,8 @@ export class AccountsService {
         });
     }
 
-    getAccounts(data) {
-        const environment = data.environment || "practice",
-            token = data.token,
-            accountId = data.accountId,
-            api = accountId ? "/api/account" : "/api/accounts";
+    getAccounts({ environment = "practice", token, accountId } = {}) {
+        const api = accountId ? "/api/account" : "/api/accounts";
 
         return this.$http.post(api, {
             environment,
