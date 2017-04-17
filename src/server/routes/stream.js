@@ -15,12 +15,13 @@ let pricesStreaming,
     eventsStreaming,
     ws;
 
-function start(options, callback) {
-    const environment = options && options.environment || config.environment,
-        accessToken = options && options.accessToken || config.accessToken,
-        accountId = options && options.accountId || config.accountId,
-        instruments = options && options.instruments || config.instruments,
-        stream = config.getUrl(environment, "stream"),
+function start({
+        environment = config.environment,
+        accessToken = config.accessToken,
+        accountId = config.accountId,
+        instruments = config.instruments
+    } = {}, callback) {
+    const stream = config.getUrl(environment, "stream"),
         pricesUrl = `${stream}/v3/accounts/${accountId}/pricing/stream`,
         eventsUrl = `${stream}/v3/accounts/${accountId}/transactions/stream`,
         authHeader = {
