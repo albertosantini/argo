@@ -30,14 +30,13 @@ export class TokenDialogController {
     }
 
     login(tokenInfo) {
-        if (tokenInfo) {
-            this.environment = tokenInfo.environment;
-            this.token = tokenInfo.token;
-        } else {
-            this.environment = "";
-            this.token = "";
-            this.accountId = "";
+        if (!tokenInfo) {
+            this.closeModal();
+            return;
         }
+
+        this.environment = tokenInfo.environment;
+        this.token = tokenInfo.token;
 
         this.AccountsService.getAccounts({
             environment: this.environment,
