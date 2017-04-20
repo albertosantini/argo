@@ -234,7 +234,8 @@ const activity = angular
 
 class ChartsController {
     constructor(ToastsService, AccountsService, ChartsService,
-            QuotesService, TradesService) {
+        QuotesService, TradesService) {
+
         this.ToastsService = ToastsService;
         this.AccountsService = AccountsService;
         this.ChartsService = ChartsService;
@@ -325,11 +326,11 @@ class ChartsService {
     }
 
     getHistQuotes({
-            instrument = "EUR_USD",
-            granularity = "M5",
-            count = 251,
-            dailyAlignment = "0"
-        } = {}) {
+        instrument = "EUR_USD",
+        granularity = "M5",
+        count = 251,
+        dailyAlignment = "0"
+    } = {}) {
         return this.SessionService.isLogged().then(credentials =>
             this.$http.post("/api/candles", {
                 environment: credentials.environment,
@@ -339,7 +340,7 @@ class ChartsService {
                 count,
                 dailyAlignment
             }).then(candles => candles.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 }
@@ -397,8 +398,8 @@ const exposure = angular
 
 class HeaderController {
     constructor($window, $rootScope, ToastsService,
-            AccountsService, SessionService,
-            QuotesService, StreamingService) {
+        AccountsService, SessionService, QuotesService, StreamingService) {
+
         this.$window = $window;
         this.$rootScope = $rootScope;
         this.ToastsService = ToastsService;
@@ -802,7 +803,7 @@ function ohlcChartDirective() {
 
             const defs = svg.append("defs")
                 .append("clipPath")
-                    .attr("id", "ohlcClip");
+                .attr("id", "ohlcClip");
 
             defs.append("rect")
                 .attr("x", 0)
@@ -839,14 +840,14 @@ function ohlcChartDirective() {
 
             svg
                 .append("g")
-                    .attr("class", "y axis")
+                .attr("class", "y axis")
                 .append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "end")
-                    .text(`Price (${myInstrument} / ${myGranularity})`);
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("font-weight", "bold")
+                .style("text-anchor", "end")
+                .text(`Price (${myInstrument} / ${myGranularity})`);
 
             svg.append("g")
                 .attr("class", "volume axis");
@@ -1252,7 +1253,7 @@ class OrdersService {
                 takeProfitOnFill: order.takeProfitOnFill,
                 trailingStopLossOnFill: order.trailingStopLossOnFill
             }).then(trade => trade.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 
@@ -1264,7 +1265,7 @@ class OrdersService {
                 accountId: credentials.accountId,
                 id
             }).then(order => order.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 
@@ -1656,8 +1657,9 @@ const slChart = angular
 
 class StreamingService {
     constructor($timeout, $http, ToastsService,
-            QuotesService, ActivityService, TradesService,
-            OrdersService, AccountsService, PluginsService) {
+        QuotesService, ActivityService, TradesService,
+        OrdersService, AccountsService, PluginsService) {
+
         this.$timeout = $timeout;
         this.$http = $http;
         this.ToastsService = ToastsService;
@@ -1830,14 +1832,13 @@ class TokenDialogController {
     }
 
     login(tokenInfo) {
-        if (tokenInfo) {
-            this.environment = tokenInfo.environment;
-            this.token = tokenInfo.token;
-        } else {
-            this.environment = "";
-            this.token = "";
-            this.accountId = "";
+        if (!tokenInfo) {
+            this.closeModal();
+            return;
         }
+
+        this.environment = tokenInfo.environment;
+        this.token = tokenInfo.token;
 
         this.AccountsService.getAccounts({
             environment: this.environment,
@@ -1998,7 +1999,7 @@ class TradesService {
                 accountId: credentials.accountId,
                 id
             }).then(order => order.data)
-            .catch(err => err.data)
+                .catch(err => err.data)
         );
     }
 
