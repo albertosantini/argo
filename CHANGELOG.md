@@ -1,3 +1,14 @@
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/albertosantini/argo/compare/v5.0.1...v5.0.2) (2017-04-21)
+
+
+### Bug Fixes
+
+* **streaming:** fix bid and ask price ([86e75ae](https://github.com/albertosantini/argo/commit/86e75ae))
+* **token-dialog:** fix login cancel ([64de056](https://github.com/albertosantini/argo/commit/64de056))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/albertosantini/argo/compare/v5.0.0...v5.0.1) (2017-04-03)
 
