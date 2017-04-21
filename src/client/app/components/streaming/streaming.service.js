@@ -52,8 +52,10 @@ export class StreamingService {
                         tick = {
                             time: data.time,
                             instrument: data.instrument,
-                            ask: data.closeoutAsk,
-                            bid: data.closeoutBid
+                            ask: data.asks[0] && data.asks[0].price ||
+                                data.closeoutAsk,
+                            bid: data.bids[0] && data.bids[0].price ||
+                                data.closeoutBid
                         };
 
                         this.QuotesService.updateTick(tick);
