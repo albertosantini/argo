@@ -62,7 +62,7 @@ path.tradearrow.buy { fill: rgb(114, 213, 255); }
 path.tradearrow.buy-pending { fill-opacity: 0.2; stroke: #0000FF; stroke-width: 1.5; }
 path.tradearrow.sell { fill: rgb(243, 198, 113); }
 
-.axis path, .axis line { fill: none; stroke: #000; shape-rendering: crispEdges; }
+.axis path, .axis line { fill: none; stroke: #000; }
 
 .ma-0 path.line { stroke: #1f77b4; }
 .ma-1 path.line { stroke: #aec7e8; }
