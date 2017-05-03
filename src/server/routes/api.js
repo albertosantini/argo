@@ -407,13 +407,13 @@ function processApiError(apiName, err, code, message, res) {
     if (err) {
         util.log("ERROR", apiName, err);
         res.json({
-            code: "",
+            code: err,
             message: err
         });
     } else {
         util.log("ERROR", apiName, code, message);
         res.json({
-            code,
+            code: code || message,
             message
         });
     }
