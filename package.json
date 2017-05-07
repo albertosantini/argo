@@ -55,12 +55,12 @@
         "eslint-plugin-angular": "^2.4.0",
         "mocha": "^3.3.0",
         "chai": "^3.5.0",
-        "karma": "^1.6.0",
+        "karma": "^1.7.0",
         "karma-mocha": "^1.3.0",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-js": "^2.8.22"
+        "uglify-js": "^2.8.23"
     }
 }
