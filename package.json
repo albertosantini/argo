@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-js": "^2.8.23"
+        "uglify-js": "^3.0.1"
     }
 }
