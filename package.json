@@ -33,7 +33,7 @@
         "angular-mocks": "~1.6.4",
         "d3": "~4.8.0",
         "techan": "~0.8.0",
-        "tachyons": "~4.7.1"
+        "tachyons": "~4.7.2"
     },
     "optionalDependencies": {
         "electron": "~1.6.6"
@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-js": "^3.0.1"
+        "uglify-js": "^3.0.3"
     }
 }
