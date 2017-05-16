@@ -31,7 +31,7 @@
 
         "angular": "~1.6.4",
         "angular-mocks": "~1.6.4",
-        "d3": "~4.8.0",
+        "d3": "~4.9.1",
         "techan": "~0.8.0",
         "tachyons": "~4.7.2"
     },
@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "butternut": "^0.4.3"
+        "butternut": "^0.4.4"
     }
 }

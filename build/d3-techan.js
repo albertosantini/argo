@@ -262,15 +262,15 @@ var left = 4;
 var epsilon = 1e-6;
 
 function translateX(x) {
-  return "translate(" + x + ",0)";
+  return "translate(" + (x + 0.5) + ",0)";
 }
 
 function translateY(y) {
-  return "translate(0," + y + ")";
+  return "translate(0," + (y + 0.5) + ")";
 }
 
 function center(scale) {
-  var offset = scale.bandwidth() / 2;
+  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
   if (scale.round()) offset = Math.round(offset);
   return function(d) {
     return scale(d) + offset;
@@ -289,7 +289,7 @@ function axis(orient, scale) {
       tickSizeOuter = 6,
       tickPadding = 3,
       k = orient === top || orient === left ? -1 : 1,
-      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+      x = orient === left || orient === right ? "x" : "y",
       transform = orient === top || orient === bottom ? translateX : translateY;
 
   function axis(context) {
@@ -316,14 +316,11 @@ function axis(orient, scale) {
 
     line = line.merge(tickEnter.append("line")
         .attr("stroke", "#000")
-        .attr(x + "2", k * tickSizeInner)
-        .attr(y + "1", 0.5)
-        .attr(y + "2", 0.5));
+        .attr(x + "2", k * tickSizeInner));
 
     text = text.merge(tickEnter.append("text")
         .attr("fill", "#000")
         .attr(x, k * spacing)
-        .attr(y, 0.5)
         .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 
     if (context !== selection) {
@@ -1097,16 +1094,18 @@ function styleFunction(name, value, priority) {
 }
 
 var selection_style = function(name, value, priority) {
-  var node;
   return arguments.length > 1
       ? this.each((value == null
             ? styleRemove : typeof value === "function"
             ? styleFunction
             : styleConstant)(name, value, priority == null ? "" : priority))
-      : defaultView(node = this.node())
-          .getComputedStyle(node, null)
-          .getPropertyValue(name);
+      : styleValue(this.node(), name);
 };
+
+function styleValue(node, name) {
+  return node.style.getPropertyValue(name)
+      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+}
 
 function propertyRemove(name) {
   return function() {
@@ -1319,7 +1318,7 @@ function dispatchEvent(node, type, params) {
   var window = defaultView(node),
       event = window.CustomEvent;
 
-  if (event) {
+  if (typeof event === "function") {
     event = new event(type, params);
   } else {
     event = window.document.createEvent("Event");
@@ -1489,8 +1488,11 @@ var drag = function() {
       gestures = {},
       listeners = dispatch("start", "drag", "end"),
       active = 0,
+      mousedownx,
+      mousedowny,
       mousemoving,
-      touchending;
+      touchending,
+      clickDistance2 = 0;
 
   function drag(selection$$1) {
     selection$$1
@@ -1509,12 +1511,17 @@ var drag = function() {
     nodrag(exports.event.view);
     nopropagation();
     mousemoving = false;
+    mousedownx = exports.event.clientX;
+    mousedowny = exports.event.clientY;
     gesture("start");
   }
 
   function mousemoved() {
     noevent();
-    mousemoving = true;
+    if (!mousemoving) {
+      var dx = exports.event.clientX - mousedownx, dy = exports.event.clientY - mousedowny;
+      mousemoving = dx * dx + dy * dy > clickDistance2;
+    }
     gestures.mouse("drag");
   }
 
@@ -1602,6 +1609,10 @@ var drag = function() {
   drag.on = function() {
     var value = listeners.on.apply(listeners, arguments);
     return value === listeners ? drag : value;
+  };
+
+  drag.clickDistance = function(_) {
+    return arguments.length ? (clickDistance2 = (_ = +_) * _, drag) : Math.sqrt(clickDistance2);
   };
 
   return drag;
@@ -2730,7 +2741,7 @@ var interpolateValue = function(a, b) {
       : b instanceof color ? rgb$1
       : b instanceof Date ? date
       : Array.isArray(b) ? array$2
-      : isNaN(b) ? object
+      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
       : reinterpolate)(a, b);
 };
 
@@ -2930,17 +2941,39 @@ function linearish(scale) {
   };
 
   scale.nice = function(count) {
-    var d = domain(),
-        i = d.length - 1,
-        n = count == null ? 10 : count,
-        start = d[0],
-        stop = d[i],
-        step = tickStep(start, stop, n);
+    if (count == null) count = 10;
 
-    if (step) {
-      step = tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-      d[0] = Math.floor(start / step) * step;
-      d[i] = Math.ceil(stop / step) * step;
+    var d = domain(),
+        i0 = 0,
+        i1 = d.length - 1,
+        start = d[i0],
+        stop = d[i1],
+        step;
+
+    if (stop < start) {
+      step = start, start = stop, stop = step;
+      step = i0, i0 = i1, i1 = step;
+    }
+
+    step = tickIncrement(start, stop, count);
+
+    if (step > 0) {
+      start = Math.floor(start / step) * step;
+      stop = Math.ceil(stop / step) * step;
+      step = tickIncrement(start, stop, count);
+    } else if (step < 0) {
+      start = Math.ceil(start * step) / step;
+      stop = Math.floor(stop * step) / step;
+      step = tickIncrement(start, stop, count);
+    }
+
+    if (step > 0) {
+      d[i0] = Math.floor(start / step) * step;
+      d[i1] = Math.ceil(stop / step) * step;
+      domain(d);
+    } else if (step < 0) {
+      d[i0] = Math.ceil(start * step) / step;
+      d[i1] = Math.floor(stop * step) / step;
       domain(d);
     }
 
