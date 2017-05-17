@@ -23,7 +23,7 @@
     "dependencies": {
         "async": "~2.4.0",
         "body-parser": "~1.17.1",
-        "express": "~4.15.2",
+        "express": "~4.15.3",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
         "limiter": "~1.1.0",
@@ -36,7 +36,7 @@
         "tachyons": "~4.7.2"
     },
     "optionalDependencies": {
-        "electron": "~1.6.7"
+        "electron": "~1.6.8"
     },
     "scripts": {
         "test": "npm run lint && npm run karma",
@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "butternut": "^0.4.4"
+        "butternut": "^0.4.5"
     }
 }
