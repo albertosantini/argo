@@ -61,6 +61,6 @@
         "karma-chrome-launcher": "^2.1.1",
         "rollup": "^0.41.6",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "butternut": "^0.4.5"
+        "butternut": "^0.4.6"
     }
 }
