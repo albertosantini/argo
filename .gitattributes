@@ -1,4 +1,4 @@
 * text=auto
 
 bin/*   eol=lf
-build/* eol=lf
+build/* crlf
