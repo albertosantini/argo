@@ -33,7 +33,7 @@
         "angular-mocks": "~1.6.4",
         "d3": "~4.9.1",
         "techan": "~0.8.0",
-        "tachyons": "~4.7.2"
+        "tachyons": "~4.7.4"
     },
     "optionalDependencies": {
         "electron": "~1.6.8"
