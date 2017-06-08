@@ -31,8 +31,13 @@ module.exports = config => {
 
         customLaunchers: {
             Chrome_travis_ci: {
-                base: "Chrome",
-                flags: ["--no-sandbox"]
+                base: "ChromeHeadless",
+                flags: [
+                    "--no-sandbox",
+                    "--headless",
+                    "--disable-gpu",
+                    "--remote-debugging-port=9222"
+                ]
             }
         },
         browsers: process.env.TRAVIS ? ["Chrome_travis_ci"] : ["Chrome"],
