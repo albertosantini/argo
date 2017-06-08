@@ -35,7 +35,7 @@
         "tachyons": "~4.7.4"
     },
     "optionalDependencies": {
-        "electron": "~1.6.8"
+        "electron": "~1.6.10"
     },
     "scripts": {
         "test": "npm run lint && npm run karma",
