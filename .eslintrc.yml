@@ -25,6 +25,7 @@ rules:
     comma-dangle: "error"
     comma-spacing: "error"
     comma-style: ["error", "last"]
+    computed-property-spacing: "error"
     consistent-return: "error"
     curly: ["error", "all"]
     default-case: "error"
@@ -44,9 +45,7 @@ rules:
         afterLineComment: false
     }]
     max-statements-per-line: "error"
-    # new-cap: "error"
-    new-cap: ["error", {capIsNew: false}]
-    newline-after-var: "error"
+    new-cap: "error"
     new-parens: "error"
     no-alert: "error"
     no-array-constructor: "error"
@@ -72,7 +71,7 @@ rules:
     no-mixed-spaces-and-tabs: ["error", false]
     no-multi-spaces: "error"
     no-multi-str: "error"
-    no-native-reassign: "off"
+    no-multiple-empty-lines: ["error", {max: 2, maxBOF: 0, maxEOF: 0}]
     no-nested-ternary: "error"
     no-new: "error"
     no-new-func: "error"
@@ -100,7 +99,7 @@ rules:
     # no-unused-expressions: "error"
     no-unused-expressions: ["error", {"allowTaggedTemplates": true}]
     no-unused-vars: ["error", {vars: "all", args: "after-used"}]
-    # no-use-before-define: "error"
+  # no-use-before-define: "error"
     no-use-before-define: ["error", "nofunc"]
     no-useless-computed-key: "error"
     no-useless-concat: "error"
