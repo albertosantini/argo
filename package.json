@@ -26,7 +26,7 @@
         "express": "~4.15.3",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
-        "limiter": "~1.1.0",
+        "limiter": "~1.1.1",
         "request": "~2.81.0",
         "angular": "~1.6.4",
         "angular-mocks": "~1.6.4",
