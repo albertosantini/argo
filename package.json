@@ -31,8 +31,8 @@
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
         "hyperhtml": "^0.12.0",
-        "introspected": "^0.2.2",
-        "limiter": "~1.1.0",
+        "introspected": "^0.2.3",
+        "limiter": "~1.1.1",
         "request": "~2.81.0",
         "tachyons": "~4.7.4",
         "techan": "~0.8.0"
