@@ -1,26 +1,42 @@
-/* eslint-env mocha */
-/* global angular, assert, inject */
+import "mocha";
+import { assert } from "chai";
+
+import { PluginsService } from "./plugins.service";
+import { SessionService } from "../session/session.service";
+
+const { beforeEach, describe, it } = window;
 
 describe("pluginsService", () => {
-    let pluginsService;
+    const environment = "my environment";
+    const token = "my token";
+    const accountId = "my account id";
+    const mockedPlugins = {
+        testPlugin: true
+    };
 
-    beforeEach(module("components"));
+    beforeEach(() => {
+        const apiPlugins = "/api/plugins";
 
-    beforeEach(inject($injector => {
-        pluginsService = $injector.get("PluginsService");
-    }));
+        /* eslint no-new:off */
+        new PluginsService({
+            plugins: {},
+            pluginsInfo: {}
+        });
 
-    it("getPlugins", () => {
-        const plugins = pluginsService.getPlugins();
+        SessionService.setCredentials({
+            environment,
+            token,
+            accountId
+        });
 
-        assert.strictEqual(true, angular.isObject(plugins));
+        fetch.mock(apiPlugins, mockedPlugins);
     });
 
-    it("getPluginsInfo", () => {
-        const pluginsInfo = pluginsService.getPluginsInfo();
+    it("refresh plugins", done => {
+        PluginsService.refresh().then(() => {
+            const pluginsInfo = PluginsService.pluginsInfo;
 
-        assert.strictEqual(true, angular.isObject(pluginsInfo));
-        assert.strictEqual(0, pluginsInfo.count);
+            assert.strictEqual(1, pluginsInfo.count);
+        }).then(done).catch(done);
     });
-
 });

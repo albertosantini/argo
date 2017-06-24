@@ -1,74 +1,63 @@
-/* eslint-env mocha */
-/* global assert, inject */
+import "mocha";
+import { assert } from "chai";
+
+import { PositionsService } from "./positions.service";
+import { SessionService } from "../session/session.service";
+
+const { beforeEach, describe, it } = window;
 
 describe("positionsService", () => {
-    const api = "/api/positions";
+    const environment = "my environment";
+    const token = "my token";
+    const accountId = "my account id";
+    const mockedPositions = [
+        {
+            instrument: "EUR_USD",
+            long: {
+                units: 4741,
+                averagePrice: 1.3626
+            }
+        },
+        {
+            instrument: "USD_CAD",
+            short: {
+                units: -30,
+                averagePrice: 1.11563
+            }
+        },
+        {
+            instrument: "USD_JPY",
+            long: {
+                units: 88,
+                averagePrice: 102.455
+            }
+        }
+    ];
 
-    let $httpBackend,
-        sessionService,
-        positionsService;
+    beforeEach(() => {
+        const apiPositions = "/api/positions";
 
-    beforeEach(module("components"));
+        /* eslint no-new:off */
+        new PositionsService([]);
 
-    beforeEach(inject($injector => {
-        const environment = "my environment",
-            token = "my token",
-            accountId = "my account id";
-
-        $httpBackend = $injector.get("$httpBackend");
-        positionsService = $injector.get("PositionsService");
-        sessionService = $injector.get("SessionService");
-
-        sessionService.setCredentials({
+        SessionService.setCredentials({
             environment,
             token,
             accountId
         });
 
-        $httpBackend
-            .when("POST", api)
-            .respond([
-                {
-                    instrument: "EUR_USD",
-                    long: {
-                        units: 4741,
-                        averagePrice: 1.3626
-                    }
-                },
-                {
-                    instrument: "USD_CAD",
-                    short: {
-                        units: -30,
-                        averagePrice: 1.11563
-                    }
-                },
-                {
-                    instrument: "USD_JPY",
-                    long: {
-                        units: 88,
-                        averagePrice: 102.455
-                    }
-                }
-            ]);
-
-        $httpBackend.whenGET(/^app\/.*\.html$/).respond(200);
-    }));
-
-    afterEach(() => {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
+        fetch.mock(apiPositions, mockedPositions);
     });
 
-    it("getPositions", () => {
-        positionsService.getPositions().then(positions => {
+    it("getPositions", done => {
+        PositionsService.refresh().then(positions => {
             assert.lengthOf(positions, 3);
 
             assert.strictEqual("USD_CAD", positions[1].instrument);
             assert.strictEqual(-30, positions[1].units);
             assert.strictEqual("sell", positions[1].side);
             assert.strictEqual(1.11563, positions[1].avgPrice);
-        });
-        $httpBackend.flush();
+        }).then(done).catch(done);
     });
 
 });

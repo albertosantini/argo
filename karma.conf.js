@@ -8,14 +8,12 @@ module.exports = config => {
         frameworks: ["mocha", "chai"],
 
         files: [
-            "node_modules/angular/angular.min.js",
+            "node_modules/hyperhtml/min.js",
+            "node_modules/introspected/min.js",
             "build/d3-techan.min.js",
             "node_modules/techan/dist/techan.min.js",
 
-            "node_modules/angular-mocks/angular-mocks.js",
-
-            "build/app.bundle.js",
-            "src/client/app/**/*.spec.js"
+            "build/app.bundle.spec.js"
         ],
 
         exclude: [

@@ -1,31 +1,34 @@
 export class ToastsService {
-    constructor($timeout) {
-        this.$timeout = $timeout;
-
-        this.toasts = [];
-        this.timeout = null;
+    constructor(toasts) {
+        if (!ToastsService.toasts) {
+            ToastsService.toasts = toasts;
+        }
     }
 
-    getToasts() {
-        return this.toasts;
+    static getToasts() {
+        return ToastsService.toasts;
     }
 
-    addToast(message) {
-        this.toasts.splice(0, 0, {
-            date: new Date(),
+    static addToast(message) {
+        ToastsService.toasts.splice(0, 0, {
+            date: (new Date()),
             message
         });
 
-        if (this.timeout) {
-            this.$timeout.cancel(this.timeout);
+        if (ToastsService.timeout) {
+            clearTimeout(ToastsService.timeout);
         }
-        this.timeout = this.reset();
+        ToastsService.timeout = ToastsService.reset();
     }
 
-    reset() {
-        return this.$timeout(() => {
-            this.toasts.length = 0;
+    static reset() {
+        return setTimeout(() => {
+            while (ToastsService.toasts.length) {
+                ToastsService.toasts.pop();
+            }
         }, 10000);
     }
 }
-ToastsService.$inject = ["$timeout"];
+
+ToastsService.toasts = null;
+ToastsService.timeout = null;

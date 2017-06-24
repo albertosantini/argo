@@ -1,8 +1,3 @@
-import angular from "angular";
+import { ExposureComponent } from "./exposure.component";
 
-import { exposureComponent } from "./exposure.component";
-
-export const exposure = angular
-    .module("components.exposure", [])
-    .component("exposure", exposureComponent)
-    .name;
+ExposureComponent.bootstrap();

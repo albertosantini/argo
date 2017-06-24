@@ -1,6 +1,9 @@
+import Introspected from "introspected";
+
 export class AppController {
-    $onInit() {
-        this.tabSelectedIndex = 0;
+    constructor(render, template) {
+        this.state = Introspected({
+            tabSelectedIndex: 0
+        }, state => template.update(render, state));
     }
 }
-AppController.$inject = [];

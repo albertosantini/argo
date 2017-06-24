@@ -1,51 +1,44 @@
-import angular from "angular";
+import { AccountsService } from "../account/accounts.service";
 
 export class QuotesService {
-    constructor(AccountsService) {
-        this.AccountsService = AccountsService;
-
-        this.quotes = {};
-    }
-
-    getQuotes() {
-        return this.quotes;
-    }
-
-    updateTick(tick) {
-        const account = this.AccountsService.getAccount(),
-            streamingInstruments = account.streamingInstruments,
-            pips = account.pips,
-            instrument = tick.instrument;
-
-        this.quotes[instrument] = {
-            time: tick.time,
-            ask: tick.ask,
-            bid: tick.bid,
-            spread: ((tick.ask - tick.bid) / pips[instrument]).toFixed(1)
-        };
-
-
-        if (!angular.equals(streamingInstruments, Object.keys(this.quotes))) {
-            streamingInstruments.forEach(instr => {
-                let temp;
-
-                if (this.quotes.hasOwnProperty(instr)) {
-                    temp = this.quotes[instr];
-                    delete this.quotes[instr];
-                    this.quotes[instr] = temp;
-                }
-            });
+    constructor(quotes) {
+        if (!QuotesService.quotes) {
+            QuotesService.quotes = quotes;
         }
     }
 
-    reset() {
-        let key;
+    static getQuotes() {
+        return QuotesService.quotes;
+    }
 
-        for (key in this.quotes) {
-            if (this.quotes.hasOwnProperty(key)) {
-                delete this.quotes[key];
+    static updateTick(tick) {
+        const account = AccountsService.getAccount(),
+            streamingInstruments = account.streamingInstruments,
+            pips = account.pips,
+            instrument = tick.instrument,
+            lenStreamingInstruments = Object.keys(streamingInstruments).length,
+            lenQuotesInstruments = Object.keys(QuotesService.quotes).length;
+
+        if (lenStreamingInstruments !== lenQuotesInstruments) {
+            streamingInstruments.forEach(instr => {
+                QuotesService.quotes[instr].instrument = instr;
+            });
+        }
+
+        QuotesService.quotes[instrument].time = tick.time;
+        QuotesService.quotes[instrument].ask = tick.ask;
+        QuotesService.quotes[instrument].bid = tick.bid;
+        QuotesService.quotes[instrument].spread =
+            ((tick.ask - tick.bid) / pips[instrument]).toFixed(1);
+    }
+
+    static reset() {
+        for (const instr in QuotesService.quotes) {
+            if (QuotesService.quotes[instr].instrument === instr) {
+                delete QuotesService.quotes[instr];
             }
         }
     }
 }
-QuotesService.$inject = ["AccountsService"];
+
+QuotesService.quotes = null;

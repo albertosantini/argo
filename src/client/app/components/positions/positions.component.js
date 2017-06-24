@@ -1,6 +1,13 @@
+import hyperHTML from "hyperHTML";
+
+import { Util } from "../../util";
+import { PositionsTemplate } from "./positions.template";
 import { PositionsController } from "./positions.controller";
 
-export const positionsComponent = {
-    templateUrl: "app/components/positions/positions.html",
-    controller: PositionsController
-};
+export class PositionsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("positions"));
+
+        this.positionsController = new PositionsController(render, PositionsTemplate);
+    }
+}

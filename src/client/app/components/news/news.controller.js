@@ -1,12 +1,14 @@
-export class NewsController {
-    constructor(NewsService) {
-        this.NewsService = NewsService;
-    }
+import Introspected from "introspected";
 
-    $onInit() {
-        this.NewsService.getNews().then(news => {
-            this.news = news;
-        });
+import { NewsService } from "../news/news.service";
+
+export class NewsController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            news: []
+        }, state => template.update(render, state));
+
+        this.newsService = new NewsService(this.state.news);
     }
 }
-NewsController.$inject = ["NewsService"];

@@ -1,83 +1,59 @@
-import angular from "angular";
+import Introspected from "introspected";
+
+import { AccountsService } from "../account/accounts.service";
+import { SettingsDialogComponent } from "../settings-dialog/settings-dialog.component";
+import { TokenDialogComponent } from "../token-dialog/token-dialog.component";
+import { Util } from "../../util";
 
 export class HeaderController {
-    constructor($window, $rootScope, ToastsService,
-        AccountsService, SessionService, QuotesService, StreamingService) {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-        this.$window = $window;
-        this.$rootScope = $rootScope;
-        this.ToastsService = ToastsService;
-        this.AccountsService = AccountsService;
-        this.SessionService = SessionService;
-        this.QuotesService = QuotesService;
-        this.StreamingService = StreamingService;
+        const instrsStorage = window.localStorage.getItem("argo.instruments");
+
+        const instrs = JSON.parse(instrsStorage) || {
+            EUR_USD: true,
+            USD_JPY: true,
+            GBP_USD: true,
+            EUR_GBP: true,
+            USD_CHF: true,
+            EUR_JPY: true,
+            EUR_CHF: true,
+            USD_CAD: true,
+            AUD_USD: true,
+            GBP_JPY: true
+        };
+
+        this.state = Introspected({
+            spinner: {
+                isLoadingView: false
+            },
+            tokenModalIsOpen: false,
+            tokenInfo: {
+                environment: "practice",
+                token: "",
+                accountId: ""
+            },
+            settingsModalIsOpen: false,
+            accounts: [],
+            instrs
+        }, state => template.update(render, state, events));
+
+        Util.spinnerState = this.state.spinner;
+
+        TokenDialogComponent.bootstrap(this.state);
+        SettingsDialogComponent.bootstrap(this.state);
     }
 
-    $onInit() {
-        this.$rootScope.$watch("isLoadingView", () => {
-            this.isLoadingView = this.$rootScope.isLoadingView;
-        });
-    }
+    onOpenSettingsClick() {
+        const allInstrs = AccountsService.getAccount().instruments;
 
-    openTokenDialog() {
-        this.openTokenModal = true;
-    }
-
-    closeTokenDialog(tokenInfo) {
-        this.openTokenModal = false;
-
-        if (tokenInfo) {
-            this.token = tokenInfo.token;
-            this.environment = tokenInfo.environment;
-            this.accountId = tokenInfo.accountId;
-            this.instrs = tokenInfo.instrs;
-        }
-    }
-
-    openSettingsDialog() {
-        this.SessionService.isLogged().then(credentials => {
-            const allInstrs = this.AccountsService.getAccount().instruments;
-
-            angular.forEach(allInstrs, instrument => {
-                if (!this.instrs.hasOwnProperty(instrument.name)) {
-                    this.instrs[instrument.name] = false;
-                }
-            });
-
-            this.credentials = credentials;
-            this.openSettingsModal = true;
-        }).catch(err => {
-            if (err) {
-                this.ToastsService.addToast(err);
+        allInstrs.forEach(instrument => {
+            if (!this.state.instrs[instrument.name].toString()) {
+                this.state.instrs[instrument.name] = false;
             }
         });
+
+        this.state.settingsModalIsOpen = true;
     }
-
-    closeSettingsDialog(settingsInfo) {
-        let instruments;
-
-        this.openSettingsModal = false;
-
-        if (settingsInfo) {
-            this.$window.localStorage.setItem("argo.instruments",
-                angular.toJson(settingsInfo));
-            instruments = this.AccountsService
-                .setStreamingInstruments(settingsInfo);
-
-            this.QuotesService.reset();
-
-            this.StreamingService.startStream({
-                environment: this.credentials.environment,
-                accessToken: this.credentials.token,
-                accountId: this.credentials.accountId,
-                instruments
-            });
-        }
-    }
-
 }
-HeaderController.$inject = [
-    "$window", "$rootScope", "ToastsService",
-    "AccountsService", "SessionService",
-    "QuotesService", "StreamingService"
-];

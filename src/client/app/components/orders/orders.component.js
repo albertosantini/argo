@@ -1,6 +1,13 @@
+import hyperHTML from "hyperHTML";
+
+import { Util } from "../../util";
+import { OrdersTemplate } from "./orders.template";
 import { OrdersController } from "./orders.controller";
 
-export const ordersComponent = {
-    templateUrl: "app/components/orders/orders.html",
-    controller: OrdersController
-};
+export class OrdersComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("orders"));
+
+        this.ordersController = new OrdersController(render, OrdersTemplate);
+    }
+}

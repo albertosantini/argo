@@ -1,34 +1,54 @@
-import angular from "angular";
+import { Util } from "../../util";
+import { SessionService } from "../session/session.service";
+import { AccountsService } from "../account/accounts.service";
 
 export class OrdersService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-
-        this.orders = [];
+    constructor(orders) {
+        if (!OrdersService.orders) {
+            OrdersService.orders = orders;
+        }
     }
 
-    getOrders() {
-        return this.orders;
+
+    static getOrders() {
+        return OrdersService.orders;
     }
 
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.$http.post("/api/orders", {
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/orders", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId
-            }).then(res => {
-                this.orders.length = 0;
-                angular.extend(this.orders, res.data);
+            })
+        }).then(res => res.json()).then(data => {
+            OrdersService.orders.splice(0, OrdersService.orders.length);
+
+            data.forEach(trade => {
+                OrdersService.orders.push(trade);
             });
+
+            return OrdersService.orders;
         });
     }
 
-    putOrder(order) {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/order", {
+    static putOrder(order) {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/order", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
@@ -42,28 +62,35 @@ export class OrdersService {
                 stopLossOnFill: order.stopLossOnFill,
                 takeProfitOnFill: order.takeProfitOnFill,
                 trailingStopLossOnFill: order.trailingStopLossOnFill
-            }).then(trade => trade.data)
-                .catch(err => err.data)
-        );
+            })
+        }).then(res => res.json()).then(data => data)
+            .catch(err => err.data);
     }
 
-    closeOrder(id) {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/closeorder", {
+    static closeOrder(id) {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/closeorder", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
                 id
-            }).then(order => order.data)
-                .catch(err => err.data)
-        );
+            })
+        }).then(res => res.json()).then(data => data)
+            .catch(err => err.data);
     }
 
-    updateOrders(tick) {
-        const account = this.AccountsService.getAccount(),
+    static updateOrders(tick) {
+        const account = AccountsService.getAccount(),
             pips = account.pips;
 
-        this.orders.forEach((order, index) => {
+        OrdersService.orders.forEach((order, index) => {
             let current;
 
             if (order.instrument === tick.instrument) {
@@ -75,11 +102,12 @@ export class OrdersService {
                     current = tick.bid;
                 }
 
-                this.orders[index].current = current;
-                this.orders[index].distance = (Math.abs(current - order.price) /
+                OrdersService.orders[index].current = current;
+                OrdersService.orders[index].distance = (Math.abs(current - order.price) /
                     pips[order.instrument]);
             }
         });
     }
 }
-OrdersService.$inject = ["$http", "SessionService", "AccountsService"];
+
+OrdersService.orders = null;

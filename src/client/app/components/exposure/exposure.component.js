@@ -1,6 +1,13 @@
+import hyperHTML from "hyperHTML";
+
+import { Util } from "../../util";
+import { ExposureTemplate } from "./exposure.template";
 import { ExposureController } from "./exposure.controller";
 
-export const exposureComponent = {
-    templateUrl: "app/components/exposure/exposure.html",
-    controller: ExposureController
-};
+export class ExposureComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("exposure"));
+
+        this.exposureController = new ExposureController(render, ExposureTemplate);
+    }
+}

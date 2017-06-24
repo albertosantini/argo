@@ -1,6 +1,13 @@
+import hyperHTML from "hyperHTML";
+
+import { Util } from "../../util";
+import { HeaderTemplate } from "./header.template";
 import { HeaderController } from "./header.controller";
 
-export const headerComponent = {
-    templateUrl: "app/components/header/header.html",
-    controller: HeaderController
-};
+export class HeaderComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("header"));
+
+        this.HeaderController = new HeaderController(render, HeaderTemplate);
+    }
+}

@@ -1,12 +1,14 @@
-export class ActivityController {
-    constructor(ActivityService) {
-        this.ActivityService = ActivityService;
-    }
+import Introspected from "introspected";
 
-    $onInit() {
-        this.ActivityService.getActivities().then(activities => {
-            this.activities = activities;
-        });
+import { ActivityService } from "../activity/activity.service";
+
+export class ActivityController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            activities: []
+        }, state => template.update(render, state));
+
+        this.activityService = new ActivityService(this.state.activities);
     }
 }
-ActivityController.$inject = ["ActivityService"];

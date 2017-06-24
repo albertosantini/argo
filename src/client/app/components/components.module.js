@@ -1,49 +1,20 @@
-import angular from "angular";
-
-import { account } from "./account/account.module";
-import { activity } from "./activity/activity.module";
-import { charts } from "./charts/charts.module";
-import { exposure } from "./exposure/exposure.module";
-import { header } from "./header/header.module";
-import { highlighter } from "./highlighter/highlighter.module";
-import { news } from "./news/news.module";
-import { ohlcChart } from "./ohlc-chart/ohlc-chart.module";
-import { orderDialog } from "./order-dialog/order-dialog.module";
-import { orders } from "./orders/orders.module";
-import { plugins } from "./plugins/plugins.module";
-import { positions } from "./positions/positions.module";
-import { quotes } from "./quotes/quotes.module";
-import { session } from "./session/session.module";
-import { settingsDialog } from "./settings-dialog/settings-dialog.module";
-import { slChart } from "./sl-chart/sl-chart.module";
-import { streaming } from "./streaming/streaming.module";
-import { toasts } from "./toasts/toasts.module";
-import { tokenDialog } from "./token-dialog/token-dialog.module";
-import { trades } from "./trades/trades.module";
-import { yesnoDialog } from "./yesno-dialog/yesno-dialog.module";
-
-export const components = angular
-    .module("components", [
-        account,
-        activity,
-        charts,
-        exposure,
-        header,
-        highlighter,
-        news,
-        ohlcChart,
-        orderDialog,
-        orders,
-        plugins,
-        positions,
-        quotes,
-        session,
-        settingsDialog,
-        slChart,
-        streaming,
-        toasts,
-        tokenDialog,
-        trades,
-        yesnoDialog
-    ])
-    .name;
+import "./account/account.module";
+import "./activity/activity.module";
+import "./charts/charts.module";
+import "./exposure/exposure.module";
+import "./header/header.module";
+import "./news/news.module";
+import "./ohlc-chart/ohlc-chart.module";
+import "./order-dialog/order-dialog.module";
+import "./orders/orders.module";
+import "./plugins/plugins.module";
+import "./positions/positions.module";
+import "./quotes/quotes.module";
+import "./session/session.module";
+import "./settings-dialog/settings-dialog.module";
+import "./sl-chart/sl-chart.module";
+import "./streaming/streaming.module";
+import "./toasts/toasts.module";
+import "./token-dialog/token-dialog.module";
+import "./trades/trades.module";
+import "./yesno-dialog/yesno-dialog.module";

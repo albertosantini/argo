@@ -1,58 +1,72 @@
-import angular from "angular";
+import { Util } from "../../util";
+import { SessionService } from "../session/session.service";
+import { AccountsService } from "../account/accounts.service";
 
 export class PluginsService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-
-        this.plugins = {};
-        this.pluginsInfo = {
-            count: 0
-        };
+    constructor(pluginsState) {
+        if (!PluginsService.plugins) {
+            PluginsService.plugins = pluginsState.plugins;
+            PluginsService.pluginsInfo = pluginsState.pluginsInfo;
+        }
     }
 
-    getPlugins() {
-        return this.plugins;
+    static getPlugins() {
+        return PluginsService.plugins;
     }
 
-    getPluginsInfo() {
-        return this.pluginsInfo;
+    static getPluginsInfo() {
+        return PluginsService.pluginsInfo;
     }
 
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.$http.post("/api/plugins", {
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/plugins", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId
-            }).then(res => {
-                let name;
-
-                for (name in this.plugins) {
-                    if (this.plugins.hasOwnProperty(name)) {
-                        delete this.plugins[name];
-                    }
+            })
+        }).then(res => res.json()).then(data => {
+            for (const name in PluginsService.plugins) {
+                if (PluginsService.plugins[name].toString()) {
+                    delete PluginsService.plugins[name];
                 }
-                angular.extend(this.plugins, res.data);
-                this.pluginsInfo.count = Object.keys(this.plugins).length;
+            }
 
-                Object.keys(this.plugins).forEach(key => {
-                    if (this.plugins[key] === "enabled") {
-                        this.plugins[key] = true;
-                    } else {
-                        this.plugins[key] = false;
-                    }
-                });
+            Object.assign(PluginsService.plugins, data);
+
+            PluginsService.pluginsInfo.count = Object.keys(
+                PluginsService.plugins
+            ).length;
+
+            Object.keys(PluginsService.plugins).forEach(key => {
+                if (PluginsService.plugins[key] === "enabled") {
+                    PluginsService.plugins[key] = true;
+                } else {
+                    PluginsService.plugins[key] = false;
+                }
             });
         });
     }
 
-    engagePlugins(plugs) {
-        this.SessionService.isLogged().then(credentials => {
-            const account = this.AccountsService.getAccount();
+    static engagePlugins(plugs) {
+        const credentials = SessionService.isLogged();
 
-            this.$http.post("/api/engageplugins", {
+        if (!credentials) {
+            return;
+        }
+
+        const account = AccountsService.getAccount();
+
+        Util.fetch("/api/engageplugins", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
@@ -60,8 +74,10 @@ export class PluginsService {
                 config: {
                     pips: account.pips
                 }
-            });
+            })
         });
     }
 }
-PluginsService.$inject = ["$http", "SessionService", "AccountsService"];
+
+PluginsService.plugins = null;
+PluginsService.pluginsInfo = null;

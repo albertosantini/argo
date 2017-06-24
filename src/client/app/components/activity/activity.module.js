@@ -1,10 +1,3 @@
-import angular from "angular";
+import { ActivityComponent } from "./activity.component";
 
-import { activityComponent } from "./activity.component";
-import { ActivityService } from "./activity.service";
-
-export const activity = angular
-    .module("components.activity", [])
-    .component("activity", activityComponent)
-    .service("ActivityService", ActivityService)
-    .name;
+ActivityComponent.bootstrap();

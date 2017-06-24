@@ -1,148 +1,401 @@
-var app = (function (exports,angular,d3,techan) {
+(function (hyperHTML,Introspected,d3,techan) {
 'use strict';
 
-angular = angular && angular.hasOwnProperty('default') ? angular['default'] : angular;
+hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
+Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
 techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
 
-const rootComponent = {
-    templateUrl: "app/root.html"
-};
-
-class AppController {
-    $onInit() {
-        this.tabSelectedIndex = 0;
-    }
-}
-AppController.$inject = [];
-
-const appComponent = {
-    templateUrl: "app/common/app.html",
-    controller: AppController
-};
-
-function appConfig($httpProvider, $locationProvider) {
-    const interceptors = $httpProvider.interceptors;
-
-    interceptors.push(["$q", "$rootScope", ($q, $rootScope) => {
-        let nLoadings = 0;
-
-        return {
-            request(request) {
-                nLoadings += 1;
-
-                $rootScope.isLoadingView = true;
-
-                return request;
-            },
-
-            response(response) {
-                nLoadings -= 1;
-                if (nLoadings === 0) {
-                    $rootScope.isLoadingView = false;
-                }
-
-                return response;
-            },
-
-            responseError(response) {
-                nLoadings -= 1;
-                if (!nLoadings) {
-                    $rootScope.isLoadingView = false;
-                }
-
-                return $q.reject(response);
-            }
-        };
-    }]);
-
-    $locationProvider.html5Mode(true);
-}
-appConfig.$inject = ["$httpProvider", "$locationProvider"];
-
-const app = angular
-    .module("common.app", [])
-    .component("app", appComponent)
-    .config(appConfig)
-    .name;
-
-const common = angular
-    .module("common", [
-        app
-    ])
-    .name;
-
-class AccountController {
-    constructor(AccountService) {
-        this.AccountService = AccountService;
+class Util {
+    static query(selector) {
+        return document.querySelector(selector) ||
+            console.error(selector, "not found");
     }
 
-    $onInit() {
-        this.account = this.AccountService.getAccount();
-    }
-}
-AccountController.$inject = ["AccountsService"];
+    static handleEvent(context, e, payload) {
+        const type = e.type;
+        const id = e.target.id || console.warn(e.target, "target without id");
+        const method = `on${id[0].toUpperCase()}${id.split("-")[0].slice(1)}` +
+            `${type[0].toUpperCase()}${type.slice(1)}`;
 
-const accountComponent = {
-    templateUrl: "app/components/account/account.html",
-    controller: AccountController
-};
 
-class AccountsService {
-    constructor($http, SessionService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-
-        this.account = {};
+        return method in context ? context[method](e, payload)
+            : console.warn(method, "not implemented");
     }
 
-    getAccount() {
-        return this.account;
+    static renderEmpty(render) {
+        return render``;
     }
 
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.getAccounts({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            });
+    static getHHMMSSfromDate(date) {
+        if (!date) {
+            return "";
+        }
+
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const seconds = date.getSeconds().toString().padStart(2, "0");
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    static formatDate(date) {
+        if (!date || !date.toString()) {
+            return "";
+        }
+
+        return (new Date(date)).toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
         });
     }
 
-    getAccounts({ environment = "practice", token, accountId } = {}) {
+    static formatNumber(num, decimals = 0) {
+        if (!num || !num.toString()) {
+            return "";
+        }
+
+        return parseFloat(num).toFixed(decimals);
+    }
+
+    static fetch(url, options) {
+        options.headers = options.headers ||
+            { "Content-Type": "application/json" };
+
+        options.body = typeof options.body === "string" ? options.body
+            : JSON.stringify(options.body);
+
+        const fetchCall = fetch(url, options);
+
+        Util.spinnerState.isLoadingView = true;
+        fetchCall.then(() => {
+            Util.spinnerState.isLoadingView = false;
+        }).catch(() => {
+            Util.spinnerState.isLoadingView = false;
+        });
+
+        return fetchCall;
+    }
+
+    static show(condition) {
+        return condition ? "display: block;" : "display: none;";
+    }
+
+    static hide(condition) {
+        return Util.show(!condition);
+    }
+}
+
+Util.spinnerState = {};
+
+class Hyper extends HTMLElement {
+    connectedCallback() {
+        if ("hyper" in this) {
+            return;
+        }
+        this.hyper = hyperHTML.wire();
+        this.appendChild(this.render()[0]);
+    }
+
+    render() {
+        return this.hyper`render method is not implemented`;
+    }
+}
+
+class RootTemplate {
+    static update(render) {
+        render`<app class="arimo"></app>`;
+    }
+}
+
+class RootComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("root"));
+
+        RootTemplate.update(render);
+    }
+}
+
+RootComponent.bootstrap();
+
+class AppTemplate {
+    static update(render, state) {
+        const tabClasses = "f6 f5-l pointer bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l";
+        const selectedTabClasses = `${tabClasses} bg-blue`;
+        const isTradesTab = state.tabSelectedIndex === 0;
+        const isOrdersTab = state.tabSelectedIndex === 1;
+        const isPositionsTab = state.tabSelectedIndex === 2;
+        const isExposureTab = state.tabSelectedIndex === 3;
+        const isActivityTab = state.tabSelectedIndex === 4;
+        const isNewsTab = state.tabSelectedIndex === 5;
+        const isPluginsTab = state.tabSelectedIndex === 6;
+
+        /* eslint-disable indent */
+        render`
+            <header></header>
+
+            <nav class="bt bb tc mw9 center shadow-2 tracked">
+                <a class="${isTradesTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 0;
+                    }}">Trades</a>
+                <a class="${isOrdersTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 1;
+                    }}">Orders</a>
+                <a class="${isPositionsTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 2;
+                    }}">Positions</a>
+                <a class="${isExposureTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 3;
+                    }}">Exposures</a>
+                <a class="${isActivityTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 4;
+                    }}">Activity</a>
+                <a class="${isNewsTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 5;
+                    }}">News</a>
+                <a class="${isPluginsTab ? selectedTabClasses : tabClasses}"
+                    onclick="${() => {
+                        state.tabSelectedIndex = 6;
+                    }}">Plugins</a>
+            </nav>
+
+            <div class="flex flex-wrap-s flex-wrap-m ma2 pa2">
+                <div class="flex flex-wrap flex-column min-w-25">
+                    <account class="mb4"></account>
+                    <quotes class="mb4"></quotes>
+                    <toasts></toasts>
+                </div>
+                <div class="flex flex-wrap flex-column min-w-75">
+                    <div class="ma2 pa2">
+                        <trades style="${Util.show(isTradesTab)}"></trades>
+                        <orders style="${Util.show(isOrdersTab)}"></orders>
+                        <positions style="${Util.show(isPositionsTab)}"></positions>
+                        <exposure style="${Util.show(isExposureTab)}"></exposure>
+                        <activity style="${Util.show(isActivityTab)}"></activity>
+                        <news style="${Util.show(isNewsTab)}"></news>
+                        <plugins style="${Util.show(isPluginsTab)}"></plugins>
+                    </div>
+                    <charts></charts>
+                </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class AppController {
+    constructor(render, template) {
+        this.state = Introspected({
+            tabSelectedIndex: 0
+        }, state => template.update(render, state));
+    }
+}
+
+class AppComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("app"));
+
+        this.appController = new AppController(render, AppTemplate);
+    }
+}
+
+AppComponent.bootstrap();
+
+class AccountTemplate {
+    static update(render, state) {
+        if (state.account.id.toString()) {
+            AccountTemplate.renderAccount(render, state);
+        } else {
+            AccountTemplate.renderNoAccount(render);
+        }
+    }
+
+    static renderAccount(render, state) {
+        const timestamp = Util.formatDate(new Date(state.account.timestamp));
+        const balance = parseFloat(state.account.balance).toFixed(2);
+        const unrealizedPL = parseFloat(state.account.unrealizedPL).toFixed(2);
+        const unrealizedPLPercent = parseFloat(state.account.unrealizedPLPercent).toFixed(2);
+        const NAV = parseFloat(state.account.NAV).toFixed(2);
+        const pl = parseFloat(state.account.pl).toFixed(2);
+        const marginCallMarginUsed = parseFloat(state.account.marginCallMarginUsed).toFixed(2);
+        const marginAvailable = parseFloat(state.account.marginAvailable).toFixed(2);
+        const marginCloseoutPositionValue = parseFloat(state.account.marginCloseoutPositionValue).toFixed(2);
+        const marginCloseoutPercent = parseFloat(state.account.marginCloseoutPercent).toFixed(2);
+        const positionValue = parseFloat(state.account.positionValue).toFixed(2);
+
+        /* eslint-disable indent */
+        render`
+            <div class="h6 overflow-auto">
+                <table class="collapse f6 w-100 mw8 center">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1">Account Summary</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1">
+                            ${timestamp} (${state.account.currency})
+                        </th>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Balance</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${balance}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Unrealized P&amp;L</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${unrealizedPL}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Unrealized P&amp;L (%)</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${unrealizedPLPercent}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Net Asset Value</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${NAV}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Realized P&amp;L</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${pl}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Margin Used</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${marginCallMarginUsed}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Margin Available</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${marginAvailable}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Margin Closeout Value</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${marginCloseoutPositionValue}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Margin Closeout Value (%)</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${marginCloseoutPercent}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw6 bb b--black-20 tl pb1 pr1">Position Value</td>
+                            <td class="pv1 pr1 bb b--black-20 tr">${positionValue}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+
+    static renderNoAccount(render) {
+        /* eslint-disable indent */
+        render`
+            <div class="h6 overflow-auto">
+                <p class="f6 w-100 mw8 center b">No account.</p>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class SessionService {
+    static setCredentials(session) {
+        SessionService.credentials.environment = session.environment;
+        SessionService.credentials.token = session.token;
+        SessionService.credentials.accountId = session.accountId;
+    }
+
+    static isLogged() {
+        if (SessionService.credentials.token) {
+            return SessionService.credentials;
+        }
+
+        return null;
+    }
+}
+
+SessionService.credentials = {
+    environment: null,
+    token: null,
+    accountId: null
+};
+
+class AccountsService {
+    constructor(account) {
+        if (!AccountsService.account) {
+            AccountsService.account = account;
+        }
+    }
+
+    static getAccount() {
+        return AccountsService.account;
+    }
+
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return;
+        }
+
+        AccountsService.getAccounts({
+            environment: credentials.environment,
+            token: credentials.token,
+            accountId: credentials.accountId
+        });
+    }
+
+    static getAccounts({
+        environment = "practice",
+        token = "abc",
+        accountId = null
+    } = {}) {
         const api = accountId ? "/api/account" : "/api/accounts";
 
-        return this.$http.post(api, {
-            environment,
-            token,
-            accountId
-        }).then(response => {
-            const accounts = response.data.accounts || response.data;
+        return Util.fetch(api, {
+            method: "post",
+            body: JSON.stringify({
+                environment,
+                token,
+                accountId
+            })
+        }).then(res => res.json()).then(data => {
+            const accounts = data.accounts || data;
 
-            if (response.data.message) {
-                throw response.data.message;
+            if (data.message) {
+                throw data.message;
             }
 
             if (!accounts.length) {
-                angular.merge(this.account, response.data.account);
+                Object.assign(AccountsService.account, data.account);
 
-                this.account.timestamp = new Date();
+                AccountsService.account.timestamp = new Date();
 
-                this.account.unrealizedPLPercent =
-                    this.account.unrealizedPL / this.account.balance * 100;
+                AccountsService.account.unrealizedPLPercent =
+                    AccountsService.account.unrealizedPL /
+                        AccountsService.account.balance * 100;
 
-                if (!this.account.instruments) {
-                    this.$http.post("/api/instruments", {
-                        environment,
-                        token,
-                        accountId
-                    }).then(instruments => {
-                        this.account.instruments = instruments.data;
-                        this.account.pips = {};
-                        angular.forEach(this.account.instruments, i => {
-                            this.account.pips[i.name] =
+                if (!Object.keys(AccountsService.account.instruments).length) {
+                    Util.fetch("/api/instruments", {
+                        method: "post",
+                        body: JSON.stringify({
+                            environment,
+                            token,
+                            accountId
+                        })
+                    }).then(res => res.json()).then(instruments => {
+                        AccountsService.account.instruments = instruments;
+                        AccountsService.account.pips = {};
+                        AccountsService.account.instruments.forEach(i => {
+                            AccountsService.account.pips[i.name] =
                                 Math.pow(10, i.pipLocation);
                         });
+
+                        return AccountsService.account;
                     });
                 }
             }
@@ -151,68 +404,133 @@ class AccountsService {
         });
     }
 
-    setStreamingInstruments(settings) {
-        this.account.streamingInstruments = Object.keys(settings)
+    static setStreamingInstruments(settings) {
+        AccountsService.account.streamingInstruments = Object.keys(settings)
             .filter(el => !!settings[el]);
 
-        return this.account.streamingInstruments;
+        return AccountsService.account.streamingInstruments;
     }
 }
-AccountsService.$inject = ["$http", "SessionService"];
 
-const account = angular
-    .module("components.account", [])
-    .component("account", accountComponent)
-    .service("AccountsService", AccountsService)
-    .name;
+AccountsService.account = null;
 
-class ActivityController {
-    constructor(ActivityService) {
-        this.ActivityService = ActivityService;
-    }
+class AccountController {
+    constructor(render, template) {
 
-    $onInit() {
-        this.ActivityService.getActivities().then(activities => {
-            this.activities = activities;
-        });
+        this.state = Introspected({
+            account: {}
+        }, state => template.update(render, state));
+
+        this.accountsService = new AccountsService(this.state.account);
     }
 }
-ActivityController.$inject = ["ActivityService"];
 
-const activityComponent = {
-    templateUrl: "app/components/activity/activity.html",
-    controller: ActivityController
-};
+class AccountComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("account"));
+
+        this.accountController = new AccountController(render, AccountTemplate);
+    }
+}
+
+AccountComponent.bootstrap();
+
+class ActivityTemplate {
+    static update(render, state) {
+        if (state.activities.length) {
+            ActivityTemplate.renderActivity(render, state);
+        } else {
+            ActivityTemplate.renderNoActivity(render);
+        }
+    }
+
+    static renderActivity(render, state) {
+        /* eslint-disable indent */
+        render`
+            <div class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Ticket</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Price</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Profit</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Balance</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Date/Time</th>
+                    </thead>
+
+                    <tbody>${
+                        state.activities.map(activity => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+                            const highlight = classes +
+                                (activity.pl >= 0 ? " highlight-green" : " highlight-red");
+
+                            return hyperHTML.wire(activity, ":tr")`<tr>
+                                <td class="${classes}"> ${activity.id} </td>
+                                <td class="${classes}"> ${activity.type} </td>
+                                <td class="${classes}"> ${activity.instrument} </td>
+                                <td class="${classes}"> ${Util.formatNumber(activity.units)} </td>
+                                <td class="${classes}"> ${activity.price} </td>
+                                <td class="${highlight}"> ${Util.formatNumber(activity.pl, 4)} </td>
+                                <td class="${classes}"> ${Util.formatNumber(activity.accountBalance, 2)} </td>
+                                <td class="${classes}"> ${Util.formatDate(activity.time)} </td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+
+    static renderNoActivity(render) {
+        /* eslint-disable indent */
+        render`
+            <div class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No activities.</p>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
 
 class ActivityService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-
-        this.activities = [];
+    constructor(activities) {
+        if (!ActivityService.activities) {
+            ActivityService.activities = activities;
+        }
     }
 
-    getActivities() {
-        const account = this.AccountsService.getAccount(),
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        const account = AccountsService.getAccount(),
             lastTransactionID = account.lastTransactionID;
 
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/transactions", {
+        return Util.fetch("/api/transactions", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
                 lastTransactionID
-            }).then(transactions => {
-                this.activities = transactions.data.reverse();
+            })
+        }).then(res => res.json()).then(data => {
+            ActivityService.activities.length = 0;
+            data.reverse().forEach(activity => {
+                ActivityService.activities.push(activity);
+            });
 
-                return this.activities;
-            }).catch(err => err.data)
-        );
+            return ActivityService.activities;
+        }).catch(err => err.data);
     }
 
-    addActivity(activity) {
-        this.activities.splice(0, 0, {
+    static addActivity(activity) {
+        ActivityService.activities.splice(0, 0, {
             id: activity.id,
             type: activity.type,
             instrument: activity.instrument,
@@ -224,1024 +542,428 @@ class ActivityService {
         });
     }
 }
-ActivityService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const activity = angular
-    .module("components.activity", [])
-    .component("activity", activityComponent)
-    .service("ActivityService", ActivityService)
-    .name;
+ActivityService.activities = null;
 
-class ChartsController {
-    constructor(ToastsService, AccountsService, ChartsService,
-        QuotesService, TradesService) {
+class ActivityController {
+    constructor(render, template) {
 
-        this.ToastsService = ToastsService;
-        this.AccountsService = AccountsService;
-        this.ChartsService = ChartsService;
-        this.QuotesService = QuotesService;
-        this.TradesService = TradesService;
-    }
+        this.state = Introspected({
+            activities: []
+        }, state => template.update(render, state));
 
-    $onInit() {
-        this.account = this.AccountsService.getAccount();
-
-        this.selectedInstrument = "EUR_USD";
-
-        this.granularities = [
-            "S5",
-            "S10",
-            "S15",
-            "S30",
-            "M1",
-            "M2",
-            "M3",
-            "M4",
-            "M5",
-            "M10",
-            "M15",
-            "M30",
-            "H1",
-            "H2",
-            "H3",
-            "H4",
-            "H6",
-            "H8",
-            "H12",
-            "D",
-            "W",
-            "M"
-        ];
-        this.selectedGranularity = "M5";
-
-        this.feed = this.QuotesService.getQuotes();
-
-        this.trades = this.TradesService.getTrades();
-
-        this.changeChart(this.selectedInstrument, this.selectedGranularity);
-
-        this.orderParams = {
-            side: "buy",
-            selectedInstrument: this.selectedInstrument,
-            instruments: this.account.streamingInstruments
-        };
-    }
-
-    changeChart(instrument, granularity) {
-        this.ChartsService.getHistQuotes({
-            instrument,
-            granularity
-        }).then(candles => {
-            this.data = candles;
-        }).catch(err => {
-            this.ToastsService.addToast(err);
-        });
-    }
-
-
-    openOrderDialog(side) {
-        angular.extend(this.orderParams, {
-            side,
-            selectedInstrument: this.selectedInstrument,
-            instruments: this.account.streamingInstruments
-        });
-
-        this.openOrderModal = true;
+        this.activityService = new ActivityService(this.state.activities);
     }
 }
-ChartsController.$inject = [
-    "ToastsService", "AccountsService", "ChartsService",
-    "QuotesService", "TradesService"
-];
 
-const chartsComponent = {
-    templateUrl: "app/components/charts/charts.html",
-    controller: ChartsController
-};
+class ActivityComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("activity"));
 
-class ChartsService {
-    constructor($http, SessionService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
+        this.activityController = new ActivityController(render, ActivityTemplate);
+    }
+}
+
+ActivityComponent.bootstrap();
+
+class ChartsTemplate {
+    static update(render, state, events) {
+        if (!Object.keys(state.account.streamingInstruments).length) {
+            Util.renderEmpty(render);
+            return;
+        }
+
+        /* eslint-disable indent */
+        render`
+            <div class="flex flex-wrap flex-row justify-center justify-around mb2">
+                <select id="chartInstrument" onchange="${e => events(e, {
+                        instrument: e.target.value.trim(),
+                        granularity: state.selectedGranularity
+                    })}">${
+
+                    state.account.streamingInstruments.map(instrument => hyperHTML.wire()`
+                    <option value="${instrument}">
+                        ${instrument}
+                    </option>
+                `)}</select>
+
+                <select id="chartGranularity" onchange="${e => events(e, {
+                        instrument: state.selectedInstrument,
+                        granularity: e.target.value.trim()
+                    })}">${
+
+                    state.granularities.map(granularity => hyperHTML.wire()`
+                    <option value="${granularity}">
+                        ${granularity}
+                    </option>
+                `)}</select>
+
+                <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4">
+                    <span id="openOrderDialogBuy" class="pointer pl1"
+                        onclick="${events}">Buy</span>
+                </a>
+                <a class="f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4">
+                    <span id="openOrderDialogSell" class="pointer pl1"
+                        onclick="${events}">Sell</span>
+                </a>
+            </div>
+
+            <ohlc-chart class="dn-s"
+                data-instrument="${state.selectedInstrument}"
+                data-granularity="${state.selectedGranularity}"
+                data-data="${state.ohlcInfo.data}"
+                data-feed="${state.ohlcInfo.feed}"
+                data-trades="${state.ohlcInfo.trades}">
+            </ohlc-chart>
+
+            <order-dialog></order-dialog>
+        `;
+        /* eslint-enable indent */
+
+        // Due to a FF bug removed selected="${state.selectedInstrument === instrument}"
+        // see also https://github.com/WebReflection/hyperHTML/issues/148
+        document.querySelector(`option[value='${state.selectedInstrument}']`).selected = true;
+        document.querySelector(`option[value='${state.selectedGranularity}']`).selected = true;
+    }
+}
+
+class ToastsService {
+    constructor(toasts) {
+        if (!ToastsService.toasts) {
+            ToastsService.toasts = toasts;
+        }
     }
 
-    getHistQuotes({
+    static getToasts() {
+        return ToastsService.toasts;
+    }
+
+    static addToast(message) {
+        ToastsService.toasts.splice(0, 0, {
+            date: (new Date()),
+            message
+        });
+
+        if (ToastsService.timeout) {
+            clearTimeout(ToastsService.timeout);
+        }
+        ToastsService.timeout = ToastsService.reset();
+    }
+
+    static reset() {
+        return setTimeout(() => {
+            while (ToastsService.toasts.length) {
+                ToastsService.toasts.pop();
+            }
+        }, 10000);
+    }
+}
+
+ToastsService.toasts = null;
+ToastsService.timeout = null;
+
+class ChartsService {
+    constructor(candles) {
+        if (!ChartsService.candles) {
+            ChartsService.candles = candles;
+        }
+    }
+
+    static getHistQuotes({
         instrument = "EUR_USD",
         granularity = "M5",
         count = 251,
         dailyAlignment = "0"
     } = {}) {
-        return this.SessionService.isLogged().then(credentials =>
-            this.$http.post("/api/candles", {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/candles", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 instrument,
                 granularity,
                 count,
                 dailyAlignment
-            }).then(candles => candles.data)
-                .catch(err => err.data));
-    }
-}
-ChartsService.$inject = ["$http", "SessionService"];
-
-const charts = angular
-    .module("components.charts", [])
-    .component("charts", chartsComponent)
-    .service("ChartsService", ChartsService)
-    .name;
-
-class ExposureController {
-    constructor(TradesService) {
-        this.TradesService = TradesService;
-    }
-
-    $onInit() {
-        this.exposures = [];
-
-        const trades = this.TradesService.getTrades(),
-            exps = {};
-
-        trades.forEach(trade => {
-            const legs = trade.instrument.split("_");
-
-            exps[legs[0]] = exps[legs[0]] || 0;
-            exps[legs[1]] = exps[legs[1]] || 0;
-
-            exps[legs[0]] += parseInt(trade.currentUnits, 10);
-            exps[legs[1]] -= trade.currentUnits * trade.price;
-        });
-
-        Object.keys(exps).forEach(exp => {
-            const type = exps[exp] > 0;
-
-            this.exposures.push({
-                type: type ? "Long" : "Short",
-                market: exp,
-                units: Math.abs(exps[exp])
-            });
-        });
-    }
-}
-ExposureController.$inject = ["TradesService"];
-
-const exposureComponent = {
-    templateUrl: "app/components/exposure/exposure.html",
-    controller: ExposureController
-};
-
-const exposure = angular
-    .module("components.exposure", [])
-    .component("exposure", exposureComponent)
-    .name;
-
-class HeaderController {
-    constructor($window, $rootScope, ToastsService,
-        AccountsService, SessionService, QuotesService, StreamingService) {
-
-        this.$window = $window;
-        this.$rootScope = $rootScope;
-        this.ToastsService = ToastsService;
-        this.AccountsService = AccountsService;
-        this.SessionService = SessionService;
-        this.QuotesService = QuotesService;
-        this.StreamingService = StreamingService;
-    }
-
-    $onInit() {
-        this.$rootScope.$watch("isLoadingView", () => {
-            this.isLoadingView = this.$rootScope.isLoadingView;
-        });
-    }
-
-    openTokenDialog() {
-        this.openTokenModal = true;
-    }
-
-    closeTokenDialog(tokenInfo) {
-        this.openTokenModal = false;
-
-        if (tokenInfo) {
-            this.token = tokenInfo.token;
-            this.environment = tokenInfo.environment;
-            this.accountId = tokenInfo.accountId;
-            this.instrs = tokenInfo.instrs;
-        }
-    }
-
-    openSettingsDialog() {
-        this.SessionService.isLogged().then(credentials => {
-            const allInstrs = this.AccountsService.getAccount().instruments;
-
-            angular.forEach(allInstrs, instrument => {
-                if (!this.instrs.hasOwnProperty(instrument.name)) {
-                    this.instrs[instrument.name] = false;
-                }
-            });
-
-            this.credentials = credentials;
-            this.openSettingsModal = true;
+            })
+        }).then(res => res.text()).then(data => {
+            ChartsService.candles.csv = data;
         }).catch(err => {
-            if (err) {
-                this.ToastsService.addToast(err);
-            }
-        });
-    }
-
-    closeSettingsDialog(settingsInfo) {
-        let instruments;
-
-        this.openSettingsModal = false;
-
-        if (settingsInfo) {
-            this.$window.localStorage.setItem("argo.instruments",
-                angular.toJson(settingsInfo));
-            instruments = this.AccountsService
-                .setStreamingInstruments(settingsInfo);
-
-            this.QuotesService.reset();
-
-            this.StreamingService.startStream({
-                environment: this.credentials.environment,
-                accessToken: this.credentials.token,
-                accountId: this.credentials.accountId,
-                instruments
-            });
-        }
-    }
-
-}
-HeaderController.$inject = [
-    "$window", "$rootScope", "ToastsService",
-    "AccountsService", "SessionService",
-    "QuotesService", "StreamingService"
-];
-
-const headerComponent = {
-    templateUrl: "app/components/header/header.html",
-    controller: HeaderController
-};
-
-const header = angular
-    .module("components.header", [])
-    .component("header", headerComponent)
-    .name;
-
-function highlighterDirective($timeout) {
-    const directive = {
-        restrict: "A",
-        link
-    };
-
-    return directive;
-
-    function link(scope, element, attrs) {
-        scope.$watch(attrs.highlighter, (newValue, oldValue) => {
-            let newclass;
-
-            if (newValue !== oldValue) {
-                newclass = newValue < oldValue
-                    ? "highlight-red" : "highlight-green";
-
-                element.addClass(newclass);
-
-                $timeout(() => {
-                    element.removeClass(newclass);
-                }, 500);
-            }
+            ToastsService.addToast(err.data);
         });
     }
 }
-highlighterDirective.$inject = ["$timeout"];
 
-const highlighter = angular
-    .module("components.highlighter", [])
-    .directive("highlighter", highlighterDirective)
-    .name;
+ChartsService.candles = null;
 
-class NewsController {
-    constructor(NewsService) {
-        this.NewsService = NewsService;
-    }
-
-    $onInit() {
-        this.NewsService.getNews().then(news => {
-            this.news = news;
-        });
-    }
-}
-NewsController.$inject = ["NewsService"];
-
-const newsComponent = {
-    templateUrl: "app/components/news/news.html",
-    controller: NewsController
-};
-
-class NewsService {
-    constructor($http, SessionService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-    }
-
-    getNews() {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/calendar", {
-                environment: credentials.environment,
-                token: credentials.token
-            }).then(news => news.data.map(item => {
-                item.timestamp *= 1000;
-
-                return item;
-            })).catch(err => err.data)
-        );
-    }
-}
-NewsService.$inject = ["$http", "SessionService"];
-
-const news = angular
-    .module("components.news", [])
-    .component("news", newsComponent)
-    .service("NewsService", NewsService)
-    .name;
-
-function ohlcChartDirective() {
-    const directive = {
-        restrict: "E",
-        scope: {
-            instrument: "=",
-            granularity: "=",
-            data: "=",
-            feed: "=",
-            trades: "="
-        },
-        link
-    };
-
-    return directive;
-
-    function link(scope, element) {
-        let myInstrument,
-            myGranularity,
-            myTrades,
-            data,
-            refreshChart,
-            lastHistUpdate,
-            lastData,
-            lastClose,
-            feedVolume = 0;
-
-        scope.$watch("data", csv => {
-            if (csv && csv.length > 0) {
-                myInstrument = scope.instrument;
-                myGranularity = scope.granularity;
-
-                refreshChart = drawChart(element[0], csv);
-
-                lastData = data && data[data.length - 1];
-                lastClose = lastData.close;
-                feedVolume = lastData.volume;
-                lastHistUpdate = getLastHistUpdate(myGranularity);
-            }
-        });
-
-        scope.$watch("feed", feed => {
-            const tick = feed[myInstrument],
-                nextHistUpdate = getLastHistUpdate(myGranularity, tick);
-
-            let midPrice;
-
-            if (tick && data && lastHistUpdate !== nextHistUpdate) {
-                data.shift();
-                tick.bid = parseFloat(tick.bid);
-                tick.ask = parseFloat(tick.ask);
-                midPrice = (tick.bid + tick.ask) / 2;
-                feedVolume = 0;
-                data.push({
-                    open: midPrice,
-                    close: midPrice,
-                    high: midPrice,
-                    low: midPrice,
-                    date: new Date(nextHistUpdate),
-                    volume: feedVolume
-                });
-
-                lastHistUpdate = nextHistUpdate;
-            }
-
-            if (tick && data) {
-
-                if (lastData.close !== lastClose) {
-                    feedVolume += 1;
-                }
-
-                tick.bid = parseFloat(tick.bid);
-                tick.ask = parseFloat(tick.ask);
-                midPrice = (tick.bid + tick.ask) / 2;
-
-                lastData = data && data[data.length - 1];
-                lastClose = lastData.close;
-                lastData.close = midPrice;
-                lastData.volume = feedVolume;
-
-                if (lastData.close > lastData.high) {
-                    lastData.high = lastData.close;
-                }
-
-                if (lastData.close < lastData.low) {
-                    lastData.low = lastData.close;
-                }
-
-                refreshChart();
-            }
-
-        }, true);
-
-        function getLastHistUpdate(granularity, tick) {
-            const time = tick && tick.time,
-                now = time ? new Date(time) : new Date();
-
-            let coeff;
-
-            if (granularity === "S5") {
-                coeff = 1000 * 5;
-            } else if (granularity === "S10") {
-                coeff = 1000 * 10;
-            } else if (granularity === "S15") {
-                coeff = 1000 * 15;
-            } else if (granularity === "S30") {
-                coeff = 1000 * 30;
-            } else if (granularity === "M1") {
-                coeff = 1000 * 60;
-            } else if (granularity === "M2") {
-                coeff = 1000 * 60 * 2;
-            } else if (granularity === "M3") {
-                coeff = 1000 * 60 * 3;
-            } else if (granularity === "M4") {
-                coeff = 1000 * 60 * 4;
-            } else if (granularity === "M5") {
-                coeff = 1000 * 60 * 5;
-            } else if (granularity === "M10") {
-                coeff = 1000 * 60 * 10;
-            } else if (granularity === "M15") {
-                coeff = 1000 * 60 * 15;
-            } else if (granularity === "M30") {
-                coeff = 1000 * 60 * 30;
-            } else if (granularity === "H1") {
-                coeff = 1000 * 60 * 60;
-            } else if (granularity === "H2") {
-                coeff = 1000 * 60 * 60 * 2;
-            } else if (granularity === "H3") {
-                coeff = 1000 * 60 * 60 * 3;
-            } else if (granularity === "H4") {
-                coeff = 1000 * 60 * 60 * 4;
-            } else if (granularity === "H6") {
-                coeff = 1000 * 60 * 60 * 6;
-            } else if (granularity === "H8") {
-                coeff = 1000 * 60 * 60 * 8;
-            } else if (granularity === "H12") {
-                coeff = 1000 * 60 * 60 * 12;
-            } else {
-
-                // for D / W / M
-                coeff = 1000 * 60 * 60 * 12;
-            }
-
-            return Math.floor(now / (coeff)) * coeff;
-        }
-
-        function drawChart(el, csv) {
-            const margin = {
-                    top: 0,
-                    right: 20,
-                    bottom: 30,
-                    left: 75
-                },
-                width = 960 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
-
-            const x = techan.scale.financetime()
-                .range([0, width]);
-
-            const y = d3.scaleLinear()
-                .range([height, 0]);
-
-            const yVolume = d3.scaleLinear()
-                .range([y(0), y(0.2)]);
-
-            const ohlc = techan.plot.ohlc()
-                .xScale(x)
-                .yScale(y);
-
-            const tradearrow = techan.plot.tradearrow()
-                .xScale(x)
-                .yScale(y)
-                .orient(d => {
-                    const side = d.type.startsWith("buy") ? "up" : "down";
-
-                    return side;
-                });
-
-            const sma0 = techan.plot.sma()
-                .xScale(x)
-                .yScale(y);
-
-            const sma0Calculator = techan.indicator.sma()
-                .period(10);
-
-            const sma1 = techan.plot.sma()
-                .xScale(x)
-                .yScale(y);
-
-            const sma1Calculator = techan.indicator.sma()
-                .period(20);
-
-            const volume = techan.plot.volume()
-                .accessor(ohlc.accessor())
-                .xScale(x)
-                .yScale(yVolume);
-
-            const xAxis = d3.axisBottom(x);
-
-            const yAxis = d3.axisLeft(y);
-
-            const volumeAxis = d3.axisRight(yVolume)
-                .ticks(3)
-                .tickFormat(d3.format(",.3s"));
-
-            const timeAnnotation = techan.plot.axisannotation()
-                .axis(xAxis)
-                .orient("bottom")
-                .format(d3.timeFormat("%Y-%m-%d %H:%M"))
-                .width(80)
-                .translate([0, height]);
-
-            const ohlcAnnotation = techan.plot.axisannotation()
-                .axis(yAxis)
-                .orient("left")
-                .format(d3.format(",.4f"));
-
-            const volumeAnnotation = techan.plot.axisannotation()
-                .axis(volumeAxis)
-                .orient("right")
-                .width(35);
-
-            const crosshair = techan.plot.crosshair()
-                .xScale(x)
-                .yScale(y)
-                .xAnnotation(timeAnnotation)
-                .yAnnotation([ohlcAnnotation, volumeAnnotation]);
-
-            d3.select(el).select("svg").remove();
-
-            const svg = d3.select(el).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                    `translate(${margin.left}, ${margin.top})`);
-
-            const defs = svg.append("defs")
-                .append("clipPath")
-                .attr("id", "ohlcClip");
-
-            defs.append("rect")
-                .attr("x", 0)
-                .attr("y", 0)
-                .attr("width", width)
-                .attr("height", height);
-
-            const ohlcSelection = svg.append("g")
-                .attr("class", "ohlc")
-                .attr("transform", "translate(0,0)");
-
-            ohlcSelection.append("g")
-                .attr("class", "volume")
-                .attr("clip-path", "url(#ohlcClip)");
-
-            ohlcSelection.append("g")
-                .attr("class", "candlestick")
-                .attr("clip-path", "url(#ohlcClip)");
-
-            ohlcSelection.append("g")
-                .attr("class", "indicator sma ma-0")
-                .attr("clip-path", "url(#ohlcClip)");
-
-            ohlcSelection.append("g")
-                .attr("class", "indicator sma ma-1")
-                .attr("clip-path", "url(#ohlcClip)");
-
-            ohlcSelection.append("g")
-                .attr("class", "tradearrow");
-
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", `translate(0, ${height})`);
-
-            svg
-                .append("g")
-                .attr("class", "y axis")
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("font-weight", "bold")
-                .style("text-anchor", "end")
-                .text(`Price (${myInstrument} / ${myGranularity})`);
-
-            svg.append("g")
-                .attr("class", "volume axis");
-
-            svg.append("g")
-                .attr("class", "crosshair ohlc");
-
-            data = d3.csvParse(csv).map(
-                d => {
-                    const date = isNaN(Date.parse(d.Date))
-                        ? new Date(+d.Date * 1000) : new Date(d.Date);
-
-                    return {
-                        date,
-                        open: +d.Open,
-                        high: +d.High,
-                        low: +d.Low,
-                        close: +d.Close,
-                        volume: +d.Volume
-                    };
-                }
-            );
-
-            svg.select("g.candlestick").datum(data);
-            svg.select("g.sma.ma-0").datum(sma0Calculator(data));
-            svg.select("g.sma.ma-1").datum(sma1Calculator(data));
-            svg.select("g.volume").datum(data);
-
-            redraw();
-
-            function redraw() {
-                const accessor = ohlc.accessor();
-
-                x.domain(data.map(accessor.d));
-                x.zoomable().domain([data.length - 130, data.length]);
-
-                y.domain(techan.scale.plot.ohlc(
-                    data.slice(data.length - 130, data.length)
-                ).domain());
-                yVolume.domain(techan.scale.plot.volume(
-                    data.slice(data.length - 130, data.length)
-                ).domain());
-
-                svg.select("g.x.axis").call(xAxis);
-                svg.select("g.y.axis").call(yAxis);
-                svg.select("g.volume.axis").call(volumeAxis);
-
-                svg.select("g.candlestick").datum(data).call(ohlc);
-                svg.select("g.tradearrow").remove();
-                svg.append("g").attr("class", "tradearrow");
-                myTrades = scope.trades.filter(
-                    trade => trade.instrument === myInstrument
-                )
-                    .map(
-                        trade => ({
-                            date: new Date(trade.openTime),
-                            type: trade.currentUnits > 0 ? "buy" : "sell",
-                            price: trade.price
-                        })
-                    );
-                svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
-
-                svg.select("g.sma.ma-0")
-                    .datum(sma0Calculator(data)).call(sma0);
-                svg.select("g.sma.ma-1")
-                    .datum(sma1Calculator(data)).call(sma1);
-
-                svg.select("g.volume").datum(data).call(volume);
-
-                svg.select("g.crosshair.ohlc").call(crosshair);
-            }
-
-            return redraw;
-        }
-
-    }
-}
-ohlcChartDirective.$inject = [];
-
-const ohlcChart = angular
-    .module("components.ohlc-chart", [])
-    .directive("ohlcChart", ohlcChartDirective)
-    .name;
-
-class OrderDialogController {
-    constructor(ToastsService, QuotesService, OrdersService, AccountsService) {
-        this.ToastsService = ToastsService;
-        this.QuotesService = QuotesService;
-        this.OrdersService = OrdersService;
-        this.AccountsService = AccountsService;
-    }
-
-    $onInit() {
-        const account = this.AccountsService.getAccount();
-
-        this.pips = account.pips;
-
-        this.type = "MARKET";
-        this.side = this.params.side;
-        this.instruments = this.params.instruments;
-        this.selectedInstrument = this.params.selectedInstrument;
-        this.changeMarket(this.selectedInstrument);
-        this.expires = [
-            { label: "1 Hour", value: 60 * 60 * 1000 },
-            { label: "2 Hours", value: 2 * 60 * 60 * 1000 },
-            { label: "3 Hours", value: 3 * 60 * 60 * 1000 },
-            { label: "4 Hours", value: 4 * 60 * 60 * 1000 },
-            { label: "5 Hours", value: 5 * 60 * 60 * 1000 },
-            { label: "6 Hours", value: 6 * 60 * 60 * 1000 },
-            { label: "8 Hours", value: 8 * 60 * 60 * 1000 },
-            { label: "12 Hours", value: 12 * 60 * 60 * 1000 },
-            { label: "18 Hours", value: 18 * 60 * 60 * 1000 },
-            { label: "1 Day", value: 60 * 60 * 24 * 1000 },
-            { label: "2 Days", value: 2 * 60 * 60 * 24 * 1000 },
-            { label: "1 Week", value: 7 * 60 * 60 * 24 * 1000 },
-            { label: "1 Month", value: 30 * 60 * 60 * 24 * 1000 },
-            { label: "2 Months", value: 60 * 60 * 60 * 24 * 1000 },
-            { label: "3 Months", value: 90 * 60 * 60 * 24 * 1000 }
-        ];
-        this.selectedExpire = 604800000; // 1 week
-        this.measure = "price";
-        this.isLowerBound = false;
-        this.isUpperBound = false;
-        this.isTakeProfit = false;
-        this.isStopLoss = false;
-        this.isTrailingStop = false;
-    }
-
-    changeMarket(instrument) {
-        if (!this.pips) {
+class OrderDialogTemplate {
+    static update(render, state, events) {
+        if (!state.orderModalIsOpen) {
+            Util.renderEmpty(render);
             return;
         }
 
-        const price = this.QuotesService.getQuotes()[instrument],
-            fixed = ((this.pips[this.selectedInstrument].toString())
-                .match(/0/g) || []).length;
-
-        this.measure = "price";
-        this.step = parseFloat(this.pips[this.selectedInstrument]);
-        if (this.side === "buy") {
-            this.quote = parseFloat(price && price.ask);
-            this.takeProfit = parseFloat((this.quote + this.step * 10)
-                .toFixed(fixed));
-            this.stopLoss = parseFloat((this.quote - this.step * 10)
-                .toFixed(fixed));
-        } else {
-            this.quote = parseFloat(price && price.bid);
-            this.takeProfit = parseFloat((this.quote - this.step * 10)
-                .toFixed(fixed));
-            this.stopLoss = parseFloat((this.quote + this.step * 10)
-                .toFixed(fixed));
-        }
-        this.lowerBound = parseFloat((this.quote - this.step).toFixed(fixed));
-        this.upperBound = parseFloat((this.quote + this.step).toFixed(fixed));
-        this.trailingStop = 25;
+        OrderDialogTemplate.renderOrderModal(render, state, events);
     }
 
-    changeMeasure(measure) {
-        if (measure === "price") {
-            this.changeMarket(this.selectedInstrument);
-        } else {
-            this.lowerBound = 1;
-            this.upperBound = 1;
-            this.takeProfit = 10;
-            this.stopLoss = 10;
-            this.trailingStop = 25;
-            this.step = 1;
-        }
-    }
+    static renderOrderModal(render, state, events) {
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
 
-    answer(action) {
-        if (action === "close") {
-            this.openModal = false;
+            <main class="pa4 black-80 bg-white">
+                <form class="measure center">
+                    <fieldset id="order" class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">Order Dialog</legend>
 
-            return;
-        }
+                        <div class="flex flex-row justify-between vh-50">
 
-        if (!this.pips) {
-            this.ToastsService.addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
-            this.openModal = false;
+                            <div class="flex flex-column items-start justify-between ma2">
 
-            return;
-        }
+                                <div>
+                                    <input type="radio" name="marketOrder" value="MARKET"
+                                        checked="${state.orderInfo.type === "MARKET"}"
+                                        onchange="${e => {
+                                            state.orderInfo.type = e.target.value.trim();
+                                        }}">
+                                    <label for="marketOrder" class="lh-copy">Market</label>
+                                    <input type="radio" name="marketOrder" value="LIMIT"
+                                        checked="${state.orderInfo.type === "LIMIT"}"
+                                        onchange="${e => {
+                                            state.orderInfo.type = e.target.value.trim();
+                                        }}">
+                                    <label for="limitOrder" class="lh-copy">Limit</label>
+                                </div>
 
-        this.openModal = false;
+                                <div>
+                                    <input type="radio" name="buy" value="buy"
+                                        checked="${state.orderInfo.side === "buy"}"
+                                        onchange="${e => {
+                                            state.orderInfo.side = e.target.value.trim();
+                                        }}">
+                                    <label for="buy" class="lh-copy">Buy</label>
+                                    <input type="radio" name="sell" value="sell"
+                                        checked="${state.orderInfo.side === "sell"}"
+                                        onchange="${e => {
+                                            state.orderInfo.side = e.target.value.trim();
+                                        }}">
+                                    <label for="sell" class="lh-copy">Sell</label>
+                                </div>
 
-        const order = {},
-            isBuy = this.side === "buy",
-            isMeasurePips = this.measure === "pips";
+                                <div>
+                                    <select id="market" onchange="${e => events(e,
+                                            e.target.value.trim())}">${
 
-        this.step = parseFloat(this.pips[this.selectedInstrument]);
+                                        state.orderInfo.instruments.map(instrument => hyperHTML.wire()`
+                                        <option value="${instrument}" selected="${state.orderInfo.selectedInstrument === instrument}">
+                                            ${instrument}
+                                        </option>
+                                    `)}</select>
+                                </div>
 
-        order.instrument = this.selectedInstrument;
-        order.units = this.units;
-        if (this.units && !isBuy) {
-            order.units = `-${order.units}`;
-        }
+                                <input class="mw4" placeholder="Units" name="units" type="number"
+                                    value="${state.orderInfo.units}"
+                                    oninput="${e => {
+                                        state.orderInfo.units = e.target.value.trim();
+                                    }}">
 
-        order.side = this.side;
-        order.type = this.type;
+                                <div class="w4">
+                                    <label for="quote" class="lh-copy">Quote</label>
+                                    <input class="mw4" placeholder="Quote"
+                                        name="quote" type="number"
+                                        oninput="${e => {
+                                            state.orderInfo.quote = e.target.value.trim();
+                                        }}"
+                                        disabled="${state.orderInfo.type === "MARKET"}"
+                                        step="${state.step}">
+                                </div>
 
-        if (order.type === "LIMIT") {
-            order.price = this.quote && this.quote.toString();
-            order.gtdTime = new Date(Date.now() + this.selectedExpire);
-        }
+                                <div style="${Util.show(state.orderInfo.type === "LIMIT")}">
+                                    <select id="expire" onchange="${e => events(e,
+                                            e.target.value.trim())}">${
 
-        if (isMeasurePips) {
-            if (this.isLowerBound) {
-                order.priceBound =
-                    parseFloat(this.quote - this.step * this.lowerBound)
-                        .toString();
-            }
-            if (this.isUpperBound) {
-                order.priceBound =
-                    parseFloat(this.quote + this.step * this.upperBound)
-                        .toString();
-            }
-            if (isBuy) {
-                if (this.isTakeProfit) {
-                    order.takeProfitOnFill = {};
-                    order.takeProfitOnFill.price =
-                        parseFloat(this.quote + this.step * this.takeProfit)
-                            .toString();
-                }
-                if (this.isStopLoss) {
-                    order.stopLossOnFill = {};
-                    order.order.takeProfitOnFill.price =
-                        parseFloat(this.quote - this.step * this.stopLoss)
-                            .toString();
-                }
-            } else {
-                if (this.isTakeProfit) {
-                    order.takeProfitOnFill = {};
-                    order.takeProfitOnFill.price =
-                        parseFloat(this.quote - this.step * this.takeProfit)
-                            .toString();
-                }
-                if (this.isStopLoss) {
-                    order.stopLossOnFill = {};
-                    order.order.takeProfitOnFill.price =
-                        parseFloat(this.quote + this.step * this.stopLoss)
-                            .toString();
-                }
-            }
-        } else {
-            if (this.isLowerBound) {
-                order.priceBound = this.lowerBound.toString();
-            }
-            if (this.isUpperBound) {
-                order.priceBound = this.upperBound.toString();
-            }
-            if (this.isTakeProfit) {
-                order.takeProfitOnFill = {};
-                order.takeProfitOnFill.price = this.takeProfit.toString();
-            }
-            if (this.isStopLoss) {
-                order.stopLossOnFill = {};
-                order.stopLossOnFill.price = this.stopLoss.toString();
-            }
-        }
-        if (this.isTrailingStop) {
-            order.trailingStopLossOnFill = {};
-            order.trailingStopLossOnFill.distance =
-                (this.step * this.trailingStop).toString();
-        }
+                                        state.orderInfo.expires.map(expiry => hyperHTML.wire()`
+                                        <option value="${expiry.value}" selected="${state.orderInfo.selectedExpire === expiry.value}">
+                                            ${expiry.label}
+                                        </option>
+                                    `)}</select>
+                                </div>
 
-        this.OrdersService.putOrder(order).then(transaction => {
-            let opened,
-                canceled,
-                side,
-                message;
+                            </div>
 
-            if (transaction.message) {
-                message = `ERROR ${transaction.message}`;
+                            <div class="flex flex-column items-end justify-between ma2">
 
-                this.ToastsService.addToast(message);
-            } else if (transaction.errorMessage) {
-                message = `ERROR ${transaction.errorMessage}`;
+                                <div>
+                                    <input type="radio" name="price" value="price"
+                                        checked="${state.orderInfo.measure === "price"}"
+                                        onchange="${e => {
+                                            state.orderInfo.measure = e.target.value.trim();
+                                        }}">
+                                    <label for="price" class="lh-copy">Price</label>
+                                    <input type="radio" name="pips" value="pips"
+                                        checked="${state.orderInfo.measure === "pips"}"
+                                        onchange="${e => {
+                                            state.orderInfo.measure = e.target.value.trim();
+                                        }}">
+                                    <label for="pips" class="lh-copy">PIPS</label>
+                                </div>
 
-                this.ToastsService.addToast(message);
-            } else if (transaction.orderCancelTransaction) {
-                canceled = transaction.orderCancelTransaction;
+                                <div class="w4">
+                                    <input type="checkbox" checked="${state.orderInfo.isLowerBound}"
+                                        onchange="${e => {
+                                            state.orderInfo.isLowerBound = e.target.checked;
+                                        }}">
+                                    <label for="lowerBound" class="lh-copy">Lower Bound</label>
+                                    <input class="mw4" placeholder="Lower Bound"
+                                        name="lowerBound" type="number" min="0"
+                                        oninput="${e => {
+                                            state.orderInfo.lowerBound = e.target.value.trim();
+                                        }}"
+                                        disabled="${!state.orderInfo.isLowerBound}"
+                                        step="${state.orderInfo.step}">
+                                </div>
 
-                message = `ERROR ${canceled.reason}`;
+                                <div class="w4">
+                                    <input type="checkbox" checked="${state.orderInfo.isUpperBound}"
+                                        onchange="${e => {
+                                            state.orderInfo.isUpperBound = e.target.checked;
+                                        }}">
+                                    <label for="upperBound" class="lh-copy">Upper Bound</label>
+                                    <input class="mw4" placeholder="Upper Bound"
+                                        name="upperBound" type="number" min="0"
+                                        oninput="${e => {
+                                            state.orderInfo.upperBound = e.target.value.trim();
+                                        }}"
+                                        disabled="${!state.orderInfo.isUpperBound}"
+                                        step="${state.orderInfo.step}">
+                                </div>
 
-                this.ToastsService.addToast(message);
-            } else {
-                opened = transaction.orderFillTransaction ||
-                    transaction.orderFillTransaction ||
-                    transaction.orderCreateTransaction;
+                                <div class="w4">
+                                    <input type="checkbox" checked="${state.orderInfo.isTakeProfit}"
+                                        onchange="${e => {
+                                            state.orderInfo.isTakeProfit = e.target.checked;
+                                        }}">
+                                    <label for="takeProfit" class="lh-copy">Take Profit</label>
+                                    <input class="mw4" placeholder="Take Profit"
+                                        name="takeProfit" type="number" min="0"
+                                        oninput="${e => {
+                                            state.orderInfo.takeProfit = e.target.value.trim();
+                                        }}"
+                                        disabled="${!state.orderInfo.isTakeProfit}"
+                                        step="${state.orderInfo.step}">
+                                </div>
 
-                side = opened.units > 0 ? "buy" : "sell";
-                message = `${side} ` +
-                    `${opened.instrument} ` +
-                    `#${opened.id} ` +
-                    `@${opened.price} ` +
-                    `for ${opened.units}`;
+                                <div class="w4">
+                                    <input type="checkbox" checked="${state.orderInfo.isStopLoss}"
+                                        onchange="${e => {
+                                            state.orderInfo.isStopLoss = e.target.checked;
+                                        }}">
+                                    <label for="stopLoss" class="lh-copy">Stop Loss</label>
+                                    <input class="mw4" placeholder="Stop Loss"
+                                        name="stopLoss" type="number" min="0"
+                                        oninput="${e => {
+                                            state.orderInfo.stopLoss = e.target.value.trim();
+                                        }}"
+                                        disabled="${!state.orderInfo.isStopLoss}"
+                                        step="${state.orderInfo.step}">
+                                </div>
 
-                this.ToastsService.addToast(message);
-            }
-        });
-    }
-}
-OrderDialogController.$inject = ["ToastsService", "QuotesService", "OrdersService", "AccountsService"];
+                                <div class="w4">
+                                    <input type="checkbox" checked="${state.orderInfo.isTrailingStop}"
+                                        onchange="${e => {
+                                            state.orderInfo.isTrailingStop = e.target.checked;
+                                        }}">
+                                    <label for="trailingStop" class="lh-copy">Trailing Stop</label>
+                                    <input class="mw4" placeholder="Trailing Stop"
+                                        name="trailingStop" type="number" min="0"
+                                        oninput="${e => {
+                                            state.orderInfo.trailingStop = e.target.value.trim();
+                                        }}"
+                                        disabled="${!state.orderInfo.isTrailingStop}"
+                                        step="${state.orderInfo.step}">
+                                </div>
 
-const orderDialogComponent = {
-    templateUrl: "app/components/order-dialog/order-dialog.html",
-    controller: OrderDialogController,
-    bindings: {
-        openModal: "=",
-        params: "<"
-    }
-};
+                            </div>
 
-const orderDialog = angular
-    .module("components.order-dialog", [])
-    .component("orderDialog", orderDialogComponent)
-    .name;
+                        </div>
 
-class OrdersController {
-    constructor(ToastsService, OrdersService) {
-        this.ToastsService = ToastsService;
-        this.OrdersService = OrdersService;
-    }
+                    </fieldset>
 
-    $onInit() {
-        this.orders = this.OrdersService.getOrders();
+                    <div class="flex flex-row items-center justify-around">
+                        <input id="orderSubmit" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="button" value="Submit" onclick="${events}">
 
-        this.OrdersService.refresh();
-    }
+                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="button" value="Close"
+                            onclick="${() => {
+                                state.orderModalIsOpen = false;
+                            }}">
+                    </div>
 
-    closeOrder(orderId) {
-        this.openCloseOrderModal = true;
-        this.closingOrderId = orderId;
-    }
+                </form>
+            </main>
 
-    closeOrderDialog(answer) {
-        this.openCloseOrderModal = false;
-
-        if (!answer) {
-            return;
-        }
-
-        this.OrdersService.closeOrder(this.closingOrderId).then(order => {
-            let message = `Closed #${order.orderCancelTransaction.orderID}`;
-
-            if (order.errorMessage || order.message) {
-                message = `ERROR ${order.errorMessage || order.message}`;
-            }
-
-            this.ToastsService.addToast(message);
-        }).catch(err => {
-            const message = `ERROR ${err.code} ${err.message}`;
-
-            this.ToastsService.addToast(message);
-        });
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
     }
 
 }
-OrdersController.$inject = ["ToastsService", "OrdersService"];
-
-const ordersComponent = {
-    templateUrl: "app/components/orders/orders.html",
-    controller: OrdersController
-};
 
 class OrdersService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-
-        this.orders = [];
+    constructor(orders) {
+        if (!OrdersService.orders) {
+            OrdersService.orders = orders;
+        }
     }
 
-    getOrders() {
-        return this.orders;
+
+    static getOrders() {
+        return OrdersService.orders;
     }
 
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.$http.post("/api/orders", {
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/orders", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId
-            }).then(res => {
-                this.orders.length = 0;
-                angular.extend(this.orders, res.data);
+            })
+        }).then(res => res.json()).then(data => {
+            OrdersService.orders.splice(0, OrdersService.orders.length);
+
+            data.forEach(trade => {
+                OrdersService.orders.push(trade);
             });
+
+            return OrdersService.orders;
         });
     }
 
-    putOrder(order) {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/order", {
+    static putOrder(order) {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/order", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
@@ -1255,28 +977,35 @@ class OrdersService {
                 stopLossOnFill: order.stopLossOnFill,
                 takeProfitOnFill: order.takeProfitOnFill,
                 trailingStopLossOnFill: order.trailingStopLossOnFill
-            }).then(trade => trade.data)
-                .catch(err => err.data)
-        );
+            })
+        }).then(res => res.json()).then(data => data)
+            .catch(err => err.data);
     }
 
-    closeOrder(id) {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/closeorder", {
+    static closeOrder(id) {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/closeorder", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
                 id
-            }).then(order => order.data)
-                .catch(err => err.data)
-        );
+            })
+        }).then(res => res.json()).then(data => data)
+            .catch(err => err.data);
     }
 
-    updateOrders(tick) {
-        const account = this.AccountsService.getAccount(),
+    static updateOrders(tick) {
+        const account = AccountsService.getAccount(),
             pips = account.pips;
 
-        this.orders.forEach((order, index) => {
+        OrdersService.orders.forEach((order, index) => {
             let current;
 
             if (order.instrument === tick.instrument) {
@@ -1288,97 +1017,756 @@ class OrdersService {
                     current = tick.bid;
                 }
 
-                this.orders[index].current = current;
-                this.orders[index].distance = (Math.abs(current - order.price) /
+                OrdersService.orders[index].current = current;
+                OrdersService.orders[index].distance = (Math.abs(current - order.price) /
                     pips[order.instrument]);
             }
         });
     }
 }
-OrdersService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const orders = angular
-    .module("components.orders", [])
-    .component("orders", ordersComponent)
-    .service("OrdersService", OrdersService)
-    .name;
+OrdersService.orders = null;
 
-class PluginsController {
-    constructor(PluginsService) {
-        this.PluginsService = PluginsService;
+class QuotesService {
+    constructor(quotes) {
+        if (!QuotesService.quotes) {
+            QuotesService.quotes = quotes;
+        }
     }
 
-    $onInit() {
-        this.plugins = this.PluginsService.getPlugins();
-        this.pluginsInfo = this.PluginsService.getPluginsInfo();
-
-        this.PluginsService.refresh();
+    static getQuotes() {
+        return QuotesService.quotes;
     }
 
-    engage() {
-        this.PluginsService.engagePlugins(this.plugins);
+    static updateTick(tick) {
+        const account = AccountsService.getAccount(),
+            streamingInstruments = account.streamingInstruments,
+            pips = account.pips,
+            instrument = tick.instrument,
+            lenStreamingInstruments = Object.keys(streamingInstruments).length,
+            lenQuotesInstruments = Object.keys(QuotesService.quotes).length;
+
+        if (lenStreamingInstruments !== lenQuotesInstruments) {
+            streamingInstruments.forEach(instr => {
+                QuotesService.quotes[instr].instrument = instr;
+            });
+        }
+
+        QuotesService.quotes[instrument].time = tick.time;
+        QuotesService.quotes[instrument].ask = tick.ask;
+        QuotesService.quotes[instrument].bid = tick.bid;
+        QuotesService.quotes[instrument].spread =
+            ((tick.ask - tick.bid) / pips[instrument]).toFixed(1);
+    }
+
+    static reset() {
+        for (const instr in QuotesService.quotes) {
+            if (QuotesService.quotes[instr].instrument === instr) {
+                delete QuotesService.quotes[instr];
+            }
+        }
     }
 }
-PluginsController.$inject = ["PluginsService"];
 
-const pluginsComponent = {
-    templateUrl: "app/components/plugins/plugins.html",
-    controller: PluginsController
-};
+QuotesService.quotes = null;
 
-class PluginsService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
+class OrderDialogController {
+    constructor(render, template, bindings) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-        this.plugins = {};
-        this.pluginsInfo = {
-            count: 0
-        };
+        this.state = Introspected.observe(bindings,
+            state => template.update(render, state, events));
+
+        const account = AccountsService.getAccount();
+
+        this.pips = account.pips;
+
+        this.onMarketChange(null, this.state.selectedInstrument);
     }
 
-    getPlugins() {
-        return this.plugins;
+    onMarketChange(e, instrument) {
+        if (!this.pips) {
+            return;
+        }
+
+        this.state.selectedInstrument = instrument;
+
+        const price = QuotesService.getQuotes()[instrument],
+            fixed = ((this.pips[this.state.selectedInstrument].toString())
+                .match(/0/g) || []).length;
+
+        this.state.measure = "price";
+        this.state.step = parseFloat(this.pips[this.state.selectedInstrument]);
+        if (this.state.orderInfo.side === "buy") {
+            this.state.quote = parseFloat(price && price.ask);
+            this.takeProfit = parseFloat((this.state.quote + this.state.step * 10)
+                .toFixed(fixed));
+            this.stopLoss = parseFloat((this.state.quote - this.state.step * 10)
+                .toFixed(fixed));
+        } else {
+            this.state.quote = parseFloat(price && price.bid);
+            this.takeProfit = parseFloat((this.state.quote - this.state.step * 10)
+                .toFixed(fixed));
+            this.stopLoss = parseFloat((this.state.quote + this.state.step * 10)
+                .toFixed(fixed));
+        }
+        this.lowerBound = parseFloat((this.state.quote - this.state.step).toFixed(fixed));
+        this.upperBound = parseFloat((this.state.quote + this.state.step).toFixed(fixed));
+        this.trailingStop = 25;
     }
 
-    getPluginsInfo() {
-        return this.pluginsInfo;
+    changeMeasure(measure) {
+        if (measure === "price") {
+            this.onMarketChange(null, this.state.selectedInstrument);
+        } else {
+            this.lowerBound = 1;
+            this.upperBound = 1;
+            this.takeProfit = 10;
+            this.stopLoss = 10;
+            this.trailingStop = 25;
+            this.state.step = 1;
+        }
     }
 
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.$http.post("/api/plugins", {
+    onOrderSubmitClick() {
+        this.state.orderModalIsOpen = false;
+
+        if (!this.pips) {
+            ToastsService.addToast(`Pips info for ${this.state.selectedInstrument} not yet available. Retry.`);
+
+            return;
+        }
+
+        const order = {},
+            isBuy = this.state.orderInfo.side === "buy",
+            isMeasurePips = this.state.measure === "pips";
+
+        this.state.orderInfo.step = parseFloat(this.pips[this.state.selectedInstrument]);
+
+        order.instrument = this.state.selectedInstrument;
+        order.units = this.state.orderInfo.units;
+        if (this.state.orderInfo.units && !isBuy) {
+            order.units = `-${order.units}`;
+        }
+
+        order.side = this.state.orderInfo.side;
+        order.type = this.state.orderInfo.type;
+
+        if (order.type === "LIMIT") {
+            order.price = this.state.orderInfo.quote && this.state.orderInfo.quote.toString();
+            order.gtdTime = new Date(Date.now() + this.state.orderInfo.selectedExpire);
+        }
+
+        if (isMeasurePips) {
+            if (this.state.orderInfo.isLowerBound) {
+                order.priceBound =
+                    parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.lowerBound)
+                        .toString()).toString();
+            }
+            if (this.state.orderInfo.isUpperBound) {
+                order.priceBound =
+                    parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.upperBound)
+                        .toString()).toString();
+            }
+            if (isBuy) {
+                if (this.state.orderInfo.isTakeProfit) {
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price =
+                        parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.takeProfit)
+                            .toString()).toString();
+                }
+                if (this.state.orderInfo.isStopLoss) {
+                    order.stopLossOnFill = {};
+                    order.order.takeProfitOnFill.price =
+                        parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.stopLoss)
+                            .toString()).toString();
+                }
+            } else {
+                if (this.state.orderInfo.isTakeProfit) {
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price =
+                        parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.takeProfit)
+                            .toString()).toString();
+                }
+                if (this.state.orderInfo.isStopLoss) {
+                    order.stopLossOnFill = {};
+                    order.order.takeProfitOnFill.price =
+                        parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.stopLoss)
+                            .toString()).toString();
+                }
+            }
+        } else {
+            if (this.state.orderInfo.isLowerBound) {
+                order.priceBound = this.lowerBound.toString();
+            }
+            if (this.state.orderInfo.isUpperBound) {
+                order.priceBound = this.upperBound.toString();
+            }
+            if (this.state.orderInfo.isTakeProfit) {
+                order.takeProfitOnFill = {};
+                order.takeProfitOnFill.price = this.takeProfit.toString();
+            }
+            if (this.state.orderInfo.isStopLoss) {
+                order.stopLossOnFill = {};
+                order.stopLossOnFill.price = this.stopLoss.toString();
+            }
+        }
+        if (this.state.orderInfo.isTrailingStop) {
+            order.trailingStopLossOnFill = {};
+            order.trailingStopLossOnFill.distance =
+                (this.state.orderInfo.step * this.trailingStop).toString();
+        }
+
+        OrdersService.putOrder(order).then(transaction => {
+            let opened,
+                canceled,
+                side,
+                message;
+
+            if (transaction.message) {
+                message = `ERROR ${transaction.message}`;
+
+                ToastsService.addToast(message);
+            } else if (transaction.errorMessage) {
+                message = `ERROR ${transaction.errorMessage}`;
+
+                ToastsService.addToast(message);
+            } else if (transaction.orderCancelTransaction) {
+                canceled = transaction.orderCancelTransaction;
+
+                message = `ERROR ${canceled.reason}`;
+
+                ToastsService.addToast(message);
+            } else {
+                opened = transaction.orderFillTransaction ||
+                    transaction.orderFillTransaction ||
+                    transaction.orderCreateTransaction;
+
+                side = opened.units > 0 ? "buy" : "sell";
+                message = `${side} ` +
+                    `${opened.instrument} ` +
+                    `#${opened.id} ` +
+                    `@${opened.price} ` +
+                    `for ${opened.units}`;
+
+                ToastsService.addToast(message);
+            }
+        });
+    }
+}
+
+class OrderDialogComponent {
+    static bootstrap(state) {
+        const render = hyperHTML.bind(Util.query("order-dialog"));
+
+        this.orderDialogController = new OrderDialogController(render, OrderDialogTemplate, state);
+    }
+}
+
+class TradesService {
+    constructor(trades) {
+        if (!TradesService.trades) {
+            TradesService.trades = trades;
+        }
+    }
+
+    static getTrades() {
+        return TradesService.trades;
+    }
+
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/trades", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId
-            }).then(res => {
-                let name;
+            })
+        }).then(res => res.json()).then(data => {
+            TradesService.trades.value.splice(0, TradesService.trades.value.length);
 
-                for (name in this.plugins) {
-                    if (this.plugins.hasOwnProperty(name)) {
-                        delete this.plugins[name];
-                    }
+            data.forEach(trade => {
+                trade.side = trade.currentUnits > 0 ? "buy" : "sell";
+                TradesService.trades.value.push(trade);
+            });
+
+            return TradesService.trades.value;
+        });
+    }
+
+    static closeTrade(id) {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/closetrade", {
+            method: "post",
+            body: JSON.stringify({
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId,
+                id
+            })
+        }).then(res => res.json()).then(data => data)
+            .catch(err => err.data);
+    }
+
+    static updateTrades(tick) {
+        const account = AccountsService.getAccount(),
+            pips = account.pips;
+
+        TradesService.trades.value.forEach((trade, index) => {
+            let current,
+                side;
+
+            if (trade.instrument === tick.instrument) {
+                side = trade.currentUnits > 0 ? "buy" : "sell";
+
+                if (side === "buy") {
+                    current = tick.bid;
+                    TradesService.trades.value[index].profitPips =
+                        ((current - trade.price) / pips[trade.instrument]);
                 }
-                angular.extend(this.plugins, res.data);
-                this.pluginsInfo.count = Object.keys(this.plugins).length;
+                if (side === "sell") {
+                    current = tick.ask;
+                    TradesService.trades.value[index].profitPips =
+                        ((trade.price - current) / pips[trade.instrument]);
+                }
 
-                Object.keys(this.plugins).forEach(key => {
-                    if (this.plugins[key] === "enabled") {
-                        this.plugins[key] = true;
-                    } else {
-                        this.plugins[key] = false;
-                    }
-                });
+                TradesService.trades.value[index].current = current;
+            }
+        });
+    }
+}
+
+TradesService.trades = null;
+
+class ChartsController {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected({
+            candles: { csv: "" },
+            account: AccountsService.getAccount(),
+            selectedGranularity: "M5",
+            selectedInstrument: "EUR_USD",
+            granularities: [
+                "S5",
+                "S10",
+                "S15",
+                "S30",
+                "M1",
+                "M2",
+                "M3",
+                "M4",
+                "M5",
+                "M10",
+                "M15",
+                "M30",
+                "H1",
+                "H2",
+                "H3",
+                "H4",
+                "H6",
+                "H8",
+                "H12",
+                "D",
+                "W",
+                "M"
+            ],
+            orderModalIsOpen: false
+        }, state => template.update(render, state, events));
+
+        this.state.orderInfo = {
+            side: "buy",
+            selectedInstrument: this.state.selectedInstrument,
+            instruments: this.state.account.streamingInstruments,
+            type: "MARKET",
+            units: "",
+            quote: "",
+            step: 1,
+            expires: [
+                { label: "1 Hour", value: 60 * 60 * 1000 },
+                { label: "2 Hours", value: 2 * 60 * 60 * 1000 },
+                { label: "3 Hours", value: 3 * 60 * 60 * 1000 },
+                { label: "4 Hours", value: 4 * 60 * 60 * 1000 },
+                { label: "5 Hours", value: 5 * 60 * 60 * 1000 },
+                { label: "6 Hours", value: 6 * 60 * 60 * 1000 },
+                { label: "8 Hours", value: 8 * 60 * 60 * 1000 },
+                { label: "12 Hours", value: 12 * 60 * 60 * 1000 },
+                { label: "18 Hours", value: 18 * 60 * 60 * 1000 },
+                { label: "1 Day", value: 60 * 60 * 24 * 1000 },
+                { label: "2 Days", value: 2 * 60 * 60 * 24 * 1000 },
+                { label: "1 Week", value: 7 * 60 * 60 * 24 * 1000 },
+                { label: "1 Month", value: 30 * 60 * 60 * 24 * 1000 },
+                { label: "2 Months", value: 60 * 60 * 60 * 24 * 1000 },
+                { label: "3 Months", value: 90 * 60 * 60 * 24 * 1000 }
+            ],
+            selectedExpire: 604800000, // 1 week
+            measure: "price",
+            isLowerBound: false,
+            isUpperBound: false,
+            isTakeProfit: false,
+            isStopLoss: false,
+            isTrailingStop: false
+        };
+
+        this.chartsService = new ChartsService(this.state.candles);
+
+        this.state.ohlcInfo = {
+            data: this.state.candles.csv,
+            feed: "",
+            trades: JSON.stringify(TradesService.getTrades())
+        };
+
+        Introspected.observe(QuotesService.getQuotes(), state => {
+            if (Object.keys(state).length) {
+                this.state.ohlcInfo.feed = JSON.stringify(state.quotes[this.state.selectedInstrument]);
+            }
+        });
+
+        Introspected.observe(TradesService.getTrades(), state => {
+            if (Object.keys(state.trades).length) {
+                this.state.ohlcInfo.trades = JSON.stringify(state.trades.value);
+            }
+        });
+
+        this.onChartInstrumentChange(null, {
+            instrument: this.state.selectedInstrument,
+            granularity: this.state.selectedGranularity
+        });
+
+        OrderDialogComponent.bootstrap(this.state);
+    }
+
+    onChartInstrumentChange(e, { instrument, granularity }) {
+        this.state.selectedInstrument = instrument;
+        this.state.selectedGranularity = granularity;
+
+        ChartsService.getHistQuotes({
+            instrument,
+            granularity
+        }).then(() => {
+            this.state.ohlcInfo.data = this.state.candles.csv;
+        });
+    }
+
+    onChartGranularityChange(e, { instrument, granularity }) {
+        this.onChartInstrumentChange(e, { instrument, granularity });
+    }
+
+    openOrderDialog(side) {
+        Object.assign(this.state.orderInfo, {
+            side,
+            selectedInstrument: this.state.selectedInstrument,
+            instruments: this.state.account.streamingInstruments
+        });
+
+        this.state.orderModalIsOpen = true;
+    }
+
+    onOpenOrderDialogBuyClick() {
+        this.openOrderDialog("buy");
+    }
+
+    onOpenOrderDialogSellClick() {
+        this.openOrderDialog("sell");
+    }
+}
+
+class ChartsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("charts"));
+
+        this.chartsController = new ChartsController(render, ChartsTemplate);
+    }
+}
+
+class ExposureTemplate {
+    static update(render, state) {
+        const isNoExposure = Util.hide(state.exposure.length);
+        const isExposure = Util.show(state.exposure.length);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoExposure}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No exposures.</p>
+            </div>
+
+            <div style="${isExposure}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+                    </thead>
+
+                    <tbody>${
+                        state.exposure.map(exposure => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+
+                            return hyperHTML.wire(exposure, ":tr")`<tr>
+                                <td class="${classes}">${exposure.type}</td>
+                                <td class="${classes}">${exposure.market}</td>
+                                <td class="${classes}">${Util.formatNumber(exposure.units)}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class ExposureService {
+    constructor(exposure) {
+        if (!ExposureService.exposure) {
+            ExposureService.exposure = exposure;
+        }
+    }
+
+    static getExposure() {
+        return ExposureService.exposure;
+    }
+
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return;
+        }
+
+        const trades = TradesService.getTrades(),
+            exps = {};
+
+        trades.value.forEach(trade => {
+            const legs = trade.instrument.split("_");
+
+            exps[legs[0]] = exps[legs[0]] || 0;
+            exps[legs[1]] = exps[legs[1]] || 0;
+
+            exps[legs[0]] += parseInt(trade.currentUnits, 10);
+            exps[legs[1]] -= trade.currentUnits * trade.price;
+        });
+
+        ExposureService.exposure.splice(0, ExposureService.exposure.length);
+        Object.keys(exps).forEach(exp => {
+            const type = exps[exp] > 0;
+
+            ExposureService.exposure.push({
+                type: type ? "Long" : "Short",
+                market: exp,
+                units: Math.abs(exps[exp])
+            });
+        });
+
+    }
+}
+
+ExposureService.exposure = null;
+
+class ExposureController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            exposure: []
+        }, state => template.update(render, state));
+
+        this.exposureService = new ExposureService(this.state.exposure);
+    }
+}
+
+class ExposureComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("exposure"));
+
+        this.exposureController = new ExposureController(render, ExposureTemplate);
+    }
+}
+
+ExposureComponent.bootstrap();
+
+class HeaderTemplate {
+    static update(render, state, events) {
+        /* eslint-disable indent */
+        render`
+            <nav class="flex flex-row bt bb tc mw9 center shadow-2">
+
+                <div class="flex flex-wrap flex-row justify-around items-center min-w-95">
+                        <a class="logo" href="http://argo.js.org/">
+                            <img alt="Argo" src="img/logo.png">
+                        </a>
+
+                        <span class="b">Argo Interface for OANDA Trading Platform</span>
+
+                        <div style="${Util.show(state.tokenInfo.token)}">
+                            Active environment: <span class="b">${state.tokenInfo.environment}</span>
+                        </div>
+
+                        <div style="${Util.show(state.tokenInfo.accountId)}">
+                            Account Id: <span class="b">${state.tokenInfo.accountId}</span>
+                        </div>
+
+                        <div style="${Util.show(!state.tokenInfo.token)}">
+                            Please, insert the access token.
+                        </div>
+
+                        <a id="openSettings" class="pointer f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+                            style="${Util.show(state.tokenInfo.accountId)}"
+                            onclick="${events}">
+                                Settings
+                        </a>
+                        <a class="pointer f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+                            onclick="${() => {
+                                state.tokenModalIsOpen = true;
+                            }}">
+                                Token
+                        </a>
+                </div>
+
+                <div class="flex flex-row items-center min-w-5">
+                    <span class="${Util.spinnerState.isLoadingView ? "spinner" : ""}"></span>
+                </div>
+
+            </nav>
+
+            <token-dialog></token-dialog>
+            <settings-dialog></settings-dialog>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class SettingsDialogTemplate {
+    static update(render, state, events) {
+        if (!state.settingsModalIsOpen) {
+            Util.renderEmpty(render);
+            return;
+        }
+
+        SettingsDialogTemplate.renderSettingsModal(render, state, events);
+    }
+
+    static renderSettingsModal(render, state, events) {
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
+
+            <main class="pa4 black-80 bg-white h5 overflow-y-auto">
+                <form class="measure center">
+                    <fieldset id="login" class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">Settings Dialog</legend>${
+                            Object.keys(state.instrs).map(instrument => {
+                                const value = !!state.instrs[instrument];
+
+                                return hyperHTML.wire()`<span class="flex flex-row justify-center justify-around code">
+                                        <input id="toggleInstrumentSettings" type="checkbox"
+                                            onchange="${e => {
+                                                state.instrs[instrument] = e.target.checked;
+                                            }}"
+                                            checked="${value}"> ${instrument}
+                                        </input>
+                                    </span>
+                                `;
+                            })
+                    }</fieldset>
+                </form>
+
+                <div class="flex flex-row justify-center justify-around">
+                    <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                        type="submit" value="Cancel"
+                        onclick="${() => {
+                            state.settingsModalIsOpen = false;
+                        }}">
+
+                    <input id="settingsOk" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                        type="submit" value="Ok"
+                        onclick="${events}">
+                </div>
+            </main>
+
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+
+}
+
+class PluginsService {
+    constructor(pluginsState) {
+        if (!PluginsService.plugins) {
+            PluginsService.plugins = pluginsState.plugins;
+            PluginsService.pluginsInfo = pluginsState.pluginsInfo;
+        }
+    }
+
+    static getPlugins() {
+        return PluginsService.plugins;
+    }
+
+    static getPluginsInfo() {
+        return PluginsService.pluginsInfo;
+    }
+
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/plugins", {
+            method: "post",
+            body: JSON.stringify({
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            })
+        }).then(res => res.json()).then(data => {
+            for (const name in PluginsService.plugins) {
+                if (PluginsService.plugins[name].toString()) {
+                    delete PluginsService.plugins[name];
+                }
+            }
+
+            Object.assign(PluginsService.plugins, data);
+
+            PluginsService.pluginsInfo.count = Object.keys(
+                PluginsService.plugins
+            ).length;
+
+            Object.keys(PluginsService.plugins).forEach(key => {
+                if (PluginsService.plugins[key] === "enabled") {
+                    PluginsService.plugins[key] = true;
+                } else {
+                    PluginsService.plugins[key] = false;
+                }
             });
         });
     }
 
-    engagePlugins(plugs) {
-        this.SessionService.isLogged().then(credentials => {
-            const account = this.AccountsService.getAccount();
+    static engagePlugins(plugs) {
+        const credentials = SessionService.isLogged();
 
-            this.$http.post("/api/engageplugins", {
+        if (!credentials) {
+            return;
+        }
+
+        const account = AccountsService.getAccount();
+
+        Util.fetch("/api/engageplugins", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId,
@@ -1386,309 +1774,81 @@ class PluginsService {
                 config: {
                     pips: account.pips
                 }
-            });
+            })
         });
     }
 }
-PluginsService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const plugins = angular
-    .module("components.plugins", [])
-    .component("plugins", pluginsComponent)
-    .service("PluginsService", PluginsService)
-    .name;
-
-class PositionsController {
-    constructor(PositionsService) {
-        this.PositionsService = PositionsService;
-    }
-
-    $onInit() {
-        this.PositionsService.getPositions().then(positions => {
-            this.positions = positions;
-        });
-    }
-}
-PositionsController.$inject = ["PositionsService"];
-
-const positionsComponent = {
-    templateUrl: "app/components/positions/positions.html",
-    controller: PositionsController
-};
+PluginsService.plugins = null;
+PluginsService.pluginsInfo = null;
 
 class PositionsService {
-    constructor($http, SessionService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
+    constructor(positions) {
+        if (!PositionsService.positions) {
+            PositionsService.positions = positions;
+        }
     }
 
-    getPositions() {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/positions", {
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return null;
+        }
+
+        return Util.fetch("/api/positions", {
+            method: "post",
+            body: JSON.stringify({
                 environment: credentials.environment,
                 token: credentials.token,
                 accountId: credentials.accountId
-            }).then(positions => {
-                const data = [];
+            })
+        }).then(res => res.json()).then(positions => {
+            PositionsService.positions.splice(0, PositionsService.positions.length);
 
-                positions.data.forEach(position => {
-                    const longUnits = position.long &&
-                        parseInt(position.long.units, 10);
-                    const shortUnits = position.short &&
-                        parseInt(position.short.units, 10);
-                    const units = longUnits || shortUnits;
-                    const side = units > 0 ? "buy" : "sell";
-                    const avgPrice = (longUnits && position.long.averagePrice) ||
-                        (shortUnits && position.short.averagePrice);
+            positions.forEach(position => {
+                const longUnits = position.long &&
+                    parseInt(position.long.units, 10);
+                const shortUnits = position.short &&
+                    parseInt(position.short.units, 10);
+                const units = longUnits || shortUnits;
+                const side = units > 0 ? "buy" : "sell";
+                const avgPrice = (longUnits && position.long.averagePrice) ||
+                    (shortUnits && position.short.averagePrice);
 
-                    data.push({
-                        side,
-                        instrument: position.instrument,
-                        units,
-                        avgPrice
-                    });
+                PositionsService.positions.push({
+                    side,
+                    instrument: position.instrument,
+                    units,
+                    avgPrice
                 });
-
-                return data;
-            }).catch(err => err.data)
-        );
-    }
-}
-PositionsService.$inject = ["$http", "SessionService"];
-
-const positions = angular
-    .module("components.positions", [])
-    .component("positions", positionsComponent)
-    .service("PositionsService", PositionsService)
-    .name;
-
-class QuotesController {
-    constructor(QuotesService) {
-        this.QuotesService = QuotesService;
-    }
-
-    $onInit() {
-        this.quotes = this.QuotesService.getQuotes();
-    }
-}
-QuotesController.$inject = ["QuotesService"];
-
-const quotesComponent = {
-    templateUrl: "app/components/quotes/quotes.html",
-    controller: QuotesController
-};
-
-class QuotesService {
-    constructor(AccountsService) {
-        this.AccountsService = AccountsService;
-
-        this.quotes = {};
-    }
-
-    getQuotes() {
-        return this.quotes;
-    }
-
-    updateTick(tick) {
-        const account = this.AccountsService.getAccount(),
-            streamingInstruments = account.streamingInstruments,
-            pips = account.pips,
-            instrument = tick.instrument;
-
-        this.quotes[instrument] = {
-            time: tick.time,
-            ask: tick.ask,
-            bid: tick.bid,
-            spread: ((tick.ask - tick.bid) / pips[instrument]).toFixed(1)
-        };
-
-
-        if (!angular.equals(streamingInstruments, Object.keys(this.quotes))) {
-            streamingInstruments.forEach(instr => {
-                let temp;
-
-                if (this.quotes.hasOwnProperty(instr)) {
-                    temp = this.quotes[instr];
-                    delete this.quotes[instr];
-                    this.quotes[instr] = temp;
-                }
             });
-        }
-    }
 
-    reset() {
-        let key;
-
-        for (key in this.quotes) {
-            if (this.quotes.hasOwnProperty(key)) {
-                delete this.quotes[key];
-            }
-        }
+            return PositionsService.positions;
+        }).catch(err => err.data);
     }
 }
-QuotesService.$inject = ["AccountsService"];
 
-const quotes = angular
-    .module("components.quotes", [])
-    .component("quotes", quotesComponent)
-    .service("QuotesService", QuotesService)
-    .name;
-
-class SessionService {
-    constructor($q) {
-        this.deferred = $q.defer();
-        this.credentials = {
-            environment: null,
-            token: null,
-            accountId: null
-        };
-    }
-
-    setCredentials(session) {
-        this.credentials.environment = session.environment;
-        this.credentials.token = session.token;
-        this.credentials.accountId = session.accountId;
-
-        this.deferred.resolve(this.credentials);
-    }
-
-    isLogged() {
-        return this.deferred.promise;
-    }
-}
-SessionService.$inject = ["$q"];
-
-const session = angular
-    .module("components.session", [])
-    .service("SessionService", SessionService)
-    .name;
-
-class SettingsDialogController {
-    answer(settingsInfo) {
-        this.closeModal({ settingsInfo });
-    }
-}
-SettingsDialogController.$inject = [];
-
-const settingsDialogComponent = {
-    templateUrl: "app/components/settings-dialog/settings-dialog.html",
-    controller: SettingsDialogController,
-    bindings: {
-        openModal: "=",
-        closeModal: "&",
-        instruments: "<"
-    }
-};
-
-const settingsDialog = angular
-    .module("components.settings-dialog", [])
-    .component("settingsDialog", settingsDialogComponent)
-    .name;
-
-// Inspired by http://bl.ocks.org/vicapow/9904319
-function slChartDirective() {
-    const data = {},
-        directive = {
-            restrict: "E",
-            link,
-            scope: {
-                instrument: "=",
-                data: "=",
-                length: "="
-            },
-            replace: true,
-            template: "<svg class='sl'></svg>",
-            transclude: true
-        };
-
-    return directive;
-
-    function link(scope, element) {
-
-        scope.$watch("data", quote => {
-            redraw(quote);
-        });
-
-        function redraw(quote) {
-            const svg = d3.select(element[0]),
-                node = svg.node(),
-                instrument = scope.instrument,
-                w = node.clientWidth,
-                h = getComputedStyle(node)["font-size"].replace("px", "");
-
-            svg.selectAll("*").remove();
-
-            if (!data[instrument]) {
-                data[instrument] = [];
-            }
-
-            data[instrument].push(
-                (parseFloat(quote.bid) +
-                    parseFloat(quote.ask)) / 2
-            );
-
-            data[instrument] = data[instrument].slice(-scope.length);
-
-            if (data[instrument][0] > data[instrument].slice(-1)) {
-                node.style.stroke = "red";
-            } else {
-                node.style.stroke = "green";
-            }
-            node.style.height = `${h}px`;
-
-            const min$$1 = d3.min(data[instrument]);
-            const max$$1 = d3.max(data[instrument]);
-
-            const x = d3.scaleLinear()
-                .domain([0, data[instrument].length - 1]).range([0, w]);
-            const y = d3.scaleLinear()
-                .domain([min$$1, max$$1]).range([h, 0]);
-
-            const paths = data[instrument]
-                .map((d, i) => [x(i), y(d)])
-                .join("L");
-
-            svg.append("path").attr("d", `M${paths}`);
-        }
-    }
-}
-slChartDirective.$inject = [];
-
-const slChart = angular
-    .module("components.sl-chart", [])
-    .directive("slChart", slChartDirective)
-    .name;
+PositionsService.positions = null;
 
 class StreamingService {
-    constructor($timeout, $http, ToastsService,
-        QuotesService, ActivityService, TradesService,
-        OrdersService, AccountsService, PluginsService) {
-
-        this.$timeout = $timeout;
-        this.$http = $http;
-        this.ToastsService = ToastsService;
-        this.QuotesService = QuotesService;
-        this.ActivityService = ActivityService;
-        this.TradesService = TradesService;
-        this.OrdersService = OrdersService;
-        this.AccountsService = AccountsService;
-        this.PluginsService = PluginsService;
-    }
-
-    startStream(data) {
-        this.$http.post("/api/startstream", {
-            environment: data.environment,
-            accessToken: data.accessToken,
-            accountId: data.accountId,
-            instruments: data.instruments
+    static startStream(data) {
+        Util.fetch("/api/startstream", {
+            method: "post",
+            body: JSON.stringify({
+                environment: data.environment,
+                accessToken: data.accessToken,
+                accountId: data.accountId,
+                instruments: data.instruments
+            })
         }).then(() => {
-            this.getStream();
+            StreamingService.getStream();
         }).catch(err => {
-            this.ToastsService.addToast(err);
+            ToastsService.addToast(`streaming ${err.message}`);
         });
     }
 
-    getStream() {
+    static getStream() {
         const ws = new WebSocket("ws://localhost:8000/stream");
 
         ws.onmessage = event => {
@@ -1699,128 +1859,314 @@ class StreamingService {
                 transaction,
                 refreshPlugins;
 
-            this.$timeout(() => {
-                try {
-                    data = angular.fromJson(event.data);
+            try {
+                data = JSON.parse(event.data);
 
-                    isTick = data.closeoutAsk && data.closeoutBid;
-                    isTransaction = data.accountID;
-                    refreshPlugins = data.refreshPlugins;
+                isTick = data.closeoutAsk && data.closeoutBid;
+                isTransaction = data.accountID;
+                refreshPlugins = data.refreshPlugins;
 
-                    if (isTick) {
-                        tick = {
-                            time: data.time,
-                            instrument: data.instrument,
-                            ask: data.asks[0] && data.asks[0].price ||
-                                data.closeoutAsk,
-                            bid: data.bids[0] && data.bids[0].price ||
-                                data.closeoutBid
-                        };
+                if (isTick) {
+                    tick = {
+                        time: data.time,
+                        instrument: data.instrument,
+                        ask: data.asks[0] && data.asks[0].price ||
+                            data.closeoutAsk,
+                        bid: data.bids[0] && data.bids[0].price ||
+                            data.closeoutBid
+                    };
 
-                        this.QuotesService.updateTick(tick);
-                        this.TradesService.updateTrades(tick);
-                        this.OrdersService.updateOrders(tick);
-                    }
+                    QuotesService.updateTick(tick);
 
-                    if (isTransaction) {
-                        transaction = data;
-                        this.ActivityService.addActivity(transaction);
-
-                        this.TradesService.refresh();
-                        this.OrdersService.refresh();
-                        this.AccountsService.refresh();
-                    }
-
-                    if (refreshPlugins) {
-                        this.PluginsService.refresh();
-                    }
-                } catch (e) {
-
-                    // Discard "incomplete" json
-                    // console.log(e.name + ": " + e.message);
+                    TradesService.updateTrades(tick);
+                    OrdersService.updateOrders(tick);
                 }
-            });
+
+                if (isTransaction) {
+                    transaction = data;
+
+                    ActivityService.addActivity(transaction);
+
+                    AccountsService.refresh();
+                    TradesService.refresh().then(() => {
+                        ExposureService.refresh();
+                    });
+                    OrdersService.refresh();
+                    PositionsService.refresh();
+                }
+
+                if (refreshPlugins) {
+                    PluginsService.refresh();
+                }
+            } catch (e) {
+
+                // Discard "incomplete" json
+                // console.log(e.name + ": " + e.message);
+            }
         };
     }
 }
-StreamingService.$inject = [
-    "$timeout", "$http", "ToastsService",
-    "QuotesService", "ActivityService", "TradesService",
-    "OrdersService", "AccountsService", "PluginsService"
-];
 
-const streaming = angular
-    .module("components.streaming", [])
-    .service("StreamingService", StreamingService)
-    .name;
+class SettingsDialogController {
+    constructor(render, template, bindings) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-class ToastsController {
-    constructor(ToastsService) {
-        this.ToastsService = ToastsService;
+        this.state = Introspected.observe(bindings,
+            state => template.update(render, state, events));
     }
 
-    $onInit() {
-        this.toasts = this.ToastsService.getToasts();
-    }
-}
-ToastsController.$inject = ["ToastsService"];
+    onSettingsOkClick() {
+        const credentials = SessionService.isLogged();
 
-const toastsComponent = {
-    templateUrl: "app/components/toasts/toasts.html",
-    controller: ToastsController
-};
+        this.state.settingsModalIsOpen = false;
 
-class ToastsService {
-    constructor($timeout) {
-        this.$timeout = $timeout;
-
-        this.toasts = [];
-        this.timeout = null;
-    }
-
-    getToasts() {
-        return this.toasts;
-    }
-
-    addToast(message) {
-        this.toasts.splice(0, 0, {
-            date: new Date(),
-            message
-        });
-
-        if (this.timeout) {
-            this.$timeout.cancel(this.timeout);
+        if (!credentials) {
+            return;
         }
-        this.timeout = this.reset();
-    }
 
-    reset() {
-        return this.$timeout(() => {
-            this.toasts.length = 0;
-        }, 10000);
+        window.localStorage.setItem("argo.instruments", JSON.stringify(this.state.instrs));
+
+        const instruments = AccountsService.setStreamingInstruments(this.state.instrs);
+
+        QuotesService.reset();
+
+        StreamingService.startStream({
+            environment: credentials.environment,
+            accessToken: credentials.token,
+            accountId: credentials.accountId,
+            instruments
+        });
     }
 }
-ToastsService.$inject = ["$timeout"];
 
-const toasts = angular
-    .module("components.toasts", [])
-    .component("toasts", toastsComponent)
-    .service("ToastsService", ToastsService)
-    .name;
+class SettingsDialogComponent {
+    static bootstrap(state) {
+        const render = hyperHTML.bind(Util.query("settings-dialog"));
+
+        this.settingsDialogController = new SettingsDialogController(render, SettingsDialogTemplate, state);
+    }
+}
+
+class TokenDialogTemplate {
+    static update(render, state, events) {
+        if (!state.tokenModalIsOpen) {
+            Util.renderEmpty(render);
+            return;
+        }
+
+        if (!state.accounts.length) {
+            TokenDialogTemplate.renderTokenModal(render, state, events);
+        } else {
+            TokenDialogTemplate.renderAccountsListModal(render, state, events);
+        }
+    }
+
+    static renderTokenModal(render, state, events) {
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
+
+            <main class="pa4 black-80 bg-white">
+                <form class="measure center">
+                    <fieldset id="login" class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">Token Dialog</legend>
+
+                        <div class="flex flex-row items-center mb2 justify-between">
+                            <label for="practice" class="lh-copy">Practice</label>
+                            <input class="mr2" type="radio" name="environment" value="practice"
+                                checked="${state.tokenInfo.environment === "practice"}"
+                                onchange="${e => {
+                                    state.tokenInfo.environment = e.target.value.trim();
+                                }}">
+
+                        </div>
+                        <div class="flex flex-row items-center justify-between mb2">
+                            <label for="live" class="lh-copy">Live</label>
+                            <input class="mr2" type="radio" name="environment" value="live"
+                                checked="${state.tokenInfo.environment === "live"}"
+                                onchange="${e => {
+                                    state.tokenInfo.environment = e.target.value.trim();
+                                }}">
+                        </div>
+
+                        <div class="mv3">
+                            <input class="b pa2 ba bg-transparent w-100"
+                                placeholder="Token" name="token" id="token"
+                                oninput="${e => {
+                                    state.tokenInfo.token = e.target.value.trim();
+                                }}">
+                        </div>
+                    </fieldset>
+
+                    <div class="flex flex-row items-center justify-around">
+                        <input id="loginCancel" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="button" value="Cancel"
+                            onclick="${() => {
+                                state.tokenModalIsOpen = false;
+                            }}">
+
+                        <input id="loginOk" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                            type="button" value="Ok"
+                            onclick="${events}">
+                    </div>
+                </form>
+            </main>
+
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+
+    static renderAccountsListModal(render, state, events) {
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
+
+            <main class="pa4 black-80 bg-white">
+                <form class="measure center">
+                    <fieldset id="login" class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">Accounts List</legend>
+                    </fieldset>
+
+                    <div class="flex flex-row items-center justify-around">${
+                        state.accounts.map((account, index) => hyperHTML.wire(account, ":li")`
+                            <input id="${`selectAccount-${index}`}"
+                                class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                                type="button" value="${account.id}"
+                                onclick="${e => events(e, index)}">
+                    `)}</div>
+                </form>
+            </main>
+
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class NewsService {
+    constructor(news) {
+        if (!NewsService.news) {
+            NewsService.news = news;
+        }
+    }
+
+    static refresh() {
+        const credentials = SessionService.isLogged();
+
+        if (!credentials) {
+            return;
+        }
+
+        Util.fetch("/api/calendar", {
+            method: "post",
+            body: JSON.stringify({
+                environment: credentials.environment,
+                token: credentials.token
+            })
+        }).then(res => res.json()).then(data => {
+            NewsService.news.splice(0, NewsService.news.length);
+
+            data.forEach(news => {
+                news.timestamp *= 1000;
+                NewsService.news.push(news);
+            });
+        }).catch(err => err.data);
+    }
+}
+
+NewsService.news = null;
 
 class TokenDialogController {
-    constructor($window, ToastsService, SessionService, AccountsService, StreamingService) {
-        this.$window = $window;
-        this.ToastsService = ToastsService;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-        this.StreamingService = StreamingService;
+    constructor(render, template, bindings) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected.observe(bindings,
+            state => template.update(render, state, events));
     }
 
-    $onInit() {
-        const instrsStorage = this.$window.localStorage.getItem("argo.instruments");
+    onLoginOkClick() {
+        AccountsService.getAccounts({
+            environment: this.state.tokenInfo.environment,
+            token: this.state.tokenInfo.token
+        }).then(accounts => {
+            const message = "If your account id contains only digits " +
+                "(ie. 2534233), it is a legacy account and you should use " +
+                "release 3.x. For v20 accounts use release 4.x or higher. " +
+                "Check your token.";
 
-        this.instrs = angular.fromJson(instrsStorage) || {
+            if (!accounts.length) {
+                throw new Error(message);
+            }
+            accounts.forEach(item => {
+                this.state.accounts.push(item);
+            });
+        }).catch(err => {
+            this.state.tokenModalIsOpen = false;
+            ToastsService.addToast(err);
+        });
+    }
+
+    onSelectAccountClick(e, accountSelected) {
+        this.state.tokenInfo.accountId = this.state.accounts[accountSelected].id;
+
+        const tokenInfo = {
+            environment: this.state.tokenInfo.environment,
+            token: this.state.tokenInfo.token,
+            accountId: this.state.tokenInfo.accountId,
+            instrs: this.state.instrs
+        };
+
+        SessionService.setCredentials(tokenInfo);
+
+        AccountsService.getAccounts(tokenInfo).then(() => {
+            const instruments = AccountsService
+                .setStreamingInstruments(this.state.instrs);
+
+            StreamingService.startStream({
+                environment: tokenInfo.environment,
+                accessToken: tokenInfo.token,
+                accountId: tokenInfo.accountId,
+                instruments
+            });
+
+            ActivityService.refresh();
+            TradesService.refresh();
+            OrdersService.refresh();
+            PositionsService.refresh();
+            ExposureService.refresh();
+            NewsService.refresh();
+
+            ChartsComponent.bootstrap();
+
+            this.state.tokenModalIsOpen = false;
+        }).catch(err => {
+            ToastsService.addToast(err);
+            this.state.tokenModalIsOpen = false;
+        });
+    }
+
+}
+
+class TokenDialogComponent {
+    static bootstrap(state) {
+        const render = hyperHTML.bind(Util.query("token-dialog"));
+
+        this.tokenDialogController = new TokenDialogController(render, TokenDialogTemplate, state);
+    }
+}
+
+class HeaderController {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        const instrsStorage = window.localStorage.getItem("argo.instruments");
+
+        const instrs = JSON.parse(instrsStorage) || {
             EUR_USD: true,
             USD_JPY: true,
             GBP_USD: true,
@@ -1833,113 +2179,1146 @@ class TokenDialogController {
             GBP_JPY: true
         };
 
-        this.environment = "practice";
-        this.accounts = [];
+        this.state = Introspected({
+            spinner: {
+                isLoadingView: false
+            },
+            tokenModalIsOpen: false,
+            tokenInfo: {
+                environment: "practice",
+                token: "",
+                accountId: ""
+            },
+            settingsModalIsOpen: false,
+            accounts: [],
+            instrs
+        }, state => template.update(render, state, events));
+
+        Util.spinnerState = this.state.spinner;
+
+        TokenDialogComponent.bootstrap(this.state);
+        SettingsDialogComponent.bootstrap(this.state);
     }
 
-    login(tokenInfo) {
-        if (!tokenInfo) {
-            this.closeModal();
+    onOpenSettingsClick() {
+        const allInstrs = AccountsService.getAccount().instruments;
+
+        allInstrs.forEach(instrument => {
+            if (!this.state.instrs[instrument.name].toString()) {
+                this.state.instrs[instrument.name] = false;
+            }
+        });
+
+        this.state.settingsModalIsOpen = true;
+    }
+}
+
+class HeaderComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("header"));
+
+        this.HeaderController = new HeaderController(render, HeaderTemplate);
+    }
+}
+
+HeaderComponent.bootstrap();
+
+class NewsTemplate {
+    static update(render, state) {
+        const isNoNews = Util.hide(state.news.length);
+        const isNews = Util.show(state.news.length);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoNews}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No news.</p>
+            </div>
+
+            <div style="${isNews}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Date/Time</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Event</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Previous</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Forecast</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Actual</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Unit</th>
+                    </thead>
+
+                    <tbody>${
+                        state.news.map(news => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+
+                            return hyperHTML.wire(news, ":tr")`<tr>
+                                <td class="${classes}">${Util.formatDate(news.timestamp)}</td>
+                                <td class="${classes}">${news.currency}</td>
+                                <td class="${classes}">${news.title}</td>
+                                <td class="${classes}">${Util.formatNumber(news.previous)}</td>
+                                <td class="${classes}">${Util.formatNumber(news.forecast)}</td>
+                                <td class="${classes}">${Util.formatNumber(news.actual)}</td>
+                                <td class="${classes}">${news.unit}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class NewsController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            news: []
+        }, state => template.update(render, state));
+
+        this.newsService = new NewsService(this.state.news);
+    }
+}
+
+class NewsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("news"));
+
+        this.newsController = new NewsController(render, NewsTemplate);
+    }
+}
+
+NewsComponent.bootstrap();
+
+class OhlcChartTemplate {
+
+    static update(render) {
+        return render`${hyperHTML.wire(render, "svg")`
+            <span></span>`
+        }`;
+    }
+
+    static redrawData(state) {
+        if (!state.data) {
             return;
         }
 
-        this.environment = tokenInfo.environment;
-        this.token = tokenInfo.token;
+        const myState = OhlcChartTemplate.state;
+        const chartEl = document.querySelector("ohlc-chart");
 
-        this.AccountsService.getAccounts({
-            environment: this.environment,
-            token: this.token
-        }).then(accounts => {
-            const message = "If your account id contains only digits " +
-                "(ie. 2534233), it is a legacy account and you should use " +
-                "release 3.x. For v20 accounts use release 4.x or higher. " +
-                "Check your token.";
+        myState.myInstrument = state.instrument;
+        myState.myGranularity = state.granularity;
+        myState.myTrades = state.trades;
 
-            if (!accounts.length) {
-                throw new Error(message);
-            }
-            angular.extend(this.accounts, accounts);
-        }).catch(err => {
-            this.ToastsService.addToast(err);
-            this.closeModal();
-        });
+        myState.refreshChart = OhlcChartTemplate.drawChart(chartEl, state.data);
+
+        myState.lastData = myState.data[myState.data.length - 1];
+        myState.lastClose = myState.lastData.close;
+        myState.feedVolume = myState.lastData.volume;
+        myState.lastHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity);
     }
 
-    selectAccount(accountSelected) {
-        this.accountId = this.accounts[accountSelected].id;
+    static redrawFeed(state) {
+        const myState = OhlcChartTemplate.state;
+        const tick = state.feed;
 
-        const tokenInfo = {
-            environment: this.environment,
-            token: this.token,
-            accountId: this.accountId,
-            instrs: this.instrs
-        };
+        myState.myTrades = state.trades;
+        myState.nextHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity, tick);
 
-        this.SessionService.setCredentials(tokenInfo);
+        let midPrice;
 
-        this.AccountsService.getAccounts(tokenInfo).then(() => {
-            const instruments = this.AccountsService
-                .setStreamingInstruments(this.instrs);
-
-            this.StreamingService.startStream({
-                environment: this.environment,
-                accessToken: this.token,
-                accountId: this.accountId,
-                instruments
+        if (tick.ask && tick.bid && myState.data && myState.lastHistUpdate !== myState.nextHistUpdate) {
+            myState.data.shift();
+            tick.bid = parseFloat(tick.bid);
+            tick.ask = parseFloat(tick.ask);
+            midPrice = (tick.bid + tick.ask) / 2;
+            myState.feedVolume = 0;
+            myState.data.push({
+                open: midPrice,
+                close: midPrice,
+                high: midPrice,
+                low: midPrice,
+                date: new Date(myState.nextHistUpdate),
+                volume: myState.feedVolume
             });
 
-            this.closeModal({ tokenInfo });
-        }).catch(err => {
-            this.ToastsService.addToast(err);
-            this.closeModal();
-        });
+            myState.lastHistUpdate = myState.nextHistUpdate;
+        }
+
+        if (tick.ask && tick.bid && myState.data) {
+            if (myState.lastData.close !== myState.lastClose) {
+                myState.feedVolume += 1;
+            }
+
+            tick.bid = parseFloat(tick.bid);
+            tick.ask = parseFloat(tick.ask);
+            midPrice = (tick.bid + tick.ask) / 2;
+
+            myState.lastData = myState.data && myState.data[myState.data.length - 1];
+            myState.lastClose = myState.lastData.close;
+            myState.lastData.close = midPrice;
+            myState.lastData.volume = myState.feedVolume;
+
+            if (myState.lastData.close > myState.lastData.high) {
+                myState.lastData.high = myState.lastData.close;
+            }
+
+            if (myState.lastData.close < myState.lastData.low) {
+                myState.lastData.low = myState.lastData.close;
+            }
+
+            myState.refreshChart();
+        }
+    }
+
+    static getLastHistUpdate(granularity, tick) {
+        const time = tick && tick.time,
+            now = time ? new Date(time) : new Date();
+
+        let coeff;
+
+        if (granularity === "S5") {
+            coeff = 1000 * 5;
+        } else if (granularity === "S10") {
+            coeff = 1000 * 10;
+        } else if (granularity === "S15") {
+            coeff = 1000 * 15;
+        } else if (granularity === "S30") {
+            coeff = 1000 * 30;
+        } else if (granularity === "M1") {
+            coeff = 1000 * 60;
+        } else if (granularity === "M2") {
+            coeff = 1000 * 60 * 2;
+        } else if (granularity === "M3") {
+            coeff = 1000 * 60 * 3;
+        } else if (granularity === "M4") {
+            coeff = 1000 * 60 * 4;
+        } else if (granularity === "M5") {
+            coeff = 1000 * 60 * 5;
+        } else if (granularity === "M10") {
+            coeff = 1000 * 60 * 10;
+        } else if (granularity === "M15") {
+            coeff = 1000 * 60 * 15;
+        } else if (granularity === "M30") {
+            coeff = 1000 * 60 * 30;
+        } else if (granularity === "H1") {
+            coeff = 1000 * 60 * 60;
+        } else if (granularity === "H2") {
+            coeff = 1000 * 60 * 60 * 2;
+        } else if (granularity === "H3") {
+            coeff = 1000 * 60 * 60 * 3;
+        } else if (granularity === "H4") {
+            coeff = 1000 * 60 * 60 * 4;
+        } else if (granularity === "H6") {
+            coeff = 1000 * 60 * 60 * 6;
+        } else if (granularity === "H8") {
+            coeff = 1000 * 60 * 60 * 8;
+        } else if (granularity === "H12") {
+            coeff = 1000 * 60 * 60 * 12;
+        } else {
+
+            // for D / W / M
+            coeff = 1000 * 60 * 60 * 12;
+        }
+
+        return Math.floor(+now / (coeff)) * coeff;
+    }
+
+    static drawChart(el, csv) {
+        const myState = OhlcChartTemplate.state;
+        const margin = {
+                top: 0,
+                right: 20,
+                bottom: 30,
+                left: 75
+            },
+            width = 960 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        const x = techan.scale.financetime()
+            .range([0, width]);
+
+        const y = d3.scaleLinear()
+            .range([height, 0]);
+
+        const yVolume = d3.scaleLinear()
+            .range([y(0), y(0.2)]);
+
+        const ohlc = techan.plot.ohlc()
+            .xScale(x)
+            .yScale(y);
+
+        const tradearrow = techan.plot.tradearrow()
+            .xScale(x)
+            .yScale(y)
+            .orient(d => {
+                const side = d.type.startsWith("buy") ? "up" : "down";
+
+                return side;
+            });
+
+        const sma0 = techan.plot.sma()
+            .xScale(x)
+            .yScale(y);
+
+        const sma0Calculator = techan.indicator.sma()
+            .period(10);
+
+        const sma1 = techan.plot.sma()
+            .xScale(x)
+            .yScale(y);
+
+        const sma1Calculator = techan.indicator.sma()
+            .period(20);
+
+        const volume = techan.plot.volume()
+            .accessor(ohlc.accessor())
+            .xScale(x)
+            .yScale(yVolume);
+
+        const xAxis = d3.axisBottom(x);
+
+        const yAxis = d3.axisLeft(y);
+
+        const volumeAxis = d3.axisRight(yVolume)
+            .ticks(3)
+            .tickFormat(d3.format(",.3s"));
+
+        const timeAnnotation = techan.plot.axisannotation()
+            .axis(xAxis)
+            .orient("bottom")
+            .format(d3.timeFormat("%Y-%m-%d %H:%M"))
+            .width(80)
+            .translate([0, height]);
+
+        const ohlcAnnotation = techan.plot.axisannotation()
+            .axis(yAxis)
+            .orient("left")
+            .format(d3.format(",.4f"));
+
+        const volumeAnnotation = techan.plot.axisannotation()
+            .axis(volumeAxis)
+            .orient("right")
+            .width(35);
+
+        const crosshair = techan.plot.crosshair()
+            .xScale(x)
+            .yScale(y)
+            .xAnnotation(timeAnnotation)
+            .yAnnotation([ohlcAnnotation, volumeAnnotation]);
+
+        d3.select(el).select("svg").remove();
+
+        const svg = d3.select(el).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                `translate(${margin.left}, ${margin.top})`);
+
+        const defs = svg.append("defs")
+            .append("clipPath")
+            .attr("id", "ohlcClip");
+
+        defs.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height);
+
+        const ohlcSelection = svg.append("g")
+            .attr("class", "ohlc")
+            .attr("transform", "translate(0,0)");
+
+        ohlcSelection.append("g")
+            .attr("class", "volume")
+            .attr("clip-path", "url(#ohlcClip)");
+
+        ohlcSelection.append("g")
+            .attr("class", "candlestick")
+            .attr("clip-path", "url(#ohlcClip)");
+
+        ohlcSelection.append("g")
+            .attr("class", "indicator sma ma-0")
+            .attr("clip-path", "url(#ohlcClip)");
+
+        ohlcSelection.append("g")
+            .attr("class", "indicator sma ma-1")
+            .attr("clip-path", "url(#ohlcClip)");
+
+        ohlcSelection.append("g")
+            .attr("class", "tradearrow");
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", `translate(0, ${height})`);
+
+        svg
+            .append("g")
+            .attr("class", "y axis")
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("font-weight", "bold")
+            .style("text-anchor", "end")
+            .text(`Price (${myState.myInstrument} / ${myState.myGranularity})`);
+
+        svg.append("g")
+            .attr("class", "volume axis");
+
+        svg.append("g")
+            .attr("class", "crosshair ohlc");
+
+        myState.data = d3.csvParse(csv).map(
+            d => {
+                const date = isNaN(Date.parse(d.Date))
+                    ? new Date(+d.Date * 1000) : new Date(d.Date);
+
+                return {
+                    date,
+                    open: +d.Open,
+                    high: +d.High,
+                    low: +d.Low,
+                    close: +d.Close,
+                    volume: +d.Volume
+                };
+            }
+        );
+
+        const data = myState.data;
+
+        svg.select("g.candlestick").datum(data);
+        svg.select("g.sma.ma-0").datum(sma0Calculator(data));
+        svg.select("g.sma.ma-1").datum(sma1Calculator(data));
+        svg.select("g.volume").datum(data);
+
+        redraw();
+
+        function redraw() {
+            const accessor = ohlc.accessor();
+
+            x.domain(data.map(accessor.d));
+            x.zoomable().domain([data.length - 130, data.length]);
+
+            y.domain(techan.scale.plot.ohlc(
+                data.slice(data.length - 130, data.length)
+            ).domain());
+            yVolume.domain(techan.scale.plot.volume(
+                data.slice(data.length - 130, data.length)
+            ).domain());
+
+            svg.select("g.x.axis").call(xAxis);
+            svg.select("g.y.axis").call(yAxis);
+            svg.select("g.volume.axis").call(volumeAxis);
+
+            svg.select("g.candlestick").datum(data).call(ohlc);
+            svg.select("g.tradearrow").remove();
+            svg.append("g").attr("class", "tradearrow");
+
+            const myTrades = myState.myTrades.filter(
+                trade => trade.instrument === myState.myInstrument
+            )
+                .map(
+                    trade => ({
+                        date: new Date(trade.openTime),
+                        type: trade.currentUnits > 0 ? "buy" : "sell",
+                        price: trade.price
+                    })
+                );
+
+            svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
+
+            svg.select("g.sma.ma-0")
+                .datum(sma0Calculator(data)).call(sma0);
+            svg.select("g.sma.ma-1")
+                .datum(sma1Calculator(data)).call(sma1);
+
+            svg.select("g.volume").datum(data).call(volume);
+
+            svg.select("g.crosshair.ohlc").call(crosshair);
+        }
+
+        return redraw;
     }
 
 }
-TokenDialogController.$inject = [
-    "$window", "ToastsService", "SessionService",
-    "AccountsService", "StreamingService"
-];
 
-const tokenDialogComponent = {
-    templateUrl: "app/components/token-dialog/token-dialog.html",
-    controller: TokenDialogController,
-    bindings: {
-        openModal: "=",
-        closeModal: "&"
-    }
+OhlcChartTemplate.state = {
+    myInstrument: null,
+    myGranularity: null,
+    myTrades: [],
+    data: null,
+    refreshChart: null,
+    lastHistUpdate: null,
+    lastData: null,
+    lastClose: null,
+    feedVolume: 0
 };
 
-const tokenDialog = angular
-    .module("components.token-dialog", [])
-    .component("tokenDialog", tokenDialogComponent)
-    .name;
-
-class TradesController {
-    constructor(ToastsService, TradesService) {
-        this.ToastsService = ToastsService;
-        this.TradesService = TradesService;
+class OhlcChartElement extends Hyper {
+    static get observedAttributes() {
+        return ["data-data", "data-feed", "data-trades"];
     }
 
-    $onInit() {
-        this.trades = this.TradesService.getTrades();
+    constructor() {
+        super();
 
-        this.TradesService.refresh();
+        OhlcChartElement.state = {
+            instrument: this.dataset.instrument,
+            granularity: this.dataset.granularity,
+            data: "",
+            feed: {},
+            trades: []
+        };
     }
 
-    closeTrade(tradeId) {
-        this.openCloseTradeModal = true;
-        this.closingTradeId = tradeId;
+    render() {
+        return OhlcChartTemplate.update(this.hyper);
     }
 
-    closeTradeDialog(answer) {
-        this.openCloseTradeModal = false;
+    attributeChangedCallback(name) {
+        OhlcChartElement.state.instrument = this.dataset.instrument;
+        OhlcChartElement.state.granularity = this.dataset.granularity;
+        OhlcChartElement.state.data = this.dataset.data;
+        OhlcChartElement.state.feed = this.dataset.feed && JSON.parse(this.dataset.feed);
+        OhlcChartElement.state.trades = this.dataset.trades && JSON.parse(this.dataset.trades);
 
-        if (!answer) {
+        if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.ask !== "string") {
+            OhlcChartElement.state.feed.ask = "";
+        }
+        if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.bid !== "string") {
+            OhlcChartElement.state.feed.bid = "";
+        }
+
+        if (name === "data-data") {
+            OhlcChartTemplate.redrawData(OhlcChartElement.state);
+        }
+
+        if (name === "data-feed" || name === "data-trades") {
+            OhlcChartTemplate.redrawFeed(OhlcChartElement.state);
+        }
+    }
+
+}
+customElements.define("ohlc-chart", OhlcChartElement);
+
+OhlcChartElement.state = null;
+
+class OrdersTemplate {
+    static update(render, state) {
+        const isNoOrders = Util.hide(state.orders.length);
+        const isOrders = Util.show(state.orders.length);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoOrders}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No orders.</p>
+            </div>
+
+            <div style="${isOrders}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Ticket</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">S/L</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/P</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/S</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Price</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Current</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Distance</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Expiry</th>
+                    </thead>
+
+                    <tbody>${
+                        state.orders.map(order => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+
+                            return hyperHTML.wire(order, ":tr")`<tr>
+                                <td class="${classes}">${order.side || order.type}</td>
+                                <td class="${classes}">
+                                    <a href="#" onclick="${() => {
+                                        state.yesnoModalIsOpen = true;
+                                        state.closeOrderInfo.orderId = order.id;
+                                    }}">${order.id}</a>
+                                </td>
+                                <td class="${classes}">${order.instrument}</td>
+                                <td class="${classes}">${Util.formatNumber(order.units)}</td>
+                                <td class="${classes}">${order.stopLossOnFill.price}</td>
+                                <td class="${classes}">${order.takeProfitOnFill.price}</td>
+                                <td class="${classes}">${order.trailingStopLossOnFill.distance || order.trailingStopValue}</td>
+                                <td class="${classes}">${Util.formatNumber(order.price, 4)}</td>
+                                <td class="${classes}">${Util.formatNumber(order.current, 4)}</td>
+                                <td class="${classes}">${Util.formatNumber(order.distance, 1)}</td>
+                                <td class="${classes}">${Util.formatDate(order.expiry)}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+
+            <yesno-dialog></yesno-dialog>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class YesNoDialogTemplate {
+    static update(render, state, events) {
+        if (!state.yesnoModalIsOpen) {
+            Util.renderEmpty(render);
             return;
         }
 
-        this.TradesService.closeTrade(this.closingTradeId).then(trade => {
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
+
+            <main class="pa4 black-80 bg-white">
+                <form class="measure center">
+                    <fieldset id="textYesNoDialog" id="login" class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">${state.yesnoModalText}</legend>
+                    </fieldset>
+                </form>
+                <div class="flex flex-row items-center justify-around">
+                    <input id="cancelYesNoDialog" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                        type="button" value="Cancel"
+                        onclick="${events}">
+
+                    <input id="okYesNoDialog" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                        type="button" value="Ok"
+                        onclick="${events}">
+                </div>
+                </form>
+            </main>
+
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class YesNoDialogController {
+    constructor(render, template, bindings, events) {
+        Introspected.observe(bindings,
+            state => template.update(render, state, events));
+    }
+}
+
+class YesNoDialogComponent {
+    static bootstrap(state, events) {
+        const render = hyperHTML.bind(Util.query("yesno-dialog"));
+
+        this.yesnoDialogController = new YesNoDialogController(render, YesNoDialogTemplate, state, events);
+    }
+}
+
+class OrdersController {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected({
+            orders: [],
+            yesnoModalIsOpen: false,
+            yesnoModalText: "Are you sure to close the order?",
+            closeOrderInfo: {
+                orderId: null
+            }
+        }, state => template.update(render, state));
+
+        this.ordersService = new OrdersService(this.state.orders);
+
+        YesNoDialogComponent.bootstrap(this.state, events);
+    }
+
+    onCancelYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
+    }
+
+    onOkYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
+
+        OrdersService.closeOrder(this.state.closeOrderInfo.orderId).then(order => {
+            let message = `Closed #${order.orderCancelTransaction.orderID}`;
+
+            if (order.errorMessage || order.message) {
+                message = `ERROR ${order.errorMessage || order.message}`;
+            }
+
+            ToastsService.addToast(message);
+        }).catch(err => {
+            const message = `ERROR ${err.code} ${err.message}`;
+
+            ToastsService.addToast(message);
+        });
+    }
+}
+
+class OrdersComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("orders"));
+
+        this.ordersController = new OrdersController(render, OrdersTemplate);
+    }
+}
+
+OrdersComponent.bootstrap();
+
+class PluginsTemplate {
+    static update(render, state, events) {
+        const pluginsKeys = Object.keys(state.plugins);
+        const pluginsCount = pluginsKeys.length;
+        const isNoPlugins = Util.hide(pluginsCount);
+        const isPlugins = Util.show(pluginsCount);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoPlugins}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No plugins.</p>
+            </div>
+
+            <div style="${isPlugins}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Enabled</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white">Plugin</th>
+                    </thead>
+
+                    <tbody>${
+                        pluginsKeys.map((plugin, index) => {
+                            const value = !!state.plugins[plugin];
+
+                            return hyperHTML.wire()`<tr>
+                                <td class="pv1 pr1 bb b--black-20 tr">
+                                    <input id="${`togglePlugin-${index}`}" type="checkbox"
+                                        onchange="${e => events(e, plugin)}"
+                                        checked="${value}">
+                                    </input>
+                                </td>
+                                <td class="pv1 pr1 bb b--black-20">${plugin}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class PluginsController {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected({
+            plugins: {},
+            pluginsInfo: {
+                count: 0
+            }
+        }, state => template.update(render, state, events));
+
+        this.pluginService = new PluginsService(this.state);
+
+        PluginsService.refresh();
+    }
+
+    onTogglePluginChange(e, plugin) {
+        this.state.plugins[plugin] = e.target.checked;
+        PluginsService.engagePlugins(this.state.plugins);
+    }
+}
+PluginsController.$inject = ["PluginsService"];
+
+class PluginsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("plugins"));
+
+        this.pluginsController = new PluginsController(render, PluginsTemplate);
+    }
+}
+
+PluginsComponent.bootstrap();
+
+class PositionsTemplate {
+    static update(render, state) {
+        const isNoPositions = Util.hide(state.positions.length);
+        const isPositions = Util.show(state.positions.length);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoPositions}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No positions.</p>
+            </div>
+
+            <div style="${isPositions}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Avg. Price</th>
+                    </thead>
+
+                    <tbody>${
+                        state.positions.map(position => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+
+                            return hyperHTML.wire(position, ":tr")`<tr>
+                                <td class="${classes}">${position.side}</td>
+                                <td class="${classes}">${position.instrument}</td>
+                                <td class="${classes}">${Util.formatNumber(position.units)}</td>
+                                <td class="${classes}">${position.avgPrice}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class PositionsController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            positions: []
+        }, state => template.update(render, state));
+
+        this.positionsService = new PositionsService(this.state.positions);
+    }
+}
+
+class PositionsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("positions"));
+
+        this.positionsController = new PositionsController(render, PositionsTemplate);
+    }
+}
+
+PositionsComponent.bootstrap();
+
+class QuotesTemplate {
+    static update(render, state) {
+        if (!Object.keys(state.quotes).length) {
+            Util.renderEmpty(render);
+            return;
+        }
+
+        /* eslint-disable indent */
+        render`
+            <div class="h5 overflow-auto">
+
+                <table class="collapse f6 w-100 mw8 center">
+                    <tbody>${
+                        Object.keys(state.quotes).map(instrument => {
+                            const quote = state.quotes[instrument];
+
+                            return hyperHTML.wire(quote, ":tr")`<tr>
+                                <td class="pv1 pr1 bb b--black-20"> ${instrument} </td>
+                                <td class="pv1 pr1 bb b--black-20">
+                                    <sl-chart data-instrument="${instrument}" data-quote="${JSON.stringify(quote)}" length="100"></sl-chart>
+                                </td>
+                                <td class="${QuotesTemplate.highlighter(quote.bid, instrument, "bid")}"> ${quote.bid} </td>
+                                <td class="${QuotesTemplate.highlighter(quote.ask, instrument, "ask")}"> ${quote.ask} </td>
+                                <td class="${QuotesTemplate.highlighter(quote.spread, instrument, "spread")}"> ${quote.spread} </td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+           </div>
+        `;
+        /* eslint-enable indent */
+    }
+
+    static highlighter(value, instrument, type) {
+        const classes = "pv1 pr1 bb b--black-20 tr";
+        const quoteClasses = `${instrument}-${type} ${classes}`;
+        const greenClass = "highlight-green";
+        const redClass = "highlight-red";
+
+        if (!QuotesTemplate.cache[instrument]) {
+            QuotesTemplate.cache[instrument] = {};
+        }
+
+        if (!QuotesTemplate.cache[instrument][type]) {
+            QuotesTemplate.cache[instrument][type] = {};
+        }
+
+        const cache = QuotesTemplate.cache[instrument][type];
+        const oldValue = cache.value;
+
+        const highlight = value >= oldValue
+            ? `${quoteClasses} ${greenClass}`
+            : `${quoteClasses} ${redClass}`;
+
+        cache.value = value;
+
+        clearTimeout(cache.timeout);
+        cache.timeout = setTimeout(() => {
+            const el = document.querySelector(`.${instrument}-${type}`);
+
+            if (el) {
+                el.classList.remove(greenClass);
+                el.classList.remove(redClass);
+            }
+        }, 500);
+
+        return highlight;
+    }
+}
+
+QuotesTemplate.cache = {};
+
+class QuotesController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            quotes: {}
+        }, state => template.update(render, state));
+
+        this.quotesService = new QuotesService(this.state.quotes);
+    }
+}
+
+class QuotesComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("quotes"));
+
+        this.quotesController = new QuotesController(render, QuotesTemplate);
+    }
+}
+
+QuotesComponent.bootstrap();
+
+class SlChartTemplate {
+
+    static update(render) {
+        return render`${hyperHTML.wire(render, "svg")`
+            <svg class="sl mw3"></svg>`
+        }`;
+    }
+
+    // Inspired by http://bl.ocks.org/vicapow/9904319
+    static redraw(state) {
+        const instrument = state.instrument,
+            quote = instrument && state.quotes[instrument],
+            svg = d3.select(`td > [data-instrument="${instrument}"] > svg`),
+            node = svg.node(),
+            w = node && node.clientWidth || 64,
+            h = node && getComputedStyle(node)["font-size"].replace("px", "");
+
+        if (!node) {
+            return;
+        }
+        node.style.height = `${h}px`;
+
+        const bid = parseFloat(quote.bid);
+        const ask = parseFloat(quote.ask);
+
+        if (isNaN(bid) || isNaN(ask)) {
+            return;
+        }
+        const middle = (bid + ask) / 2;
+
+        svg.selectAll("*").remove();
+
+        if (!SlChartTemplate.data[instrument]) {
+            SlChartTemplate.data[instrument] = [];
+        }
+
+        SlChartTemplate.data[instrument].push(middle);
+        SlChartTemplate.data[instrument] =
+            SlChartTemplate.data[instrument].slice(-state.length);
+
+        const data = SlChartTemplate.data[instrument];
+        const firstPoint = data[0];
+        const lastPoint = data.slice(-1);
+
+        if (firstPoint > lastPoint) {
+            node.style.stroke = "red";
+        } else {
+            node.style.stroke = "green";
+        }
+
+        const min$$1 = d3.min(data);
+        const max$$1 = d3.max(data);
+
+        const x = d3.scaleLinear()
+            .domain([0, data.length - 1])
+            .range([0, w]);
+        const y = d3.scaleLinear()
+            .domain([+min$$1, +max$$1]).range([h, 0]);
+
+        const paths = data
+            .map((d, i) => [x(i), y(d)])
+            .join("L");
+
+        svg.append("path").attr("d", `M${paths}`);
+    }
+}
+
+SlChartTemplate.data = {};
+
+class SlChartElement extends Hyper {
+    static get observedAttributes() {
+        return ["data-quote"];
+    }
+
+    constructor() {
+        super();
+
+        SlChartElement.state = {
+            instrument: this.dataset.instrument,
+            quotes: QuotesService.getQuotes(),
+            length: 100
+        };
+    }
+
+    render() {
+        return SlChartTemplate.update(this.hyper);
+    }
+
+    /* eslint class-methods-use-this: "off" */
+    attributeChangedCallback(attr, oldValue, newValue) {
+        SlChartElement.state.instrument = JSON.parse(newValue).instrument;
+
+        SlChartTemplate.redraw(SlChartElement.state);
+    }
+
+}
+customElements.define("sl-chart", SlChartElement);
+
+SlChartElement.state = null;
+
+class ToastsTemplate {
+    static update(render, state) {
+        if (!state.toasts.length) {
+            Util.renderEmpty(render);
+            return;
+        }
+
+        /* eslint-disable indent */
+        render`
+            <table class="f6 ba" cellspacing="0">
+                <tbody>${
+                    state.toasts.map(toast => `<tr>
+                        <td class="b--black-20 pr2"> ${Util.getHHMMSSfromDate(toast.date)} </td>
+                        <td class="b--black-20 pl2"> ${toast.message} </td>
+                    </tr>`)}</tbody>
+            </table>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class ToastsController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            toasts: []
+        }, state => template.update(render, state));
+
+        this.ToastsService = new ToastsService(this.state.toasts);
+    }
+}
+
+class ToastsComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("toasts"));
+
+        this.toastsController = new ToastsController(render, ToastsTemplate);
+    }
+}
+
+ToastsComponent.bootstrap();
+
+class TradesTemplate {
+    static update(render, state) {
+        const isNoTrades = Util.hide(state.trades.value.length);
+        const isTrades = Util.show(state.trades.value.length);
+
+        /* eslint-disable indent */
+        render`
+            <div style="${isNoTrades}" class="h4 overflow-auto">
+                <p class="f6 w-100 mw8 tc b">No trades.</p>
+            </div>
+
+            <div style="${isTrades}" class="h4 overflow-auto">
+                <table class="f6 w-100 mw8 center" cellpsacing="0">
+                    <thead>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Type</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Ticket</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Market</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Units</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">S/L</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/P</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">T/S</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Price</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Current</th>
+                        <th class="fw6 bb b--black-20 tl pb1 pr1 bg-white tr">Profit (PIPS)</th>
+                    </thead>
+
+                    <tbody>${
+                        state.trades.value.map(trade => {
+                            const classes = "pv1 pr1 bb b--black-20 tr";
+                            const highlight = classes +
+                                (trade.profitPips >= 0 ? " highlight-green" : " highlight-red");
+
+                            return hyperHTML.wire(trade, ":tr")`<tr>
+                                <td class="${classes}">${trade.side}</td>
+                                <td class="${classes}">
+                                    <a href="#" onclick="${() => {
+                                        state.yesnoModalIsOpen = true;
+                                        state.closeTradeInfo.tradeId = trade.id;
+                                    }}">${trade.id}</a>
+                                </td>
+                                <td class="${classes}">${trade.instrument}</td>
+                                <td class="${classes}">${Util.formatNumber(trade.currentUnits)}</td>
+                                <td class="${classes}">${trade.stopLossOrder.price}</td>
+                                <td class="${classes}">${trade.takeProfitOrder.price}</td>
+                                <td class="${classes}">${trade.trailingStopLossOrder.distance}</td>
+                                <td class="${classes}">${trade.price}</td>
+                                <td class="${classes}">${trade.current}</td>
+                                <td class="${highlight}">${Util.formatNumber(trade.profitPips, 1)}</td>
+                            </tr>`;
+                    })}</tbody>
+                </table>
+            </div>
+
+            <yesno-dialog></yesno-dialog>
+        `;
+        /* eslint-enable indent */
+    }
+}
+
+class TradesController {
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected({
+            trades: {
+                value: []
+            },
+            yesnoModalIsOpen: false,
+            yesnoModalText: "Are you sure to close the trade?",
+            closeTradeInfo: {
+                tradeId: null
+            }
+        }, state => template.update(render, state));
+
+        this.tradesService = new TradesService(this.state.trades);
+
+        YesNoDialogComponent.bootstrap(this.state, events);
+    }
+
+    onCancelYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
+    }
+
+    onOkYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
+
+        TradesService.closeTrade(this.state.closeTradeInfo.tradeId).then(trade => {
             let message = "Closed " +
                     `${(trade.units > 0 ? "sell" : "buy")} ` +
                     `${trade.instrument} ` +
@@ -1951,154 +3330,23 @@ class TradesController {
                 message = `ERROR ${trade.errorMessage || trade.message}`;
             }
 
-
-            this.ToastsService.addToast(message);
+            ToastsService.addToast(message);
         }).catch(err => {
             const message = `ERROR ${err.code} ${err.message}`;
 
-            this.ToastsService.addToast(message);
-        });
-    }
-
-}
-TradesController.$inject = ["ToastsService", "TradesService"];
-
-const tradesComponent = {
-    templateUrl: "app/components/trades/trades.html",
-    controller: TradesController
-};
-
-class TradesService {
-    constructor($http, SessionService, AccountsService) {
-        this.$http = $http;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-
-        this.trades = [];
-    }
-
-    getTrades() {
-        return this.trades;
-    }
-
-    refresh() {
-        this.SessionService.isLogged().then(credentials => {
-            this.$http.post("/api/trades", {
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            }).then(res => {
-                this.trades.length = 0;
-                angular.extend(this.trades, res.data);
-                this.trades.forEach(trade => {
-                    trade.side = trade.currentUnits > 0 ? "buy" : "sell";
-                });
-            });
-        });
-    }
-
-    closeTrade(id) {
-        return this.SessionService.isLogged().then(
-            credentials => this.$http.post("/api/closetrade", {
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                id
-            }).then(order => order.data)
-                .catch(err => err.data)
-        );
-    }
-
-    updateTrades(tick) {
-        const account = this.AccountsService.getAccount(),
-            pips = account.pips;
-
-        this.trades.forEach((trade, index) => {
-            let current,
-                side;
-
-            if (trade.instrument === tick.instrument) {
-                side = trade.currentUnits > 0 ? "buy" : "sell";
-
-                if (side === "buy") {
-                    current = tick.bid;
-                    this.trades[index].profitPips =
-                        ((current - trade.price) / pips[trade.instrument]);
-                }
-                if (side === "sell") {
-                    current = tick.ask;
-                    this.trades[index].profitPips =
-                        ((trade.price - current) / pips[trade.instrument]);
-                }
-
-                this.trades[index].current = current;
-            }
+            ToastsService.addToast(message);
         });
     }
 }
-TradesService.$inject = ["$http", "SessionService", "AccountsService"];
 
-const trades = angular
-    .module("components.trades", [])
-    .component("trades", tradesComponent)
-    .service("TradesService", TradesService)
-    .name;
+class TradesComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("trades"));
 
-class YesNoDialogController {
-}
-YesNoDialogController.$inject = [];
-
-const yesnoDialogComponent = {
-    templateUrl: "app/components/yesno-dialog/yesno-dialog.html",
-    controller: YesNoDialogController,
-    bindings: {
-        openModal: "=",
-        closeModal: "&",
-        text: "@"
+        this.tradesController = new TradesController(render, TradesTemplate);
     }
-};
+}
 
-const yesnoDialog = angular
-    .module("components.yesno-dialog", [])
-    .component("yesnoDialog", yesnoDialogComponent)
-    .name;
+TradesComponent.bootstrap();
 
-const components = angular
-    .module("components", [
-        account,
-        activity,
-        charts,
-        exposure,
-        header,
-        highlighter,
-        news,
-        ohlcChart,
-        orderDialog,
-        orders,
-        plugins,
-        positions,
-        quotes,
-        session,
-        settingsDialog,
-        slChart,
-        streaming,
-        toasts,
-        tokenDialog,
-        trades,
-        yesnoDialog
-    ])
-    .name;
-
-const root = angular
-    .module("root", [
-        common,
-        components
-    ])
-    .component("root", rootComponent)
-    .name;
-
-exports.root = root;
-
-return exports;
-
-}({},angular,d3,techan));
+}(hyperHTML,Introspected,d3,techan));

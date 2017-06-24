@@ -1,10 +1,14 @@
-export class ToastsController {
-    constructor(ToastsService) {
-        this.ToastsService = ToastsService;
-    }
+import Introspected from "introspected";
 
-    $onInit() {
-        this.toasts = this.ToastsService.getToasts();
+import { ToastsService } from "./toasts.service";
+
+export class ToastsController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            toasts: []
+        }, state => template.update(render, state));
+
+        this.ToastsService = new ToastsService(this.state.toasts);
     }
 }
-ToastsController.$inject = ["ToastsService"];

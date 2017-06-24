@@ -2564,6 +2564,10 @@ var interpolateRound = function(a, b) {
   };
 };
 
+var degrees = 180 / Math.PI;
+
+var rho = Math.SQRT2;
+
 function cubehelix$1(hue$$1) {
   return (function cubehelixGamma(y) {
     y = +y;
@@ -3605,7 +3609,7 @@ function formatLiteralPercent() {
 
 var locale$1;
 
-
+var timeParse;
 
 var utcParse;
 
@@ -3623,6 +3627,7 @@ defaultLocale$1({
 function defaultLocale$1(definition) {
   locale$1 = formatLocale$1(definition);
   exports.timeFormat = locale$1.format;
+  timeParse = locale$1.parse;
   exports.utcFormat = locale$1.utcFormat;
   utcParse = locale$1.utcParse;
   return locale$1;
@@ -3818,6 +3823,8 @@ var constant$5 = function(x) {
     return x;
   };
 };
+
+var pi$1 = Math.PI;
 
 function Linear(context) {
   this._context = context;

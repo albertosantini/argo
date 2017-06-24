@@ -10,11 +10,15 @@ module.exports = {
     external: [
         "angular",
         "d3",
-        "techan"
+        "techan",
+        "hyperHTML",
+        "introspected"
     ],
     globals: {
         angular: "angular",
         d3: "d3",
-        techan: "techan"
+        techan: "techan",
+        hyperHTML: "hyperHTML",
+        introspected: "Introspected"
     }
 };

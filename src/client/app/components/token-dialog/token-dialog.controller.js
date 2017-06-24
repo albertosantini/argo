@@ -1,46 +1,31 @@
-import angular from "angular";
+import Introspected from "introspected";
+
+import { AccountsService } from "../account/accounts.service";
+import { ActivityService } from "../activity/activity.service";
+import { ChartsComponent } from "../charts/charts.component";
+import { ExposureService } from "../exposure/exposure.service";
+import { NewsService } from "../news/news.service";
+import { OrdersService } from "../orders/orders.service";
+import { PositionsService } from "../positions/positions.service";
+import { SessionService } from "../session/session.service";
+import { StreamingService } from "../streaming/streaming.service";
+import { ToastsService } from "../toasts/toasts.service";
+import { TradesService } from "../trades/trades.service";
+import { Util } from "../../util";
+
 
 export class TokenDialogController {
-    constructor($window, ToastsService, SessionService, AccountsService, StreamingService) {
-        this.$window = $window;
-        this.ToastsService = ToastsService;
-        this.SessionService = SessionService;
-        this.AccountsService = AccountsService;
-        this.StreamingService = StreamingService;
+    constructor(render, template, bindings) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected.observe(bindings,
+            state => template.update(render, state, events));
     }
 
-    $onInit() {
-        const instrsStorage = this.$window.localStorage.getItem("argo.instruments");
-
-        this.instrs = angular.fromJson(instrsStorage) || {
-            EUR_USD: true,
-            USD_JPY: true,
-            GBP_USD: true,
-            EUR_GBP: true,
-            USD_CHF: true,
-            EUR_JPY: true,
-            EUR_CHF: true,
-            USD_CAD: true,
-            AUD_USD: true,
-            GBP_JPY: true
-        };
-
-        this.environment = "practice";
-        this.accounts = [];
-    }
-
-    login(tokenInfo) {
-        if (!tokenInfo) {
-            this.closeModal();
-            return;
-        }
-
-        this.environment = tokenInfo.environment;
-        this.token = tokenInfo.token;
-
-        this.AccountsService.getAccounts({
-            environment: this.environment,
-            token: this.token
+    onLoginOkClick() {
+        AccountsService.getAccounts({
+            environment: this.state.tokenInfo.environment,
+            token: this.state.tokenInfo.token
         }).then(accounts => {
             const message = "If your account id contains only digits " +
                 "(ie. 2534233), it is a legacy account and you should use " +
@@ -50,45 +35,52 @@ export class TokenDialogController {
             if (!accounts.length) {
                 throw new Error(message);
             }
-            angular.extend(this.accounts, accounts);
+            accounts.forEach(item => {
+                this.state.accounts.push(item);
+            });
         }).catch(err => {
-            this.ToastsService.addToast(err);
-            this.closeModal();
+            this.state.tokenModalIsOpen = false;
+            ToastsService.addToast(err);
         });
     }
 
-    selectAccount(accountSelected) {
-        this.accountId = this.accounts[accountSelected].id;
+    onSelectAccountClick(e, accountSelected) {
+        this.state.tokenInfo.accountId = this.state.accounts[accountSelected].id;
 
         const tokenInfo = {
-            environment: this.environment,
-            token: this.token,
-            accountId: this.accountId,
-            instrs: this.instrs
+            environment: this.state.tokenInfo.environment,
+            token: this.state.tokenInfo.token,
+            accountId: this.state.tokenInfo.accountId,
+            instrs: this.state.instrs
         };
 
-        this.SessionService.setCredentials(tokenInfo);
+        SessionService.setCredentials(tokenInfo);
 
-        this.AccountsService.getAccounts(tokenInfo).then(() => {
-            const instruments = this.AccountsService
-                .setStreamingInstruments(this.instrs);
+        AccountsService.getAccounts(tokenInfo).then(() => {
+            const instruments = AccountsService
+                .setStreamingInstruments(this.state.instrs);
 
-            this.StreamingService.startStream({
-                environment: this.environment,
-                accessToken: this.token,
-                accountId: this.accountId,
+            StreamingService.startStream({
+                environment: tokenInfo.environment,
+                accessToken: tokenInfo.token,
+                accountId: tokenInfo.accountId,
                 instruments
             });
 
-            this.closeModal({ tokenInfo });
+            ActivityService.refresh();
+            TradesService.refresh();
+            OrdersService.refresh();
+            PositionsService.refresh();
+            ExposureService.refresh();
+            NewsService.refresh();
+
+            ChartsComponent.bootstrap();
+
+            this.state.tokenModalIsOpen = false;
         }).catch(err => {
-            this.ToastsService.addToast(err);
-            this.closeModal();
+            ToastsService.addToast(err);
+            this.state.tokenModalIsOpen = false;
         });
     }
 
 }
-TokenDialogController.$inject = [
-    "$window", "ToastsService", "SessionService",
-    "AccountsService", "StreamingService"
-];

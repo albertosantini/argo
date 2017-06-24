@@ -1,23 +1,21 @@
 export class SessionService {
-    constructor($q) {
-        this.deferred = $q.defer();
-        this.credentials = {
-            environment: null,
-            token: null,
-            accountId: null
-        };
+    static setCredentials(session) {
+        SessionService.credentials.environment = session.environment;
+        SessionService.credentials.token = session.token;
+        SessionService.credentials.accountId = session.accountId;
     }
 
-    setCredentials(session) {
-        this.credentials.environment = session.environment;
-        this.credentials.token = session.token;
-        this.credentials.accountId = session.accountId;
+    static isLogged() {
+        if (SessionService.credentials.token) {
+            return SessionService.credentials;
+        }
 
-        this.deferred.resolve(this.credentials);
-    }
-
-    isLogged() {
-        return this.deferred.promise;
+        return null;
     }
 }
-SessionService.$inject = ["$q"];
+
+SessionService.credentials = {
+    environment: null,
+    token: null,
+    accountId: null
+};

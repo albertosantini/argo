@@ -1,8 +1,3 @@
-import angular from "angular";
+import { HeaderComponent } from "./header.component";
 
-import { headerComponent } from "./header.component";
-
-export const header = angular
-    .module("components.header", [])
-    .component("header", headerComponent)
-    .name;
+HeaderComponent.bootstrap();

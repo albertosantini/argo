@@ -1,10 +1,14 @@
-export class AccountController {
-    constructor(AccountService) {
-        this.AccountService = AccountService;
-    }
+import Introspected from "introspected";
 
-    $onInit() {
-        this.account = this.AccountService.getAccount();
+import { AccountsService } from "./accounts.service";
+
+export class AccountController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            account: {}
+        }, state => template.update(render, state));
+
+        this.accountsService = new AccountsService(this.state.account);
     }
 }
-AccountController.$inject = ["AccountsService"];

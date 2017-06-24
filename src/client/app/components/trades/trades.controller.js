@@ -1,28 +1,38 @@
+import Introspected from "introspected";
+
+import { ToastsService } from "../toasts/toasts.service";
+import { TradesService } from "../trades/trades.service";
+import { Util } from "../../util";
+import { YesNoDialogComponent } from "../yesno-dialog/yesno-dialog.component";
+
 export class TradesController {
-    constructor(ToastsService, TradesService) {
-        this.ToastsService = ToastsService;
-        this.TradesService = TradesService;
+    constructor(render, template) {
+        const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+        this.state = Introspected({
+            trades: {
+                value: []
+            },
+            yesnoModalIsOpen: false,
+            yesnoModalText: "Are you sure to close the trade?",
+            closeTradeInfo: {
+                tradeId: null
+            }
+        }, state => template.update(render, state));
+
+        this.tradesService = new TradesService(this.state.trades);
+
+        YesNoDialogComponent.bootstrap(this.state, events);
     }
 
-    $onInit() {
-        this.trades = this.TradesService.getTrades();
-
-        this.TradesService.refresh();
+    onCancelYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
     }
 
-    closeTrade(tradeId) {
-        this.openCloseTradeModal = true;
-        this.closingTradeId = tradeId;
-    }
+    onOkYesNoDialogClick() {
+        this.state.yesnoModalIsOpen = false;
 
-    closeTradeDialog(answer) {
-        this.openCloseTradeModal = false;
-
-        if (!answer) {
-            return;
-        }
-
-        this.TradesService.closeTrade(this.closingTradeId).then(trade => {
+        TradesService.closeTrade(this.state.closeTradeInfo.tradeId).then(trade => {
             let message = "Closed " +
                     `${(trade.units > 0 ? "sell" : "buy")} ` +
                     `${trade.instrument} ` +
@@ -34,14 +44,11 @@ export class TradesController {
                 message = `ERROR ${trade.errorMessage || trade.message}`;
             }
 
-
-            this.ToastsService.addToast(message);
+            ToastsService.addToast(message);
         }).catch(err => {
             const message = `ERROR ${err.code} ${err.message}`;
 
-            this.ToastsService.addToast(message);
+            ToastsService.addToast(message);
         });
     }
-
 }
-TradesController.$inject = ["ToastsService", "TradesService"];

@@ -1,10 +1,14 @@
-export class QuotesController {
-    constructor(QuotesService) {
-        this.QuotesService = QuotesService;
-    }
+import Introspected from "introspected";
 
-    $onInit() {
-        this.quotes = this.QuotesService.getQuotes();
+import { QuotesService } from "./quotes.service";
+
+export class QuotesController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            quotes: {}
+        }, state => template.update(render, state));
+
+        this.quotesService = new QuotesService(this.state.quotes);
     }
 }
-QuotesController.$inject = ["QuotesService"];
