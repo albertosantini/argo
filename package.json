@@ -23,7 +23,7 @@
     "dependencies": {
         "angular": "~1.6.4",
         "angular-mocks": "~1.6.4",
-        "async": "~2.4.1",
+        "async": "^2.5.0",
         "body-parser": "~1.17.2",
         "d3": "~4.9.1",
         "document-register-element": "^1.5.0",
@@ -56,7 +56,7 @@
         "butternut": "^0.4.6",
         "chai": "^4.0.2",
         "conventional-changelog-cli": "^1.3.1",
-        "eslint": "^4.1.0",
+        "eslint": "^4.1.1",
         "eslint-plugin-angular": "^2.4.2",
         "karma": "^1.7.0",
         "karma-chai": "^0.1.0",
