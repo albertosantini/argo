@@ -30,7 +30,7 @@
         "express": "~4.15.3",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
-        "hyperhtml": "^0.15.0",
+        "hyperhtml": "^0.15.1",
         "introspected": "^0.2.3",
         "limiter": "^1.1.2",
         "request": "~2.81.0",
