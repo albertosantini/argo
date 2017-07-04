@@ -21,8 +21,8 @@
         "node": ">=6"
     },
     "dependencies": {
-        "angular": "~1.6.4",
-        "angular-mocks": "~1.6.4",
+        "angular": "^1.6.5",
+        "angular-mocks": "^1.6.5",
         "async": "^2.5.0",
         "body-parser": "~1.17.2",
         "d3": "~4.9.1",
