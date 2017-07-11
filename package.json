@@ -30,7 +30,7 @@
         "express": "~4.15.3",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
-        "hyperhtml": "^0.15.2",
+        "hyperhtml": "^0.15.5",
         "introspected": "^0.2.3",
         "limiter": "^1.1.2",
         "request": "~2.81.0",
@@ -63,7 +63,7 @@
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
         "mocha": "^3.4.2",
-        "rollup": "^0.45.0",
+        "rollup": "^0.45.1",
         "rollup-plugin-node-resolve": "^3.0.0"
     }
 }
