@@ -1,8 +1,8 @@
-(function (exports,angular,d3,techan) {
+var app = (function (exports,angular,d3,techan) {
 'use strict';
 
-angular = 'default' in angular ? angular['default'] : angular;
-techan = 'default' in techan ? techan['default'] : techan;
+angular = angular && angular.hasOwnProperty('default') ? angular['default'] : angular;
+techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
 
 const rootComponent = {
     templateUrl: "app/root.html"
@@ -2095,4 +2095,6 @@ const root = angular
 
 exports.root = root;
 
-}((this.app = this.app || {}),angular,d3,techan));
+return exports;
+
+}({},angular,d3,techan));
