@@ -21,20 +21,20 @@
         "node": ">=6"
     },
     "dependencies": {
-        "angular": "^1.6.5",
-        "angular-mocks": "^1.6.5",
+        "angular": "^1.6.6",
+        "angular-mocks": "^1.6.6",
         "async": "^2.5.0",
         "body-parser": "~1.17.2",
         "d3": "^4.10.0",
-        "document-register-element": "^1.6.2",
-        "express": "~4.15.3",
+        "document-register-element": "^1.7.0",
+        "express": "^4.15.4",
         "faye-websocket": "~0.11.1",
         "flic": "~1.3.7",
-        "hyperhtml": "^0.17.4",
+        "hyperhtml": "^1.2.0",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "~2.81.0",
-        "tachyons": "~4.7.4",
+        "tachyons": "~4.8.1",
         "techan": "~0.8.0"
     },
     "optionalDependencies": {
@@ -50,20 +50,20 @@
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "rollup": "rollup -c",
         "rollup-spec": "rollup -c rollup.config.spec.js",
-        "rollup-d3": "rollup -c rollup.config.d3-techan.js && squash build/d3-techan.js > build/d3-techan.min.js"
+        "rollup-d3": "rollup -c rollup.config.d3-techan.js && uglifyjs build/d3-techan.js -c -m -o build/d3-techan.min.js"
     },
     "devDependencies": {
-        "butternut": "0.4.4",
-        "chai": "^4.1.0",
+        "chai": "^4.1.1",
         "conventional-changelog-cli": "^1.3.2",
-        "eslint": "^4.3.0",
-        "eslint-plugin-angular": "^3.0.0",
+        "eslint": "^4.5.0",
+        "eslint-plugin-angular": "^3.1.0",
         "karma": "^1.7.0",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
         "mocha": "^3.5.0",
-        "rollup": "^0.45.2",
-        "rollup-plugin-node-resolve": "^3.0.0"
+        "rollup": "^0.48.2",
+        "rollup-plugin-node-resolve": "^3.0.0",
+        "uglify-es": "3.0.28"
     }
 }
