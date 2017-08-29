@@ -1,9 +1,11 @@
 import node from "rollup-plugin-node-resolve";
 
 export default {
-    entry: "rollup.index.d3-techan.js",
-    format: "umd",
-    moduleName: "d3",
+    input: "rollup.index.d3-techan.js",
+    output: {
+        file: "build/d3-techan.js",
+        format: "umd"
+    },
+    name: "d3",
     plugins: [node()],
-    dest: "build/d3-techan.js"
 };

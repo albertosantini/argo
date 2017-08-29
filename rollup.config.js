@@ -1,10 +1,12 @@
 "use strict";
 
 module.exports = {
-    entry: "./src/client/app/root.module.js",
-    dest: "./build/app.bundle.js",
-    format: "iife",
-    moduleName: "app",
+    input: "./src/client/app/root.module.js",
+    output: {
+        file: "./build/app.bundle.js",
+        format: "iife"
+    },
+    name: "app",
     external: [
         "angular",
         "d3",
