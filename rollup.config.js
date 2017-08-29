@@ -4,9 +4,9 @@ module.exports = {
     input: "./src/client/app/root.module.js",
     output: {
         file: "./build/app.bundle.js",
-        format: "iife"
+        format: "iife",
+        name: "app"
     },
-    name: "app",
     external: [
         "angular",
         "d3",

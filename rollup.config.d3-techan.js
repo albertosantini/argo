@@ -4,8 +4,8 @@ export default {
     input: "rollup.index.d3-techan.js",
     output: {
         file: "build/d3-techan.js",
-        format: "umd"
+        format: "umd",
+        name: "d3"
     },
-    name: "d3",
-    plugins: [node()],
+    plugins: [node()]
 };
