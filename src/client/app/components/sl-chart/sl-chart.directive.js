@@ -39,7 +39,8 @@ export function slChartDirective() {
 
             data[instrument].push(
                 (parseFloat(quote.bid) +
-                    parseFloat(quote.ask)) / 2);
+                    parseFloat(quote.ask)) / 2
+            );
 
             data[instrument] = data[instrument].slice(-scope.length);
 

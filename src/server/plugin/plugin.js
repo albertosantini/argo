@@ -1,3 +1,5 @@
+/* eslint camelcase:off */
+
 "use strict";
 
 exports.shoutStreaming = shoutStreaming;

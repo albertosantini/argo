@@ -30,11 +30,11 @@ module.exports = config => {
         logLevel: config.LOG_INFO,
 
         customLaunchers: {
-            Chrome_travis_ci: {
+            ChromeTravisCI: {
                 base: "ChromeHeadless"
             }
         },
-        browsers: process.env.TRAVIS ? ["Chrome_travis_ci"] : ["Chrome"],
+        browsers: process.env.TRAVIS ? ["ChromeTravisCI"] : ["Chrome"],
 
         autoWatch: true,
 

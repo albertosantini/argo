@@ -92,7 +92,7 @@ export class OrderDialogController {
         }
 
         if (!this.pips) {
-            this.ToastsService .addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
+            this.ToastsService.addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
             this.openModal = false;
 
             return;

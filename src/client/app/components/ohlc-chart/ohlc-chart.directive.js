@@ -304,7 +304,8 @@ export function ohlcChartDirective() {
                         close: +d.Close,
                         volume: +d.Volume
                     };
-                });
+                }
+            );
 
             svg.select("g.candlestick").datum(data);
             svg.select("g.sma.ma-0").datum(sma0Calculator(data));
@@ -320,9 +321,11 @@ export function ohlcChartDirective() {
                 x.zoomable().domain([data.length - 130, data.length]);
 
                 y.domain(techan.scale.plot.ohlc(
-                    data.slice(data.length - 130, data.length)).domain());
+                    data.slice(data.length - 130, data.length)
+                ).domain());
                 yVolume.domain(techan.scale.plot.volume(
-                    data.slice(data.length - 130, data.length)).domain());
+                    data.slice(data.length - 130, data.length)
+                ).domain());
 
                 svg.select("g.x.axis").call(xAxis);
                 svg.select("g.y.axis").call(yAxis);
@@ -332,7 +335,8 @@ export function ohlcChartDirective() {
                 svg.select("g.tradearrow").remove();
                 svg.append("g").attr("class", "tradearrow");
                 myTrades = scope.trades.filter(
-                    trade => trade.instrument === myInstrument)
+                    trade => trade.instrument === myInstrument
+                )
                     .map(
                         trade => ({
                             date: new Date(trade.openTime),

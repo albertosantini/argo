@@ -19,8 +19,7 @@ export class ChartsService {
                 count,
                 dailyAlignment
             }).then(candles => candles.data)
-                .catch(err => err.data)
-        );
+                .catch(err => err.data));
     }
 }
 ChartsService.$inject = ["$http", "SessionService"];
