@@ -24,13 +24,13 @@
         "angular": "^1.6.6",
         "angular-mocks": "^1.6.6",
         "async": "^2.5.0",
-        "body-parser": "^1.18.1",
+        "body-parser": "^1.18.2",
         "d3": "^4.10.2",
         "document-register-element": "^1.7.0",
         "express": "^4.15.4",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^1.8.1",
+        "hyperhtml": "^1.9.1",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.82.0",
@@ -55,7 +55,7 @@
     "devDependencies": {
         "chai": "^4.1.2",
         "conventional-changelog-cli": "^1.3.3",
-        "eslint": "^4.7.1",
+        "eslint": "^4.7.2",
         "eslint-plugin-angular": "^3.1.1",
         "karma": "^1.7.1",
         "karma-chai": "^0.1.0",
@@ -64,6 +64,6 @@
         "mocha": "^3.5.3",
         "rollup": "^0.50.0",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-es": "^3.1.1"
+        "uglify-es": "^3.1.2"
     }
 }
