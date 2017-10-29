@@ -34,7 +34,7 @@ module.exports = config => {
                 base: "ChromeHeadless"
             }
         },
-        browsers: process.env.TRAVIS ? ["ChromeTravisCI"] : ["Firefox"],
+        browsers: process.env.TRAVIS ? ["ChromeTravisCI"] : ["Chrome"],
 
         autoWatch: true,
 
