@@ -41,21 +41,22 @@ function ascendingComparator(f) {
 }
 
 var ascendingBisect = bisector(ascending);
-var bisectRight$1 = ascendingBisect.right;
+var bisectRight = ascendingBisect.right;
 
 var e10 = Math.sqrt(50);
 var e5 = Math.sqrt(10);
 var e2 = Math.sqrt(2);
 
 var ticks = function(start, stop, count) {
-  var reverse = stop < start,
+  var reverse,
       i = -1,
       n,
       ticks,
       step;
 
-  if (reverse) n = start, start = stop, stop = n;
-
+  stop = +stop, start = +start, count = +count;
+  if (start === stop && count > 0) return [start];
+  if (reverse = stop < start) n = start, start = stop, stop = n;
   if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
   if (step > 0) {
@@ -1402,7 +1403,7 @@ function defaultSubject(d) {
   return d == null ? {x: exports.event.x, y: exports.event.y} : d;
 }
 
-function touchable() {
+function defaultTouchable() {
   return "ontouchstart" in this;
 }
 
@@ -1410,6 +1411,7 @@ var drag = function() {
   var filter = defaultFilter,
       container = defaultContainer,
       subject = defaultSubject,
+      touchable = defaultTouchable,
       gestures = {},
       listeners = dispatch("start", "drag", "end"),
       active = 0,
@@ -1531,6 +1533,10 @@ var drag = function() {
 
   drag.subject = function(_) {
     return arguments.length ? (subject = typeof _ === "function" ? _ : constant$2(_), drag) : subject;
+  };
+
+  drag.touchable = function(_) {
+    return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$2(!!_), drag) : touchable;
   };
 
   drag.on = function() {
@@ -1828,7 +1834,7 @@ var formatLocale = function(locale) {
   };
 };
 
-var locale$1;
+var locale;
 
 var formatPrefix;
 
@@ -1840,10 +1846,10 @@ defaultLocale({
 });
 
 function defaultLocale(definition) {
-  locale$1 = formatLocale(definition);
-  exports.format = locale$1.format;
-  formatPrefix = locale$1.formatPrefix;
-  return locale$1;
+  locale = formatLocale(definition);
+  exports.format = locale.format;
+  formatPrefix = locale.formatPrefix;
+  return locale;
 }
 
 var precisionFixed = function(step) {
@@ -2642,7 +2648,7 @@ function polymap(domain, range, deinterpolate, reinterpolate) {
   }
 
   return function(x) {
-    var i = bisectRight$1(domain, x, 1, j) - 1;
+    var i = bisectRight(domain, x, 1, j) - 1;
     return r[i](d[i](x));
   };
 }
@@ -3597,7 +3603,7 @@ function formatLiteralPercent() {
   return "%";
 }
 
-var locale$2;
+var locale$1;
 
 
 
@@ -3615,11 +3621,11 @@ defaultLocale$1({
 });
 
 function defaultLocale$1(definition) {
-  locale$2 = formatLocale$1(definition);
-  exports.timeFormat = locale$2.format;
-  exports.utcFormat = locale$2.utcFormat;
-  utcParse = locale$2.utcParse;
-  return locale$2;
+  locale$1 = formatLocale$1(definition);
+  exports.timeFormat = locale$1.format;
+  exports.utcFormat = locale$1.utcFormat;
+  utcParse = locale$1.utcParse;
+  return locale$1;
 }
 
 var isoSpecifier = "%Y-%m-%dT%H:%M:%S.%LZ";
@@ -4243,7 +4249,7 @@ var csvParse = csv.parse;
 
 var tsv = dsv("\t");
 
-exports.bisect = bisectRight$1;
+exports.bisect = bisectRight;
 exports.max = max;
 exports.min = min;
 exports.axisBottom = axisBottom;

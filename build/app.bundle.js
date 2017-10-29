@@ -340,8 +340,7 @@ class ChartsService {
                 count,
                 dailyAlignment
             }).then(candles => candles.data)
-                .catch(err => err.data)
-        );
+                .catch(err => err.data));
     }
 }
 ChartsService.$inject = ["$http", "SessionService"];
@@ -550,7 +549,7 @@ class NewsService {
                 environment: credentials.environment,
                 token: credentials.token
             }).then(news => news.data.map(item => {
-                item.timestamp = item.timestamp * 1000;
+                item.timestamp *= 1000;
 
                 return item;
             })).catch(err => err.data)
@@ -868,7 +867,8 @@ function ohlcChartDirective() {
                         close: +d.Close,
                         volume: +d.Volume
                     };
-                });
+                }
+            );
 
             svg.select("g.candlestick").datum(data);
             svg.select("g.sma.ma-0").datum(sma0Calculator(data));
@@ -884,9 +884,11 @@ function ohlcChartDirective() {
                 x.zoomable().domain([data.length - 130, data.length]);
 
                 y.domain(techan.scale.plot.ohlc(
-                    data.slice(data.length - 130, data.length)).domain());
+                    data.slice(data.length - 130, data.length)
+                ).domain());
                 yVolume.domain(techan.scale.plot.volume(
-                    data.slice(data.length - 130, data.length)).domain());
+                    data.slice(data.length - 130, data.length)
+                ).domain());
 
                 svg.select("g.x.axis").call(xAxis);
                 svg.select("g.y.axis").call(yAxis);
@@ -896,7 +898,8 @@ function ohlcChartDirective() {
                 svg.select("g.tradearrow").remove();
                 svg.append("g").attr("class", "tradearrow");
                 myTrades = scope.trades.filter(
-                    trade => trade.instrument === myInstrument)
+                    trade => trade.instrument === myInstrument
+                )
                     .map(
                         trade => ({
                             date: new Date(trade.openTime),
@@ -1022,7 +1025,7 @@ class OrderDialogController {
         }
 
         if (!this.pips) {
-            this.ToastsService .addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
+            this.ToastsService.addToast(`Pips info for ${this.selectedInstrument} not yet available. Retry.`);
             this.openModal = false;
 
             return;
@@ -1621,7 +1624,8 @@ function slChartDirective() {
 
             data[instrument].push(
                 (parseFloat(quote.bid) +
-                    parseFloat(quote.ask)) / 2);
+                    parseFloat(quote.ask)) / 2
+            );
 
             data[instrument] = data[instrument].slice(-scope.length);
 
