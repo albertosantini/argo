@@ -65,7 +65,7 @@ describe("tradesService", () => {
     it("getTrades", () => {
         const trades = tradesService.getTrades();
 
-        assert.equal(true, angular.isArray(trades));
+        assert.strictEqual(true, angular.isArray(trades));
     });
 
     it("refresh", () => {
@@ -76,15 +76,15 @@ describe("tradesService", () => {
 
         assert.lengthOf(trades, 2);
 
-        assert.equal(175427743, trades[0].id);
-        assert.equal(2, trades[0].units);
-        assert.equal("sell", trades[0].side);
-        assert.equal("EUR_USD", trades[0].instrument);
-        assert.equal("2014-02-13T17:47:57Z", trades[0].time);
-        assert.equal(1.36687, trades[0].price);
-        assert.equal(0, trades[0].takeProfit);
-        assert.equal(0, trades[0].stopLoss);
-        assert.equal(0, trades[0].trailingStop);
-        assert.equal(0, trades[0].trailingAmount);
+        assert.strictEqual(175427743, trades[0].id);
+        assert.strictEqual(2, trades[0].units);
+        assert.strictEqual("sell", trades[0].side);
+        assert.strictEqual("EUR_USD", trades[0].instrument);
+        assert.strictEqual("2014-02-13T17:47:57Z", trades[0].time);
+        assert.strictEqual(1.36687, trades[0].price);
+        assert.strictEqual(0, trades[0].takeProfit);
+        assert.strictEqual(0, trades[0].stopLoss);
+        assert.strictEqual(0, trades[0].trailingStop);
+        assert.strictEqual(0, trades[0].trailingAmount);
     });
 });

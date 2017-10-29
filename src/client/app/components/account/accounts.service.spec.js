@@ -62,7 +62,7 @@ describe("accountsService", () => {
     it("getAccount", () => {
         const account = accountsService.getAccount();
 
-        assert.equal(true, angular.isObject(account));
+        assert.strictEqual(true, angular.isObject(account));
     });
 
     it("getAccounts", () => {
@@ -73,15 +73,15 @@ describe("accountsService", () => {
         }).then(() => {
             const account = accountsService.getAccount();
 
-            assert.equal("USD", account.currency);
-            assert.equal("7442890", account.accountId);
-            assert.equal(110410.5028, account.balance);
-            assert.equal(110394.9676, account.marginAvailable);
-            assert.equal(18.1671, account.marginCallMarginUsed);
-            assert.equal(-1983.78, account.realizedPL);
-            assert.equal(2.6319, account.unrealizedPL);
+            assert.strictEqual("USD", account.currency);
+            assert.strictEqual(7442890, account.accountId);
+            assert.strictEqual(110410.5028, account.balance);
+            assert.strictEqual(110394.9676, account.marginAvailable);
+            assert.strictEqual(18.1671, account.marginCallMarginUsed);
+            assert.strictEqual(-1983.78, account.realizedPL);
+            assert.strictEqual(2.6319, account.unrealizedPL);
             assert.isDefined(account.timestamp);
-            assert.equal(0.0023837406163863604, account.unrealizedPLPercent);
+            assert.strictEqual(0.0023837406163863604, account.unrealizedPLPercent);
         });
         $httpBackend.flush();
     });

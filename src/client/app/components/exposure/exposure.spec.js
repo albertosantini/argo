@@ -45,17 +45,17 @@ describe("Exposure", () => {
 
             assert.lengthOf(exposures, 3);
 
-            assert.equal("EUR", exposures[0].market);
-            assert.equal("100", exposures[0].units);
-            assert.equal("Long", exposures[0].type);
+            assert.strictEqual("EUR", exposures[0].market);
+            assert.strictEqual(100, exposures[0].units);
+            assert.strictEqual("Long", exposures[0].type);
 
-            assert.equal("USD", exposures[1].market);
-            assert.equal("417.01", exposures[1].units);
-            assert.equal("Short", exposures[1].type);
+            assert.strictEqual("USD", exposures[1].market);
+            assert.strictEqual(417.01, exposures[1].units);
+            assert.strictEqual("Short", exposures[1].type);
 
-            assert.equal("GPB", exposures[2].market);
-            assert.equal("200", exposures[2].units);
-            assert.equal("Long", exposures[2].type);
+            assert.strictEqual("GPB", exposures[2].market);
+            assert.strictEqual(200, exposures[2].units);
+            assert.strictEqual("Long", exposures[2].type);
         });
     });
 });

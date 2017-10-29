@@ -71,7 +71,7 @@ describe("ordersService", () => {
     it("getOrders", () => {
         const orders = ordersService.getOrders();
 
-        assert.equal(true, angular.isArray(orders));
+        assert.strictEqual(true, angular.isArray(orders));
     });
 
     it("refresh", () => {
@@ -82,19 +82,19 @@ describe("ordersService", () => {
 
         assert.lengthOf(orders, 2);
 
-        assert.equal(175427637, orders[1].id);
-        assert.equal("EUR_USD", orders[1].instrument);
-        assert.equal(10, orders[1].units);
-        assert.equal("sell", orders[1].side);
-        assert.equal("marketIfTouched", orders[1].type);
-        assert.equal("2014-02-11T16:22:07Z", orders[1].time);
-        assert.equal(1, orders[1].price);
-        assert.equal(0, orders[1].takeProfit);
-        assert.equal(0, orders[1].stopLoss);
-        assert.equal("2014-02-12T16:22:07Z", orders[1].expiry);
-        assert.equal(0, orders[1].takeProfit);
-        assert.equal(0, orders[1].upperBound);
-        assert.equal(0, orders[1].lowerBound);
-        assert.equal(0, orders[1].trailingStop);
+        assert.strictEqual(175427637, orders[1].id);
+        assert.strictEqual("EUR_USD", orders[1].instrument);
+        assert.strictEqual(10, orders[1].units);
+        assert.strictEqual("sell", orders[1].side);
+        assert.strictEqual("marketIfTouched", orders[1].type);
+        assert.strictEqual("2014-02-11T16:22:07Z", orders[1].time);
+        assert.strictEqual(1, orders[1].price);
+        assert.strictEqual(0, orders[1].takeProfit);
+        assert.strictEqual(0, orders[1].stopLoss);
+        assert.strictEqual("2014-02-12T16:22:07Z", orders[1].expiry);
+        assert.strictEqual(0, orders[1].takeProfit);
+        assert.strictEqual(0, orders[1].upperBound);
+        assert.strictEqual(0, orders[1].lowerBound);
+        assert.strictEqual(0, orders[1].trailingStop);
     });
 });

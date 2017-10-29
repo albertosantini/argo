@@ -39,10 +39,10 @@ describe("quotesService", () => {
         const quotes = quotesService.getQuotes(),
             eurusd = quotes.EUR_USD;
 
-        assert.equal("2013-06-21T17:41:04.648747Z", eurusd.time);
-        assert.equal(1.31528, eurusd.ask);
-        assert.equal(1.31513, eurusd.bid);
-        assert.equal(1.5, eurusd.spread);
+        assert.strictEqual("2013-06-21T17:41:04.648747Z", eurusd.time);
+        assert.strictEqual(1.31528, eurusd.ask);
+        assert.strictEqual(1.31513, eurusd.bid);
+        assert.strictEqual("1.5", eurusd.spread);
     });
 
 });
