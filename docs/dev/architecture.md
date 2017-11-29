@@ -5,9 +5,7 @@ Argo is an HTML5 interface for the OANDA trading platform.
 The source code is located in the `src` folder.
 
 The backend is based on [Node.js][].
-The frontend is based on [AngularJS][].
-
-The frontend follows [Papa's AngularJS style guide][].
+The frontend is based on [hyperHTML][].
 
 The application structure follows LIFT Principle, a Folders-by-Feature
 structure.
@@ -20,8 +18,7 @@ structure.
 The other folders contain the implementation of each feature.
 
 [Node.js]: http://nodejs.org/
-[AngularJS]: https://angularjs.org/
-[Papa's AngularJS style guide]: https://github.com/johnpapa/angularjs-styleguide
+[hyperHTML]: https://viperhtml.js.org/
 [OANDA Rest APIs]: http://developer.oanda.com/rest-live/introduction/
 [R]: http://www.r-project.org/
 [rio]: https://github.com/albertosantini/node-rio

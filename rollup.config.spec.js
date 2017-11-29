@@ -8,7 +8,6 @@ module.exports = {
         name: "test"
     },
     external: [
-        "angular",
         "d3",
         "techan",
         "hyperHTML",
@@ -17,7 +16,6 @@ module.exports = {
         "chai"
     ],
     globals: {
-        angular: "angular",
         d3: "d3",
         techan: "techan",
         hyperHTML: "hyperHTML",
