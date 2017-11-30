@@ -6,6 +6,20 @@
 0. Commit those changes (see [Commit Conventions][])
 0. Make sure Travis turns green
 
+## Rollup bundles
+
+After modifying js files in `src` folder, you need to build the application bundle:
+
+`npm run rollup`
+
+For the tests bundle:
+
+`npm run rollup-spec`
+
+If `d3` dep is updated, you need to build the `d3-techan` bundle:
+
+`nom run rollup-d3`
+
 ## New release
 
 0. Bump version in `package.json`

@@ -8,9 +8,6 @@ through the powerful [API][] to develop trading strategies.
 
 ## Installation
 
-[![NPM](https://nodei.co/npm/argo-trading.png?downloads=true&downloadRank=true)](https://nodei.co/npm/argo-trading/)
-[![NPM](https://nodei.co/npm-dl/argo-trading.png)](https://nodei.co/npm/argo-trading/)
-
 After installing [Node.js](https://nodejs.org/) (required), you can install **Argo**.
 
 - Release 3.x for legacy accounts: if your account id contains only digits (ie. 2534233), it is a legacy account.
@@ -55,16 +52,6 @@ Tested locally with Node.js 9.x, hyperHTML 2.x.
 ## [Documentation](http://argo.rtfd.io/)
 
 ## [Contributing](CONTRIBUTING.md)
-
-## Development Notes
-
-After modifying js files in `src` folder, you need to build the application bundle:
-
-`npm run rollup`
-
-If `d3` dep is updated, you need to build the `d3-techan` bundle:
-
-`nom run rollup-d3`
 
 ## Disclaimer
 
