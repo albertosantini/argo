@@ -1,6 +1,5 @@
 import { AccountsService } from "../account/accounts.service";
 import { ActivityService } from "../activity/activity.service";
-import { ExposureService } from "../exposure/exposure.service";
 import { OrdersService } from "../orders/orders.service";
 import { QuotesService } from "../quotes/quotes.service";
 import { PluginsService } from "../plugins/plugins.service";
@@ -66,9 +65,7 @@ export class StreamingService {
                     ActivityService.addActivity(transaction);
 
                     AccountsService.refresh();
-                    TradesService.refresh().then(() => {
-                        ExposureService.refresh();
-                    });
+                    TradesService.refresh();
                     OrdersService.refresh();
                     PositionsService.refresh();
                 }

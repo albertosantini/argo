@@ -1,6 +1,7 @@
 import { Util } from "../../util";
 import { SessionService } from "../session/session.service";
 import { AccountsService } from "../account/accounts.service";
+import { ExposureService } from "../exposure/exposure.service";
 
 export class TradesService {
     constructor(trades) {
@@ -34,6 +35,8 @@ export class TradesService {
                 trade.side = trade.currentUnits > 0 ? "buy" : "sell";
                 TradesService.trades.value.push(trade);
             });
+
+            ExposureService.refresh();
 
             return TradesService.trades.value;
         });
