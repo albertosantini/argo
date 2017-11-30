@@ -424,6 +424,8 @@ class TradesService {
                 TradesService.trades.value.push(trade);
             });
 
+            ExposureService.refresh();
+
             return TradesService.trades.value;
         });
     }
