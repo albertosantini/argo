@@ -31,6 +31,7 @@ export class HeaderTemplate {
                                 Settings
                         </a>
                         <a class="pointer f5 no-underline black bg-animate hover-bg-black hover-white inline-flex items-center pa3 ba border-box mr4"
+                            style="${Util.show(!state.tokenInfo.token)}"
                             onclick="${() => {
                                 state.tokenModalIsOpen = true;
                             }}">
