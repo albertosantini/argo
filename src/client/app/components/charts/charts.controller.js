@@ -83,7 +83,7 @@ export class ChartsController {
         this.state.ohlcInfo = {
             data: this.state.candles.csv,
             feed: "",
-            trades: JSON.stringify(TradesService.getTrades())
+            trades: ""
         };
 
         Introspected.observe(QuotesService.getQuotes(), state => {

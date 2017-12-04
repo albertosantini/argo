@@ -1473,7 +1473,7 @@ class ChartsController {
         this.state.ohlcInfo = {
             data: this.state.candles.csv,
             feed: "",
-            trades: JSON.stringify(TradesService.getTrades())
+            trades: ""
         };
 
         Introspected.observe(QuotesService.getQuotes(), state => {
@@ -2645,7 +2645,7 @@ class OhlcChartTemplate {
 OhlcChartTemplate.state = {
     myInstrument: null,
     myGranularity: null,
-    myTrades: [],
+    myTrades: null,
     data: null,
     refreshChart: null,
     lastHistUpdate: null,
@@ -2680,7 +2680,7 @@ class OhlcChartElement extends Hyper {
         OhlcChartElement.state.granularity = this.dataset.granularity;
         OhlcChartElement.state.data = this.dataset.data;
         OhlcChartElement.state.feed = this.dataset.feed && JSON.parse(this.dataset.feed);
-        OhlcChartElement.state.trades = this.dataset.trades && JSON.parse(this.dataset.trades);
+        OhlcChartElement.state.trades = this.dataset.trades ? JSON.parse(this.dataset.trades) : [];
 
         if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.ask !== "string") {
             OhlcChartElement.state.feed.ask = "";

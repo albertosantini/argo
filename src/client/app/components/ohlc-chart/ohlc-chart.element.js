@@ -27,7 +27,7 @@ class OhlcChartElement extends Hyper {
         OhlcChartElement.state.granularity = this.dataset.granularity;
         OhlcChartElement.state.data = this.dataset.data;
         OhlcChartElement.state.feed = this.dataset.feed && JSON.parse(this.dataset.feed);
-        OhlcChartElement.state.trades = this.dataset.trades && JSON.parse(this.dataset.trades);
+        OhlcChartElement.state.trades = this.dataset.trades ? JSON.parse(this.dataset.trades) : [];
 
         if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.ask !== "string") {
             OhlcChartElement.state.feed.ask = "";

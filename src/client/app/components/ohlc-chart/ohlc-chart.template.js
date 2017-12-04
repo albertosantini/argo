@@ -359,7 +359,7 @@ export class OhlcChartTemplate {
 OhlcChartTemplate.state = {
     myInstrument: null,
     myGranularity: null,
-    myTrades: [],
+    myTrades: null,
     data: null,
     refreshChart: null,
     lastHistUpdate: null,
