@@ -92,7 +92,7 @@ export class Hyper extends HTMLElement {
             return;
         }
         this.hyper = hyperHTML.wire();
-        this.appendChild(this.render()[0]);
+        this.appendChild(this.render().childNodes[0]);
     }
 
     render() {
