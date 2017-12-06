@@ -1,3 +1,19 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/albertosantini/argo/compare/v5.0.2...v6.0.0) (2017-12-06)
+
+
+### Bug Fixes
+
+* **api:** use message in code property ([5ece339](https://github.com/albertosantini/argo/commit/5ece339))
+* **css:** remove useless property ([d0e7288](https://github.com/albertosantini/argo/commit/d0e7288))
+
+
+### Features
+
+* **hyperHTML:** replace AngularJS with hyperHTML ([a0e5c93](https://github.com/albertosantini/argo/commit/a0e5c93))
+
+
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/albertosantini/argo/compare/v5.0.1...v5.0.2) (2017-04-21)
 
