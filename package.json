@@ -28,7 +28,7 @@
         "express": "^4.16.2",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^2.4.0",
+        "hyperhtml": "^2.4.3",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.83.0",
@@ -53,14 +53,14 @@
     "devDependencies": {
         "chai": "^4.1.2",
         "conventional-changelog-cli": "^1.3.5",
-        "eslint": "^4.12.1",
-        "karma": "^1.7.1",
+        "eslint": "^4.13.1",
+        "karma": "^2.0.0",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
         "mocha": "^4.0.1",
-        "rollup": "^0.52.1",
+        "rollup": "^0.52.3",
         "rollup-plugin-node-resolve": "^3.0.0",
-        "uglify-es": "^3.2.1"
+        "uglify-es": "^3.2.2"
     }
 }
