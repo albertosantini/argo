@@ -1,4 +1,6 @@
 * text=auto
 
-bin/*   eol=lf
-build/* crlf
+bin/*               eol=lf
+build/*             crlf
+package.json        eol=lf
+package-lock.json   eol=lf
