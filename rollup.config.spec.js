@@ -5,7 +5,15 @@ module.exports = {
     output: {
         file: "./build/app.bundle.spec.js",
         format: "iife",
-        name: "test"
+        name: "test",
+        globals: {
+            d3: "d3",
+            techan: "techan",
+            hyperHTML: "hyperHTML",
+            introspected: "Introspected",
+            mocha: "mocha",
+            chai: "chai"
+        }
     },
     external: [
         "d3",
@@ -14,13 +22,5 @@ module.exports = {
         "introspected",
         "mocha",
         "chai"
-    ],
-    globals: {
-        d3: "d3",
-        techan: "techan",
-        hyperHTML: "hyperHTML",
-        introspected: "Introspected",
-        mocha: "mocha",
-        chai: "chai"
-    }
+    ]
 };
