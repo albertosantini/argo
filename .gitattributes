@@ -1,6 +1,6 @@
 * text=auto
 
 bin/*               eol=lf
-build/*             crlf
+build/*             -text
 package.json        eol=lf
 package-lock.json   eol=lf
