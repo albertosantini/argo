@@ -35,6 +35,10 @@ export class QuotesTemplate {
     }
 
     static highlighter(value, instrument, type) {
+        if (typeof value !== "string") {
+            return "";
+        }
+
         const classes = "pv1 pr1 bb b--black-20 tr";
         const quoteClasses = `${instrument}-${type} ${classes}`;
         const greenClass = "highlight-green";
