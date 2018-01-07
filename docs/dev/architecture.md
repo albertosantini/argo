@@ -10,12 +10,12 @@ The frontend is based on [hyperHTML][].
 The application structure follows LIFT Principle, a Folders-by-Feature
 structure.
 
-`src/client/app/index.html` loads the scripts and the stylesheets.
-`src/client/app/layout` contains the default view.
-`src/client/app/services` contains the common services.
-`src/client/app/components` contains the directives.
+- `src/client/index.html` loads the scripts and the stylesheets.
+- `src/client/app/img` contains the images.
+- `src/client/app/common` contains the main view.
+- `src/client/app/components` contains the components.
 
-The other folders contain the implementation of each feature.
+The other folders in `components` contain the implementation of every feature.
 
 [Node.js]: http://nodejs.org/
 [hyperHTML]: https://viperhtml.js.org/
