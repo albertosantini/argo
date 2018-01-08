@@ -2108,6 +2108,7 @@ class TokenDialogController {
             });
         }).catch(err => {
             this.state.tokenModalIsOpen = false;
+            this.state.tokenInfo.token = "";
             ToastsService.addToast(err);
         });
     }
@@ -3032,15 +3033,6 @@ class QuotesTemplate {
     }
 
     static highlighter(value, instrument, type) {
-        if (typeof value !== "string") {
-            return "";
-        }
-
-        const classes = "pv1 pr1 bb b--black-20 tr";
-        const quoteClasses = `${instrument}-${type} ${classes}`;
-        const greenClass = "highlight-green";
-        const redClass = "highlight-red";
-
         if (!QuotesTemplate.cache[instrument]) {
             QuotesTemplate.cache[instrument] = {};
         }
@@ -3052,11 +3044,21 @@ class QuotesTemplate {
         const cache = QuotesTemplate.cache[instrument][type];
         const oldValue = cache.value;
 
+        const classes = "pv1 pr1 bb b--black-20 tr";
+        const quoteClasses = `${instrument}-${type} ${classes}`;
+        const greenClass = "highlight-green";
+        const redClass = "highlight-red";
+
+        if (value === oldValue) {
+            return cache.classes || quoteClasses;
+        }
+
         const highlight = value >= oldValue
             ? `${quoteClasses} ${greenClass}`
             : `${quoteClasses} ${redClass}`;
 
         cache.value = value;
+        cache.classes = highlight;
 
         clearTimeout(cache.timeout);
         cache.timeout = setTimeout(() => {
@@ -3065,6 +3067,7 @@ class QuotesTemplate {
             if (el) {
                 el.classList.remove(greenClass);
                 el.classList.remove(redClass);
+                cache.classes = quoteClasses;
             }
         }, 500);
 
