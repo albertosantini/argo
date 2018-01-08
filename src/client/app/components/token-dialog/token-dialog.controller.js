@@ -40,6 +40,7 @@ export class TokenDialogController {
             });
         }).catch(err => {
             this.state.tokenModalIsOpen = false;
+            this.state.tokenInfo.token = "";
             ToastsService.addToast(err);
         });
     }
