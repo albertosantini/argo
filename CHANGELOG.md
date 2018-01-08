@@ -1,3 +1,19 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/albertosantini/argo/compare/v6.0.0...v6.0.1) (2018-01-08)
+
+
+### Bug Fixes
+
+* **quotes:** fix quotes highlighting ([6275f43](https://github.com/albertosantini/argo/commit/6275f43))
+* **token-dialog:** display token button when it fails ([d327789](https://github.com/albertosantini/argo/commit/d327789))
+
+
+### Performance Improvements
+
+* **quotes:** improve highlighter ([e8819aa](https://github.com/albertosantini/argo/commit/e8819aa))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/albertosantini/argo/compare/v5.0.2...v6.0.0) (2017-12-06)
 
