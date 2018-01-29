@@ -23,12 +23,12 @@
     "dependencies": {
         "async": "^2.6.0",
         "body-parser": "^1.18.2",
-        "d3": "^4.12.2",
-        "document-register-element": "^1.7.0",
+        "d3": "^4.13.0",
+        "document-register-element": "^1.7.1",
         "express": "^4.16.2",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^2.5.0",
+        "hyperhtml": "^2.5.3",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.83.0",
@@ -52,15 +52,15 @@
     },
     "devDependencies": {
         "chai": "^4.1.2",
-        "conventional-changelog-cli": "^1.3.5",
+        "conventional-changelog-cli": "^1.3.8",
         "eslint": "^4.16.0",
         "karma": "^2.0.0",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
         "mocha": "^5.0.0",
-        "rollup": "^0.54.1",
+        "rollup": "^0.55.1",
         "rollup-plugin-node-resolve": "^3.0.2",
-        "uglify-es": "^3.3.8"
+        "uglify-es": "^3.3.9"
     }
 }
