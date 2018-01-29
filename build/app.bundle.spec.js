@@ -1,4 +1,4 @@
-(function (mocha,chai,hyperHTML) {
+(function (hyperHTML,mocha,chai) {
 'use strict';
 
 hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
@@ -1152,4 +1152,4 @@ document.body.appendChild(document.createElement("root"));
     };
 }(typeof self !== "undefined" ? self : window));
 
-}(mocha,chai,hyperHTML));
+}(hyperHTML,mocha,chai));

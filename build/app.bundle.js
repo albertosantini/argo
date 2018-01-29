@@ -3148,14 +3148,14 @@ class SlChartTemplate {
             node.style.stroke = "green";
         }
 
-        const min$$1 = d3.min(data);
-        const max$$1 = d3.max(data);
+        const min = d3.min(data);
+        const max = d3.max(data);
 
         const x = d3.scaleLinear()
             .domain([0, data.length - 1])
             .range([0, w]);
         const y = d3.scaleLinear()
-            .domain([+min$$1, +max$$1]).range([h, 0]);
+            .domain([+min, +max]).range([h, 0]);
 
         const paths = data
             .map((d, i) => [x(i), y(d)])
