@@ -28,7 +28,7 @@
         "express": "^4.16.2",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^2.5.5",
+        "hyperhtml": "^2.5.10",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.83.0",
@@ -52,15 +52,15 @@
     },
     "devDependencies": {
         "chai": "^4.1.2",
-        "conventional-changelog-cli": "^1.3.8",
+        "conventional-changelog-cli": "^1.3.13",
         "eslint": "^4.17.0",
         "karma": "^2.0.0",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
-        "mocha": "^5.0.0",
-        "rollup": "^0.55.3",
-        "rollup-plugin-node-resolve": "^3.0.2",
-        "uglify-es": "^3.3.9"
+        "mocha": "^5.0.1",
+        "rollup": "^0.55.5",
+        "rollup-plugin-node-resolve": "^3.0.3",
+        "uglify-es": "^3.3.10"
     }
 }
