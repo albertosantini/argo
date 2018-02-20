@@ -32,7 +32,7 @@ $ argo-trading-standalone
 
 Tested locally with Node.js 9.x, hyperHTML 2.x.
 
-## [Basic features](docs/views)
+## Basic features
 
 - Account summary updated for each event.
 - Quotes and spreads list updated tick-by-tick.
