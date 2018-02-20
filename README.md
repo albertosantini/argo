@@ -49,7 +49,7 @@ Tested locally with Node.js 9.x, hyperHTML 2.x.
 
 - Executing trading strategies.
 
-## [Documentation](http://argo.rtfd.io/)
+## [Documentation](http://argo.js.org/docs/)
 
 ## [Contributing](CONTRIBUTING.md)
 
