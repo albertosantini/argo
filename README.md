@@ -45,9 +45,9 @@ Tested locally with Node.js 9.x, hyperHTML 2.x.
 - Transactions history.
 - Economic calendar.
 
-## [Advanced features](https://github.com/albertosantini/argo-trading-plugin-seed)
+## Advanced features
 
-- Executing trading strategies.
+- Executing trading strategies with [plugins](https://github.com/albertosantini/argo-trading-plugin-seed).
 
 ## [Documentation](http://argo.js.org/docs/)
 
