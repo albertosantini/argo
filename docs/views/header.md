@@ -1,0 +1,8 @@
+# Header
+
+Header view contains the *Environment* name (practice or live) and the
+*Account Id*, after logging with the OANDA API token.
+
+[![Logon Sequence](http://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgVG9rZW4gU2VxdWVuY2UKCmhlYWRlciAtPiB0b2tlbi1kaWFsb2c6AAgGIGJ1dHRvbgpub3RlIG92ZXIAFg9vcGVuIAAsBgoAMwwgLT4gYWNjb3VudHNTZXJ2aWNlOiBlbnZpcm9ubWVudCwAZwYKABUPACsMLWJvdHRvbXNoZWV0OgBECSBsaXN0AC4JABgMAF4VAH0HSWQAVhRzdGFydHN0cmVhbQCBCRQsADMLAIF2CgAoDUFQSSBmb3IgcHJpY2VzIGFuZCBldmVudHMgAFEGCgBYCwCBfhVsaXN0IG9mIHRlbiBpbnN0cnVtZW50cwo&s=napkin)](http://www.websequencediagrams.com/?lz=dGl0bGUgVG9rZW4gU2VxdWVuY2UKCmhlYWRlciAtPiB0b2tlbi1kaWFsb2c6AAgGIGJ1dHRvbgpub3RlIG92ZXIAFg9vcGVuIAAsBgoAMwwgLT4gYWNjb3VudHNTZXJ2aWNlOiBlbnZpcm9ubWVudCwAZwYKABUPACsMLWJvdHRvbXNoZWV0OgBECSBsaXN0AC4JABgMAF4VAH0HSWQAVhRzdGFydHN0cmVhbQCBCRQsADMLAIF2CgAoDUFQSSBmb3IgcHJpY2VzIGFuZCBldmVudHMgAFEGCgBYCwCBfhVsaXN0IG9mIHRlbiBpbnN0cnVtZW50cwo&s=napkin)
+
+There is also a *Settings* button, containing the list of quotes available to stream.
