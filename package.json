@@ -59,6 +59,7 @@
         "karma-chrome-launcher": "^2.2.0",
         "karma-mocha": "^1.3.0",
         "mocha": "^5.0.3",
+        "puppeteer": "^1.1.1",
         "rollup": "^0.56.5",
         "rollup-plugin-node-resolve": "^3.2.0",
         "uglify-es": "^3.3.10"
