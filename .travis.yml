@@ -11,5 +11,3 @@ notifications:
 
 sudo: required
 dist: trusty
-addons:
-    chrome: stable
