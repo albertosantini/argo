@@ -1,27 +1,32 @@
 "use strict";
 
-const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-
-let mainWindow;
+const { app, BrowserWindow, ipcMain: ipc } = require("electron");
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         frame: false,
         height: 850,
         icon: "src/client/img/favicon.ico",
-        width: 1450,
-        webPreferences: {
-            nodeIntegration: false
-        }
+        show: false,
+        width: 1450
     });
 
-    mainWindow.loadURL("http://localhost:8000");
-
-    mainWindow.on("closed", () => {
-        mainWindow = null;
+    mainWindow.once("ready-to-show", () => {
+        mainWindow.show();
     });
+
+    ipc.on("mocha-done", (event, count) => {
+        mainWindow.webContents.once("destroyed", () => {
+            app.exit(count);
+        });
+
+        mainWindow.close();
+    });
+
+    const indexFile = process.argv[2] || "index.html";
+    const url = `http://localhost:8000/${indexFile}`;
+
+    mainWindow.loadURL(url);
 }
 
 require("./src/server/app");
