@@ -1124,8 +1124,6 @@ describe$7("tradesService", () => {
     });
 });
 
-document.body.appendChild(document.createElement("root"));
-
 (function(self) {
     const responses = {};
 

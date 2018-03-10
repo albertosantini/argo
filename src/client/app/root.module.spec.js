@@ -1,7 +1,5 @@
 import "./components/components.module.spec.js";
 
-document.body.appendChild(document.createElement("root"));
-
 (function(self) {
     const responses = {};
 
