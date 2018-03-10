@@ -11,7 +11,7 @@ const app = express(),
     apiUrl = routes.config.apiUrl;
 
 process.on("uncaughtException", err => {
-    util.log(err);
+    util.log(err.toString());
 });
 
 app.use(staticFiles(routes.config.staticFiles));
