@@ -47,7 +47,7 @@
 
     <script>
         const { ipcRenderer: ipc, remote } = require("electron");
-        const remoteConsole = remote.require("console")
+        const remoteConsole = remote.require("console");
 
         console.log = function() {
             remoteConsole.log.apply(remoteConsole, arguments);
