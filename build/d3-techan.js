@@ -1989,7 +1989,7 @@ function set$1(object, f) {
 
 var array$1 = Array.prototype;
 
-var map$3 = array$1.map;
+var map$2 = array$1.map;
 var slice$2 = array$1.slice;
 
 function define(constructor, factory, prototype) {
@@ -2813,7 +2813,7 @@ function continuous(deinterpolate, reinterpolate$$1) {
   };
 
   scale.domain = function(_) {
-    return arguments.length ? (domain = map$3.call(_, number$2), rescale()) : domain.slice();
+    return arguments.length ? (domain = map$2.call(_, number$2), rescale()) : domain.slice();
   };
 
   scale.range = function(_) {
