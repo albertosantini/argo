@@ -1,3 +1,13 @@
+<a name="6.0.3"></a>
+## [6.0.3](https://github.com/albertosantini/argo/compare/v6.0.2...v6.0.3) (2018-03-15)
+
+
+### Bug Fixes
+
+* **server:** fix message error in uncaught exception ([f26dfd5](https://github.com/albertosantini/argo/commit/f26dfd5))
+
+
+
 <a name="6.0.2"></a>
 ## [6.0.2](https://github.com/albertosantini/argo/compare/v6.0.1...v6.0.2) (2018-01-23)
 
