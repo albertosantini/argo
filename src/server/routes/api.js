@@ -131,10 +131,11 @@ function getCandles(req, response) {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        }, (err, res, body) => {
+        }, (err, res, data) => {
             let lines = "Date,Open,High,Low,Close,Volume\n";
 
-            body = JSON.parse(body);
+            const body = JSON.parse(data);
+
             if (!err && !body.errorMessage && !body.code) {
                 const candles = body.candles;
 
@@ -377,8 +378,9 @@ function engagePlugins(req, response) {
     }
 }
 
-function processApi(apiName, err, body, response, property) {
-    let obj;
+function processApi(apiName, err, data, response, property) {
+    let obj,
+        body = data;
 
     try {
         if (typeof body === "string") {
