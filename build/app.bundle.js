@@ -1,140 +1,140 @@
 (function (hyperHTML,Introspected,d3,techan) {
-'use strict';
+    'use strict';
 
-hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
-Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
-techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
+    hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
+    Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
+    techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
 
-class Util {
-    static query(selector) {
-        return document.querySelector(selector) ||
-            console.error(selector, "not found");
-    }
-
-    static handleEvent(context, e, payload) {
-        const type = e.type;
-        const id = e.target.id || console.warn(e.target, "target without id");
-        const method = `on${id[0].toUpperCase()}${id.split("-")[0].slice(1)}` +
-            `${type[0].toUpperCase()}${type.slice(1)}`;
-
-
-        return method in context ? context[method](e, payload)
-            : console.warn(method, "not implemented");
-    }
-
-    static renderEmpty(render) {
-        return render``;
-    }
-
-    static getHHMMSSfromDate(date) {
-        if (!date) {
-            return "";
+    class Util {
+        static query(selector) {
+            return document.querySelector(selector) ||
+                console.error(selector, "not found");
         }
 
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
+        static handleEvent(context, e, payload) {
+            const type = e.type;
+            const id = e.target.id || console.warn(e.target, "target without id");
+            const method = `on${id[0].toUpperCase()}${id.split("-")[0].slice(1)}` +
+                `${type[0].toUpperCase()}${type.slice(1)}`;
 
-        return `${hours}:${minutes}:${seconds}`;
-    }
 
-    static formatDate(date) {
-        if (!date || !date.toString()) {
-            return "";
+            return method in context ? context[method](e, payload)
+                : console.warn(method, "not implemented");
         }
 
-        return (new Date(date)).toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit",
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        });
-    }
-
-    static formatNumber(num, decimals = 0) {
-        if (!num || !num.toString()) {
-            return "";
+        static renderEmpty(render) {
+            return render``;
         }
 
-        return parseFloat(num).toFixed(decimals);
-    }
+        static getHHMMSSfromDate(date) {
+            if (!date) {
+                return "";
+            }
 
-    static fetch(url, options) {
-        options.headers = options.headers ||
-            { "Content-Type": "application/json" };
+            const hours = date.getHours().toString().padStart(2, "0");
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const seconds = date.getSeconds().toString().padStart(2, "0");
 
-        options.body = typeof options.body === "string" ? options.body
-            : JSON.stringify(options.body);
-
-        const fetchCall = fetch(url, options);
-
-        Util.spinnerState.isLoadingView = true;
-        fetchCall.then(() => {
-            Util.spinnerState.isLoadingView = false;
-        }).catch(() => {
-            Util.spinnerState.isLoadingView = false;
-        });
-
-        return fetchCall;
-    }
-
-    static show(condition) {
-        return condition ? "display: block;" : "display: none;";
-    }
-
-    static hide(condition) {
-        return Util.show(!condition);
-    }
-}
-
-Util.spinnerState = {};
-
-class Hyper extends HTMLElement {
-    connectedCallback() {
-        if ("hyper" in this) {
-            return;
+            return `${hours}:${minutes}:${seconds}`;
         }
-        this.hyper = hyperHTML.wire();
-        this.appendChild(this.render().childNodes[0]);
+
+        static formatDate(date) {
+            if (!date || !date.toString()) {
+                return "";
+            }
+
+            return (new Date(date)).toLocaleString("en-US", {
+                month: "short",
+                day: "2-digit",
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+        }
+
+        static formatNumber(num, decimals = 0) {
+            if (!num || !num.toString()) {
+                return "";
+            }
+
+            return parseFloat(num).toFixed(decimals);
+        }
+
+        static fetch(url, options) {
+            options.headers = options.headers ||
+                { "Content-Type": "application/json" };
+
+            options.body = typeof options.body === "string" ? options.body
+                : JSON.stringify(options.body);
+
+            const fetchCall = fetch(url, options);
+
+            Util.spinnerState.isLoadingView = true;
+            fetchCall.then(() => {
+                Util.spinnerState.isLoadingView = false;
+            }).catch(() => {
+                Util.spinnerState.isLoadingView = false;
+            });
+
+            return fetchCall;
+        }
+
+        static show(condition) {
+            return condition ? "display: block;" : "display: none;";
+        }
+
+        static hide(condition) {
+            return Util.show(!condition);
+        }
     }
 
-    render() {
-        return this.hyper`render method is not implemented`;
+    Util.spinnerState = {};
+
+    class Hyper extends HTMLElement {
+        connectedCallback() {
+            if ("hyper" in this) {
+                return;
+            }
+            this.hyper = hyperHTML.wire();
+            this.appendChild(this.render().childNodes[0]);
+        }
+
+        render() {
+            return this.hyper`render method is not implemented`;
+        }
     }
-}
 
-class RootTemplate {
-    static update(render) {
-        render`<app class="arimo"></app>`;
+    class RootTemplate {
+        static update(render) {
+            render`<app class="arimo"></app>`;
+        }
     }
-}
 
-class RootComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("root"));
+    class RootComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("root"));
 
-        RootTemplate.update(render);
+            RootTemplate.update(render);
+        }
     }
-}
 
-RootComponent.bootstrap();
+    RootComponent.bootstrap();
 
-class AppTemplate {
-    static update(render, state) {
-        const tabClasses = "f6 f5-l pointer bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l";
-        const selectedTabClasses = `${tabClasses} bg-blue`;
-        const isTradesTab = state.tabSelectedIndex === 0;
-        const isOrdersTab = state.tabSelectedIndex === 1;
-        const isPositionsTab = state.tabSelectedIndex === 2;
-        const isExposureTab = state.tabSelectedIndex === 3;
-        const isActivityTab = state.tabSelectedIndex === 4;
-        const isNewsTab = state.tabSelectedIndex === 5;
-        const isPluginsTab = state.tabSelectedIndex === 6;
+    class AppTemplate {
+        static update(render, state) {
+            const tabClasses = "f6 f5-l pointer bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l";
+            const selectedTabClasses = `${tabClasses} bg-blue`;
+            const isTradesTab = state.tabSelectedIndex === 0;
+            const isOrdersTab = state.tabSelectedIndex === 1;
+            const isPositionsTab = state.tabSelectedIndex === 2;
+            const isExposureTab = state.tabSelectedIndex === 3;
+            const isActivityTab = state.tabSelectedIndex === 4;
+            const isNewsTab = state.tabSelectedIndex === 5;
+            const isPluginsTab = state.tabSelectedIndex === 6;
 
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <header></header>
 
             <nav class="bt bb tc mw9 center shadow-2 tracked">
@@ -188,52 +188,52 @@ class AppTemplate {
                 </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class AppController {
-    constructor(render, template) {
-        this.state = Introspected({
-            tabSelectedIndex: 0
-        }, state => template.update(render, state));
-    }
-}
-
-class AppComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("app"));
-
-        this.appController = new AppController(render, AppTemplate);
-    }
-}
-
-AppComponent.bootstrap();
-
-class AccountTemplate {
-    static update(render, state) {
-        if (state.account.id.toString()) {
-            AccountTemplate.renderAccount(render, state);
-        } else {
-            AccountTemplate.renderNoAccount(render);
+            /* eslint-enable indent */
         }
     }
 
-    static renderAccount(render, state) {
-        const timestamp = Util.formatDate(new Date(state.account.timestamp));
-        const balance = parseFloat(state.account.balance).toFixed(2);
-        const unrealizedPL = parseFloat(state.account.unrealizedPL).toFixed(2);
-        const unrealizedPLPercent = parseFloat(state.account.unrealizedPLPercent).toFixed(2);
-        const NAV = parseFloat(state.account.NAV).toFixed(2);
-        const pl = parseFloat(state.account.pl).toFixed(2);
-        const marginCallMarginUsed = parseFloat(state.account.marginCallMarginUsed).toFixed(2);
-        const marginAvailable = parseFloat(state.account.marginAvailable).toFixed(2);
-        const marginCloseoutPositionValue = parseFloat(state.account.marginCloseoutPositionValue).toFixed(2);
-        const marginCloseoutPercent = parseFloat(state.account.marginCloseoutPercent).toFixed(2);
-        const positionValue = parseFloat(state.account.positionValue).toFixed(2);
+    class AppController {
+        constructor(render, template) {
+            this.state = Introspected({
+                tabSelectedIndex: 0
+            }, state => template.update(render, state));
+        }
+    }
 
-        /* eslint-disable indent */
-        render`
+    class AppComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("app"));
+
+            this.appController = new AppController(render, AppTemplate);
+        }
+    }
+
+    AppComponent.bootstrap();
+
+    class AccountTemplate {
+        static update(render, state) {
+            if (state.account.id.toString()) {
+                AccountTemplate.renderAccount(render, state);
+            } else {
+                AccountTemplate.renderNoAccount(render);
+            }
+        }
+
+        static renderAccount(render, state) {
+            const timestamp = Util.formatDate(new Date(state.account.timestamp));
+            const balance = parseFloat(state.account.balance).toFixed(2);
+            const unrealizedPL = parseFloat(state.account.unrealizedPL).toFixed(2);
+            const unrealizedPLPercent = parseFloat(state.account.unrealizedPLPercent).toFixed(2);
+            const NAV = parseFloat(state.account.NAV).toFixed(2);
+            const pl = parseFloat(state.account.pl).toFixed(2);
+            const marginCallMarginUsed = parseFloat(state.account.marginCallMarginUsed).toFixed(2);
+            const marginAvailable = parseFloat(state.account.marginAvailable).toFixed(2);
+            const marginCloseoutPositionValue = parseFloat(state.account.marginCloseoutPositionValue).toFixed(2);
+            const marginCloseoutPercent = parseFloat(state.account.marginCloseoutPercent).toFixed(2);
+            const positionValue = parseFloat(state.account.positionValue).toFixed(2);
+
+            /* eslint-disable indent */
+            render`
             <div class="h6 overflow-auto">
                 <table class="collapse f6 w-100 mw8 center">
                     <thead>
@@ -288,165 +288,165 @@ class AccountTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
-    }
+            /* eslint-enable indent */
+        }
 
-    static renderNoAccount(render) {
-        /* eslint-disable indent */
-        render`
+        static renderNoAccount(render) {
+            /* eslint-disable indent */
+            render`
             <div class="h6 overflow-auto">
                 <p class="f6 w-100 mw8 center b">No account.</p>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class SessionService {
-    static setCredentials(session) {
-        SessionService.credentials.environment = session.environment;
-        SessionService.credentials.token = session.token;
-        SessionService.credentials.accountId = session.accountId;
-    }
-
-    static isLogged() {
-        if (SessionService.credentials.token) {
-            return SessionService.credentials;
-        }
-
-        return null;
-    }
-}
-
-SessionService.credentials = {
-    environment: null,
-    token: null,
-    accountId: null
-};
-
-class AccountsService {
-    constructor(account) {
-        if (!AccountsService.account) {
-            AccountsService.account = account;
+            /* eslint-enable indent */
         }
     }
 
-    static getAccount() {
-        return AccountsService.account;
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return;
+    class SessionService {
+        static setCredentials(session) {
+            SessionService.credentials.environment = session.environment;
+            SessionService.credentials.token = session.token;
+            SessionService.credentials.accountId = session.accountId;
         }
 
-        AccountsService.getAccounts({
-            environment: credentials.environment,
-            token: credentials.token,
-            accountId: credentials.accountId
-        });
-    }
-
-    static getAccounts({
-        environment = "practice",
-        token = "abc",
-        accountId = null
-    } = {}) {
-        const api = accountId ? "/api/account" : "/api/accounts";
-
-        return Util.fetch(api, {
-            method: "post",
-            body: JSON.stringify({
-                environment,
-                token,
-                accountId
-            })
-        }).then(res => res.json()).then(data => {
-            const accounts = data.accounts || data;
-
-            if (data.message) {
-                throw data.message;
+        static isLogged() {
+            if (SessionService.credentials.token) {
+                return SessionService.credentials;
             }
 
-            if (!accounts.length) {
-                Object.assign(AccountsService.account, data.account);
+            return null;
+        }
+    }
 
-                AccountsService.account.timestamp = new Date();
+    SessionService.credentials = {
+        environment: null,
+        token: null,
+        accountId: null
+    };
 
-                AccountsService.account.unrealizedPLPercent =
-                    AccountsService.account.unrealizedPL /
-                        AccountsService.account.balance * 100;
+    class AccountsService {
+        constructor(account) {
+            if (!AccountsService.account) {
+                AccountsService.account = account;
+            }
+        }
 
-                if (!Object.keys(AccountsService.account.instruments).length) {
-                    Util.fetch("/api/instruments", {
-                        method: "post",
-                        body: JSON.stringify({
-                            environment,
-                            token,
-                            accountId
-                        })
-                    }).then(res => res.json()).then(instruments => {
-                        AccountsService.account.instruments = instruments;
-                        AccountsService.account.pips = {};
-                        AccountsService.account.instruments.forEach(i => {
-                            AccountsService.account.pips[i.name] =
-                                Math.pow(10, i.pipLocation);
-                        });
+        static getAccount() {
+            return AccountsService.account;
+        }
 
-                        return AccountsService.account;
-                    });
+        static refresh() {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return;
+            }
+
+            AccountsService.getAccounts({
+                environment: credentials.environment,
+                token: credentials.token,
+                accountId: credentials.accountId
+            });
+        }
+
+        static getAccounts({
+            environment = "practice",
+            token = "abc",
+            accountId = null
+        } = {}) {
+            const api = accountId ? "/api/account" : "/api/accounts";
+
+            return Util.fetch(api, {
+                method: "post",
+                body: JSON.stringify({
+                    environment,
+                    token,
+                    accountId
+                })
+            }).then(res => res.json()).then(data => {
+                const accounts = data.accounts || data;
+
+                if (data.message) {
+                    throw data.message;
                 }
-            }
 
-            return accounts;
-        });
-    }
+                if (!accounts.length) {
+                    Object.assign(AccountsService.account, data.account);
 
-    static setStreamingInstruments(settings) {
-        AccountsService.account.streamingInstruments = Object.keys(settings)
-            .filter(el => !!settings[el]);
+                    AccountsService.account.timestamp = new Date();
 
-        return AccountsService.account.streamingInstruments;
-    }
-}
+                    AccountsService.account.unrealizedPLPercent =
+                        AccountsService.account.unrealizedPL /
+                            AccountsService.account.balance * 100;
 
-AccountsService.account = null;
+                    if (!Object.keys(AccountsService.account.instruments).length) {
+                        Util.fetch("/api/instruments", {
+                            method: "post",
+                            body: JSON.stringify({
+                                environment,
+                                token,
+                                accountId
+                            })
+                        }).then(res => res.json()).then(instruments => {
+                            AccountsService.account.instruments = instruments;
+                            AccountsService.account.pips = {};
+                            AccountsService.account.instruments.forEach(i => {
+                                AccountsService.account.pips[i.name] =
+                                    Math.pow(10, i.pipLocation);
+                            });
 
-class AccountController {
-    constructor(render, template) {
+                            return AccountsService.account;
+                        });
+                    }
+                }
 
-        this.state = Introspected({
-            account: {}
-        }, state => template.update(render, state));
+                return accounts;
+            });
+        }
 
-        this.accountsService = new AccountsService(this.state.account);
-    }
-}
+        static setStreamingInstruments(settings) {
+            AccountsService.account.streamingInstruments = Object.keys(settings)
+                .filter(el => !!settings[el]);
 
-class AccountComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("account"));
-
-        this.accountController = new AccountController(render, AccountTemplate);
-    }
-}
-
-AccountComponent.bootstrap();
-
-class ActivityTemplate {
-    static update(render, state) {
-        if (state.activities.length) {
-            ActivityTemplate.renderActivity(render, state);
-        } else {
-            ActivityTemplate.renderNoActivity(render);
+            return AccountsService.account.streamingInstruments;
         }
     }
 
-    static renderActivity(render, state) {
-        /* eslint-disable indent */
-        render`
+    AccountsService.account = null;
+
+    class AccountController {
+        constructor(render, template) {
+
+            this.state = Introspected({
+                account: {}
+            }, state => template.update(render, state));
+
+            this.accountsService = new AccountsService(this.state.account);
+        }
+    }
+
+    class AccountComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("account"));
+
+            this.accountController = new AccountController(render, AccountTemplate);
+        }
+    }
+
+    AccountComponent.bootstrap();
+
+    class ActivityTemplate {
+        static update(render, state) {
+            if (state.activities.length) {
+                ActivityTemplate.renderActivity(render, state);
+            } else {
+                ActivityTemplate.renderNoActivity(render);
+            }
+        }
+
+        static renderActivity(render, state) {
+            /* eslint-disable indent */
+            render`
             <div class="h4 overflow-auto">
                 <table class="f6 w-100 mw8 center" cellpsacing="0">
                     <thead>
@@ -480,101 +480,101 @@ class ActivityTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
-    }
+            /* eslint-enable indent */
+        }
 
-    static renderNoActivity(render) {
-        /* eslint-disable indent */
-        render`
+        static renderNoActivity(render) {
+            /* eslint-disable indent */
+            render`
             <div class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No activities.</p>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class ActivityService {
-    constructor(activities) {
-        if (!ActivityService.activities) {
-            ActivityService.activities = activities;
+            /* eslint-enable indent */
         }
     }
 
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
+    class ActivityService {
+        constructor(activities) {
+            if (!ActivityService.activities) {
+                ActivityService.activities = activities;
+            }
         }
 
-        const account = AccountsService.getAccount(),
-            lastTransactionID = account.lastTransactionID;
+        static refresh() {
+            const credentials = SessionService.isLogged();
 
-        return Util.fetch("/api/transactions", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                lastTransactionID
-            })
-        }).then(res => res.json()).then(data => {
-            ActivityService.activities.length = 0;
-            data.reverse().forEach(activity => {
-                ActivityService.activities.push(activity);
+            if (!credentials) {
+                return null;
+            }
+
+            const account = AccountsService.getAccount(),
+                lastTransactionID = account.lastTransactionID;
+
+            return Util.fetch("/api/transactions", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    lastTransactionID
+                })
+            }).then(res => res.json()).then(data => {
+                ActivityService.activities.length = 0;
+                data.reverse().forEach(activity => {
+                    ActivityService.activities.push(activity);
+                });
+
+                return ActivityService.activities;
+            }).catch(err => err.data);
+        }
+
+        static addActivity(activity) {
+            ActivityService.activities.splice(0, 0, {
+                id: activity.id,
+                type: activity.type,
+                instrument: activity.instrument,
+                units: activity.units,
+                price: activity.price,
+                pl: activity.pl,
+                accountBalance: activity.accountBalance,
+                time: activity.time
             });
-
-            return ActivityService.activities;
-        }).catch(err => err.data);
-    }
-
-    static addActivity(activity) {
-        ActivityService.activities.splice(0, 0, {
-            id: activity.id,
-            type: activity.type,
-            instrument: activity.instrument,
-            units: activity.units,
-            price: activity.price,
-            pl: activity.pl,
-            accountBalance: activity.accountBalance,
-            time: activity.time
-        });
-    }
-}
-
-ActivityService.activities = null;
-
-class ActivityController {
-    constructor(render, template) {
-
-        this.state = Introspected({
-            activities: []
-        }, state => template.update(render, state));
-
-        this.activityService = new ActivityService(this.state.activities);
-    }
-}
-
-class ActivityComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("activity"));
-
-        this.activityController = new ActivityController(render, ActivityTemplate);
-    }
-}
-
-ActivityComponent.bootstrap();
-
-class ChartsTemplate {
-    static update(render, state, events) {
-        if (!Object.keys(state.account.streamingInstruments).length) {
-            Util.renderEmpty(render);
-            return;
         }
+    }
 
-        /* eslint-disable indent */
-        render`
+    ActivityService.activities = null;
+
+    class ActivityController {
+        constructor(render, template) {
+
+            this.state = Introspected({
+                activities: []
+            }, state => template.update(render, state));
+
+            this.activityService = new ActivityService(this.state.activities);
+        }
+    }
+
+    class ActivityComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("activity"));
+
+            this.activityController = new ActivityController(render, ActivityTemplate);
+        }
+    }
+
+    ActivityComponent.bootstrap();
+
+    class ChartsTemplate {
+        static update(render, state, events) {
+            if (!Object.keys(state.account.streamingInstruments).length) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            /* eslint-disable indent */
+            render`
             <div class="flex flex-wrap flex-row justify-center justify-around mb2">
                 <select id="chartInstrument" onchange="${e => events(e, {
                         instrument: e.target.value.trim(),
@@ -618,102 +618,102 @@ class ChartsTemplate {
 
             <order-dialog></order-dialog>
         `;
-        /* eslint-enable indent */
+            /* eslint-enable indent */
 
-        // Due to a FF bug removed selected="${state.selectedInstrument === instrument}"
-        // see also https://github.com/WebReflection/hyperHTML/issues/148
-        document.querySelector(`option[value='${state.selectedInstrument}']`).selected = true;
-        document.querySelector(`option[value='${state.selectedGranularity}']`).selected = true;
-    }
-}
-
-class ToastsService {
-    constructor(toasts) {
-        if (!ToastsService.toasts) {
-            ToastsService.toasts = toasts;
+            // Due to a FF bug removed selected="${state.selectedInstrument === instrument}"
+            // see also https://github.com/WebReflection/hyperHTML/issues/148
+            document.querySelector(`option[value='${state.selectedInstrument}']`).selected = true;
+            document.querySelector(`option[value='${state.selectedGranularity}']`).selected = true;
         }
     }
 
-    static getToasts() {
-        return ToastsService.toasts;
-    }
-
-    static addToast(message) {
-        ToastsService.toasts.splice(0, 0, {
-            date: (new Date()),
-            message
-        });
-
-        if (ToastsService.timeout) {
-            clearTimeout(ToastsService.timeout);
-        }
-        ToastsService.timeout = ToastsService.reset();
-    }
-
-    static reset() {
-        return setTimeout(() => {
-            while (ToastsService.toasts.length) {
-                ToastsService.toasts.pop();
+    class ToastsService {
+        constructor(toasts) {
+            if (!ToastsService.toasts) {
+                ToastsService.toasts = toasts;
             }
-        }, 10000);
-    }
-}
+        }
 
-ToastsService.toasts = null;
-ToastsService.timeout = null;
+        static getToasts() {
+            return ToastsService.toasts;
+        }
 
-class ChartsService {
-    constructor(candles) {
-        if (!ChartsService.candles) {
-            ChartsService.candles = candles;
+        static addToast(message) {
+            ToastsService.toasts.splice(0, 0, {
+                date: (new Date()),
+                message
+            });
+
+            if (ToastsService.timeout) {
+                clearTimeout(ToastsService.timeout);
+            }
+            ToastsService.timeout = ToastsService.reset();
+        }
+
+        static reset() {
+            return setTimeout(() => {
+                while (ToastsService.toasts.length) {
+                    ToastsService.toasts.pop();
+                }
+            }, 10000);
         }
     }
 
-    static getHistQuotes({
-        instrument = "EUR_USD",
-        granularity = "M5",
-        count = 251,
-        dailyAlignment = "0"
-    } = {}) {
-        const credentials = SessionService.isLogged();
+    ToastsService.toasts = null;
+    ToastsService.timeout = null;
 
-        if (!credentials) {
-            return null;
+    class ChartsService {
+        constructor(candles) {
+            if (!ChartsService.candles) {
+                ChartsService.candles = candles;
+            }
         }
 
-        return Util.fetch("/api/candles", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                instrument,
-                granularity,
-                count,
-                dailyAlignment
-            })
-        }).then(res => res.text()).then(data => {
-            ChartsService.candles.csv = data;
-        }).catch(err => {
-            ToastsService.addToast(err.data);
-        });
+        static getHistQuotes({
+            instrument = "EUR_USD",
+            granularity = "M5",
+            count = 251,
+            dailyAlignment = "0"
+        } = {}) {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/candles", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    instrument,
+                    granularity,
+                    count,
+                    dailyAlignment
+                })
+            }).then(res => res.text()).then(data => {
+                ChartsService.candles.csv = data;
+            }).catch(err => {
+                ToastsService.addToast(err.data);
+            });
+        }
     }
-}
 
-ChartsService.candles = null;
+    ChartsService.candles = null;
 
-class OrderDialogTemplate {
-    static update(render, state, events) {
-        if (!state.orderModalIsOpen) {
-            Util.renderEmpty(render);
-            return;
+    class OrderDialogTemplate {
+        static update(render, state, events) {
+            if (!state.orderModalIsOpen) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            OrderDialogTemplate.renderOrderModal(render, state, events);
         }
 
-        OrderDialogTemplate.renderOrderModal(render, state, events);
-    }
-
-    static renderOrderModal(render, state, events) {
-        /* eslint-disable indent */
-        render`
+        static renderOrderModal(render, state, events) {
+            /* eslint-disable indent */
+            render`
             <div class="fixed absolute--fill bg-black-70 z5">
             <div class="fixed absolute-center z999">
 
@@ -912,640 +912,640 @@ class OrderDialogTemplate {
             </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-
-}
-
-class OrdersService {
-    constructor(orders) {
-        if (!OrdersService.orders) {
-            OrdersService.orders = orders;
-        }
-    }
-
-
-    static getOrders() {
-        return OrdersService.orders;
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
+            /* eslint-enable indent */
         }
 
-        return Util.fetch("/api/orders", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            })
-        }).then(res => res.json()).then(data => {
-            OrdersService.orders.splice(0, OrdersService.orders.length);
+    }
 
-            data.forEach(trade => {
-                OrdersService.orders.push(trade);
-            });
+    class OrdersService {
+        constructor(orders) {
+            if (!OrdersService.orders) {
+                OrdersService.orders = orders;
+            }
+        }
 
+
+        static getOrders() {
             return OrdersService.orders;
-        });
-    }
-
-    static putOrder(order) {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
         }
 
-        return Util.fetch("/api/order", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                instrument: order.instrument,
-                units: order.units,
-                side: order.side,
-                type: order.type,
-                expiry: order.expiry,
-                price: order.price,
-                priceBound: order.lowerBound || order.upperBound,
-                stopLossOnFill: order.stopLossOnFill,
-                takeProfitOnFill: order.takeProfitOnFill,
-                trailingStopLossOnFill: order.trailingStopLossOnFill
-            })
-        }).then(res => res.json()).then(data => data)
-            .catch(err => err.data);
-    }
+        static refresh() {
+            const credentials = SessionService.isLogged();
 
-    static closeOrder(id) {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
-        }
-
-        return Util.fetch("/api/closeorder", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                id
-            })
-        }).then(res => res.json()).then(data => data)
-            .catch(err => err.data);
-    }
-
-    static updateOrders(tick) {
-        const account = AccountsService.getAccount(),
-            pips = account.pips;
-
-        OrdersService.orders.forEach((order, index) => {
-            let current;
-
-            if (order.instrument === tick.instrument) {
-
-                if (order.units > 0) {
-                    current = tick.ask;
-                }
-                if (order.units < 0) {
-                    current = tick.bid;
-                }
-
-                OrdersService.orders[index].current = current;
-                OrdersService.orders[index].distance = (Math.abs(current - order.price) /
-                    pips[order.instrument]);
+            if (!credentials) {
+                return null;
             }
-        });
-    }
-}
 
-OrdersService.orders = null;
+            return Util.fetch("/api/orders", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                })
+            }).then(res => res.json()).then(data => {
+                OrdersService.orders.splice(0, OrdersService.orders.length);
 
-class QuotesService {
-    constructor(quotes) {
-        if (!QuotesService.quotes) {
-            QuotesService.quotes = quotes;
-        }
-    }
+                data.forEach(trade => {
+                    OrdersService.orders.push(trade);
+                });
 
-    static getQuotes() {
-        return QuotesService.quotes;
-    }
-
-    static updateTick(tick) {
-        const account = AccountsService.getAccount(),
-            streamingInstruments = account.streamingInstruments,
-            pips = account.pips,
-            instrument = tick.instrument,
-            lenStreamingInstruments = Object.keys(streamingInstruments).length,
-            lenQuotesInstruments = Object.keys(QuotesService.quotes).length;
-
-        if (lenStreamingInstruments !== lenQuotesInstruments) {
-            streamingInstruments.forEach(instr => {
-                QuotesService.quotes[instr].instrument = instr;
+                return OrdersService.orders;
             });
         }
 
-        QuotesService.quotes[instrument].time = tick.time;
-        QuotesService.quotes[instrument].ask = tick.ask;
-        QuotesService.quotes[instrument].bid = tick.bid;
-        QuotesService.quotes[instrument].spread =
-            ((tick.ask - tick.bid) / pips[instrument]).toFixed(1);
+        static putOrder(order) {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/order", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    instrument: order.instrument,
+                    units: order.units,
+                    side: order.side,
+                    type: order.type,
+                    expiry: order.expiry,
+                    price: order.price,
+                    priceBound: order.lowerBound || order.upperBound,
+                    stopLossOnFill: order.stopLossOnFill,
+                    takeProfitOnFill: order.takeProfitOnFill,
+                    trailingStopLossOnFill: order.trailingStopLossOnFill
+                })
+            }).then(res => res.json()).then(data => data)
+                .catch(err => err.data);
+        }
+
+        static closeOrder(id) {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/closeorder", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    id
+                })
+            }).then(res => res.json()).then(data => data)
+                .catch(err => err.data);
+        }
+
+        static updateOrders(tick) {
+            const account = AccountsService.getAccount(),
+                pips = account.pips;
+
+            OrdersService.orders.forEach((order, index) => {
+                let current;
+
+                if (order.instrument === tick.instrument) {
+
+                    if (order.units > 0) {
+                        current = tick.ask;
+                    }
+                    if (order.units < 0) {
+                        current = tick.bid;
+                    }
+
+                    OrdersService.orders[index].current = current;
+                    OrdersService.orders[index].distance = (Math.abs(current - order.price) /
+                        pips[order.instrument]);
+                }
+            });
+        }
     }
 
-    static reset() {
-        for (const instr in QuotesService.quotes) {
-            if (QuotesService.quotes[instr].instrument === instr) {
-                delete QuotesService.quotes[instr];
+    OrdersService.orders = null;
+
+    class QuotesService {
+        constructor(quotes) {
+            if (!QuotesService.quotes) {
+                QuotesService.quotes = quotes;
+            }
+        }
+
+        static getQuotes() {
+            return QuotesService.quotes;
+        }
+
+        static updateTick(tick) {
+            const account = AccountsService.getAccount(),
+                streamingInstruments = account.streamingInstruments,
+                pips = account.pips,
+                instrument = tick.instrument,
+                lenStreamingInstruments = Object.keys(streamingInstruments).length,
+                lenQuotesInstruments = Object.keys(QuotesService.quotes).length;
+
+            if (lenStreamingInstruments !== lenQuotesInstruments) {
+                streamingInstruments.forEach(instr => {
+                    QuotesService.quotes[instr].instrument = instr;
+                });
+            }
+
+            QuotesService.quotes[instrument].time = tick.time;
+            QuotesService.quotes[instrument].ask = tick.ask;
+            QuotesService.quotes[instrument].bid = tick.bid;
+            QuotesService.quotes[instrument].spread =
+                ((tick.ask - tick.bid) / pips[instrument]).toFixed(1);
+        }
+
+        static reset() {
+            for (const instr in QuotesService.quotes) {
+                if (QuotesService.quotes[instr].instrument === instr) {
+                    delete QuotesService.quotes[instr];
+                }
             }
         }
     }
-}
 
-QuotesService.quotes = null;
+    QuotesService.quotes = null;
 
-class OrderDialogController {
-    constructor(render, template, bindings) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
+    class OrderDialogController {
+        constructor(render, template, bindings) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-        this.state = Introspected.observe(bindings,
-            state => template.update(render, state, events));
+            this.state = Introspected.observe(bindings,
+                state => template.update(render, state, events));
 
-        const account = AccountsService.getAccount();
+            const account = AccountsService.getAccount();
 
-        this.pips = account.pips;
+            this.pips = account.pips;
 
-        this.onMarketChange(null, this.state.selectedInstrument);
-    }
-
-    onMarketChange(e, instrument) {
-        if (!this.pips) {
-            return;
-        }
-
-        this.state.selectedInstrument = instrument;
-
-        const price = QuotesService.getQuotes()[instrument],
-            fixed = ((this.pips[this.state.selectedInstrument].toString())
-                .match(/0/g) || []).length;
-
-        this.state.measure = "price";
-        this.state.step = parseFloat(this.pips[this.state.selectedInstrument]);
-        if (this.state.orderInfo.side === "buy") {
-            this.state.quote = parseFloat(price && price.ask);
-            this.takeProfit = parseFloat((this.state.quote + this.state.step * 10)
-                .toFixed(fixed));
-            this.stopLoss = parseFloat((this.state.quote - this.state.step * 10)
-                .toFixed(fixed));
-        } else {
-            this.state.quote = parseFloat(price && price.bid);
-            this.takeProfit = parseFloat((this.state.quote - this.state.step * 10)
-                .toFixed(fixed));
-            this.stopLoss = parseFloat((this.state.quote + this.state.step * 10)
-                .toFixed(fixed));
-        }
-        this.lowerBound = parseFloat((this.state.quote - this.state.step).toFixed(fixed));
-        this.upperBound = parseFloat((this.state.quote + this.state.step).toFixed(fixed));
-        this.trailingStop = 25;
-    }
-
-    changeMeasure(measure) {
-        if (measure === "price") {
             this.onMarketChange(null, this.state.selectedInstrument);
-        } else {
-            this.lowerBound = 1;
-            this.upperBound = 1;
-            this.takeProfit = 10;
-            this.stopLoss = 10;
+        }
+
+        onMarketChange(e, instrument) {
+            if (!this.pips) {
+                return;
+            }
+
+            this.state.selectedInstrument = instrument;
+
+            const price = QuotesService.getQuotes()[instrument],
+                fixed = ((this.pips[this.state.selectedInstrument].toString())
+                    .match(/0/g) || []).length;
+
+            this.state.measure = "price";
+            this.state.step = parseFloat(this.pips[this.state.selectedInstrument]);
+            if (this.state.orderInfo.side === "buy") {
+                this.state.quote = parseFloat(price && price.ask);
+                this.takeProfit = parseFloat((this.state.quote + this.state.step * 10)
+                    .toFixed(fixed));
+                this.stopLoss = parseFloat((this.state.quote - this.state.step * 10)
+                    .toFixed(fixed));
+            } else {
+                this.state.quote = parseFloat(price && price.bid);
+                this.takeProfit = parseFloat((this.state.quote - this.state.step * 10)
+                    .toFixed(fixed));
+                this.stopLoss = parseFloat((this.state.quote + this.state.step * 10)
+                    .toFixed(fixed));
+            }
+            this.lowerBound = parseFloat((this.state.quote - this.state.step).toFixed(fixed));
+            this.upperBound = parseFloat((this.state.quote + this.state.step).toFixed(fixed));
             this.trailingStop = 25;
-            this.state.step = 1;
+        }
+
+        changeMeasure(measure) {
+            if (measure === "price") {
+                this.onMarketChange(null, this.state.selectedInstrument);
+            } else {
+                this.lowerBound = 1;
+                this.upperBound = 1;
+                this.takeProfit = 10;
+                this.stopLoss = 10;
+                this.trailingStop = 25;
+                this.state.step = 1;
+            }
+        }
+
+        onOrderSubmitClick() {
+            this.state.orderModalIsOpen = false;
+
+            if (!this.pips) {
+                ToastsService.addToast(`Pips info for ${this.state.selectedInstrument} not yet available. Retry.`);
+
+                return;
+            }
+
+            const order = {},
+                isBuy = this.state.orderInfo.side === "buy",
+                isMeasurePips = this.state.measure === "pips";
+
+            this.state.orderInfo.step = parseFloat(this.pips[this.state.selectedInstrument]);
+
+            order.instrument = this.state.selectedInstrument;
+            order.units = this.state.orderInfo.units;
+            if (this.state.orderInfo.units && !isBuy) {
+                order.units = `-${order.units}`;
+            }
+
+            order.side = this.state.orderInfo.side;
+            order.type = this.state.orderInfo.type;
+
+            if (order.type === "LIMIT") {
+                order.price = this.state.orderInfo.quote && this.state.orderInfo.quote.toString();
+                order.gtdTime = new Date(Date.now() + this.state.orderInfo.selectedExpire);
+            }
+
+            if (isMeasurePips) {
+                if (this.state.orderInfo.isLowerBound) {
+                    order.priceBound =
+                        parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.lowerBound)
+                            .toString()).toString();
+                }
+                if (this.state.orderInfo.isUpperBound) {
+                    order.priceBound =
+                        parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.upperBound)
+                            .toString()).toString();
+                }
+                if (isBuy) {
+                    if (this.state.orderInfo.isTakeProfit) {
+                        order.takeProfitOnFill = {};
+                        order.takeProfitOnFill.price =
+                            parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.takeProfit)
+                                .toString()).toString();
+                    }
+                    if (this.state.orderInfo.isStopLoss) {
+                        order.stopLossOnFill = {};
+                        order.order.takeProfitOnFill.price =
+                            parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.stopLoss)
+                                .toString()).toString();
+                    }
+                } else {
+                    if (this.state.orderInfo.isTakeProfit) {
+                        order.takeProfitOnFill = {};
+                        order.takeProfitOnFill.price =
+                            parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.takeProfit)
+                                .toString()).toString();
+                    }
+                    if (this.state.orderInfo.isStopLoss) {
+                        order.stopLossOnFill = {};
+                        order.order.takeProfitOnFill.price =
+                            parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.stopLoss)
+                                .toString()).toString();
+                    }
+                }
+            } else {
+                if (this.state.orderInfo.isLowerBound) {
+                    order.priceBound = this.lowerBound.toString();
+                }
+                if (this.state.orderInfo.isUpperBound) {
+                    order.priceBound = this.upperBound.toString();
+                }
+                if (this.state.orderInfo.isTakeProfit) {
+                    order.takeProfitOnFill = {};
+                    order.takeProfitOnFill.price = this.takeProfit.toString();
+                }
+                if (this.state.orderInfo.isStopLoss) {
+                    order.stopLossOnFill = {};
+                    order.stopLossOnFill.price = this.stopLoss.toString();
+                }
+            }
+            if (this.state.orderInfo.isTrailingStop) {
+                order.trailingStopLossOnFill = {};
+                order.trailingStopLossOnFill.distance =
+                    (this.state.orderInfo.step * this.trailingStop).toString();
+            }
+
+            OrdersService.putOrder(order).then(transaction => {
+                let opened,
+                    canceled,
+                    side,
+                    message;
+
+                if (transaction.message) {
+                    message = `ERROR ${transaction.message}`;
+
+                    ToastsService.addToast(message);
+                } else if (transaction.errorMessage) {
+                    message = `ERROR ${transaction.errorMessage}`;
+
+                    ToastsService.addToast(message);
+                } else if (transaction.orderCancelTransaction) {
+                    canceled = transaction.orderCancelTransaction;
+
+                    message = `ERROR ${canceled.reason}`;
+
+                    ToastsService.addToast(message);
+                } else {
+                    opened = transaction.orderFillTransaction ||
+                        transaction.orderFillTransaction ||
+                        transaction.orderCreateTransaction;
+
+                    side = opened.units > 0 ? "buy" : "sell";
+                    message = `${side} ` +
+                        `${opened.instrument} ` +
+                        `#${opened.id} ` +
+                        `@${opened.price} ` +
+                        `for ${opened.units}`;
+
+                    ToastsService.addToast(message);
+                }
+            });
         }
     }
 
-    onOrderSubmitClick() {
-        this.state.orderModalIsOpen = false;
+    class OrderDialogComponent {
+        static bootstrap(state) {
+            const render = hyperHTML.bind(Util.query("order-dialog"));
 
-        if (!this.pips) {
-            ToastsService.addToast(`Pips info for ${this.state.selectedInstrument} not yet available. Retry.`);
-
-            return;
+            this.orderDialogController = new OrderDialogController(render, OrderDialogTemplate, state);
         }
+    }
 
-        const order = {},
-            isBuy = this.state.orderInfo.side === "buy",
-            isMeasurePips = this.state.measure === "pips";
-
-        this.state.orderInfo.step = parseFloat(this.pips[this.state.selectedInstrument]);
-
-        order.instrument = this.state.selectedInstrument;
-        order.units = this.state.orderInfo.units;
-        if (this.state.orderInfo.units && !isBuy) {
-            order.units = `-${order.units}`;
-        }
-
-        order.side = this.state.orderInfo.side;
-        order.type = this.state.orderInfo.type;
-
-        if (order.type === "LIMIT") {
-            order.price = this.state.orderInfo.quote && this.state.orderInfo.quote.toString();
-            order.gtdTime = new Date(Date.now() + this.state.orderInfo.selectedExpire);
-        }
-
-        if (isMeasurePips) {
-            if (this.state.orderInfo.isLowerBound) {
-                order.priceBound =
-                    parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.lowerBound)
-                        .toString()).toString();
+    class ExposureService {
+        constructor(exposure) {
+            if (!ExposureService.exposure) {
+                ExposureService.exposure = exposure;
             }
-            if (this.state.orderInfo.isUpperBound) {
-                order.priceBound =
-                    parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.upperBound)
-                        .toString()).toString();
+        }
+
+        static getExposure() {
+            return ExposureService.exposure;
+        }
+
+        static refresh() {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return;
             }
-            if (isBuy) {
-                if (this.state.orderInfo.isTakeProfit) {
-                    order.takeProfitOnFill = {};
-                    order.takeProfitOnFill.price =
-                        parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.takeProfit)
-                            .toString()).toString();
+
+            const trades = TradesService.getTrades(),
+                exps = {};
+
+            trades.value.forEach(trade => {
+                const legs = trade.instrument.split("_");
+
+                exps[legs[0]] = exps[legs[0]] || 0;
+                exps[legs[1]] = exps[legs[1]] || 0;
+
+                exps[legs[0]] += parseInt(trade.currentUnits, 10);
+                exps[legs[1]] -= trade.currentUnits * trade.price;
+            });
+
+            ExposureService.exposure.splice(0, ExposureService.exposure.length);
+            Object.keys(exps).forEach(exp => {
+                const type = exps[exp] > 0;
+
+                ExposureService.exposure.push({
+                    type: type ? "Long" : "Short",
+                    market: exp,
+                    units: Math.abs(exps[exp])
+                });
+            });
+
+        }
+    }
+
+    ExposureService.exposure = null;
+
+    class TradesService {
+        constructor(trades) {
+            if (!TradesService.trades) {
+                TradesService.trades = trades;
+            }
+        }
+
+        static getTrades() {
+            return TradesService.trades;
+        }
+
+        static refresh() {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/trades", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                })
+            }).then(res => res.json()).then(data => {
+                TradesService.trades.value.splice(0, TradesService.trades.value.length);
+
+                data.forEach(trade => {
+                    trade.side = trade.currentUnits > 0 ? "buy" : "sell";
+                    TradesService.trades.value.push(trade);
+                });
+
+                ExposureService.refresh();
+
+                return TradesService.trades.value;
+            });
+        }
+
+        static closeTrade(id) {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/closetrade", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    id
+                })
+            }).then(res => res.json()).then(data => data)
+                .catch(err => err.data);
+        }
+
+        static updateTrades(tick) {
+            const account = AccountsService.getAccount(),
+                pips = account.pips;
+
+            TradesService.trades.value.forEach((trade, index) => {
+                let current,
+                    side;
+
+                if (trade.instrument === tick.instrument) {
+                    side = trade.currentUnits > 0 ? "buy" : "sell";
+
+                    if (side === "buy") {
+                        current = tick.bid;
+                        TradesService.trades.value[index].profitPips =
+                            ((current - trade.price) / pips[trade.instrument]);
+                    }
+                    if (side === "sell") {
+                        current = tick.ask;
+                        TradesService.trades.value[index].profitPips =
+                            ((trade.price - current) / pips[trade.instrument]);
+                    }
+
+                    TradesService.trades.value[index].current = current;
                 }
-                if (this.state.orderInfo.isStopLoss) {
-                    order.stopLossOnFill = {};
-                    order.order.takeProfitOnFill.price =
-                        parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.stopLoss)
-                            .toString()).toString();
-                }
-            } else {
-                if (this.state.orderInfo.isTakeProfit) {
-                    order.takeProfitOnFill = {};
-                    order.takeProfitOnFill.price =
-                        parseFloat((this.state.orderInfo.quote - this.state.orderInfo.step * this.takeProfit)
-                            .toString()).toString();
-                }
-                if (this.state.orderInfo.isStopLoss) {
-                    order.stopLossOnFill = {};
-                    order.order.takeProfitOnFill.price =
-                        parseFloat((this.state.orderInfo.quote + this.state.orderInfo.step * this.stopLoss)
-                            .toString()).toString();
-                }
-            }
-        } else {
-            if (this.state.orderInfo.isLowerBound) {
-                order.priceBound = this.lowerBound.toString();
-            }
-            if (this.state.orderInfo.isUpperBound) {
-                order.priceBound = this.upperBound.toString();
-            }
-            if (this.state.orderInfo.isTakeProfit) {
-                order.takeProfitOnFill = {};
-                order.takeProfitOnFill.price = this.takeProfit.toString();
-            }
-            if (this.state.orderInfo.isStopLoss) {
-                order.stopLossOnFill = {};
-                order.stopLossOnFill.price = this.stopLoss.toString();
-            }
+            });
         }
-        if (this.state.orderInfo.isTrailingStop) {
-            order.trailingStopLossOnFill = {};
-            order.trailingStopLossOnFill.distance =
-                (this.state.orderInfo.step * this.trailingStop).toString();
+    }
+
+    TradesService.trades = null;
+
+    class ChartsController {
+        constructor(render, template) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+            this.state = Introspected({
+                candles: { csv: "" },
+                account: AccountsService.getAccount(),
+                selectedGranularity: "M5",
+                selectedInstrument: "EUR_USD",
+                granularities: [
+                    "S5",
+                    "S10",
+                    "S15",
+                    "S30",
+                    "M1",
+                    "M2",
+                    "M3",
+                    "M4",
+                    "M5",
+                    "M10",
+                    "M15",
+                    "M30",
+                    "H1",
+                    "H2",
+                    "H3",
+                    "H4",
+                    "H6",
+                    "H8",
+                    "H12",
+                    "D",
+                    "W",
+                    "M"
+                ],
+                orderModalIsOpen: false
+            }, state => template.update(render, state, events));
+
+            this.state.orderInfo = {
+                side: "buy",
+                selectedInstrument: this.state.selectedInstrument,
+                instruments: this.state.account.streamingInstruments,
+                type: "MARKET",
+                units: "",
+                quote: "",
+                step: 1,
+                expires: [
+                    { label: "1 Hour", value: 60 * 60 * 1000 },
+                    { label: "2 Hours", value: 2 * 60 * 60 * 1000 },
+                    { label: "3 Hours", value: 3 * 60 * 60 * 1000 },
+                    { label: "4 Hours", value: 4 * 60 * 60 * 1000 },
+                    { label: "5 Hours", value: 5 * 60 * 60 * 1000 },
+                    { label: "6 Hours", value: 6 * 60 * 60 * 1000 },
+                    { label: "8 Hours", value: 8 * 60 * 60 * 1000 },
+                    { label: "12 Hours", value: 12 * 60 * 60 * 1000 },
+                    { label: "18 Hours", value: 18 * 60 * 60 * 1000 },
+                    { label: "1 Day", value: 60 * 60 * 24 * 1000 },
+                    { label: "2 Days", value: 2 * 60 * 60 * 24 * 1000 },
+                    { label: "1 Week", value: 7 * 60 * 60 * 24 * 1000 },
+                    { label: "1 Month", value: 30 * 60 * 60 * 24 * 1000 },
+                    { label: "2 Months", value: 60 * 60 * 60 * 24 * 1000 },
+                    { label: "3 Months", value: 90 * 60 * 60 * 24 * 1000 }
+                ],
+                selectedExpire: 604800000, // 1 week
+                measure: "price",
+                isLowerBound: false,
+                isUpperBound: false,
+                isTakeProfit: false,
+                isStopLoss: false,
+                isTrailingStop: false
+            };
+
+            this.chartsService = new ChartsService(this.state.candles);
+
+            this.state.ohlcInfo = {
+                data: this.state.candles.csv,
+                feed: "",
+                trades: ""
+            };
+
+            Introspected.observe(QuotesService.getQuotes(), state => {
+                if (Object.keys(state).length) {
+                    this.state.ohlcInfo.feed = JSON.stringify(state.quotes[this.state.selectedInstrument]);
+                }
+            });
+
+            Introspected.observe(TradesService.getTrades(), state => {
+                if (Object.keys(state.trades).length) {
+                    this.state.ohlcInfo.trades = JSON.stringify(state.trades.value);
+                }
+            });
+
+            this.onChartInstrumentChange(null, {
+                instrument: this.state.selectedInstrument,
+                granularity: this.state.selectedGranularity
+            });
+
+            OrderDialogComponent.bootstrap(this.state);
         }
 
-        OrdersService.putOrder(order).then(transaction => {
-            let opened,
-                canceled,
+        onChartInstrumentChange(e, { instrument, granularity }) {
+            this.state.selectedInstrument = instrument;
+            this.state.selectedGranularity = granularity;
+
+            ChartsService.getHistQuotes({
+                instrument,
+                granularity
+            }).then(() => {
+                this.state.ohlcInfo.data = this.state.candles.csv;
+            });
+        }
+
+        onChartGranularityChange(e, { instrument, granularity }) {
+            this.onChartInstrumentChange(e, { instrument, granularity });
+        }
+
+        openOrderDialog(side) {
+            Object.assign(this.state.orderInfo, {
                 side,
-                message;
-
-            if (transaction.message) {
-                message = `ERROR ${transaction.message}`;
-
-                ToastsService.addToast(message);
-            } else if (transaction.errorMessage) {
-                message = `ERROR ${transaction.errorMessage}`;
-
-                ToastsService.addToast(message);
-            } else if (transaction.orderCancelTransaction) {
-                canceled = transaction.orderCancelTransaction;
-
-                message = `ERROR ${canceled.reason}`;
-
-                ToastsService.addToast(message);
-            } else {
-                opened = transaction.orderFillTransaction ||
-                    transaction.orderFillTransaction ||
-                    transaction.orderCreateTransaction;
-
-                side = opened.units > 0 ? "buy" : "sell";
-                message = `${side} ` +
-                    `${opened.instrument} ` +
-                    `#${opened.id} ` +
-                    `@${opened.price} ` +
-                    `for ${opened.units}`;
-
-                ToastsService.addToast(message);
-            }
-        });
-    }
-}
-
-class OrderDialogComponent {
-    static bootstrap(state) {
-        const render = hyperHTML.bind(Util.query("order-dialog"));
-
-        this.orderDialogController = new OrderDialogController(render, OrderDialogTemplate, state);
-    }
-}
-
-class ExposureService {
-    constructor(exposure) {
-        if (!ExposureService.exposure) {
-            ExposureService.exposure = exposure;
-        }
-    }
-
-    static getExposure() {
-        return ExposureService.exposure;
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return;
-        }
-
-        const trades = TradesService.getTrades(),
-            exps = {};
-
-        trades.value.forEach(trade => {
-            const legs = trade.instrument.split("_");
-
-            exps[legs[0]] = exps[legs[0]] || 0;
-            exps[legs[1]] = exps[legs[1]] || 0;
-
-            exps[legs[0]] += parseInt(trade.currentUnits, 10);
-            exps[legs[1]] -= trade.currentUnits * trade.price;
-        });
-
-        ExposureService.exposure.splice(0, ExposureService.exposure.length);
-        Object.keys(exps).forEach(exp => {
-            const type = exps[exp] > 0;
-
-            ExposureService.exposure.push({
-                type: type ? "Long" : "Short",
-                market: exp,
-                units: Math.abs(exps[exp])
-            });
-        });
-
-    }
-}
-
-ExposureService.exposure = null;
-
-class TradesService {
-    constructor(trades) {
-        if (!TradesService.trades) {
-            TradesService.trades = trades;
-        }
-    }
-
-    static getTrades() {
-        return TradesService.trades;
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
-        }
-
-        return Util.fetch("/api/trades", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            })
-        }).then(res => res.json()).then(data => {
-            TradesService.trades.value.splice(0, TradesService.trades.value.length);
-
-            data.forEach(trade => {
-                trade.side = trade.currentUnits > 0 ? "buy" : "sell";
-                TradesService.trades.value.push(trade);
+                selectedInstrument: this.state.selectedInstrument,
+                instruments: this.state.account.streamingInstruments
             });
 
-            ExposureService.refresh();
-
-            return TradesService.trades.value;
-        });
-    }
-
-    static closeTrade(id) {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
+            this.state.orderModalIsOpen = true;
         }
 
-        return Util.fetch("/api/closetrade", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                id
-            })
-        }).then(res => res.json()).then(data => data)
-            .catch(err => err.data);
+        onOpenOrderDialogBuyClick() {
+            this.openOrderDialog("buy");
+        }
+
+        onOpenOrderDialogSellClick() {
+            this.openOrderDialog("sell");
+        }
     }
 
-    static updateTrades(tick) {
-        const account = AccountsService.getAccount(),
-            pips = account.pips;
+    class ChartsComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("charts"));
 
-        TradesService.trades.value.forEach((trade, index) => {
-            let current,
-                side;
-
-            if (trade.instrument === tick.instrument) {
-                side = trade.currentUnits > 0 ? "buy" : "sell";
-
-                if (side === "buy") {
-                    current = tick.bid;
-                    TradesService.trades.value[index].profitPips =
-                        ((current - trade.price) / pips[trade.instrument]);
-                }
-                if (side === "sell") {
-                    current = tick.ask;
-                    TradesService.trades.value[index].profitPips =
-                        ((trade.price - current) / pips[trade.instrument]);
-                }
-
-                TradesService.trades.value[index].current = current;
-            }
-        });
-    }
-}
-
-TradesService.trades = null;
-
-class ChartsController {
-    constructor(render, template) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        this.state = Introspected({
-            candles: { csv: "" },
-            account: AccountsService.getAccount(),
-            selectedGranularity: "M5",
-            selectedInstrument: "EUR_USD",
-            granularities: [
-                "S5",
-                "S10",
-                "S15",
-                "S30",
-                "M1",
-                "M2",
-                "M3",
-                "M4",
-                "M5",
-                "M10",
-                "M15",
-                "M30",
-                "H1",
-                "H2",
-                "H3",
-                "H4",
-                "H6",
-                "H8",
-                "H12",
-                "D",
-                "W",
-                "M"
-            ],
-            orderModalIsOpen: false
-        }, state => template.update(render, state, events));
-
-        this.state.orderInfo = {
-            side: "buy",
-            selectedInstrument: this.state.selectedInstrument,
-            instruments: this.state.account.streamingInstruments,
-            type: "MARKET",
-            units: "",
-            quote: "",
-            step: 1,
-            expires: [
-                { label: "1 Hour", value: 60 * 60 * 1000 },
-                { label: "2 Hours", value: 2 * 60 * 60 * 1000 },
-                { label: "3 Hours", value: 3 * 60 * 60 * 1000 },
-                { label: "4 Hours", value: 4 * 60 * 60 * 1000 },
-                { label: "5 Hours", value: 5 * 60 * 60 * 1000 },
-                { label: "6 Hours", value: 6 * 60 * 60 * 1000 },
-                { label: "8 Hours", value: 8 * 60 * 60 * 1000 },
-                { label: "12 Hours", value: 12 * 60 * 60 * 1000 },
-                { label: "18 Hours", value: 18 * 60 * 60 * 1000 },
-                { label: "1 Day", value: 60 * 60 * 24 * 1000 },
-                { label: "2 Days", value: 2 * 60 * 60 * 24 * 1000 },
-                { label: "1 Week", value: 7 * 60 * 60 * 24 * 1000 },
-                { label: "1 Month", value: 30 * 60 * 60 * 24 * 1000 },
-                { label: "2 Months", value: 60 * 60 * 60 * 24 * 1000 },
-                { label: "3 Months", value: 90 * 60 * 60 * 24 * 1000 }
-            ],
-            selectedExpire: 604800000, // 1 week
-            measure: "price",
-            isLowerBound: false,
-            isUpperBound: false,
-            isTakeProfit: false,
-            isStopLoss: false,
-            isTrailingStop: false
-        };
-
-        this.chartsService = new ChartsService(this.state.candles);
-
-        this.state.ohlcInfo = {
-            data: this.state.candles.csv,
-            feed: "",
-            trades: ""
-        };
-
-        Introspected.observe(QuotesService.getQuotes(), state => {
-            if (Object.keys(state).length) {
-                this.state.ohlcInfo.feed = JSON.stringify(state.quotes[this.state.selectedInstrument]);
-            }
-        });
-
-        Introspected.observe(TradesService.getTrades(), state => {
-            if (Object.keys(state.trades).length) {
-                this.state.ohlcInfo.trades = JSON.stringify(state.trades.value);
-            }
-        });
-
-        this.onChartInstrumentChange(null, {
-            instrument: this.state.selectedInstrument,
-            granularity: this.state.selectedGranularity
-        });
-
-        OrderDialogComponent.bootstrap(this.state);
+            this.chartsController = new ChartsController(render, ChartsTemplate);
+        }
     }
 
-    onChartInstrumentChange(e, { instrument, granularity }) {
-        this.state.selectedInstrument = instrument;
-        this.state.selectedGranularity = granularity;
+    class ExposureTemplate {
+        static update(render, state) {
+            const isNoExposure = Util.hide(state.exposure.length);
+            const isExposure = Util.show(state.exposure.length);
 
-        ChartsService.getHistQuotes({
-            instrument,
-            granularity
-        }).then(() => {
-            this.state.ohlcInfo.data = this.state.candles.csv;
-        });
-    }
-
-    onChartGranularityChange(e, { instrument, granularity }) {
-        this.onChartInstrumentChange(e, { instrument, granularity });
-    }
-
-    openOrderDialog(side) {
-        Object.assign(this.state.orderInfo, {
-            side,
-            selectedInstrument: this.state.selectedInstrument,
-            instruments: this.state.account.streamingInstruments
-        });
-
-        this.state.orderModalIsOpen = true;
-    }
-
-    onOpenOrderDialogBuyClick() {
-        this.openOrderDialog("buy");
-    }
-
-    onOpenOrderDialogSellClick() {
-        this.openOrderDialog("sell");
-    }
-}
-
-class ChartsComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("charts"));
-
-        this.chartsController = new ChartsController(render, ChartsTemplate);
-    }
-}
-
-class ExposureTemplate {
-    static update(render, state) {
-        const isNoExposure = Util.hide(state.exposure.length);
-        const isExposure = Util.show(state.exposure.length);
-
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <div style="${isNoExposure}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No exposures.</p>
             </div>
@@ -1571,35 +1571,35 @@ class ExposureTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
+            /* eslint-enable indent */
+        }
     }
-}
 
-class ExposureController {
-    constructor(render, template) {
+    class ExposureController {
+        constructor(render, template) {
 
-        this.state = Introspected({
-            exposure: []
-        }, state => template.update(render, state));
+            this.state = Introspected({
+                exposure: []
+            }, state => template.update(render, state));
 
-        this.exposureService = new ExposureService(this.state.exposure);
+            this.exposureService = new ExposureService(this.state.exposure);
+        }
     }
-}
 
-class ExposureComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("exposure"));
+    class ExposureComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("exposure"));
 
-        this.exposureController = new ExposureController(render, ExposureTemplate);
+            this.exposureController = new ExposureController(render, ExposureTemplate);
+        }
     }
-}
 
-ExposureComponent.bootstrap();
+    ExposureComponent.bootstrap();
 
-class HeaderTemplate {
-    static update(render, state, events) {
-        /* eslint-disable indent */
-        render`
+    class HeaderTemplate {
+        static update(render, state, events) {
+            /* eslint-disable indent */
+            render`
             <nav class="flex flex-row bt bb tc mw9 center shadow-2">
 
                 <div class="flex flex-wrap flex-row justify-around items-center min-w-95">
@@ -1644,23 +1644,23 @@ class HeaderTemplate {
             <token-dialog></token-dialog>
             <settings-dialog></settings-dialog>
         `;
-        /* eslint-enable indent */
+            /* eslint-enable indent */
+        }
     }
-}
 
-class SettingsDialogTemplate {
-    static update(render, state, events) {
-        if (!state.settingsModalIsOpen) {
-            Util.renderEmpty(render);
-            return;
+    class SettingsDialogTemplate {
+        static update(render, state, events) {
+            if (!state.settingsModalIsOpen) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            SettingsDialogTemplate.renderSettingsModal(render, state, events);
         }
 
-        SettingsDialogTemplate.renderSettingsModal(render, state, events);
-    }
-
-    static renderSettingsModal(render, state, events) {
-        /* eslint-disable indent */
-        render`
+        static renderSettingsModal(render, state, events) {
+            /* eslint-disable indent */
+            render`
             <div class="fixed absolute--fill bg-black-70 z5">
             <div class="fixed absolute-center z999">
 
@@ -1700,271 +1700,271 @@ class SettingsDialogTemplate {
             </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-
-}
-
-class PluginsService {
-    constructor(pluginsState) {
-        if (!PluginsService.plugins) {
-            PluginsService.plugins = pluginsState.plugins;
-            PluginsService.pluginsInfo = pluginsState.pluginsInfo;
-        }
-    }
-
-    static getPlugins() {
-        return PluginsService.plugins;
-    }
-
-    static getPluginsInfo() {
-        return PluginsService.pluginsInfo;
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
+            /* eslint-enable indent */
         }
 
-        return Util.fetch("/api/plugins", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            })
-        }).then(res => res.json()).then(data => {
-            for (const name in PluginsService.plugins) {
-                if (PluginsService.plugins[name].toString()) {
-                    delete PluginsService.plugins[name];
-                }
+    }
+
+    class PluginsService {
+        constructor(pluginsState) {
+            if (!PluginsService.plugins) {
+                PluginsService.plugins = pluginsState.plugins;
+                PluginsService.pluginsInfo = pluginsState.pluginsInfo;
+            }
+        }
+
+        static getPlugins() {
+            return PluginsService.plugins;
+        }
+
+        static getPluginsInfo() {
+            return PluginsService.pluginsInfo;
+        }
+
+        static refresh() {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
             }
 
-            Object.assign(PluginsService.plugins, data);
-
-            PluginsService.pluginsInfo.count = Object.keys(
-                PluginsService.plugins
-            ).length;
-
-            Object.keys(PluginsService.plugins).forEach(key => {
-                if (PluginsService.plugins[key] === "enabled") {
-                    PluginsService.plugins[key] = true;
-                } else {
-                    PluginsService.plugins[key] = false;
+            return Util.fetch("/api/plugins", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                })
+            }).then(res => res.json()).then(data => {
+                for (const name in PluginsService.plugins) {
+                    if (PluginsService.plugins[name].toString()) {
+                        delete PluginsService.plugins[name];
+                    }
                 }
-            });
-        });
-    }
 
-    static engagePlugins(plugs) {
-        const credentials = SessionService.isLogged();
+                Object.assign(PluginsService.plugins, data);
 
-        if (!credentials) {
-            return;
-        }
+                PluginsService.pluginsInfo.count = Object.keys(
+                    PluginsService.plugins
+                ).length;
 
-        const account = AccountsService.getAccount();
-
-        Util.fetch("/api/engageplugins", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId,
-                plugins: plugs,
-                config: {
-                    pips: account.pips
-                }
-            })
-        });
-    }
-}
-
-PluginsService.plugins = null;
-PluginsService.pluginsInfo = null;
-
-class PositionsService {
-    constructor(positions) {
-        if (!PositionsService.positions) {
-            PositionsService.positions = positions;
-        }
-    }
-
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return null;
-        }
-
-        return Util.fetch("/api/positions", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token,
-                accountId: credentials.accountId
-            })
-        }).then(res => res.json()).then(positions => {
-            PositionsService.positions.splice(0, PositionsService.positions.length);
-
-            positions.forEach(position => {
-                const longUnits = position.long &&
-                    parseInt(position.long.units, 10);
-                const shortUnits = position.short &&
-                    parseInt(position.short.units, 10);
-                const units = longUnits || shortUnits;
-                const side = units > 0 ? "buy" : "sell";
-                const avgPrice = (longUnits && position.long.averagePrice) ||
-                    (shortUnits && position.short.averagePrice);
-
-                PositionsService.positions.push({
-                    side,
-                    instrument: position.instrument,
-                    units,
-                    avgPrice
+                Object.keys(PluginsService.plugins).forEach(key => {
+                    if (PluginsService.plugins[key] === "enabled") {
+                        PluginsService.plugins[key] = true;
+                    } else {
+                        PluginsService.plugins[key] = false;
+                    }
                 });
             });
+        }
 
-            return PositionsService.positions;
-        }).catch(err => err.data);
-    }
-}
+        static engagePlugins(plugs) {
+            const credentials = SessionService.isLogged();
 
-PositionsService.positions = null;
-
-class StreamingService {
-    static startStream(data) {
-        Util.fetch("/api/startstream", {
-            method: "post",
-            body: JSON.stringify({
-                environment: data.environment,
-                accessToken: data.accessToken,
-                accountId: data.accountId,
-                instruments: data.instruments
-            })
-        }).then(() => {
-            StreamingService.getStream();
-        }).catch(err => {
-            ToastsService.addToast(`streaming ${err.message}`);
-        });
-    }
-
-    static getStream() {
-        const ws = new WebSocket("ws://localhost:8000/stream");
-
-        ws.onmessage = event => {
-            let data,
-                isTick,
-                tick,
-                isTransaction,
-                transaction,
-                refreshPlugins;
-
-            try {
-                data = JSON.parse(event.data);
-
-                isTick = data.closeoutAsk && data.closeoutBid;
-                isTransaction = data.accountID;
-                refreshPlugins = data.refreshPlugins;
-
-                if (isTick) {
-                    tick = {
-                        time: data.time,
-                        instrument: data.instrument,
-                        ask: data.asks[0] && data.asks[0].price ||
-                            data.closeoutAsk,
-                        bid: data.bids[0] && data.bids[0].price ||
-                            data.closeoutBid
-                    };
-
-                    QuotesService.updateTick(tick);
-
-                    TradesService.updateTrades(tick);
-                    OrdersService.updateOrders(tick);
-                }
-
-                if (isTransaction) {
-                    transaction = data;
-
-                    ActivityService.addActivity(transaction);
-
-                    AccountsService.refresh();
-                    TradesService.refresh();
-                    OrdersService.refresh();
-                    PositionsService.refresh();
-                }
-
-                if (refreshPlugins) {
-                    PluginsService.refresh();
-                }
-            } catch (e) {
-
-                // Discard "incomplete" json
-                // console.log(e.name + ": " + e.message);
+            if (!credentials) {
+                return;
             }
-        };
-    }
-}
 
-class SettingsDialogController {
-    constructor(render, template, bindings) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
+            const account = AccountsService.getAccount();
 
-        this.state = Introspected.observe(bindings,
-            state => template.update(render, state, events));
-    }
-
-    onSettingsOkClick() {
-        const credentials = SessionService.isLogged();
-
-        this.state.settingsModalIsOpen = false;
-
-        if (!credentials) {
-            return;
-        }
-
-        window.localStorage.setItem("argo.instruments", JSON.stringify(this.state.instrs));
-
-        const instruments = AccountsService.setStreamingInstruments(this.state.instrs);
-
-        QuotesService.reset();
-
-        StreamingService.startStream({
-            environment: credentials.environment,
-            accessToken: credentials.token,
-            accountId: credentials.accountId,
-            instruments
-        });
-    }
-}
-
-class SettingsDialogComponent {
-    static bootstrap(state) {
-        const render = hyperHTML.bind(Util.query("settings-dialog"));
-
-        this.settingsDialogController = new SettingsDialogController(render, SettingsDialogTemplate, state);
-    }
-}
-
-class TokenDialogTemplate {
-    static update(render, state, events) {
-        if (!state.tokenModalIsOpen) {
-            Util.renderEmpty(render);
-            return;
-        }
-
-        if (!state.accounts.length) {
-            TokenDialogTemplate.renderTokenModal(render, state, events);
-        } else {
-            TokenDialogTemplate.renderAccountsListModal(render, state, events);
+            Util.fetch("/api/engageplugins", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId,
+                    plugins: plugs,
+                    config: {
+                        pips: account.pips
+                    }
+                })
+            });
         }
     }
 
-    static renderTokenModal(render, state, events) {
-        /* eslint-disable indent */
-        render`
+    PluginsService.plugins = null;
+    PluginsService.pluginsInfo = null;
+
+    class PositionsService {
+        constructor(positions) {
+            if (!PositionsService.positions) {
+                PositionsService.positions = positions;
+            }
+        }
+
+        static refresh() {
+            const credentials = SessionService.isLogged();
+
+            if (!credentials) {
+                return null;
+            }
+
+            return Util.fetch("/api/positions", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token,
+                    accountId: credentials.accountId
+                })
+            }).then(res => res.json()).then(positions => {
+                PositionsService.positions.splice(0, PositionsService.positions.length);
+
+                positions.forEach(position => {
+                    const longUnits = position.long &&
+                        parseInt(position.long.units, 10);
+                    const shortUnits = position.short &&
+                        parseInt(position.short.units, 10);
+                    const units = longUnits || shortUnits;
+                    const side = units > 0 ? "buy" : "sell";
+                    const avgPrice = (longUnits && position.long.averagePrice) ||
+                        (shortUnits && position.short.averagePrice);
+
+                    PositionsService.positions.push({
+                        side,
+                        instrument: position.instrument,
+                        units,
+                        avgPrice
+                    });
+                });
+
+                return PositionsService.positions;
+            }).catch(err => err.data);
+        }
+    }
+
+    PositionsService.positions = null;
+
+    class StreamingService {
+        static startStream(data) {
+            Util.fetch("/api/startstream", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: data.environment,
+                    accessToken: data.accessToken,
+                    accountId: data.accountId,
+                    instruments: data.instruments
+                })
+            }).then(() => {
+                StreamingService.getStream();
+            }).catch(err => {
+                ToastsService.addToast(`streaming ${err.message}`);
+            });
+        }
+
+        static getStream() {
+            const ws = new WebSocket("ws://localhost:8000/stream");
+
+            ws.onmessage = event => {
+                let data,
+                    isTick,
+                    tick,
+                    isTransaction,
+                    transaction,
+                    refreshPlugins;
+
+                try {
+                    data = JSON.parse(event.data);
+
+                    isTick = data.closeoutAsk && data.closeoutBid;
+                    isTransaction = data.accountID;
+                    refreshPlugins = data.refreshPlugins;
+
+                    if (isTick) {
+                        tick = {
+                            time: data.time,
+                            instrument: data.instrument,
+                            ask: data.asks[0] && data.asks[0].price ||
+                                data.closeoutAsk,
+                            bid: data.bids[0] && data.bids[0].price ||
+                                data.closeoutBid
+                        };
+
+                        QuotesService.updateTick(tick);
+
+                        TradesService.updateTrades(tick);
+                        OrdersService.updateOrders(tick);
+                    }
+
+                    if (isTransaction) {
+                        transaction = data;
+
+                        ActivityService.addActivity(transaction);
+
+                        AccountsService.refresh();
+                        TradesService.refresh();
+                        OrdersService.refresh();
+                        PositionsService.refresh();
+                    }
+
+                    if (refreshPlugins) {
+                        PluginsService.refresh();
+                    }
+                } catch (e) {
+
+                    // Discard "incomplete" json
+                    // console.log(e.name + ": " + e.message);
+                }
+            };
+        }
+    }
+
+    class SettingsDialogController {
+        constructor(render, template, bindings) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+            this.state = Introspected.observe(bindings,
+                state => template.update(render, state, events));
+        }
+
+        onSettingsOkClick() {
+            const credentials = SessionService.isLogged();
+
+            this.state.settingsModalIsOpen = false;
+
+            if (!credentials) {
+                return;
+            }
+
+            window.localStorage.setItem("argo.instruments", JSON.stringify(this.state.instrs));
+
+            const instruments = AccountsService.setStreamingInstruments(this.state.instrs);
+
+            QuotesService.reset();
+
+            StreamingService.startStream({
+                environment: credentials.environment,
+                accessToken: credentials.token,
+                accountId: credentials.accountId,
+                instruments
+            });
+        }
+    }
+
+    class SettingsDialogComponent {
+        static bootstrap(state) {
+            const render = hyperHTML.bind(Util.query("settings-dialog"));
+
+            this.settingsDialogController = new SettingsDialogController(render, SettingsDialogTemplate, state);
+        }
+    }
+
+    class TokenDialogTemplate {
+        static update(render, state, events) {
+            if (!state.tokenModalIsOpen) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            if (!state.accounts.length) {
+                TokenDialogTemplate.renderTokenModal(render, state, events);
+            } else {
+                TokenDialogTemplate.renderAccountsListModal(render, state, events);
+            }
+        }
+
+        static renderTokenModal(render, state, events) {
+            /* eslint-disable indent */
+            render`
             <div class="fixed absolute--fill bg-black-70 z5">
             <div class="fixed absolute-center z999">
 
@@ -2017,12 +2017,12 @@ class TokenDialogTemplate {
             </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
+            /* eslint-enable indent */
+        }
 
-    static renderAccountsListModal(render, state, events) {
-        /* eslint-disable indent */
-        render`
+        static renderAccountsListModal(render, state, events) {
+            /* eslint-disable indent */
+            render`
             <div class="fixed absolute--fill bg-black-70 z5">
             <div class="fixed absolute-center z999">
 
@@ -2045,193 +2045,193 @@ class TokenDialogTemplate {
             </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class NewsService {
-    constructor(news) {
-        if (!NewsService.news) {
-            NewsService.news = news;
+            /* eslint-enable indent */
         }
     }
 
-    static refresh() {
-        const credentials = SessionService.isLogged();
-
-        if (!credentials) {
-            return;
+    class NewsService {
+        constructor(news) {
+            if (!NewsService.news) {
+                NewsService.news = news;
+            }
         }
 
-        Util.fetch("/api/calendar", {
-            method: "post",
-            body: JSON.stringify({
-                environment: credentials.environment,
-                token: credentials.token
-            })
-        }).then(res => res.json()).then(data => {
-            NewsService.news.splice(0, NewsService.news.length);
+        static refresh() {
+            const credentials = SessionService.isLogged();
 
-            data.forEach(news => {
-                news.timestamp *= 1000;
-                NewsService.news.push(news);
-            });
-        }).catch(err => err.data);
-    }
-}
-
-NewsService.news = null;
-
-class TokenDialogController {
-    constructor(render, template, bindings) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        this.state = Introspected.observe(bindings,
-            state => template.update(render, state, events));
-    }
-
-    onLoginOkClick() {
-        AccountsService.getAccounts({
-            environment: this.state.tokenInfo.environment,
-            token: this.state.tokenInfo.token
-        }).then(accounts => {
-            const message = "If your account id contains only digits " +
-                "(ie. 2534233), it is a legacy account and you should use " +
-                "release 3.x. For v20 accounts use release 4.x or higher. " +
-                "Check your token.";
-
-            if (!accounts.length) {
-                throw new Error(message);
+            if (!credentials) {
+                return;
             }
-            accounts.forEach(item => {
-                this.state.accounts.push(item);
+
+            Util.fetch("/api/calendar", {
+                method: "post",
+                body: JSON.stringify({
+                    environment: credentials.environment,
+                    token: credentials.token
+                })
+            }).then(res => res.json()).then(data => {
+                NewsService.news.splice(0, NewsService.news.length);
+
+                data.forEach(news => {
+                    news.timestamp *= 1000;
+                    NewsService.news.push(news);
+                });
+            }).catch(err => err.data);
+        }
+    }
+
+    NewsService.news = null;
+
+    class TokenDialogController {
+        constructor(render, template, bindings) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+            this.state = Introspected.observe(bindings,
+                state => template.update(render, state, events));
+        }
+
+        onLoginOkClick() {
+            AccountsService.getAccounts({
+                environment: this.state.tokenInfo.environment,
+                token: this.state.tokenInfo.token
+            }).then(accounts => {
+                const message = "If your account id contains only digits " +
+                    "(ie. 2534233), it is a legacy account and you should use " +
+                    "release 3.x. For v20 accounts use release 4.x or higher. " +
+                    "Check your token.";
+
+                if (!accounts.length) {
+                    throw new Error(message);
+                }
+                accounts.forEach(item => {
+                    this.state.accounts.push(item);
+                });
+            }).catch(err => {
+                this.state.tokenModalIsOpen = false;
+                this.state.tokenInfo.token = "";
+                ToastsService.addToast(err);
             });
-        }).catch(err => {
-            this.state.tokenModalIsOpen = false;
-            this.state.tokenInfo.token = "";
-            ToastsService.addToast(err);
-        });
+        }
+
+        onSelectAccountClick(e, accountSelected) {
+            this.state.tokenInfo.accountId = this.state.accounts[accountSelected].id;
+
+            const tokenInfo = {
+                environment: this.state.tokenInfo.environment,
+                token: this.state.tokenInfo.token,
+                accountId: this.state.tokenInfo.accountId,
+                instrs: this.state.instrs
+            };
+
+            SessionService.setCredentials(tokenInfo);
+
+            AccountsService.getAccounts(tokenInfo).then(() => {
+                const instruments = AccountsService
+                    .setStreamingInstruments(this.state.instrs);
+
+                StreamingService.startStream({
+                    environment: tokenInfo.environment,
+                    accessToken: tokenInfo.token,
+                    accountId: tokenInfo.accountId,
+                    instruments
+                });
+
+                ActivityService.refresh();
+                TradesService.refresh();
+                OrdersService.refresh();
+                PositionsService.refresh();
+                ExposureService.refresh();
+                NewsService.refresh();
+
+                ChartsComponent.bootstrap();
+
+                this.state.tokenModalIsOpen = false;
+            }).catch(err => {
+                ToastsService.addToast(err);
+                this.state.tokenModalIsOpen = false;
+            });
+        }
+
     }
 
-    onSelectAccountClick(e, accountSelected) {
-        this.state.tokenInfo.accountId = this.state.accounts[accountSelected].id;
+    class TokenDialogComponent {
+        static bootstrap(state) {
+            const render = hyperHTML.bind(Util.query("token-dialog"));
 
-        const tokenInfo = {
-            environment: this.state.tokenInfo.environment,
-            token: this.state.tokenInfo.token,
-            accountId: this.state.tokenInfo.accountId,
-            instrs: this.state.instrs
-        };
+            this.tokenDialogController = new TokenDialogController(render, TokenDialogTemplate, state);
+        }
+    }
 
-        SessionService.setCredentials(tokenInfo);
+    class HeaderController {
+        constructor(render, template) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-        AccountsService.getAccounts(tokenInfo).then(() => {
-            const instruments = AccountsService
-                .setStreamingInstruments(this.state.instrs);
+            const instrsStorage = window.localStorage.getItem("argo.instruments");
 
-            StreamingService.startStream({
-                environment: tokenInfo.environment,
-                accessToken: tokenInfo.token,
-                accountId: tokenInfo.accountId,
-                instruments
+            const instrs = JSON.parse(instrsStorage) || {
+                EUR_USD: true,
+                USD_JPY: true,
+                GBP_USD: true,
+                EUR_GBP: true,
+                USD_CHF: true,
+                EUR_JPY: true,
+                EUR_CHF: true,
+                USD_CAD: true,
+                AUD_USD: true,
+                GBP_JPY: true
+            };
+
+            this.state = Introspected({
+                spinner: {
+                    isLoadingView: false
+                },
+                tokenModalIsOpen: false,
+                tokenInfo: {
+                    environment: "practice",
+                    token: "",
+                    accountId: ""
+                },
+                settingsModalIsOpen: false,
+                accounts: [],
+                instrs
+            }, state => template.update(render, state, events));
+
+            Util.spinnerState = this.state.spinner;
+
+            TokenDialogComponent.bootstrap(this.state);
+            SettingsDialogComponent.bootstrap(this.state);
+        }
+
+        onOpenSettingsClick() {
+            const allInstrs = AccountsService.getAccount().instruments;
+
+            allInstrs.forEach(instrument => {
+                if (!this.state.instrs[instrument.name].toString()) {
+                    this.state.instrs[instrument.name] = false;
+                }
             });
 
-            ActivityService.refresh();
-            TradesService.refresh();
-            OrdersService.refresh();
-            PositionsService.refresh();
-            ExposureService.refresh();
-            NewsService.refresh();
-
-            ChartsComponent.bootstrap();
-
-            this.state.tokenModalIsOpen = false;
-        }).catch(err => {
-            ToastsService.addToast(err);
-            this.state.tokenModalIsOpen = false;
-        });
+            this.state.settingsModalIsOpen = true;
+        }
     }
 
-}
+    class HeaderComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("header"));
 
-class TokenDialogComponent {
-    static bootstrap(state) {
-        const render = hyperHTML.bind(Util.query("token-dialog"));
-
-        this.tokenDialogController = new TokenDialogController(render, TokenDialogTemplate, state);
-    }
-}
-
-class HeaderController {
-    constructor(render, template) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        const instrsStorage = window.localStorage.getItem("argo.instruments");
-
-        const instrs = JSON.parse(instrsStorage) || {
-            EUR_USD: true,
-            USD_JPY: true,
-            GBP_USD: true,
-            EUR_GBP: true,
-            USD_CHF: true,
-            EUR_JPY: true,
-            EUR_CHF: true,
-            USD_CAD: true,
-            AUD_USD: true,
-            GBP_JPY: true
-        };
-
-        this.state = Introspected({
-            spinner: {
-                isLoadingView: false
-            },
-            tokenModalIsOpen: false,
-            tokenInfo: {
-                environment: "practice",
-                token: "",
-                accountId: ""
-            },
-            settingsModalIsOpen: false,
-            accounts: [],
-            instrs
-        }, state => template.update(render, state, events));
-
-        Util.spinnerState = this.state.spinner;
-
-        TokenDialogComponent.bootstrap(this.state);
-        SettingsDialogComponent.bootstrap(this.state);
+            this.HeaderController = new HeaderController(render, HeaderTemplate);
+        }
     }
 
-    onOpenSettingsClick() {
-        const allInstrs = AccountsService.getAccount().instruments;
+    HeaderComponent.bootstrap();
 
-        allInstrs.forEach(instrument => {
-            if (!this.state.instrs[instrument.name].toString()) {
-                this.state.instrs[instrument.name] = false;
-            }
-        });
+    class NewsTemplate {
+        static update(render, state) {
+            const isNoNews = Util.hide(state.news.length);
+            const isNews = Util.show(state.news.length);
 
-        this.state.settingsModalIsOpen = true;
-    }
-}
-
-class HeaderComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("header"));
-
-        this.HeaderController = new HeaderController(render, HeaderTemplate);
-    }
-}
-
-HeaderComponent.bootstrap();
-
-class NewsTemplate {
-    static update(render, state) {
-        const isNoNews = Util.hide(state.news.length);
-        const isNews = Util.show(state.news.length);
-
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <div style="${isNoNews}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No news.</p>
             </div>
@@ -2265,453 +2265,453 @@ class NewsTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
+            /* eslint-enable indent */
+        }
     }
-}
 
-class NewsController {
-    constructor(render, template) {
+    class NewsController {
+        constructor(render, template) {
 
-        this.state = Introspected({
-            news: []
-        }, state => template.update(render, state));
+            this.state = Introspected({
+                news: []
+            }, state => template.update(render, state));
 
-        this.newsService = new NewsService(this.state.news);
+            this.newsService = new NewsService(this.state.news);
+        }
     }
-}
 
-class NewsComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("news"));
+    class NewsComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("news"));
 
-        this.newsController = new NewsController(render, NewsTemplate);
+            this.newsController = new NewsController(render, NewsTemplate);
+        }
     }
-}
 
-NewsComponent.bootstrap();
+    NewsComponent.bootstrap();
 
-class OhlcChartTemplate {
+    class OhlcChartTemplate {
 
-    static update(render) {
-        return render`${hyperHTML.wire(render, "svg")`
+        static update(render) {
+            return render`${hyperHTML.wire(render, "svg")`
             <span></span>`
         }`;
-    }
-
-    static redrawData(state) {
-        if (!state.data) {
-            return;
         }
 
-        const myState = OhlcChartTemplate.state;
-        const chartEl = document.querySelector("ohlc-chart");
-
-        myState.myInstrument = state.instrument;
-        myState.myGranularity = state.granularity;
-        myState.myTrades = state.trades;
-
-        myState.refreshChart = OhlcChartTemplate.drawChart(chartEl, state.data);
-
-        myState.lastData = myState.data[myState.data.length - 1];
-        myState.lastClose = myState.lastData.close;
-        myState.feedVolume = myState.lastData.volume;
-        myState.lastHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity);
-    }
-
-    static redrawFeed(state) {
-        const myState = OhlcChartTemplate.state;
-        const tick = state.feed;
-
-        myState.myTrades = state.trades;
-        myState.nextHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity, tick);
-
-        let midPrice;
-
-        if (tick.ask && tick.bid && myState.data && myState.lastHistUpdate !== myState.nextHistUpdate) {
-            myState.data.shift();
-            tick.bid = parseFloat(tick.bid);
-            tick.ask = parseFloat(tick.ask);
-            midPrice = (tick.bid + tick.ask) / 2;
-            myState.feedVolume = 0;
-            myState.data.push({
-                open: midPrice,
-                close: midPrice,
-                high: midPrice,
-                low: midPrice,
-                date: new Date(myState.nextHistUpdate),
-                volume: myState.feedVolume
-            });
-
-            myState.lastHistUpdate = myState.nextHistUpdate;
-        }
-
-        if (tick.ask && tick.bid && myState.data) {
-            if (myState.lastData.close !== myState.lastClose) {
-                myState.feedVolume += 1;
+        static redrawData(state) {
+            if (!state.data) {
+                return;
             }
 
-            tick.bid = parseFloat(tick.bid);
-            tick.ask = parseFloat(tick.ask);
-            midPrice = (tick.bid + tick.ask) / 2;
+            const myState = OhlcChartTemplate.state;
+            const chartEl = document.querySelector("ohlc-chart");
 
-            myState.lastData = myState.data && myState.data[myState.data.length - 1];
+            myState.myInstrument = state.instrument;
+            myState.myGranularity = state.granularity;
+            myState.myTrades = state.trades;
+
+            myState.refreshChart = OhlcChartTemplate.drawChart(chartEl, state.data);
+
+            myState.lastData = myState.data[myState.data.length - 1];
             myState.lastClose = myState.lastData.close;
-            myState.lastData.close = midPrice;
-            myState.lastData.volume = myState.feedVolume;
+            myState.feedVolume = myState.lastData.volume;
+            myState.lastHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity);
+        }
 
-            if (myState.lastData.close > myState.lastData.high) {
-                myState.lastData.high = myState.lastData.close;
+        static redrawFeed(state) {
+            const myState = OhlcChartTemplate.state;
+            const tick = state.feed;
+
+            myState.myTrades = state.trades;
+            myState.nextHistUpdate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity, tick);
+
+            let midPrice;
+
+            if (tick.ask && tick.bid && myState.data && myState.lastHistUpdate !== myState.nextHistUpdate) {
+                myState.data.shift();
+                tick.bid = parseFloat(tick.bid);
+                tick.ask = parseFloat(tick.ask);
+                midPrice = (tick.bid + tick.ask) / 2;
+                myState.feedVolume = 0;
+                myState.data.push({
+                    open: midPrice,
+                    close: midPrice,
+                    high: midPrice,
+                    low: midPrice,
+                    date: new Date(myState.nextHistUpdate),
+                    volume: myState.feedVolume
+                });
+
+                myState.lastHistUpdate = myState.nextHistUpdate;
             }
 
-            if (myState.lastData.close < myState.lastData.low) {
-                myState.lastData.low = myState.lastData.close;
+            if (tick.ask && tick.bid && myState.data) {
+                if (myState.lastData.close !== myState.lastClose) {
+                    myState.feedVolume += 1;
+                }
+
+                tick.bid = parseFloat(tick.bid);
+                tick.ask = parseFloat(tick.ask);
+                midPrice = (tick.bid + tick.ask) / 2;
+
+                myState.lastData = myState.data && myState.data[myState.data.length - 1];
+                myState.lastClose = myState.lastData.close;
+                myState.lastData.close = midPrice;
+                myState.lastData.volume = myState.feedVolume;
+
+                if (myState.lastData.close > myState.lastData.high) {
+                    myState.lastData.high = myState.lastData.close;
+                }
+
+                if (myState.lastData.close < myState.lastData.low) {
+                    myState.lastData.low = myState.lastData.close;
+                }
+
+                myState.refreshChart();
+            }
+        }
+
+        static getLastHistUpdate(granularity, tick) {
+            const time = tick && tick.time,
+                now = time ? new Date(time) : new Date();
+
+            let coeff;
+
+            if (granularity === "S5") {
+                coeff = 1000 * 5;
+            } else if (granularity === "S10") {
+                coeff = 1000 * 10;
+            } else if (granularity === "S15") {
+                coeff = 1000 * 15;
+            } else if (granularity === "S30") {
+                coeff = 1000 * 30;
+            } else if (granularity === "M1") {
+                coeff = 1000 * 60;
+            } else if (granularity === "M2") {
+                coeff = 1000 * 60 * 2;
+            } else if (granularity === "M3") {
+                coeff = 1000 * 60 * 3;
+            } else if (granularity === "M4") {
+                coeff = 1000 * 60 * 4;
+            } else if (granularity === "M5") {
+                coeff = 1000 * 60 * 5;
+            } else if (granularity === "M10") {
+                coeff = 1000 * 60 * 10;
+            } else if (granularity === "M15") {
+                coeff = 1000 * 60 * 15;
+            } else if (granularity === "M30") {
+                coeff = 1000 * 60 * 30;
+            } else if (granularity === "H1") {
+                coeff = 1000 * 60 * 60;
+            } else if (granularity === "H2") {
+                coeff = 1000 * 60 * 60 * 2;
+            } else if (granularity === "H3") {
+                coeff = 1000 * 60 * 60 * 3;
+            } else if (granularity === "H4") {
+                coeff = 1000 * 60 * 60 * 4;
+            } else if (granularity === "H6") {
+                coeff = 1000 * 60 * 60 * 6;
+            } else if (granularity === "H8") {
+                coeff = 1000 * 60 * 60 * 8;
+            } else if (granularity === "H12") {
+                coeff = 1000 * 60 * 60 * 12;
+            } else {
+
+                // for D / W / M
+                coeff = 1000 * 60 * 60 * 12;
             }
 
-            myState.refreshChart();
-        }
-    }
-
-    static getLastHistUpdate(granularity, tick) {
-        const time = tick && tick.time,
-            now = time ? new Date(time) : new Date();
-
-        let coeff;
-
-        if (granularity === "S5") {
-            coeff = 1000 * 5;
-        } else if (granularity === "S10") {
-            coeff = 1000 * 10;
-        } else if (granularity === "S15") {
-            coeff = 1000 * 15;
-        } else if (granularity === "S30") {
-            coeff = 1000 * 30;
-        } else if (granularity === "M1") {
-            coeff = 1000 * 60;
-        } else if (granularity === "M2") {
-            coeff = 1000 * 60 * 2;
-        } else if (granularity === "M3") {
-            coeff = 1000 * 60 * 3;
-        } else if (granularity === "M4") {
-            coeff = 1000 * 60 * 4;
-        } else if (granularity === "M5") {
-            coeff = 1000 * 60 * 5;
-        } else if (granularity === "M10") {
-            coeff = 1000 * 60 * 10;
-        } else if (granularity === "M15") {
-            coeff = 1000 * 60 * 15;
-        } else if (granularity === "M30") {
-            coeff = 1000 * 60 * 30;
-        } else if (granularity === "H1") {
-            coeff = 1000 * 60 * 60;
-        } else if (granularity === "H2") {
-            coeff = 1000 * 60 * 60 * 2;
-        } else if (granularity === "H3") {
-            coeff = 1000 * 60 * 60 * 3;
-        } else if (granularity === "H4") {
-            coeff = 1000 * 60 * 60 * 4;
-        } else if (granularity === "H6") {
-            coeff = 1000 * 60 * 60 * 6;
-        } else if (granularity === "H8") {
-            coeff = 1000 * 60 * 60 * 8;
-        } else if (granularity === "H12") {
-            coeff = 1000 * 60 * 60 * 12;
-        } else {
-
-            // for D / W / M
-            coeff = 1000 * 60 * 60 * 12;
+            return Math.floor(+now / (coeff)) * coeff;
         }
 
-        return Math.floor(+now / (coeff)) * coeff;
-    }
+        static drawChart(el, csv) {
+            const myState = OhlcChartTemplate.state;
+            const margin = {
+                    top: 0,
+                    right: 20,
+                    bottom: 30,
+                    left: 75
+                },
+                width = 960 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
 
-    static drawChart(el, csv) {
-        const myState = OhlcChartTemplate.state;
-        const margin = {
-                top: 0,
-                right: 20,
-                bottom: 30,
-                left: 75
-            },
-            width = 960 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            const x = techan.scale.financetime()
+                .range([0, width]);
 
-        const x = techan.scale.financetime()
-            .range([0, width]);
+            const y = d3.scaleLinear()
+                .range([height, 0]);
 
-        const y = d3.scaleLinear()
-            .range([height, 0]);
+            const yVolume = d3.scaleLinear()
+                .range([y(0), y(0.2)]);
 
-        const yVolume = d3.scaleLinear()
-            .range([y(0), y(0.2)]);
+            const ohlc = techan.plot.ohlc()
+                .xScale(x)
+                .yScale(y);
 
-        const ohlc = techan.plot.ohlc()
-            .xScale(x)
-            .yScale(y);
+            const tradearrow = techan.plot.tradearrow()
+                .xScale(x)
+                .yScale(y)
+                .orient(d => {
+                    const side = d.type.startsWith("buy") ? "up" : "down";
 
-        const tradearrow = techan.plot.tradearrow()
-            .xScale(x)
-            .yScale(y)
-            .orient(d => {
-                const side = d.type.startsWith("buy") ? "up" : "down";
+                    return side;
+                });
 
-                return side;
-            });
+            const sma0 = techan.plot.sma()
+                .xScale(x)
+                .yScale(y);
 
-        const sma0 = techan.plot.sma()
-            .xScale(x)
-            .yScale(y);
+            const sma0Calculator = techan.indicator.sma()
+                .period(10);
 
-        const sma0Calculator = techan.indicator.sma()
-            .period(10);
+            const sma1 = techan.plot.sma()
+                .xScale(x)
+                .yScale(y);
 
-        const sma1 = techan.plot.sma()
-            .xScale(x)
-            .yScale(y);
+            const sma1Calculator = techan.indicator.sma()
+                .period(20);
 
-        const sma1Calculator = techan.indicator.sma()
-            .period(20);
+            const volume = techan.plot.volume()
+                .accessor(ohlc.accessor())
+                .xScale(x)
+                .yScale(yVolume);
 
-        const volume = techan.plot.volume()
-            .accessor(ohlc.accessor())
-            .xScale(x)
-            .yScale(yVolume);
+            const xAxis = d3.axisBottom(x);
 
-        const xAxis = d3.axisBottom(x);
+            const yAxis = d3.axisLeft(y);
 
-        const yAxis = d3.axisLeft(y);
+            const volumeAxis = d3.axisRight(yVolume)
+                .ticks(3)
+                .tickFormat(d3.format(",.3s"));
 
-        const volumeAxis = d3.axisRight(yVolume)
-            .ticks(3)
-            .tickFormat(d3.format(",.3s"));
+            const timeAnnotation = techan.plot.axisannotation()
+                .axis(xAxis)
+                .orient("bottom")
+                .format(d3.timeFormat("%Y-%m-%d %H:%M"))
+                .width(80)
+                .translate([0, height]);
 
-        const timeAnnotation = techan.plot.axisannotation()
-            .axis(xAxis)
-            .orient("bottom")
-            .format(d3.timeFormat("%Y-%m-%d %H:%M"))
-            .width(80)
-            .translate([0, height]);
+            const ohlcAnnotation = techan.plot.axisannotation()
+                .axis(yAxis)
+                .orient("left")
+                .format(d3.format(",.4f"));
 
-        const ohlcAnnotation = techan.plot.axisannotation()
-            .axis(yAxis)
-            .orient("left")
-            .format(d3.format(",.4f"));
+            const volumeAnnotation = techan.plot.axisannotation()
+                .axis(volumeAxis)
+                .orient("right")
+                .width(35);
 
-        const volumeAnnotation = techan.plot.axisannotation()
-            .axis(volumeAxis)
-            .orient("right")
-            .width(35);
+            const crosshair = techan.plot.crosshair()
+                .xScale(x)
+                .yScale(y)
+                .xAnnotation(timeAnnotation)
+                .yAnnotation([ohlcAnnotation, volumeAnnotation]);
 
-        const crosshair = techan.plot.crosshair()
-            .xScale(x)
-            .yScale(y)
-            .xAnnotation(timeAnnotation)
-            .yAnnotation([ohlcAnnotation, volumeAnnotation]);
+            d3.select(el).select("svg").remove();
 
-        d3.select(el).select("svg").remove();
+            const svg = d3.select(el).append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    `translate(${margin.left}, ${margin.top})`);
 
-        const svg = d3.select(el).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform",
-                `translate(${margin.left}, ${margin.top})`);
+            const defs = svg.append("defs")
+                .append("clipPath")
+                .attr("id", "ohlcClip");
 
-        const defs = svg.append("defs")
-            .append("clipPath")
-            .attr("id", "ohlcClip");
+            defs.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", width)
+                .attr("height", height);
 
-        defs.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", width)
-            .attr("height", height);
+            const ohlcSelection = svg.append("g")
+                .attr("class", "ohlc")
+                .attr("transform", "translate(0,0)");
 
-        const ohlcSelection = svg.append("g")
-            .attr("class", "ohlc")
-            .attr("transform", "translate(0,0)");
+            ohlcSelection.append("g")
+                .attr("class", "volume")
+                .attr("clip-path", "url(#ohlcClip)");
 
-        ohlcSelection.append("g")
-            .attr("class", "volume")
-            .attr("clip-path", "url(#ohlcClip)");
+            ohlcSelection.append("g")
+                .attr("class", "candlestick")
+                .attr("clip-path", "url(#ohlcClip)");
 
-        ohlcSelection.append("g")
-            .attr("class", "candlestick")
-            .attr("clip-path", "url(#ohlcClip)");
+            ohlcSelection.append("g")
+                .attr("class", "indicator sma ma-0")
+                .attr("clip-path", "url(#ohlcClip)");
 
-        ohlcSelection.append("g")
-            .attr("class", "indicator sma ma-0")
-            .attr("clip-path", "url(#ohlcClip)");
+            ohlcSelection.append("g")
+                .attr("class", "indicator sma ma-1")
+                .attr("clip-path", "url(#ohlcClip)");
 
-        ohlcSelection.append("g")
-            .attr("class", "indicator sma ma-1")
-            .attr("clip-path", "url(#ohlcClip)");
+            ohlcSelection.append("g")
+                .attr("class", "tradearrow");
 
-        ohlcSelection.append("g")
-            .attr("class", "tradearrow");
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", `translate(0, ${height})`);
 
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", `translate(0, ${height})`);
+            svg
+                .append("g")
+                .attr("class", "y axis")
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("font-weight", "bold")
+                .style("text-anchor", "end")
+                .text(`Price (${myState.myInstrument} / ${myState.myGranularity})`);
 
-        svg
-            .append("g")
-            .attr("class", "y axis")
-            .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("font-weight", "bold")
-            .style("text-anchor", "end")
-            .text(`Price (${myState.myInstrument} / ${myState.myGranularity})`);
+            svg.append("g")
+                .attr("class", "volume axis");
 
-        svg.append("g")
-            .attr("class", "volume axis");
+            svg.append("g")
+                .attr("class", "crosshair ohlc");
 
-        svg.append("g")
-            .attr("class", "crosshair ohlc");
+            myState.data = d3.csvParse(csv).map(
+                d => {
+                    const date = isNaN(Date.parse(d.Date))
+                        ? new Date(+d.Date * 1000) : new Date(d.Date);
 
-        myState.data = d3.csvParse(csv).map(
-            d => {
-                const date = isNaN(Date.parse(d.Date))
-                    ? new Date(+d.Date * 1000) : new Date(d.Date);
+                    return {
+                        date,
+                        open: +d.Open,
+                        high: +d.High,
+                        low: +d.Low,
+                        close: +d.Close,
+                        volume: +d.Volume
+                    };
+                }
+            );
 
-                return {
-                    date,
-                    open: +d.Open,
-                    high: +d.High,
-                    low: +d.Low,
-                    close: +d.Close,
-                    volume: +d.Volume
-                };
+            const data = myState.data;
+
+            svg.select("g.candlestick").datum(data);
+            svg.select("g.sma.ma-0").datum(sma0Calculator(data));
+            svg.select("g.sma.ma-1").datum(sma1Calculator(data));
+            svg.select("g.volume").datum(data);
+
+            redraw();
+
+            function redraw() {
+                const accessor = ohlc.accessor();
+
+                x.domain(data.map(accessor.d));
+                x.zoomable().domain([data.length - 130, data.length]);
+
+                y.domain(techan.scale.plot.ohlc(
+                    data.slice(data.length - 130, data.length)
+                ).domain());
+                yVolume.domain(techan.scale.plot.volume(
+                    data.slice(data.length - 130, data.length)
+                ).domain());
+
+                svg.select("g.x.axis").call(xAxis);
+                svg.select("g.y.axis").call(yAxis);
+                svg.select("g.volume.axis").call(volumeAxis);
+
+                svg.select("g.candlestick").datum(data).call(ohlc);
+                svg.select("g.tradearrow").remove();
+                svg.append("g").attr("class", "tradearrow");
+
+                const myTrades = myState.myTrades.filter(
+                    trade => trade.instrument === myState.myInstrument
+                )
+                    .map(
+                        trade => ({
+                            date: new Date(trade.openTime),
+                            type: trade.currentUnits > 0 ? "buy" : "sell",
+                            price: trade.price
+                        })
+                    );
+
+                svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
+
+                svg.select("g.sma.ma-0")
+                    .datum(sma0Calculator(data)).call(sma0);
+                svg.select("g.sma.ma-1")
+                    .datum(sma1Calculator(data)).call(sma1);
+
+                svg.select("g.volume").datum(data).call(volume);
+
+                svg.select("g.crosshair.ohlc").call(crosshair);
             }
-        );
 
-        const data = myState.data;
-
-        svg.select("g.candlestick").datum(data);
-        svg.select("g.sma.ma-0").datum(sma0Calculator(data));
-        svg.select("g.sma.ma-1").datum(sma1Calculator(data));
-        svg.select("g.volume").datum(data);
-
-        redraw();
-
-        function redraw() {
-            const accessor = ohlc.accessor();
-
-            x.domain(data.map(accessor.d));
-            x.zoomable().domain([data.length - 130, data.length]);
-
-            y.domain(techan.scale.plot.ohlc(
-                data.slice(data.length - 130, data.length)
-            ).domain());
-            yVolume.domain(techan.scale.plot.volume(
-                data.slice(data.length - 130, data.length)
-            ).domain());
-
-            svg.select("g.x.axis").call(xAxis);
-            svg.select("g.y.axis").call(yAxis);
-            svg.select("g.volume.axis").call(volumeAxis);
-
-            svg.select("g.candlestick").datum(data).call(ohlc);
-            svg.select("g.tradearrow").remove();
-            svg.append("g").attr("class", "tradearrow");
-
-            const myTrades = myState.myTrades.filter(
-                trade => trade.instrument === myState.myInstrument
-            )
-                .map(
-                    trade => ({
-                        date: new Date(trade.openTime),
-                        type: trade.currentUnits > 0 ? "buy" : "sell",
-                        price: trade.price
-                    })
-                );
-
-            svg.select("g.tradearrow").datum(myTrades).call(tradearrow);
-
-            svg.select("g.sma.ma-0")
-                .datum(sma0Calculator(data)).call(sma0);
-            svg.select("g.sma.ma-1")
-                .datum(sma1Calculator(data)).call(sma1);
-
-            svg.select("g.volume").datum(data).call(volume);
-
-            svg.select("g.crosshair.ohlc").call(crosshair);
+            return redraw;
         }
 
-        return redraw;
     }
 
-}
+    OhlcChartTemplate.state = {
+        myInstrument: null,
+        myGranularity: null,
+        myTrades: null,
+        data: null,
+        refreshChart: null,
+        lastHistUpdate: null,
+        lastData: null,
+        lastClose: null,
+        feedVolume: 0
+    };
 
-OhlcChartTemplate.state = {
-    myInstrument: null,
-    myGranularity: null,
-    myTrades: null,
-    data: null,
-    refreshChart: null,
-    lastHistUpdate: null,
-    lastData: null,
-    lastClose: null,
-    feedVolume: 0
-};
-
-class OhlcChartElement extends Hyper {
-    static get observedAttributes() {
-        return ["data-data", "data-feed", "data-trades"];
-    }
-
-    constructor() {
-        super();
-
-        OhlcChartElement.state = {
-            instrument: this.dataset.instrument,
-            granularity: this.dataset.granularity,
-            data: "",
-            feed: {},
-            trades: []
-        };
-    }
-
-    render() {
-        return OhlcChartTemplate.update(this.hyper);
-    }
-
-    attributeChangedCallback(name) {
-        OhlcChartElement.state.instrument = this.dataset.instrument;
-        OhlcChartElement.state.granularity = this.dataset.granularity;
-        OhlcChartElement.state.data = this.dataset.data;
-        OhlcChartElement.state.feed = this.dataset.feed && JSON.parse(this.dataset.feed);
-        OhlcChartElement.state.trades = this.dataset.trades ? JSON.parse(this.dataset.trades) : [];
-
-        if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.ask !== "string") {
-            OhlcChartElement.state.feed.ask = "";
-        }
-        if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.bid !== "string") {
-            OhlcChartElement.state.feed.bid = "";
+    class OhlcChartElement extends Hyper {
+        static get observedAttributes() {
+            return ["data-data", "data-feed", "data-trades"];
         }
 
-        if (name === "data-data") {
-            OhlcChartTemplate.redrawData(OhlcChartElement.state);
+        constructor() {
+            super();
+
+            OhlcChartElement.state = {
+                instrument: this.dataset.instrument,
+                granularity: this.dataset.granularity,
+                data: "",
+                feed: {},
+                trades: []
+            };
         }
 
-        if (name === "data-feed" || name === "data-trades") {
-            OhlcChartTemplate.redrawFeed(OhlcChartElement.state);
+        render() {
+            return OhlcChartTemplate.update(this.hyper);
         }
+
+        attributeChangedCallback(name) {
+            OhlcChartElement.state.instrument = this.dataset.instrument;
+            OhlcChartElement.state.granularity = this.dataset.granularity;
+            OhlcChartElement.state.data = this.dataset.data;
+            OhlcChartElement.state.feed = this.dataset.feed && JSON.parse(this.dataset.feed);
+            OhlcChartElement.state.trades = this.dataset.trades ? JSON.parse(this.dataset.trades) : [];
+
+            if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.ask !== "string") {
+                OhlcChartElement.state.feed.ask = "";
+            }
+            if (OhlcChartElement.state.feed && typeof OhlcChartElement.state.feed.bid !== "string") {
+                OhlcChartElement.state.feed.bid = "";
+            }
+
+            if (name === "data-data") {
+                OhlcChartTemplate.redrawData(OhlcChartElement.state);
+            }
+
+            if (name === "data-feed" || name === "data-trades") {
+                OhlcChartTemplate.redrawFeed(OhlcChartElement.state);
+            }
+        }
+
     }
+    customElements.define("ohlc-chart", OhlcChartElement);
 
-}
-customElements.define("ohlc-chart", OhlcChartElement);
+    OhlcChartElement.state = null;
 
-OhlcChartElement.state = null;
+    class OrdersTemplate {
+        static update(render, state) {
+            const isNoOrders = Util.hide(state.orders.length);
+            const isOrders = Util.show(state.orders.length);
 
-class OrdersTemplate {
-    static update(render, state) {
-        const isNoOrders = Util.hide(state.orders.length);
-        const isOrders = Util.show(state.orders.length);
-
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <div style="${isNoOrders}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No orders.</p>
             </div>
@@ -2760,19 +2760,19 @@ class OrdersTemplate {
 
             <yesno-dialog></yesno-dialog>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class YesNoDialogTemplate {
-    static update(render, state, events) {
-        if (!state.yesnoModalIsOpen) {
-            Util.renderEmpty(render);
-            return;
+            /* eslint-enable indent */
         }
+    }
 
-        /* eslint-disable indent */
-        render`
+    class YesNoDialogTemplate {
+        static update(render, state, events) {
+            if (!state.yesnoModalIsOpen) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            /* eslint-disable indent */
+            render`
             <div class="fixed absolute--fill bg-black-70 z5">
             <div class="fixed absolute-center z999">
 
@@ -2797,85 +2797,85 @@ class YesNoDialogTemplate {
             </div>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class YesNoDialogController {
-    constructor(render, template, bindings, events) {
-        Introspected.observe(bindings,
-            state => template.update(render, state, events));
-    }
-}
-
-class YesNoDialogComponent {
-    static bootstrap(state, events) {
-        const render = hyperHTML.bind(Util.query("yesno-dialog"));
-
-        this.yesnoDialogController = new YesNoDialogController(render, YesNoDialogTemplate, state, events);
-    }
-}
-
-class OrdersController {
-    constructor(render, template) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        this.state = Introspected({
-            orders: [],
-            yesnoModalIsOpen: false,
-            yesnoModalText: "Are you sure to close the order?",
-            closeOrderInfo: {
-                orderId: null
-            }
-        }, state => template.update(render, state));
-
-        this.ordersService = new OrdersService(this.state.orders);
-
-        YesNoDialogComponent.bootstrap(this.state, events);
+            /* eslint-enable indent */
+        }
     }
 
-    onCancelYesNoDialogClick() {
-        this.state.yesnoModalIsOpen = false;
+    class YesNoDialogController {
+        constructor(render, template, bindings, events) {
+            Introspected.observe(bindings,
+                state => template.update(render, state, events));
+        }
     }
 
-    onOkYesNoDialogClick() {
-        this.state.yesnoModalIsOpen = false;
+    class YesNoDialogComponent {
+        static bootstrap(state, events) {
+            const render = hyperHTML.bind(Util.query("yesno-dialog"));
 
-        OrdersService.closeOrder(this.state.closeOrderInfo.orderId).then(order => {
-            let message = `Closed #${order.orderCancelTransaction.orderID}`;
-
-            if (order.errorMessage || order.message) {
-                message = `ERROR ${order.errorMessage || order.message}`;
-            }
-
-            ToastsService.addToast(message);
-        }).catch(err => {
-            const message = `ERROR ${err.code} ${err.message}`;
-
-            ToastsService.addToast(message);
-        });
+            this.yesnoDialogController = new YesNoDialogController(render, YesNoDialogTemplate, state, events);
+        }
     }
-}
 
-class OrdersComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("orders"));
+    class OrdersController {
+        constructor(render, template) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-        this.ordersController = new OrdersController(render, OrdersTemplate);
+            this.state = Introspected({
+                orders: [],
+                yesnoModalIsOpen: false,
+                yesnoModalText: "Are you sure to close the order?",
+                closeOrderInfo: {
+                    orderId: null
+                }
+            }, state => template.update(render, state));
+
+            this.ordersService = new OrdersService(this.state.orders);
+
+            YesNoDialogComponent.bootstrap(this.state, events);
+        }
+
+        onCancelYesNoDialogClick() {
+            this.state.yesnoModalIsOpen = false;
+        }
+
+        onOkYesNoDialogClick() {
+            this.state.yesnoModalIsOpen = false;
+
+            OrdersService.closeOrder(this.state.closeOrderInfo.orderId).then(order => {
+                let message = `Closed #${order.orderCancelTransaction.orderID}`;
+
+                if (order.errorMessage || order.message) {
+                    message = `ERROR ${order.errorMessage || order.message}`;
+                }
+
+                ToastsService.addToast(message);
+            }).catch(err => {
+                const message = `ERROR ${err.code} ${err.message}`;
+
+                ToastsService.addToast(message);
+            });
+        }
     }
-}
 
-OrdersComponent.bootstrap();
+    class OrdersComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("orders"));
 
-class PluginsTemplate {
-    static update(render, state, events) {
-        const pluginsKeys = Object.keys(state.plugins);
-        const pluginsCount = pluginsKeys.length;
-        const isNoPlugins = Util.hide(pluginsCount);
-        const isPlugins = Util.show(pluginsCount);
+            this.ordersController = new OrdersController(render, OrdersTemplate);
+        }
+    }
 
-        /* eslint-disable indent */
-        render`
+    OrdersComponent.bootstrap();
+
+    class PluginsTemplate {
+        static update(render, state, events) {
+            const pluginsKeys = Object.keys(state.plugins);
+            const pluginsCount = pluginsKeys.length;
+            const isNoPlugins = Util.hide(pluginsCount);
+            const isPlugins = Util.show(pluginsCount);
+
+            /* eslint-disable indent */
+            render`
             <div style="${isNoPlugins}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No plugins.</p>
             </div>
@@ -2904,50 +2904,50 @@ class PluginsTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class PluginsController {
-    constructor(render, template) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        this.state = Introspected({
-            plugins: {},
-            pluginsInfo: {
-                count: 0
-            }
-        }, state => template.update(render, state, events));
-
-        this.pluginService = new PluginsService(this.state);
-
-        PluginsService.refresh();
+            /* eslint-enable indent */
+        }
     }
 
-    onTogglePluginChange(e, plugin) {
-        this.state.plugins[plugin] = e.target.checked;
-        PluginsService.engagePlugins(this.state.plugins);
+    class PluginsController {
+        constructor(render, template) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+            this.state = Introspected({
+                plugins: {},
+                pluginsInfo: {
+                    count: 0
+                }
+            }, state => template.update(render, state, events));
+
+            this.pluginService = new PluginsService(this.state);
+
+            PluginsService.refresh();
+        }
+
+        onTogglePluginChange(e, plugin) {
+            this.state.plugins[plugin] = e.target.checked;
+            PluginsService.engagePlugins(this.state.plugins);
+        }
     }
-}
-PluginsController.$inject = ["PluginsService"];
+    PluginsController.$inject = ["PluginsService"];
 
-class PluginsComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("plugins"));
+    class PluginsComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("plugins"));
 
-        this.pluginsController = new PluginsController(render, PluginsTemplate);
+            this.pluginsController = new PluginsController(render, PluginsTemplate);
+        }
     }
-}
 
-PluginsComponent.bootstrap();
+    PluginsComponent.bootstrap();
 
-class PositionsTemplate {
-    static update(render, state) {
-        const isNoPositions = Util.hide(state.positions.length);
-        const isPositions = Util.show(state.positions.length);
+    class PositionsTemplate {
+        static update(render, state) {
+            const isNoPositions = Util.hide(state.positions.length);
+            const isPositions = Util.show(state.positions.length);
 
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <div style="${isNoPositions}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No positions.</p>
             </div>
@@ -2975,40 +2975,40 @@ class PositionsTemplate {
                 </table>
             </div>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class PositionsController {
-    constructor(render, template) {
-
-        this.state = Introspected({
-            positions: []
-        }, state => template.update(render, state));
-
-        this.positionsService = new PositionsService(this.state.positions);
-    }
-}
-
-class PositionsComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("positions"));
-
-        this.positionsController = new PositionsController(render, PositionsTemplate);
-    }
-}
-
-PositionsComponent.bootstrap();
-
-class QuotesTemplate {
-    static update(render, state) {
-        if (!Object.keys(state.quotes).length) {
-            Util.renderEmpty(render);
-            return;
+            /* eslint-enable indent */
         }
+    }
 
-        /* eslint-disable indent */
-        render`
+    class PositionsController {
+        constructor(render, template) {
+
+            this.state = Introspected({
+                positions: []
+            }, state => template.update(render, state));
+
+            this.positionsService = new PositionsService(this.state.positions);
+        }
+    }
+
+    class PositionsComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("positions"));
+
+            this.positionsController = new PositionsController(render, PositionsTemplate);
+        }
+    }
+
+    PositionsComponent.bootstrap();
+
+    class QuotesTemplate {
+        static update(render, state) {
+            if (!Object.keys(state.quotes).length) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            /* eslint-disable indent */
+            render`
             <div class="h5 overflow-auto">
 
                 <table class="collapse f6 w-100 mw8 center">
@@ -3029,184 +3029,184 @@ class QuotesTemplate {
                 </table>
            </div>
         `;
-        /* eslint-enable indent */
-    }
-
-    static highlighter(value, instrument, type) {
-        if (!QuotesTemplate.cache[instrument]) {
-            QuotesTemplate.cache[instrument] = {};
+            /* eslint-enable indent */
         }
 
-        if (!QuotesTemplate.cache[instrument][type]) {
-            QuotesTemplate.cache[instrument][type] = {};
-        }
-
-        const cache = QuotesTemplate.cache[instrument][type];
-        const oldValue = cache.value;
-
-        const classes = "pv1 pr1 bb b--black-20 tr";
-        const quoteClasses = `${instrument}-${type} ${classes}`;
-        const greenClass = "highlight-green";
-        const redClass = "highlight-red";
-
-        if (value === oldValue) {
-            return cache.classes || quoteClasses;
-        }
-
-        const highlight = value >= oldValue
-            ? `${quoteClasses} ${greenClass}`
-            : `${quoteClasses} ${redClass}`;
-
-        cache.value = value;
-        cache.classes = highlight;
-
-        clearTimeout(cache.timeout);
-        cache.timeout = setTimeout(() => {
-            const el = document.querySelector(`.${instrument}-${type}`);
-
-            if (el) {
-                el.classList.remove(greenClass);
-                el.classList.remove(redClass);
-                cache.classes = quoteClasses;
+        static highlighter(value, instrument, type) {
+            if (!QuotesTemplate.cache[instrument]) {
+                QuotesTemplate.cache[instrument] = {};
             }
-        }, 500);
 
-        return highlight;
+            if (!QuotesTemplate.cache[instrument][type]) {
+                QuotesTemplate.cache[instrument][type] = {};
+            }
+
+            const cache = QuotesTemplate.cache[instrument][type];
+            const oldValue = cache.value;
+
+            const classes = "pv1 pr1 bb b--black-20 tr";
+            const quoteClasses = `${instrument}-${type} ${classes}`;
+            const greenClass = "highlight-green";
+            const redClass = "highlight-red";
+
+            if (value === oldValue) {
+                return cache.classes || quoteClasses;
+            }
+
+            const highlight = value >= oldValue
+                ? `${quoteClasses} ${greenClass}`
+                : `${quoteClasses} ${redClass}`;
+
+            cache.value = value;
+            cache.classes = highlight;
+
+            clearTimeout(cache.timeout);
+            cache.timeout = setTimeout(() => {
+                const el = document.querySelector(`.${instrument}-${type}`);
+
+                if (el) {
+                    el.classList.remove(greenClass);
+                    el.classList.remove(redClass);
+                    cache.classes = quoteClasses;
+                }
+            }, 500);
+
+            return highlight;
+        }
     }
-}
 
-QuotesTemplate.cache = {};
+    QuotesTemplate.cache = {};
 
-class QuotesController {
-    constructor(render, template) {
+    class QuotesController {
+        constructor(render, template) {
 
-        this.state = Introspected({
-            quotes: {}
-        }, state => template.update(render, state));
+            this.state = Introspected({
+                quotes: {}
+            }, state => template.update(render, state));
 
-        this.quotesService = new QuotesService(this.state.quotes);
+            this.quotesService = new QuotesService(this.state.quotes);
+        }
     }
-}
 
-class QuotesComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("quotes"));
+    class QuotesComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("quotes"));
 
-        this.quotesController = new QuotesController(render, QuotesTemplate);
+            this.quotesController = new QuotesController(render, QuotesTemplate);
+        }
     }
-}
 
-QuotesComponent.bootstrap();
+    QuotesComponent.bootstrap();
 
-class SlChartTemplate {
+    class SlChartTemplate {
 
-    static update(render) {
-        return render`${hyperHTML.wire(render, "svg")`
+        static update(render) {
+            return render`${hyperHTML.wire(render, "svg")`
             <svg class="sl mw3"></svg>`
         }`;
-    }
-
-    // Inspired by http://bl.ocks.org/vicapow/9904319
-    static redraw(state) {
-        const instrument = state.instrument,
-            quote = instrument && state.quotes[instrument],
-            svg = d3.select(`td > [data-instrument="${instrument}"] > svg`),
-            node = svg.node(),
-            w = node && node.clientWidth || 64,
-            h = node && getComputedStyle(node)["font-size"].replace("px", "");
-
-        if (!node) {
-            return;
-        }
-        node.style.height = `${h}px`;
-
-        const bid = parseFloat(quote.bid);
-        const ask = parseFloat(quote.ask);
-
-        if (isNaN(bid) || isNaN(ask)) {
-            return;
-        }
-        const middle = (bid + ask) / 2;
-
-        svg.selectAll("*").remove();
-
-        if (!SlChartTemplate.data[instrument]) {
-            SlChartTemplate.data[instrument] = [];
         }
 
-        SlChartTemplate.data[instrument].push(middle);
-        SlChartTemplate.data[instrument] =
-            SlChartTemplate.data[instrument].slice(-state.length);
+        // Inspired by http://bl.ocks.org/vicapow/9904319
+        static redraw(state) {
+            const instrument = state.instrument,
+                quote = instrument && state.quotes[instrument],
+                svg = d3.select(`td > [data-instrument="${instrument}"] > svg`),
+                node = svg.node(),
+                w = node && node.clientWidth || 64,
+                h = node && getComputedStyle(node)["font-size"].replace("px", "");
 
-        const data = SlChartTemplate.data[instrument];
-        const firstPoint = data[0];
-        const lastPoint = data.slice(-1);
+            if (!node) {
+                return;
+            }
+            node.style.height = `${h}px`;
 
-        if (firstPoint > lastPoint) {
-            node.style.stroke = "red";
-        } else {
-            node.style.stroke = "green";
+            const bid = parseFloat(quote.bid);
+            const ask = parseFloat(quote.ask);
+
+            if (isNaN(bid) || isNaN(ask)) {
+                return;
+            }
+            const middle = (bid + ask) / 2;
+
+            svg.selectAll("*").remove();
+
+            if (!SlChartTemplate.data[instrument]) {
+                SlChartTemplate.data[instrument] = [];
+            }
+
+            SlChartTemplate.data[instrument].push(middle);
+            SlChartTemplate.data[instrument] =
+                SlChartTemplate.data[instrument].slice(-state.length);
+
+            const data = SlChartTemplate.data[instrument];
+            const firstPoint = data[0];
+            const lastPoint = data.slice(-1);
+
+            if (firstPoint > lastPoint) {
+                node.style.stroke = "red";
+            } else {
+                node.style.stroke = "green";
+            }
+
+            const min = d3.min(data);
+            const max = d3.max(data);
+
+            const x = d3.scaleLinear()
+                .domain([0, data.length - 1])
+                .range([0, w]);
+            const y = d3.scaleLinear()
+                .domain([+min, +max]).range([h, 0]);
+
+            const paths = data
+                .map((d, i) => [x(i), y(d)])
+                .join("L");
+
+            svg.append("path").attr("d", `M${paths}`);
+        }
+    }
+
+    SlChartTemplate.data = {};
+
+    class SlChartElement extends Hyper {
+        static get observedAttributes() {
+            return ["data-quote"];
         }
 
-        const min = d3.min(data);
-        const max = d3.max(data);
+        constructor() {
+            super();
 
-        const x = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([0, w]);
-        const y = d3.scaleLinear()
-            .domain([+min, +max]).range([h, 0]);
-
-        const paths = data
-            .map((d, i) => [x(i), y(d)])
-            .join("L");
-
-        svg.append("path").attr("d", `M${paths}`);
-    }
-}
-
-SlChartTemplate.data = {};
-
-class SlChartElement extends Hyper {
-    static get observedAttributes() {
-        return ["data-quote"];
-    }
-
-    constructor() {
-        super();
-
-        SlChartElement.state = {
-            instrument: this.dataset.instrument,
-            quotes: QuotesService.getQuotes(),
-            length: 100
-        };
-    }
-
-    render() {
-        return SlChartTemplate.update(this.hyper);
-    }
-
-    /* eslint class-methods-use-this: "off" */
-    attributeChangedCallback(attr, oldValue, newValue) {
-        SlChartElement.state.instrument = JSON.parse(newValue).instrument;
-
-        SlChartTemplate.redraw(SlChartElement.state);
-    }
-
-}
-customElements.define("sl-chart", SlChartElement);
-
-SlChartElement.state = null;
-
-class ToastsTemplate {
-    static update(render, state) {
-        if (!state.toasts.length) {
-            Util.renderEmpty(render);
-            return;
+            SlChartElement.state = {
+                instrument: this.dataset.instrument,
+                quotes: QuotesService.getQuotes(),
+                length: 100
+            };
         }
 
-        /* eslint-disable indent */
-        render`
+        render() {
+            return SlChartTemplate.update(this.hyper);
+        }
+
+        /* eslint class-methods-use-this: "off" */
+        attributeChangedCallback(attr, oldValue, newValue) {
+            SlChartElement.state.instrument = JSON.parse(newValue).instrument;
+
+            SlChartTemplate.redraw(SlChartElement.state);
+        }
+
+    }
+    customElements.define("sl-chart", SlChartElement);
+
+    SlChartElement.state = null;
+
+    class ToastsTemplate {
+        static update(render, state) {
+            if (!state.toasts.length) {
+                Util.renderEmpty(render);
+                return;
+            }
+
+            /* eslint-disable indent */
+            render`
             <table class="f6 ba" cellspacing="0">
                 <tbody>${
                     state.toasts.map(toast => `<tr>
@@ -3215,38 +3215,38 @@ class ToastsTemplate {
                     </tr>`)}</tbody>
             </table>
         `;
-        /* eslint-enable indent */
+            /* eslint-enable indent */
+        }
     }
-}
 
-class ToastsController {
-    constructor(render, template) {
+    class ToastsController {
+        constructor(render, template) {
 
-        this.state = Introspected({
-            toasts: []
-        }, state => template.update(render, state));
+            this.state = Introspected({
+                toasts: []
+            }, state => template.update(render, state));
 
-        this.ToastsService = new ToastsService(this.state.toasts);
+            this.ToastsService = new ToastsService(this.state.toasts);
+        }
     }
-}
 
-class ToastsComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("toasts"));
+    class ToastsComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("toasts"));
 
-        this.toastsController = new ToastsController(render, ToastsTemplate);
+            this.toastsController = new ToastsController(render, ToastsTemplate);
+        }
     }
-}
 
-ToastsComponent.bootstrap();
+    ToastsComponent.bootstrap();
 
-class TradesTemplate {
-    static update(render, state) {
-        const isNoTrades = Util.hide(state.trades.value.length);
-        const isTrades = Util.show(state.trades.value.length);
+    class TradesTemplate {
+        static update(render, state) {
+            const isNoTrades = Util.hide(state.trades.value.length);
+            const isTrades = Util.show(state.trades.value.length);
 
-        /* eslint-disable indent */
-        render`
+            /* eslint-disable indent */
+            render`
             <div style="${isNoTrades}" class="h4 overflow-auto">
                 <p class="f6 w-100 mw8 tc b">No trades.</p>
             </div>
@@ -3295,66 +3295,66 @@ class TradesTemplate {
 
             <yesno-dialog></yesno-dialog>
         `;
-        /* eslint-enable indent */
-    }
-}
-
-class TradesController {
-    constructor(render, template) {
-        const events = (e, payload) => Util.handleEvent(this, e, payload);
-
-        this.state = Introspected({
-            trades: {
-                value: []
-            },
-            yesnoModalIsOpen: false,
-            yesnoModalText: "Are you sure to close the trade?",
-            closeTradeInfo: {
-                tradeId: null
-            }
-        }, state => template.update(render, state));
-
-        this.tradesService = new TradesService(this.state.trades);
-
-        YesNoDialogComponent.bootstrap(this.state, events);
+            /* eslint-enable indent */
+        }
     }
 
-    onCancelYesNoDialogClick() {
-        this.state.yesnoModalIsOpen = false;
+    class TradesController {
+        constructor(render, template) {
+            const events = (e, payload) => Util.handleEvent(this, e, payload);
+
+            this.state = Introspected({
+                trades: {
+                    value: []
+                },
+                yesnoModalIsOpen: false,
+                yesnoModalText: "Are you sure to close the trade?",
+                closeTradeInfo: {
+                    tradeId: null
+                }
+            }, state => template.update(render, state));
+
+            this.tradesService = new TradesService(this.state.trades);
+
+            YesNoDialogComponent.bootstrap(this.state, events);
+        }
+
+        onCancelYesNoDialogClick() {
+            this.state.yesnoModalIsOpen = false;
+        }
+
+        onOkYesNoDialogClick() {
+            this.state.yesnoModalIsOpen = false;
+
+            TradesService.closeTrade(this.state.closeTradeInfo.tradeId).then(trade => {
+                let message = "Closed " +
+                        `${(trade.units > 0 ? "sell" : "buy")} ` +
+                        `${trade.instrument} ` +
+                        `#${trade.id} ` +
+                        `@${trade.price} ` +
+                        `P&L ${trade.pl}`;
+
+                if (trade.errorMessage || trade.message) {
+                    message = `ERROR ${trade.errorMessage || trade.message}`;
+                }
+
+                ToastsService.addToast(message);
+            }).catch(err => {
+                const message = `ERROR ${err.code} ${err.message}`;
+
+                ToastsService.addToast(message);
+            });
+        }
     }
 
-    onOkYesNoDialogClick() {
-        this.state.yesnoModalIsOpen = false;
+    class TradesComponent {
+        static bootstrap() {
+            const render = hyperHTML.bind(Util.query("trades"));
 
-        TradesService.closeTrade(this.state.closeTradeInfo.tradeId).then(trade => {
-            let message = "Closed " +
-                    `${(trade.units > 0 ? "sell" : "buy")} ` +
-                    `${trade.instrument} ` +
-                    `#${trade.id} ` +
-                    `@${trade.price} ` +
-                    `P&L ${trade.pl}`;
-
-            if (trade.errorMessage || trade.message) {
-                message = `ERROR ${trade.errorMessage || trade.message}`;
-            }
-
-            ToastsService.addToast(message);
-        }).catch(err => {
-            const message = `ERROR ${err.code} ${err.message}`;
-
-            ToastsService.addToast(message);
-        });
+            this.tradesController = new TradesController(render, TradesTemplate);
+        }
     }
-}
 
-class TradesComponent {
-    static bootstrap() {
-        const render = hyperHTML.bind(Util.query("trades"));
-
-        this.tradesController = new TradesController(render, TradesTemplate);
-    }
-}
-
-TradesComponent.bootstrap();
+    TradesComponent.bootstrap();
 
 }(hyperHTML,Introspected,d3,techan));
