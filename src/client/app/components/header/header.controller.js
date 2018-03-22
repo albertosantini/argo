@@ -1,9 +1,9 @@
 import Introspected from "introspected";
 
-import { AccountsService } from "../account/accounts.service";
-import { SettingsDialogComponent } from "../settings-dialog/settings-dialog.component";
-import { TokenDialogComponent } from "../token-dialog/token-dialog.component";
-import { Util } from "../../util";
+import { AccountsService } from "../account/accounts.service.js";
+import { SettingsDialogComponent } from "../settings-dialog/settings-dialog.component.js";
+import { TokenDialogComponent } from "../token-dialog/token-dialog.component.js";
+import { Util } from "../../util.js";
 
 export class HeaderController {
     constructor(render, template) {

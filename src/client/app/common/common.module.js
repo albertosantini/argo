@@ -1,1 +1,1 @@
-import "./app.module";
+import "./app.module.js";

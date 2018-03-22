@@ -1,3 +1,3 @@
-import { NewsComponent } from "./news.component";
+import { NewsComponent } from "./news.component.js";
 
 NewsComponent.bootstrap();

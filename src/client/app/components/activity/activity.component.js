@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { ActivityTemplate } from "./activity.template";
-import { ActivityController } from "./activity.controller";
+import { Util } from "../../util.js";
+import { ActivityTemplate } from "./activity.template.js";
+import { ActivityController } from "./activity.controller.js";
 
 export class ActivityComponent {
     static bootstrap() {

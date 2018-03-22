@@ -1,8 +1,8 @@
 import "mocha";
 import { assert } from "chai";
 
-import { ExposureService } from "./exposure.service";
-import { TradesService } from "../trades/trades.service";
+import { ExposureService } from "./exposure.service.js";
+import { TradesService } from "../trades/trades.service.js";
 
 const { beforeEach, describe, it } = window;
 

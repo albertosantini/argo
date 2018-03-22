@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { OrderDialogTemplate } from "./order-dialog.template";
-import { OrderDialogController } from "./order-dialog.controller";
+import { Util } from "../../util.js";
+import { OrderDialogTemplate } from "./order-dialog.template.js";
+import { OrderDialogController } from "./order-dialog.controller.js";
 
 export class OrderDialogComponent {
     static bootstrap(state) {

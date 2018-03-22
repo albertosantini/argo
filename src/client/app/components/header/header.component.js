@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { HeaderTemplate } from "./header.template";
-import { HeaderController } from "./header.controller";
+import { Util } from "../../util.js";
+import { HeaderTemplate } from "./header.template.js";
+import { HeaderController } from "./header.controller.js";
 
 export class HeaderComponent {
     static bootstrap() {

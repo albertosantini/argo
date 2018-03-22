@@ -1,1 +1,1 @@
-import "./sl-chart.element";
+import "./sl-chart.element.js";

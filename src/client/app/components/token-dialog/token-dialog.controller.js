@@ -1,17 +1,17 @@
 import Introspected from "introspected";
 
-import { AccountsService } from "../account/accounts.service";
-import { ActivityService } from "../activity/activity.service";
-import { ChartsComponent } from "../charts/charts.component";
-import { ExposureService } from "../exposure/exposure.service";
-import { NewsService } from "../news/news.service";
-import { OrdersService } from "../orders/orders.service";
-import { PositionsService } from "../positions/positions.service";
-import { SessionService } from "../session/session.service";
-import { StreamingService } from "../streaming/streaming.service";
-import { ToastsService } from "../toasts/toasts.service";
-import { TradesService } from "../trades/trades.service";
-import { Util } from "../../util";
+import { AccountsService } from "../account/accounts.service.js";
+import { ActivityService } from "../activity/activity.service.js";
+import { ChartsComponent } from "../charts/charts.component.js";
+import { ExposureService } from "../exposure/exposure.service.js";
+import { NewsService } from "../news/news.service.js";
+import { OrdersService } from "../orders/orders.service.js";
+import { PositionsService } from "../positions/positions.service.js";
+import { SessionService } from "../session/session.service.js";
+import { StreamingService } from "../streaming/streaming.service.js";
+import { ToastsService } from "../toasts/toasts.service.js";
+import { TradesService } from "../trades/trades.service.js";
+import { Util } from "../../util.js";
 
 
 export class TokenDialogController {

@@ -1,5 +1,5 @@
-import { SessionService } from "../session/session.service";
-import { TradesService } from "../trades/trades.service";
+import { SessionService } from "../session/session.service.js";
+import { TradesService } from "../trades/trades.service.js";
 
 export class ExposureService {
     constructor(exposure) {

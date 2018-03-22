@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { ToastsTemplate } from "./toasts.template";
-import { ToastsController } from "./toasts.controller";
+import { Util } from "../../util.js";
+import { ToastsTemplate } from "./toasts.template.js";
+import { ToastsController } from "./toasts.controller.js";
 
 export class ToastsComponent {
     static bootstrap() {

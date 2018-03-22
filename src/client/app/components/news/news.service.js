@@ -1,5 +1,5 @@
-import { Util } from "../../util";
-import { SessionService } from "../session/session.service";
+import { Util } from "../../util.js";
+import { SessionService } from "../session/session.service.js";
 
 export class NewsService {
     constructor(news) {

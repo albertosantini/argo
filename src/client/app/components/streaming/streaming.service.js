@@ -1,12 +1,12 @@
-import { AccountsService } from "../account/accounts.service";
-import { ActivityService } from "../activity/activity.service";
-import { OrdersService } from "../orders/orders.service";
-import { QuotesService } from "../quotes/quotes.service";
-import { PluginsService } from "../plugins/plugins.service";
-import { PositionsService } from "../positions/positions.service";
-import { ToastsService } from "../toasts/toasts.service";
-import { TradesService } from "../trades/trades.service";
-import { Util } from "../../util";
+import { AccountsService } from "../account/accounts.service.js";
+import { ActivityService } from "../activity/activity.service.js";
+import { OrdersService } from "../orders/orders.service.js";
+import { QuotesService } from "../quotes/quotes.service.js";
+import { PluginsService } from "../plugins/plugins.service.js";
+import { PositionsService } from "../positions/positions.service.js";
+import { ToastsService } from "../toasts/toasts.service.js";
+import { TradesService } from "../trades/trades.service.js";
+import { Util } from "../../util.js";
 
 export class StreamingService {
     static startStream(data) {

@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { ToastsService } from "./toasts.service";
+import { ToastsService } from "./toasts.service.js";
 
 export class ToastsController {
     constructor(render, template) {

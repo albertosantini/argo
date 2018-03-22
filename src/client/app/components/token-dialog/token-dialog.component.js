@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { TokenDialogTemplate } from "./token-dialog.template";
-import { TokenDialogController } from "./token-dialog.controller";
+import { Util } from "../../util.js";
+import { TokenDialogTemplate } from "./token-dialog.template.js";
+import { TokenDialogController } from "./token-dialog.controller.js";
 
 export class TokenDialogComponent {
     static bootstrap(state) {

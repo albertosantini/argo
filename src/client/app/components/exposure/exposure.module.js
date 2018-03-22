@@ -1,3 +1,3 @@
-import { ExposureComponent } from "./exposure.component";
+import { ExposureComponent } from "./exposure.component.js";
 
 ExposureComponent.bootstrap();

@@ -1,1 +1,1 @@
-import "./token-dialog.component";
+import "./token-dialog.component.js";

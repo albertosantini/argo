@@ -1,4 +1,4 @@
-import { Util } from "../../util";
+import { Util } from "../../util.js";
 
 export class AccountTemplate {
     static update(render, state) {

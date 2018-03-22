@@ -1,3 +1,3 @@
-import { AccountComponent } from "./account.component";
+import { AccountComponent } from "./account.component.js";
 
 AccountComponent.bootstrap();

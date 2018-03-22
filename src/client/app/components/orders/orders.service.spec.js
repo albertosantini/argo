@@ -1,8 +1,8 @@
 import "mocha";
 import { assert } from "chai";
 
-import { OrdersService } from "./orders.service";
-import { SessionService } from "../session/session.service";
+import { OrdersService } from "./orders.service.js";
+import { SessionService } from "../session/session.service.js";
 
 const { beforeEach, describe, it } = window;
 

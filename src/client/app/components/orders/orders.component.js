@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { OrdersTemplate } from "./orders.template";
-import { OrdersController } from "./orders.controller";
+import { Util } from "../../util.js";
+import { OrdersTemplate } from "./orders.template.js";
+import { OrdersController } from "./orders.controller.js";
 
 export class OrdersComponent {
     static bootstrap() {

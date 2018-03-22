@@ -1,1 +1,1 @@
-import "./settings-dialog.component";
+import "./settings-dialog.component.js";

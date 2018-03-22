@@ -15,7 +15,7 @@ import "./components/components.module.spec.js";
 
     self.fetch = url => {
         if (url in responses) {
-            return mockResponse(responses[url]);
+            return mockResponse(responses[url.toString()]);
         }
 
         return mockResponse();

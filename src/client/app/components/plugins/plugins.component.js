@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { PluginsTemplate } from "./plugins.template";
-import { PluginsController } from "./plugins.controller";
+import { Util } from "../../util.js";
+import { PluginsTemplate } from "./plugins.template.js";
+import { PluginsController } from "./plugins.controller.js";
 
 export class PluginsComponent {
     static bootstrap() {

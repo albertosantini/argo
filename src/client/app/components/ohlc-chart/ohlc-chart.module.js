@@ -1,1 +1,1 @@
-import "./ohlc-chart.element";
+import "./ohlc-chart.element.js";

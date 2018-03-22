@@ -1,6 +1,6 @@
-import { Hyper } from "../../util";
-import { QuotesService } from "../quotes/quotes.service";
-import { SlChartTemplate } from "./sl-chart.template";
+import { Hyper } from "../../util.js";
+import { QuotesService } from "../quotes/quotes.service.js";
+import { SlChartTemplate } from "./sl-chart.template.js";
 
 class SlChartElement extends Hyper {
     static get observedAttributes() {

@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { TradesTemplate } from "./trades.template";
-import { TradesController } from "./trades.controller";
+import { Util } from "../../util.js";
+import { TradesTemplate } from "./trades.template.js";
+import { TradesController } from "./trades.controller.js";
 
 export class TradesComponent {
     static bootstrap() {

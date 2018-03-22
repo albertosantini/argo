@@ -1,4 +1,4 @@
-import { Util } from "../util";
+import { Util } from "../util.js";
 
 export class AppTemplate {
     static update(render, state) {

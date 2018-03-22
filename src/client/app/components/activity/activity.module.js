@@ -1,3 +1,3 @@
-import { ActivityComponent } from "./activity.component";
+import { ActivityComponent } from "./activity.component.js";
 
 ActivityComponent.bootstrap();

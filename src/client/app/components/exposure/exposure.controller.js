@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { ExposureService } from "./exposure.service";
+import { ExposureService } from "./exposure.service.js";
 
 export class ExposureController {
     constructor(render, template) {

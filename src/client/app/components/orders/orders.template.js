@@ -1,6 +1,6 @@
-import { Util } from "../../util";
-
 import hyperHTML from "hyperHTML";
+
+import { Util } from "../../util.js";
 
 export class OrdersTemplate {
     static update(render, state) {

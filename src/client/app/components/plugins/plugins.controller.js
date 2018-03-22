@@ -1,7 +1,7 @@
 import Introspected from "introspected";
 
-import { PluginsService } from "../plugins/plugins.service";
-import { Util } from "../../util";
+import { PluginsService } from "../plugins/plugins.service.js";
+import { Util } from "../../util.js";
 
 export class PluginsController {
     constructor(render, template) {

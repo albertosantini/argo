@@ -1,3 +1,3 @@
-import { QuotesComponent } from "./quotes.component";
+import { QuotesComponent } from "./quotes.component.js";
 
 QuotesComponent.bootstrap();

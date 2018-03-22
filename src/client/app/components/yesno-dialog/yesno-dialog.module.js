@@ -1,1 +1,1 @@
-import "./yesno-dialog.component";
+import "./yesno-dialog.component.js";

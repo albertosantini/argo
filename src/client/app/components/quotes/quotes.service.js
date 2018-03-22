@@ -1,4 +1,4 @@
-import { AccountsService } from "../account/accounts.service";
+import { AccountsService } from "../account/accounts.service.js";
 
 export class QuotesService {
     constructor(quotes) {

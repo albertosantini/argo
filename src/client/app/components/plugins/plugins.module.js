@@ -1,3 +1,3 @@
-import { PluginsComponent } from "./plugins.component";
+import { PluginsComponent } from "./plugins.component.js";
 
 PluginsComponent.bootstrap();

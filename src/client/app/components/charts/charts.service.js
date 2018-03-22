@@ -1,6 +1,6 @@
-import { Util } from "../../util";
-import { SessionService } from "../session/session.service";
-import { ToastsService } from "../toasts/toasts.service";
+import { Util } from "../../util.js";
+import { SessionService } from "../session/session.service.js";
+import { ToastsService } from "../toasts/toasts.service.js";
 
 export class ChartsService {
     constructor(candles) {

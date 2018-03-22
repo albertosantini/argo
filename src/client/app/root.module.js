@@ -1,3 +1,3 @@
-import "./root.component";
-import "./common/common.module";
-import "./components/components.module";
+import "./root.component.js";
+import "./common/common.module.js";
+import "./components/components.module.js";

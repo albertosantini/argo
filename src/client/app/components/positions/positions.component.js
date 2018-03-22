@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { PositionsTemplate } from "./positions.template";
-import { PositionsController } from "./positions.controller";
+import { Util } from "../../util.js";
+import { PositionsTemplate } from "./positions.template.js";
+import { PositionsController } from "./positions.controller.js";
 
 export class PositionsComponent {
     static bootstrap() {

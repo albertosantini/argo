@@ -1,3 +1,3 @@
-import { OrdersComponent } from "./orders.component";
+import { OrdersComponent } from "./orders.component.js";
 
 OrdersComponent.bootstrap();

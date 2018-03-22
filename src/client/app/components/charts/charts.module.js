@@ -1,1 +1,1 @@
-import "./charts.component";
+import "./charts.component.js";

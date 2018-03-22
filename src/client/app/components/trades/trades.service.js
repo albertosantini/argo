@@ -1,7 +1,7 @@
-import { Util } from "../../util";
-import { SessionService } from "../session/session.service";
-import { AccountsService } from "../account/accounts.service";
-import { ExposureService } from "../exposure/exposure.service";
+import { Util } from "../../util.js";
+import { SessionService } from "../session/session.service.js";
+import { AccountsService } from "../account/accounts.service.js";
+import { ExposureService } from "../exposure/exposure.service.js";
 
 export class TradesService {
     constructor(trades) {

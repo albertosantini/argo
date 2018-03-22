@@ -1,9 +1,9 @@
 import Introspected from "introspected";
 
-import { OrdersService } from "../orders/orders.service";
-import { ToastsService } from "../toasts/toasts.service";
-import { Util } from "../../util";
-import { YesNoDialogComponent } from "../yesno-dialog/yesno-dialog.component";
+import { OrdersService } from "../orders/orders.service.js";
+import { ToastsService } from "../toasts/toasts.service.js";
+import { Util } from "../../util.js";
+import { YesNoDialogComponent } from "../yesno-dialog/yesno-dialog.component.js";
 
 export class OrdersController {
     constructor(render, template) {

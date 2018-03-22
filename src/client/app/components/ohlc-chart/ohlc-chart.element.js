@@ -1,5 +1,5 @@
-import { Hyper } from "../../util";
-import { OhlcChartTemplate } from "./ohlc-chart.template";
+import { Hyper } from "../../util.js";
+import { OhlcChartTemplate } from "./ohlc-chart.template.js";
 
 class OhlcChartElement extends Hyper {
     static get observedAttributes() {

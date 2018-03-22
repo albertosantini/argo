@@ -1,6 +1,6 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
+import { Util } from "../../util.js";
 
 export class OrderDialogTemplate {
     static update(render, state, events) {

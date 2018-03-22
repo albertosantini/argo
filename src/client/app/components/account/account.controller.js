@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { AccountsService } from "./accounts.service";
+import { AccountsService } from "./accounts.service.js";
 
 export class AccountController {
     constructor(render, template) {

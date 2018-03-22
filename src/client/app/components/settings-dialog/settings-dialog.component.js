@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { SettingsDialogTemplate } from "./settings-dialog.template";
-import { SettingsDialogController } from "./settings-dialog.controller";
+import { Util } from "../../util.js";
+import { SettingsDialogTemplate } from "./settings-dialog.template.js";
+import { SettingsDialogController } from "./settings-dialog.controller.js";
 
 export class SettingsDialogComponent {
     static bootstrap(state) {

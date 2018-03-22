@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { QuotesService } from "./quotes.service";
+import { QuotesService } from "./quotes.service.js";
 
 export class QuotesController {
     constructor(render, template) {

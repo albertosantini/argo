@@ -1,9 +1,9 @@
 import "mocha";
 import { assert, expect } from "chai";
 
-import { ActivityService } from "./activity.service";
-import { SessionService } from "../session/session.service";
-import { AccountsService } from "../account/accounts.service";
+import { ActivityService } from "./activity.service.js";
+import { SessionService } from "../session/session.service.js";
+import { AccountsService } from "../account/accounts.service.js";
 
 const { beforeEach, describe, it } = window;
 

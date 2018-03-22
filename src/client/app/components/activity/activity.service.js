@@ -1,6 +1,6 @@
-import { Util } from "../../util";
-import { SessionService } from "../session/session.service";
-import { AccountsService } from "../account/accounts.service";
+import { Util } from "../../util.js";
+import { SessionService } from "../session/session.service.js";
+import { AccountsService } from "../account/accounts.service.js";
 
 export class ActivityService {
     constructor(activities) {

@@ -1,1 +1,1 @@
-import "./order-dialog.component";
+import "./order-dialog.component.js";

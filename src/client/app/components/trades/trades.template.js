@@ -1,7 +1,6 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-
+import { Util } from "../../util.js";
 
 export class TradesTemplate {
     static update(render, state) {

@@ -1,6 +1,7 @@
 import hyperHTML from "hyperHTML";
-import { Util } from "./util";
-import { RootTemplate } from "./root.template";
+
+import { Util } from "./util.js";
+import { RootTemplate } from "./root.template.js";
 
 export class RootComponent {
     static bootstrap() {

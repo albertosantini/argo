@@ -1,1 +1,1 @@
-import "./streaming.service";
+import "./streaming.service.js";

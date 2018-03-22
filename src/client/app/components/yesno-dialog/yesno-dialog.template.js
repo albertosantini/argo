@@ -1,4 +1,4 @@
-import { Util } from "../../util";
+import { Util } from "../../util.js";
 
 export class YesNoDialogTemplate {
     static update(render, state, events) {

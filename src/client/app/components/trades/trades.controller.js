@@ -1,9 +1,9 @@
 import Introspected from "introspected";
 
-import { ToastsService } from "../toasts/toasts.service";
-import { TradesService } from "../trades/trades.service";
-import { Util } from "../../util";
-import { YesNoDialogComponent } from "../yesno-dialog/yesno-dialog.component";
+import { ToastsService } from "../toasts/toasts.service.js";
+import { TradesService } from "../trades/trades.service.js";
+import { Util } from "../../util.js";
+import { YesNoDialogComponent } from "../yesno-dialog/yesno-dialog.component.js";
 
 export class TradesController {
     constructor(render, template) {

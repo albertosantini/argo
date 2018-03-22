@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { PositionsService } from "../positions/positions.service";
+import { PositionsService } from "../positions/positions.service.js";
 
 export class PositionsController {
     constructor(render, template) {

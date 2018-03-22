@@ -1,10 +1,10 @@
 import Introspected from "introspected";
 
-import { AccountsService } from "../account/accounts.service";
-import { QuotesService } from "../quotes/quotes.service";
-import { SessionService } from "../session/session.service";
-import { StreamingService } from "../streaming/streaming.service";
-import { Util } from "../../util";
+import { AccountsService } from "../account/accounts.service.js";
+import { QuotesService } from "../quotes/quotes.service.js";
+import { SessionService } from "../session/session.service.js";
+import { StreamingService } from "../streaming/streaming.service.js";
+import { Util } from "../../util.js";
 
 export class SettingsDialogController {
     constructor(render, template, bindings) {

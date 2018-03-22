@@ -1,3 +1,3 @@
-import { PositionsComponent } from "./positions.component";
+import { PositionsComponent } from "./positions.component.js";
 
 PositionsComponent.bootstrap();

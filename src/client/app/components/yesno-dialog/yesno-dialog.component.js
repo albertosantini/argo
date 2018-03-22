@@ -1,8 +1,8 @@
 import hyperHTML from "hyperHTML";
 
-import { Util } from "../../util";
-import { YesNoDialogTemplate } from "./yesno-dialog.template";
-import { YesNoDialogController } from "./yesno-dialog.controller";
+import { Util } from "../../util.js";
+import { YesNoDialogTemplate } from "./yesno-dialog.template.js";
+import { YesNoDialogController } from "./yesno-dialog.controller.js";
 
 export class YesNoDialogComponent {
     static bootstrap(state, events) {

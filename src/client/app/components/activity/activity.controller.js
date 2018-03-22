@@ -1,6 +1,6 @@
 import Introspected from "introspected";
 
-import { ActivityService } from "../activity/activity.service";
+import { ActivityService } from "../activity/activity.service.js";
 
 export class ActivityController {
     constructor(render, template) {

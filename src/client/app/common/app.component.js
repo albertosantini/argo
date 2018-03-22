@@ -1,7 +1,8 @@
 import hyperHTML from "hyperHTML";
-import { Util } from "../util";
-import { AppTemplate } from "./app.template";
-import { AppController } from "./app.controller";
+
+import { Util } from "../util.js";
+import { AppTemplate } from "./app.template.js";
+import { AppController } from "./app.controller.js";
 
 export class AppComponent {
     static bootstrap() {

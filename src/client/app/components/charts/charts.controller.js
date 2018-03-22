@@ -1,12 +1,11 @@
 import Introspected from "introspected";
 
-import { AccountsService } from "../account/accounts.service";
-import { ChartsService } from "./charts.service";
-import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
-import { QuotesService } from "../quotes/quotes.service";
-import { Util } from "../../util";
-
-import { TradesService } from "../trades/trades.service";
+import { AccountsService } from "../account/accounts.service.js";
+import { ChartsService } from "./charts.service.js";
+import { OrderDialogComponent } from "../order-dialog/order-dialog.component.js";
+import { QuotesService } from "../quotes/quotes.service.js";
+import { TradesService } from "../trades/trades.service.js";
+import { Util } from "../../util.js";
 
 export class ChartsController {
     constructor(render, template) {
