@@ -28,7 +28,7 @@
         "express": "^4.16.3",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^2.7.0",
+        "hyperhtml": "^2.7.1",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.85.0",
