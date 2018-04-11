@@ -28,7 +28,7 @@
         "express": "^4.16.3",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
-        "hyperhtml": "^2.8.0",
+        "hyperhtml": "^2.9.0",
         "introspected": "^0.2.5",
         "limiter": "^1.1.2",
         "request": "^2.85.0",
@@ -56,6 +56,6 @@
         "mocha": "^5.0.5",
         "rollup": "^0.57.1",
         "rollup-plugin-node-resolve": "^3.3.0",
-        "uglify-js": "^3.3.19"
+        "uglify-js": "^3.3.20"
     }
 }
