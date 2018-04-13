@@ -1,5 +1,3 @@
-import hyperHTML from "hyperHTML";
-
 export class Util {
     static query(selector) {
         return document.querySelector(selector) ||
@@ -85,17 +83,3 @@ export class Util {
 }
 
 Util.spinnerState = {};
-
-export class Hyper extends HTMLElement {
-    connectedCallback() {
-        if ("hyper" in this) {
-            return;
-        }
-        this.hyper = hyperHTML.wire();
-        this.appendChild(this.render().childNodes[0]);
-    }
-
-    render() {
-        return this.hyper`render method is not implemented`;
-    }
-}

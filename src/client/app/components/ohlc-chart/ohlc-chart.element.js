@@ -1,7 +1,8 @@
-import { Hyper } from "../../util.js";
+import { wire } from "hyperHTML";
+
 import { OhlcChartTemplate } from "./ohlc-chart.template.js";
 
-class OhlcChartElement extends Hyper {
+class OhlcChartElement extends HTMLElement {
     static get observedAttributes() {
         return ["data-data", "data-feed", "data-trades"];
     }
@@ -18,8 +19,8 @@ class OhlcChartElement extends Hyper {
         };
     }
 
-    render() {
-        return OhlcChartTemplate.update(this.hyper);
+    static render() {
+        return OhlcChartTemplate.update(wire());
     }
 
     attributeChangedCallback(name) {

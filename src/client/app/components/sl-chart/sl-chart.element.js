@@ -1,8 +1,9 @@
-import { Hyper } from "../../util.js";
+import { wire } from "hyperHTML";
+
 import { QuotesService } from "../quotes/quotes.service.js";
 import { SlChartTemplate } from "./sl-chart.template.js";
 
-class SlChartElement extends Hyper {
+class SlChartElement extends HTMLElement {
     static get observedAttributes() {
         return ["data-quote"];
     }
@@ -17,8 +18,8 @@ class SlChartElement extends Hyper {
         };
     }
 
-    render() {
-        return SlChartTemplate.update(this.hyper);
+    static render() {
+        return SlChartTemplate.update(wire());
     }
 
     /* eslint class-methods-use-this: "off" */
