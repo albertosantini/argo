@@ -1,7 +1,5 @@
-(function (hyperHTML,mocha,chai) {
+(function (mocha,chai) {
     'use strict';
-
-    hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
 
     class Util {
         static query(selector) {
@@ -1150,4 +1148,4 @@
         };
     }(typeof self !== "undefined" ? self : window));
 
-}(hyperHTML,mocha,chai));
+}(mocha,chai));
