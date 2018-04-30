@@ -6,10 +6,11 @@ exports.shoutStreaming = shoutStreaming;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-const util = require("util"),
-    flic = require("flic"),
+const flic = require("flic"),
     async = require("async"),
     routes = require("../routes");
+
+const util = require("../util");
 
 const nodeName = "master",
     plugins = {};

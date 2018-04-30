@@ -17,12 +17,13 @@ exports.closeTrade = closeTrade;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-const util = require("util"),
-    request = require("request"),
+const request = require("request"),
     RateLimiter = require("limiter").RateLimiter,
     config = require("./config"),
     stream = require("./stream"),
     plugin = require("../plugin/plugin");
+
+const util = require("../util");
 
 const limiter = new RateLimiter(1, 500); // at most 1 request every 500ms
 

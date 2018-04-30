@@ -1,9 +1,10 @@
 "use strict";
 
-const util = require("util"),
-    express = require("express"),
+const express = require("express"),
     routes = require("./routes"),
     plugin = require("./plugin");
+
+const util = require("./util");
 
 const app = express(),
     port = routes.config.port,
@@ -25,7 +26,7 @@ app.listen(port, () => {
 }).on("upgrade", (request, socket, body) => {
     routes.stream.run(request, socket, body);
 
-    util.log("Argo streaming prices and events on ws://localhost:" +
+    util.log("Argo streaming prices and events on ws://localhost:",
         `${port}${routes.config.streamUrl}`);
 });
 
