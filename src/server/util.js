@@ -4,7 +4,7 @@ exports.log = log;
 exports.request = request;
 
 function log(...args) {
-    console.log(new Date(), ...args); /* eslint no-console:off */
+    console.log(new Date().toTimeString(), ...args); /* eslint no-console:off */
 }
 
 const urlParse = require("url").parse;
