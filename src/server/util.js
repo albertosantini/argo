@@ -30,7 +30,7 @@ function request({
 
     if (body) {
         headers["Content-Type"] = "application/json";
-        headers["Content-Length"] = body.length;
+        headers["Content-Length"] = JSON.stringify(body).length;
     }
 
     const requestOptions = {
