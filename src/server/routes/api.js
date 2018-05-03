@@ -17,8 +17,7 @@ exports.closeTrade = closeTrade;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-const request = require("request"),
-    RateLimiter = require("limiter").RateLimiter,
+const RateLimiter = require("limiter").RateLimiter,
     config = require("./config"),
     stream = require("./stream"),
     plugin = require("../plugin/plugin");
@@ -31,7 +30,7 @@ function throttledRequest() {
     const requestArgs = arguments;
 
     limiter.removeTokens(1, () => {
-        request.apply(null, requestArgs);
+        util.request.apply(null, requestArgs);
     });
 }
 
