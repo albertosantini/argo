@@ -126,7 +126,6 @@ function getCandles(req, response) {
             qs: {
                 granularity: req.body.granularity,
                 count: req.body.count,
-                alignmentTimezone: req.body.alignmentTimezone,
                 dailyAlignment: req.body.dailyAlignment
             },
             headers: {
@@ -224,11 +223,13 @@ function getTransactions(req, response) {
         const lastTransactionID = req.body.lastTransactionID;
         const id = lastTransactionID > 32 ? lastTransactionID - 32 : 0;
         const api = config.getUrl(req.body.environment, "api");
-        const url = `${api}/v3/accounts/${req.body.accountId}/transactions` +
-            `/sinceid?id=${id}`;
+        const url = `${api}/v3/accounts/${req.body.accountId}/transactions/sinceid`;
 
         throttledRequest({
             url,
+            qs: {
+                id
+            },
             headers: {
                 Authorization: `Bearer ${req.body.token}`
             }
