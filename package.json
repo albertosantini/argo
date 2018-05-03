@@ -31,7 +31,6 @@
         "hyperhtml": "^2.10.0",
         "introspected": "^0.2.5",
         "limiter": "^1.1.3",
-        "request": "^2.85.0",
         "tachyons": "^4.9.1",
         "techan": "^0.8.0"
     },
