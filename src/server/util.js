@@ -10,6 +10,7 @@ function log(...args) {
 const urlParse = require("url").parse;
 const https = require("https");
 const querystring = require("querystring");
+const EventEmitter = require("events");
 
 function request({
     url = "",
@@ -18,6 +19,7 @@ function request({
     body = null,
     qs = {}
 } = {}, callback) {
+    const myEE = new EventEmitter();
     const reqUrl = urlParse(url);
     const host = reqUrl.hostname;
     const port = reqUrl.port || 443;
@@ -42,11 +44,15 @@ function request({
     };
 
     function requestResponse(res) {
+        myEE.emit("response");
+
         res.setEncoding("utf8");
 
         let rawData = "";
 
         res.on("data", chunk => {
+            myEE.emit("data", chunk);
+
             rawData += chunk;
         });
 
@@ -62,4 +68,6 @@ function request({
     }
 
     req.end();
+
+    return myEE;
 }
