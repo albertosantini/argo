@@ -11,9 +11,7 @@ const WebSocket = require("faye-websocket"),
 
 const initialSnapshots = [];
 
-let pricesStreaming,
-    eventsStreaming,
-    ws;
+let ws;
 
 function start({
     environment = config.environment,
@@ -28,19 +26,14 @@ function start({
             Authorization: `Bearer ${accessToken}`
         };
 
-    if (pricesStreaming && eventsStreaming) {
-        pricesStreaming.abort();
-        eventsStreaming.abort();
-    }
-
-    pricesStreaming = request({
+    request({
         url: pricesUrl,
         qs: {
             instruments: instruments.join(",")
         },
         headers: authHeader
     }).on("response", () => {
-        eventsStreaming = request({
+        request({
             url: eventsUrl,
             headers: authHeader
         }).on("response", () => {
