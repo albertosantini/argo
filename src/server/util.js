@@ -19,7 +19,7 @@ function request({
     body = null,
     qs = {}
 } = {}, callback) {
-    const myEE = new EventEmitter();
+    const ee = new EventEmitter();
     const reqUrl = urlParse(url);
     const host = reqUrl.hostname;
     const port = reqUrl.port || 443;
@@ -44,14 +44,14 @@ function request({
     };
 
     function requestResponse(res) {
-        myEE.emit("response");
+        ee.emit("response");
 
         res.setEncoding("utf8");
 
         let rawData = "";
 
         res.on("data", chunk => {
-            myEE.emit("data", chunk);
+            ee.emit("data", chunk);
 
             rawData += chunk;
         });
@@ -69,5 +69,5 @@ function request({
 
     req.end();
 
-    return myEE;
+    return ee;
 }
