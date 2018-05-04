@@ -4,7 +4,16 @@ exports.log = log;
 exports.request = request;
 
 function log(...args) {
-    console.log(new Date().toTimeString(), ...args); /* eslint no-console:off */
+    const now = new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+
+    console.log(now, ...args); /* eslint no-console:off */
 }
 
 const urlParse = require("url").parse;
