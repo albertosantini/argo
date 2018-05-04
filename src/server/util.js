@@ -11,6 +11,7 @@ const urlParse = require("url").parse;
 const https = require("https");
 const querystring = require("querystring");
 const EventEmitter = require("events");
+const HttpsProxyAgent = require("https-proxy-agent");
 
 function request({
     url = "",
@@ -59,6 +60,9 @@ function request({
         res.on("end", () => callback(null, res, rawData));
     }
 
+    if (process.env.https_proxy) {
+        requestOptions.agent = new HttpsProxyAgent(process.env.https_proxy);
+    }
     const req = https.request(requestOptions, requestResponse);
 
     req.on("error", err => callback(err));
