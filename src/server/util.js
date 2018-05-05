@@ -13,7 +13,7 @@ function log(...args) {
         second: "2-digit"
     });
 
-    console.log(now, ...args); /* eslint no-console:off */
+    console.log(now, ...args); // eslint-disable-line no-console
 }
 
 const urlParse = require("url").parse;
