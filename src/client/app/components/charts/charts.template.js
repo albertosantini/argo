@@ -12,10 +12,16 @@ export class ChartsTemplate {
         /* eslint-disable indent */
         render`
             <div class="flex flex-wrap flex-row justify-center justify-around mb2">
-                <select id="chartInstrument" onchange="${e => events(e, {
-                        instrument: e.target.value.trim(),
-                        granularity: state.selectedGranularity
-                    })}">${
+                <select id="chartInstrument" onchange="${e => {
+                        const instrument = e.target.value.trim();
+
+                        if (state.selectedInstrument !== instrument) {
+                            events(e, {
+                                instrument,
+                                granularity: state.selectedGranularity
+                            });
+                        }
+                    }}">${
 
                     state.account.streamingInstruments.map(instrument => hyperHTML.wire()`
                     <option value="${instrument}">
@@ -23,10 +29,16 @@ export class ChartsTemplate {
                     </option>
                 `)}</select>
 
-                <select id="chartGranularity" onchange="${e => events(e, {
-                        instrument: state.selectedInstrument,
-                        granularity: e.target.value.trim()
-                    })}">${
+                <select id="chartGranularity" onchange="${e => {
+                        const granularity = e.target.value.trim();
+
+                        if (state.selectedGranularity !== granularity) {
+                            events(e, {
+                                instrument: state.selectedInstrument,
+                                granularity
+                            });
+                        }
+                    }}">${
 
                     state.granularities.map(granularity => hyperHTML.wire()`
                     <option value="${granularity}">
