@@ -26,11 +26,9 @@ const util = require("../util");
 
 const limiter = new RateLimiter(1, 500); // at most 1 request every 500ms
 
-function throttledRequest() {
-    const requestArgs = arguments;
-
+function throttledRequest(...args) {
     limiter.removeTokens(1, () => {
-        util.request.apply(null, requestArgs);
+        util.request.apply(null, args);
     });
 }
 
