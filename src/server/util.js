@@ -36,7 +36,7 @@ function request({
 
     let path = reqUrl.path;
 
-    if (method === "GET") {
+    if (method === "GET" && Object.keys(qs).length) {
         path += `?${querystring.stringify(qs)}`;
     }
 
