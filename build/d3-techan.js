@@ -1610,19 +1610,53 @@
     };
   }
 
-  function formatDefault(x, p) {
-    x = x.toPrecision(p);
+  // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+  var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 
-    out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
-      switch (x[i]) {
+  function formatSpecifier(specifier) {
+    return new FormatSpecifier(specifier);
+  }
+
+  formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+  function FormatSpecifier(specifier) {
+    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+    var match;
+    this.fill = match[1] || " ";
+    this.align = match[2] || ">";
+    this.sign = match[3] || "-";
+    this.symbol = match[4] || "";
+    this.zero = !!match[5];
+    this.width = match[6] && +match[6];
+    this.comma = !!match[7];
+    this.precision = match[8] && +match[8].slice(1);
+    this.trim = !!match[9];
+    this.type = match[10] || "";
+  }
+
+  FormatSpecifier.prototype.toString = function() {
+    return this.fill
+        + this.align
+        + this.sign
+        + this.symbol
+        + (this.zero ? "0" : "")
+        + (this.width == null ? "" : Math.max(1, this.width | 0))
+        + (this.comma ? "," : "")
+        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+        + (this.trim ? "~" : "")
+        + this.type;
+  };
+
+  // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+  function formatTrim(s) {
+    out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+      switch (s[i]) {
         case ".": i0 = i1 = i; break;
         case "0": if (i0 === 0) i0 = i; i1 = i; break;
-        case "e": break out;
-        default: if (i0 > 0) i0 = 0; break;
+        default: if (i0 > 0) { if (!+s[i]) break out; i0 = 0; } break;
       }
     }
-
-    return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
+    return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
   }
 
   var prefixExponent;
@@ -1651,7 +1685,6 @@
   }
 
   var formatTypes = {
-    "": formatDefault,
     "%": function(x, p) { return (x * 100).toFixed(p); },
     "b": function(x) { return Math.round(x).toString(2); },
     "c": function(x) { return x + ""; },
@@ -1665,61 +1698,6 @@
     "s": formatPrefixAuto,
     "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
     "x": function(x) { return Math.round(x).toString(16); }
-  };
-
-  // [[fill]align][sign][symbol][0][width][,][.precision][type]
-  var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
-
-  function formatSpecifier(specifier) {
-    return new FormatSpecifier(specifier);
-  }
-
-  formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-  function FormatSpecifier(specifier) {
-    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-
-    var match,
-        fill = match[1] || " ",
-        align = match[2] || ">",
-        sign = match[3] || "-",
-        symbol = match[4] || "",
-        zero = !!match[5],
-        width = match[6] && +match[6],
-        comma = !!match[7],
-        precision = match[8] && +match[8].slice(1),
-        type = match[9] || "";
-
-    // The "n" type is an alias for ",g".
-    if (type === "n") comma = true, type = "g";
-
-    // Map invalid types to the default format.
-    else if (!formatTypes[type]) type = "";
-
-    // If zero fill is specified, padding goes after sign and before digits.
-    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-
-    this.fill = fill;
-    this.align = align;
-    this.sign = sign;
-    this.symbol = symbol;
-    this.zero = zero;
-    this.width = width;
-    this.comma = comma;
-    this.precision = precision;
-    this.type = type;
-  }
-
-  FormatSpecifier.prototype.toString = function() {
-    return this.fill
-        + this.align
-        + this.sign
-        + this.symbol
-        + (this.zero ? "0" : "")
-        + (this.width == null ? "" : Math.max(1, this.width | 0))
-        + (this.comma ? "," : "")
-        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
-        + this.type;
   };
 
   function identity$2(x) {
@@ -1746,7 +1724,17 @@
           width = specifier.width,
           comma = specifier.comma,
           precision = specifier.precision,
+          trim = specifier.trim,
           type = specifier.type;
+
+      // The "n" type is an alias for ",g".
+      if (type === "n") comma = true, type = "g";
+
+      // The "" type, and any invalid type, is an alias for ".12~g".
+      else if (!formatTypes[type]) precision == null && (precision = 12), trim = true, type = "g";
+
+      // If zero fill is specified, padding goes after sign and before digits.
+      if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
 
       // Compute the prefix and suffix.
       // For SI-prefix, the suffix is lazily computed.
@@ -1757,13 +1745,13 @@
       // Is this an integer type?
       // Can this type generate exponential notation?
       var formatType = formatTypes[type],
-          maybeSuffix = !type || /[defgprs%]/.test(type);
+          maybeSuffix = /[defgprs%]/.test(type);
 
       // Set the default precision if not specified,
       // or clamp the specified precision to the supported range.
       // For significant precision, it must be in [1, 21].
       // For fixed precision, it must be in [0, 20].
-      precision = precision == null ? (type ? 6 : 12)
+      precision = precision == null ? 6
           : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
           : Math.max(0, Math.min(20, precision));
 
@@ -1781,6 +1769,9 @@
           // Perform the initial formatting.
           var valueNegative = value < 0;
           value = formatType(Math.abs(value), precision);
+
+          // Trim insignificant zeros.
+          if (trim) value = formatTrim(value);
 
           // If a negative value rounds to zero during formatting, treat as positive.
           if (valueNegative && +value === 0) valueNegative = false;
@@ -2175,6 +2166,9 @@
     displayable: function() {
       return this.rgb().displayable();
     },
+    hex: function() {
+      return this.rgb().hex();
+    },
     toString: function() {
       return this.rgb() + "";
     }
@@ -2241,6 +2235,9 @@
           && (0 <= this.b && this.b <= 255)
           && (0 <= this.opacity && this.opacity <= 1);
     },
+    hex: function() {
+      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    },
     toString: function() {
       var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
       return (a === 1 ? "rgb(" : "rgba(")
@@ -2250,6 +2247,11 @@
           + (a === 1 ? ")" : ", " + a + ")");
     }
   }));
+
+  function hex(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
 
   function hsla(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
@@ -2561,7 +2563,7 @@
         c = new Array(nb),
         i;
 
-    for (i = 0; i < na; ++i) x[i] = interpolateValue(a[i], b[i]);
+    for (i = 0; i < na; ++i) x[i] = value(a[i], b[i]);
     for (; i < nb; ++i) c[i] = b[i];
 
     return function(t) {
@@ -2577,7 +2579,7 @@
     };
   }
 
-  function reinterpolate(a, b) {
+  function number$2(a, b) {
     return a = +a, b -= a, function(t) {
       return a + b * t;
     };
@@ -2593,7 +2595,7 @@
 
     for (k in b) {
       if (k in a) {
-        i[k] = interpolateValue(a[k], b[k]);
+        i[k] = value(a[k], b[k]);
       } else {
         c[k] = b[k];
       }
@@ -2645,7 +2647,7 @@
         else s[++i] = bm;
       } else { // interpolate non-matching numbers
         s[++i] = null;
-        q.push({i: i, x: reinterpolate(am, bm)});
+        q.push({i: i, x: number$2(am, bm)});
       }
       bi = reB.lastIndex;
     }
@@ -2668,16 +2670,16 @@
           });
   }
 
-  function interpolateValue(a, b) {
+  function value(a, b) {
     var t = typeof b, c;
     return b == null || t === "boolean" ? constant$3(b)
-        : (t === "number" ? reinterpolate
+        : (t === "number" ? number$2
         : t === "string" ? ((c = color(b)) ? (b = c, rgb$1) : string)
         : b instanceof color ? rgb$1
         : b instanceof Date ? date
         : Array.isArray(b) ? array$2
         : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-        : reinterpolate)(a, b);
+        : number$2)(a, b);
   }
 
   function interpolateRound(a, b) {
@@ -2696,7 +2698,7 @@
     };
   }
 
-  function number$2(x) {
+  function number$3(x) {
     return +x;
   }
 
@@ -2715,21 +2717,21 @@
     };
   }
 
-  function reinterpolateClamp(reinterpolate$$1) {
+  function reinterpolateClamp(reinterpolate) {
     return function(a, b) {
-      var r = reinterpolate$$1(a = +a, b = +b);
+      var r = reinterpolate(a = +a, b = +b);
       return function(t) { return t <= 0 ? a : t >= 1 ? b : r(t); };
     };
   }
 
-  function bimap(domain, range, deinterpolate, reinterpolate$$1) {
+  function bimap(domain, range, deinterpolate, reinterpolate) {
     var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
-    if (d1 < d0) d0 = deinterpolate(d1, d0), r0 = reinterpolate$$1(r1, r0);
-    else d0 = deinterpolate(d0, d1), r0 = reinterpolate$$1(r0, r1);
+    if (d1 < d0) d0 = deinterpolate(d1, d0), r0 = reinterpolate(r1, r0);
+    else d0 = deinterpolate(d0, d1), r0 = reinterpolate(r0, r1);
     return function(x) { return r0(d0(x)); };
   }
 
-  function polymap(domain, range, deinterpolate, reinterpolate$$1) {
+  function polymap(domain, range, deinterpolate, reinterpolate) {
     var j = Math.min(domain.length, range.length) - 1,
         d = new Array(j),
         r = new Array(j),
@@ -2743,7 +2745,7 @@
 
     while (++i < j) {
       d[i] = deinterpolate(domain[i], domain[i + 1]);
-      r[i] = reinterpolate$$1(range[i], range[i + 1]);
+      r[i] = reinterpolate(range[i], range[i + 1]);
     }
 
     return function(x) {
@@ -2762,31 +2764,31 @@
 
   // deinterpolate(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
   // reinterpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding domain value x in [a,b].
-  function continuous(deinterpolate, reinterpolate$$1) {
+  function continuous(deinterpolate, reinterpolate) {
     var domain = unit,
         range = unit,
-        interpolate$$1 = interpolateValue,
+        interpolate$$1 = value,
         clamp = false,
-        piecewise,
+        piecewise$$1,
         output,
         input;
 
     function rescale() {
-      piecewise = Math.min(domain.length, range.length) > 2 ? polymap : bimap;
+      piecewise$$1 = Math.min(domain.length, range.length) > 2 ? polymap : bimap;
       output = input = null;
       return scale;
     }
 
     function scale(x) {
-      return (output || (output = piecewise(domain, range, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
+      return (output || (output = piecewise$$1(domain, range, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
     }
 
     scale.invert = function(y) {
-      return (input || (input = piecewise(range, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate$$1) : reinterpolate$$1)))(+y);
+      return (input || (input = piecewise$$1(range, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
     };
 
     scale.domain = function(_) {
-      return arguments.length ? (domain = map$2.call(_, number$2), rescale()) : domain.slice();
+      return arguments.length ? (domain = map$2.call(_, number$3), rescale()) : domain.slice();
     };
 
     scale.range = function(_) {
@@ -2893,7 +2895,7 @@
   }
 
   function linear$1() {
-    var scale = continuous(deinterpolateLinear, reinterpolate);
+    var scale = continuous(deinterpolateLinear, number$2);
 
     scale.copy = function() {
       return copy(scale, linear$1());
@@ -3900,7 +3902,7 @@
       }
 
       // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-      else if (!(l01_2 > epsilon$1)) {}
+      else if (!(l01_2 > epsilon$1)) ;
 
       // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
       // Equivalently, is (x1,y1) coincident with (x2,y2)?
