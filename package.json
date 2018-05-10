@@ -46,7 +46,6 @@
         "lint": "eslint main.js src/**/*.js",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "rollup": "rollup -c",
-        "rollup-spec": "rollup -c rollup.config.spec.js",
         "rollup-d3": "rollup -c rollup.config.d3-techan.js && uglifyjs build/d3-techan.js -c -m -o build/d3-techan.min.js"
     },
     "devDependencies": {

@@ -1,10 +1,7 @@
-import "mocha";
-import { assert } from "chai";
-
 import { QuotesService } from "./quotes.service.js";
 import { AccountsService } from "../account/accounts.service.js";
 
-const { beforeEach, describe, it } = window;
+const assert = window.chai.assert;
 
 describe("quotesService", () => {
 

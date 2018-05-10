@@ -1,10 +1,7 @@
-import "mocha";
-import { assert } from "chai";
-
 import { PluginsService } from "./plugins.service.js";
 import { SessionService } from "../session/session.service.js";
 
-const { beforeEach, describe, it } = window;
+const assert = window.chai.assert;
 
 describe("pluginsService", () => {
     const environment = "my environment";
