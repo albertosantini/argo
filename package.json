@@ -22,21 +22,21 @@
     },
     "dependencies": {
         "async": "^2.6.0",
-        "body-parser": "^1.18.2",
-        "d3": "^5.3.0",
+        "body-parser": "^1.18.3",
+        "d3": "^5.4.0",
         "document-register-element": "^1.8.1",
         "express": "^4.16.3",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
         "https-proxy-agent": "^2.2.1",
-        "hyperhtml": "^2.10.0",
+        "hyperhtml": "^2.10.1",
         "introspected": "^0.2.5",
         "limiter": "^1.1.3",
         "tachyons": "^4.9.1",
         "techan": "^0.8.0"
     },
     "optionalDependencies": {
-        "electron": "^2.0.0"
+        "electron": "^2.0.1"
     },
     "scripts": {
         "test": "npm run lint && npm run electron -- index-spec.html",
@@ -53,8 +53,8 @@
         "conventional-changelog-cli": "^1.3.22",
         "eslint": "^4.19.1",
         "mocha": "^5.1.1",
-        "rollup": "^0.58.2",
+        "rollup": "^0.59.1",
         "rollup-plugin-node-resolve": "^3.3.0",
-        "uglify-js": "^3.3.24"
+        "uglify-js": "^3.3.25"
     }
 }
