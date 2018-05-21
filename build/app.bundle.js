@@ -2003,6 +2003,7 @@
                             type="button" value="Cancel"
                             onclick="${() => {
                                 state.tokenModalIsOpen = false;
+                                state.tokenInfo.token = "";
                             }}">
 
                         <input id="loginOk" class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
