@@ -1,14 +1,7 @@
 import * as d3 from "d3";
 import techan from "techan";
-import hyperHTML from "hyperHTML";
 
 export class OhlcChartTemplate {
-
-    static update(render) {
-        return render`${hyperHTML.wire(render, "svg")`
-            <span></span>`
-        }`;
-    }
 
     static redrawData(state) {
         if (!state.data) {

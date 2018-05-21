@@ -1,5 +1,3 @@
-import { wire } from "hyperHTML";
-
 import { QuotesService } from "../quotes/quotes.service.js";
 import { SlChartTemplate } from "./sl-chart.template.js";
 
@@ -16,10 +14,6 @@ class SlChartElement extends HTMLElement {
             quotes: QuotesService.getQuotes(),
             length: 100
         };
-    }
-
-    static render() {
-        return SlChartTemplate.update(wire());
     }
 
     /* eslint class-methods-use-this: "off" */

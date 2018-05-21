@@ -1,7 +1,7 @@
 (function (hyperHTML,Introspected,d3,techan) {
     'use strict';
 
-    var hyperHTML__default = 'default' in hyperHTML ? hyperHTML['default'] : hyperHTML;
+    hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
     Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
     techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
 
@@ -99,7 +99,7 @@
 
     class RootComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("root"));
+            const render = hyperHTML.bind(Util.query("root"));
 
             RootTemplate.update(render);
         }
@@ -188,7 +188,7 @@
 
     class AppComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("app"));
+            const render = hyperHTML.bind(Util.query("app"));
 
             this.appController = new AppController(render, AppTemplate);
         }
@@ -413,7 +413,7 @@
 
     class AccountComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("account"));
+            const render = hyperHTML.bind(Util.query("account"));
 
             this.accountController = new AccountController(render, AccountTemplate);
         }
@@ -452,7 +452,7 @@
                             const highlight = classes +
                                 (activity.pl >= 0 ? " highlight-green" : " highlight-red");
 
-                            return hyperHTML__default.wire(activity, ":tr")`<tr>
+                            return hyperHTML.wire(activity, ":tr")`<tr>
                                 <td class="${classes}"> ${activity.id} </td>
                                 <td class="${classes}"> ${activity.type} </td>
                                 <td class="${classes}"> ${activity.instrument} </td>
@@ -544,7 +544,7 @@
 
     class ActivityComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("activity"));
+            const render = hyperHTML.bind(Util.query("activity"));
 
             this.activityController = new ActivityController(render, ActivityTemplate);
         }
@@ -573,7 +573,7 @@
                         }
                     }}">${
 
-                    state.account.streamingInstruments.map(instrument => hyperHTML__default.wire()`
+                    state.account.streamingInstruments.map(instrument => hyperHTML.wire()`
                     <option value="${instrument}">
                         ${instrument}
                     </option>
@@ -590,7 +590,7 @@
                         }
                     }}">${
 
-                    state.granularities.map(granularity => hyperHTML__default.wire()`
+                    state.granularities.map(granularity => hyperHTML.wire()`
                     <option value="${granularity}">
                         ${granularity}
                     </option>
@@ -758,7 +758,7 @@
                                     <select id="market" onchange="${e => events(e,
                                             e.target.value.trim())}">${
 
-                                        state.orderInfo.instruments.map(instrument => hyperHTML__default.wire()`
+                                        state.orderInfo.instruments.map(instrument => hyperHTML.wire()`
                                         <option value="${instrument}" selected="${state.orderInfo.selectedInstrument === instrument}">
                                             ${instrument}
                                         </option>
@@ -786,7 +786,7 @@
                                     <select id="expire" onchange="${e => events(e,
                                             e.target.value.trim())}">${
 
-                                        state.orderInfo.expires.map(expiry => hyperHTML__default.wire()`
+                                        state.orderInfo.expires.map(expiry => hyperHTML.wire()`
                                         <option value="${expiry.value}" selected="${state.orderInfo.selectedExpire === expiry.value}">
                                             ${expiry.label}
                                         </option>
@@ -1255,7 +1255,7 @@
 
     class OrderDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML__default.bind(Util.query("order-dialog"));
+            const render = hyperHTML.bind(Util.query("order-dialog"));
 
             this.orderDialogController = new OrderDialogController(render, OrderDialogTemplate, state);
         }
@@ -1531,7 +1531,7 @@
 
     class ChartsComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("charts"));
+            const render = hyperHTML.bind(Util.query("charts"));
 
             this.chartsController = new ChartsController(render, ChartsTemplate);
         }
@@ -1560,7 +1560,7 @@
                         state.exposure.map(exposure => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML__default.wire(exposure, ":tr")`<tr>
+                            return hyperHTML.wire(exposure, ":tr")`<tr>
                                 <td class="${classes}">${exposure.type}</td>
                                 <td class="${classes}">${exposure.market}</td>
                                 <td class="${classes}">${Util.formatNumber(exposure.units)}</td>
@@ -1586,7 +1586,7 @@
 
     class ExposureComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("exposure"));
+            const render = hyperHTML.bind(Util.query("exposure"));
 
             this.exposureController = new ExposureController(render, ExposureTemplate);
         }
@@ -1669,7 +1669,7 @@
                             Object.keys(state.instrs).map(instrument => {
                                 const value = !!state.instrs[instrument];
 
-                                return hyperHTML__default.wire()`<span class="flex flex-row justify-center justify-around code">
+                                return hyperHTML.wire()`<span class="flex flex-row justify-center justify-around code">
                                         <input id="toggleInstrumentSettings" type="checkbox"
                                             onchange="${e => {
                                                 state.instrs[instrument] = e.target.checked;
@@ -1940,7 +1940,7 @@
 
     class SettingsDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML__default.bind(Util.query("settings-dialog"));
+            const render = hyperHTML.bind(Util.query("settings-dialog"));
 
             this.settingsDialogController = new SettingsDialogController(render, SettingsDialogTemplate, state);
         }
@@ -2032,7 +2032,7 @@
                     </fieldset>
 
                     <div class="flex flex-row items-center justify-around">${
-                        state.accounts.map((account, index) => hyperHTML__default.wire(account, ":li")`
+                        state.accounts.map((account, index) => hyperHTML.wire(account, ":li")`
                             <input id="${`selectAccount-${index}`}"
                                 class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                                 type="button" value="${account.id}"
@@ -2155,7 +2155,7 @@
 
     class TokenDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML__default.bind(Util.query("token-dialog"));
+            const render = hyperHTML.bind(Util.query("token-dialog"));
 
             this.tokenDialogController = new TokenDialogController(render, TokenDialogTemplate, state);
         }
@@ -2216,7 +2216,7 @@
 
     class HeaderComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("header"));
+            const render = hyperHTML.bind(Util.query("header"));
 
             this.HeaderController = new HeaderController(render, HeaderTemplate);
         }
@@ -2251,7 +2251,7 @@
                         state.news.map(news => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML__default.wire(news, ":tr")`<tr>
+                            return hyperHTML.wire(news, ":tr")`<tr>
                                 <td class="${classes}">${Util.formatDate(news.timestamp)}</td>
                                 <td class="${classes}">${news.currency}</td>
                                 <td class="${classes}">${news.title}</td>
@@ -2281,7 +2281,7 @@
 
     class NewsComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("news"));
+            const render = hyperHTML.bind(Util.query("news"));
 
             this.newsController = new NewsController(render, NewsTemplate);
         }
@@ -2290,12 +2290,6 @@
     NewsComponent.bootstrap();
 
     class OhlcChartTemplate {
-
-        static update(render) {
-            return render`${hyperHTML__default.wire(render, "svg")`
-            <span></span>`
-        }`;
-        }
 
         static redrawData(state) {
             if (!state.data) {
@@ -2672,10 +2666,6 @@
             };
         }
 
-        static render() {
-            return OhlcChartTemplate.update(hyperHTML.wire());
-        }
-
         attributeChangedCallback(name) {
             OhlcChartElement.state.instrument = this.dataset.instrument;
             OhlcChartElement.state.granularity = this.dataset.granularity;
@@ -2735,7 +2725,7 @@
                         state.orders.map(order => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML__default.wire(order, ":tr")`<tr>
+                            return hyperHTML.wire(order, ":tr")`<tr>
                                 <td class="${classes}">${order.side || order.type}</td>
                                 <td class="${classes}">
                                     <a href="#" onclick="${() => {
@@ -2809,7 +2799,7 @@
 
     class YesNoDialogComponent {
         static bootstrap(state, events) {
-            const render = hyperHTML__default.bind(Util.query("yesno-dialog"));
+            const render = hyperHTML.bind(Util.query("yesno-dialog"));
 
             this.yesnoDialogController = new YesNoDialogController(render, YesNoDialogTemplate, state, events);
         }
@@ -2858,7 +2848,7 @@
 
     class OrdersComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("orders"));
+            const render = hyperHTML.bind(Util.query("orders"));
 
             this.ordersController = new OrdersController(render, OrdersTemplate);
         }
@@ -2890,7 +2880,7 @@
                         pluginsKeys.map((plugin, index) => {
                             const value = !!state.plugins[plugin];
 
-                            return hyperHTML__default.wire()`<tr>
+                            return hyperHTML.wire()`<tr>
                                 <td class="pv1 pr1 bb b--black-20 tr">
                                     <input id="${`togglePlugin-${index}`}" type="checkbox"
                                         onchange="${e => events(e, plugin)}"
@@ -2932,7 +2922,7 @@
 
     class PluginsComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("plugins"));
+            const render = hyperHTML.bind(Util.query("plugins"));
 
             this.pluginsController = new PluginsController(render, PluginsTemplate);
         }
@@ -2964,7 +2954,7 @@
                         state.positions.map(position => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML__default.wire(position, ":tr")`<tr>
+                            return hyperHTML.wire(position, ":tr")`<tr>
                                 <td class="${classes}">${position.side}</td>
                                 <td class="${classes}">${position.instrument}</td>
                                 <td class="${classes}">${Util.formatNumber(position.units)}</td>
@@ -2991,7 +2981,7 @@
 
     class PositionsComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("positions"));
+            const render = hyperHTML.bind(Util.query("positions"));
 
             this.positionsController = new PositionsController(render, PositionsTemplate);
         }
@@ -3015,10 +3005,12 @@
                         Object.keys(state.quotes).map(instrument => {
                             const quote = state.quotes[instrument];
 
-                            return hyperHTML__default.wire(quote, ":tr")`<tr>
+                            return hyperHTML.wire(quote, ":tr")`<tr>
                                 <td class="pv1 pr1 bb b--black-20"> ${instrument} </td>
                                 <td class="pv1 pr1 bb b--black-20">
-                                    <sl-chart data-instrument="${instrument}" data-quote="${JSON.stringify(quote)}" length="100"></sl-chart>
+                                    <sl-chart data-instrument="${instrument}" data-quote="${JSON.stringify(quote)}" length="100">
+                                        <svg class="sl mw3"></svg>
+                                    </sl-chart>
                                 </td>
                                 <td class="${QuotesTemplate.highlighter(quote.bid, instrument, "bid")}"> ${quote.bid} </td>
                                 <td class="${QuotesTemplate.highlighter(quote.ask, instrument, "ask")}"> ${quote.ask} </td>
@@ -3089,7 +3081,7 @@
 
     class QuotesComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("quotes"));
+            const render = hyperHTML.bind(Util.query("quotes"));
 
             this.quotesController = new QuotesController(render, QuotesTemplate);
         }
@@ -3098,12 +3090,6 @@
     QuotesComponent.bootstrap();
 
     class SlChartTemplate {
-
-        static update(render) {
-            return render`${hyperHTML__default.wire(render, "svg")`
-            <svg class="sl mw3"></svg>`
-        }`;
-        }
 
         // Inspired by http://bl.ocks.org/vicapow/9904319
         static redraw(state) {
@@ -3181,10 +3167,6 @@
             };
         }
 
-        static render() {
-            return SlChartTemplate.update(hyperHTML.wire());
-        }
-
         /* eslint class-methods-use-this: "off" */
         attributeChangedCallback(attr, oldValue, newValue) {
             SlChartElement.state.instrument = JSON.parse(newValue).instrument;
@@ -3231,7 +3213,7 @@
 
     class ToastsComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("toasts"));
+            const render = hyperHTML.bind(Util.query("toasts"));
 
             this.toastsController = new ToastsController(render, ToastsTemplate);
         }
@@ -3271,7 +3253,7 @@
                             const highlight = classes +
                                 (trade.profitPips >= 0 ? " highlight-green" : " highlight-red");
 
-                            return hyperHTML__default.wire(trade, ":tr")`<tr>
+                            return hyperHTML.wire(trade, ":tr")`<tr>
                                 <td class="${classes}">${trade.side}</td>
                                 <td class="${classes}">
                                     <a href="#" onclick="${() => {
@@ -3348,7 +3330,7 @@
 
     class TradesComponent {
         static bootstrap() {
-            const render = hyperHTML__default.bind(Util.query("trades"));
+            const render = hyperHTML.bind(Util.query("trades"));
 
             this.tradesController = new TradesController(render, TradesTemplate);
         }

@@ -1,13 +1,6 @@
 import * as d3 from "d3";
-import hyperHTML from "hyperHTML";
 
 export class SlChartTemplate {
-
-    static update(render) {
-        return render`${hyperHTML.wire(render, "svg")`
-            <svg class="sl mw3"></svg>`
-        }`;
-    }
 
     // Inspired by http://bl.ocks.org/vicapow/9904319
     static redraw(state) {

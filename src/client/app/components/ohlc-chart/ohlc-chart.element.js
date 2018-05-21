@@ -1,5 +1,3 @@
-import { wire } from "hyperHTML";
-
 import { OhlcChartTemplate } from "./ohlc-chart.template.js";
 
 class OhlcChartElement extends HTMLElement {
@@ -17,10 +15,6 @@ class OhlcChartElement extends HTMLElement {
             feed: {},
             trades: []
         };
-    }
-
-    static render() {
-        return OhlcChartTemplate.update(wire());
     }
 
     attributeChangedCallback(name) {
