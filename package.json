@@ -29,10 +29,10 @@
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
         "https-proxy-agent": "^2.2.1",
-        "hyperhtml": "^2.10.5",
+        "hyperhtml": "^2.10.8",
         "introspected": "^0.2.5",
         "limiter": "^1.1.3",
-        "tachyons": "^4.9.1",
+        "tachyons": "^4.10.0",
         "techan": "^0.8.0"
     },
     "optionalDependencies": {
@@ -50,10 +50,10 @@
     },
     "devDependencies": {
         "chai": "^4.1.2",
-        "conventional-changelog-cli": "^2.0.0",
+        "conventional-changelog-cli": "^2.0.1",
         "eslint": "^4.19.1",
         "mocha": "^5.2.0",
-        "rollup": "^0.59.4",
+        "rollup": "^0.60.0",
         "rollup-plugin-node-resolve": "^3.3.0",
         "uglify-js": "^3.4.0"
     }
