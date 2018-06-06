@@ -1,3 +1,8 @@
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/albertosantini/argo/compare/v6.2.0...v6.2.1) (2018-06-06)
+
+
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/albertosantini/argo/compare/v6.1.0...v6.2.0) (2018-05-21)
 
