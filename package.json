@@ -24,12 +24,12 @@
         "async": "^2.6.1",
         "body-parser": "^1.18.3",
         "d3": "^5.5.0",
-        "document-register-element": "^1.9.1",
+        "document-register-element": "^1.10.1",
         "express": "^4.16.3",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
         "https-proxy-agent": "^2.2.1",
-        "hyperhtml": "^2.10.13",
+        "hyperhtml": "^2.11.1",
         "introspected": "^0.2.5",
         "limiter": "^1.1.3",
         "tachyons": "^4.10.0",
@@ -51,10 +51,10 @@
     "devDependencies": {
         "chai": "^4.1.2",
         "conventional-changelog-cli": "^2.0.1",
-        "eslint": "^5.0.0",
+        "eslint": "^5.0.1",
         "mocha": "^5.2.0",
-        "rollup": "^0.61.2",
+        "rollup": "^0.62.0",
         "rollup-plugin-node-resolve": "^3.3.0",
-        "uglify-js": "^3.4.1"
+        "uglify-js": "^3.4.3"
     }
 }
