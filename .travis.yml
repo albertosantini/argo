@@ -1,22 +1,12 @@
-addons:
-    apt:
-        packages:
-            - xvfb
-
-branches:
-    only:
-        - master
+os: windows
 
 language: node_js
 node_js:
     - node
 
+branches:
+    only:
+        - master
+
 notifications:
     email: false
-
-sudo: required
-dist: trusty
-
-before_install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -extension RANDR -screen 0 1024x768x24 > /dev/null 2>&1 &
