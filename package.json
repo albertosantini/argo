@@ -24,12 +24,12 @@
         "async": "^2.6.1",
         "body-parser": "^1.18.3",
         "d3": "^5.7.0",
-        "document-register-element": "^1.11.1",
-        "express": "^4.16.3",
+        "document-register-element": "^1.13.1",
+        "express": "^4.16.4",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
         "https-proxy-agent": "^2.2.1",
-        "hyperhtml": "^2.14.0",
+        "hyperhtml": "^2.16.4",
         "introspected": "^0.2.6",
         "limiter": "^1.1.3",
         "tachyons": "^4.11.1",
@@ -49,11 +49,11 @@
         "rollup-d3": "rollup -c rollup.config.d3-techan.js && uglifyjs build/d3-techan.js -c -m -o build/d3-techan.min.js"
     },
     "devDependencies": {
-        "chai": "^4.1.2",
-        "conventional-changelog-cli": "^2.0.5",
-        "eslint": "^5.6.0",
+        "chai": "^4.2.0",
+        "conventional-changelog-cli": "^2.0.11",
+        "eslint": "^5.9.0",
         "mocha": "^5.2.0",
-        "rollup": "^0.66.1",
+        "rollup": "^0.67.0",
         "rollup-plugin-node-resolve": "^3.4.0",
         "uglify-js": "^3.4.9"
     }
