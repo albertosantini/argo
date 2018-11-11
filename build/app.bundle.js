@@ -1,9 +1,9 @@
-(function (hyperHTML,Introspected,d3,techan) {
+(function (techan,d3,hyperHTML,Introspected) {
     'use strict';
 
+    techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
     hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
     Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
-    techan = techan && techan.hasOwnProperty('default') ? techan['default'] : techan;
 
     class Util {
         static query(selector) {
@@ -3338,4 +3338,4 @@
 
     TradesComponent.bootstrap();
 
-}(hyperHTML,Introspected,d3,techan));
+}(techan,d3,hyperHTML,Introspected));
