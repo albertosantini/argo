@@ -30,7 +30,7 @@ Eventually point your web brower to `http://localhost:8000`.
 $ argo-trading-standalone
 ```
 
-Tested locally with Node.js 9.x, hyperHTML 2.x.
+Tested locally with Node.js 10.x, hyperHTML 2.x.
 
 ## Basic features
 
