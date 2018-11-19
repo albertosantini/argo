@@ -63,7 +63,7 @@ export class AppTemplate {
                         <news style="${Util.show(isNewsTab)}"></news>
                         <plugins style="${Util.show(isPluginsTab)}"></plugins>
                     </div>
-                    <charts></charts>
+                    <charts style="height: 400px"></charts>
                 </div>
             </div>
         `;

@@ -34,7 +34,7 @@ rules:
     eol-last: "error"
     eqeqeq: "error"
     func-call-spacing: "error"
-    func-style: ["error", "declaration"]
+    func-style: ["error", "declaration", { "allowArrowFunctions": true }]
     function-paren-newline: ["error", "consistent"]
     generator-star-spacing: "error"
     guard-for-in: "error"

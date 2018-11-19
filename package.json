@@ -24,19 +24,19 @@
         "async": "^2.6.1",
         "body-parser": "^1.18.3",
         "d3": "^5.7.0",
+        "d3fc": "^14.0.24",
         "document-register-element": "^1.13.1",
         "express": "^4.16.4",
         "faye-websocket": "^0.11.1",
         "flic": "^1.3.7",
         "https-proxy-agent": "^2.2.1",
-        "hyperhtml": "^2.17.0",
+        "hyperhtml": "^2.25.4",
         "introspected": "^0.2.6",
-        "limiter": "^1.1.3",
-        "tachyons": "^4.11.1",
-        "techan": "^0.8.0"
+        "limiter": "^1.1.4",
+        "tachyons": "^4.11.1"
     },
     "optionalDependencies": {
-        "electron": "^3.0.8"
+        "electron": "^4.0.0"
     },
     "scripts": {
         "test": "npm run lint && npm run electron -- index-spec.html",
@@ -45,16 +45,13 @@
         "electron": "electron .",
         "lint": "eslint main.js src/**/*.js",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-        "rollup": "rollup -c",
-        "rollup-d3": "rollup -c rollup.config.d3-techan.js && uglifyjs build/d3-techan.js -c -m -o build/d3-techan.min.js"
+        "rollup": "rollup -c"
     },
     "devDependencies": {
         "chai": "^4.2.0",
         "conventional-changelog-cli": "^2.0.11",
-        "eslint": "^5.9.0",
+        "eslint": "^5.12.0",
         "mocha": "^5.2.0",
-        "rollup": "^0.67.3",
-        "rollup-plugin-node-resolve": "^3.4.0",
-        "uglify-js": "^3.4.9"
+        "rollup": "^1.1.0"
     }
 }

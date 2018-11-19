@@ -16,7 +16,7 @@ export class SettingsDialogTemplate {
         /* eslint-disable indent */
         render`
             <div class="fixed absolute--fill bg-black-70 z5">
-            <div class="fixed absolute-center z999">
+            <div class="fixed absolute-25 z999">
 
             <main class="pa4 black-80 bg-white h5 overflow-y-auto">
                 <form class="measure center">

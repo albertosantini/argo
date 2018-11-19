@@ -8,14 +8,14 @@ module.exports = {
         name: "app",
         globals: {
             d3: "d3",
-            techan: "techan",
+            d3fc: "fc",
             hyperHTML: "hyperHTML",
             introspected: "Introspected"
         }
     },
     external: [
         "d3",
-        "techan",
+        "d3fc",
         "hyperHTML",
         "introspected"
     ]
