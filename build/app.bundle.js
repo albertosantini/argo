@@ -1052,8 +1052,8 @@
             QuotesService.quotes[instrument].time = tick.time;
             QuotesService.quotes[instrument].ask = tick.ask;
             QuotesService.quotes[instrument].bid = tick.bid;
-            QuotesService.quotes[instrument].spread =
-                ((tick.ask - tick.bid) / pips[instrument]).toFixed(1);
+            QuotesService.quotes[instrument].spread = pips[instrument]
+                ? ((tick.ask - tick.bid) / pips[instrument]).toFixed(1) : "";
         }
 
         static reset() {
