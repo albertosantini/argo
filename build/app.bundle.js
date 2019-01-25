@@ -2540,6 +2540,38 @@
         feedVolume: 0
     };
 
+    // html example for removing d3 dep and using directly svg
+
+    // <!DOCTYPE html>
+    // <html>
+    // <head>
+    //     <meta charset="utf-8" />
+    //     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    //     <title>Page Title</title>
+    //     <meta name="viewport" content="width=device-width, initial-scale=1">
+    // </head>
+    // <body>
+    //     <svg  xmlns="http://www.w3.org/2000/svg">
+    //     <svg>
+    //         <g transform="translate(0, 0) scale(5)" stroke="#c60">
+    //             <path d="
+    //                 M0,10 L0,0
+    //                 M0,1.2827193650480808 L-2.5,1.2827193650480808
+    //                 M0,8.337675872848251 L2.5,8.337675872848251
+    //             "></path>
+    //         </g>
+    //         <g transform="translate(20, 10) scale(5)" stroke="#000">
+    //             <path d="
+    //                 M0,10 L0,0
+    //                 M0,1.2827193650480808 L-2.5,1.2827193650480808
+    //                 M0,8.337675872848251 L2.5,8.337675872848251
+    //             "></path>
+    //         </g>
+    //     </svg>
+
+    // </body>
+    // </html>
+
     class OhlcChartElement extends HTMLElement {
         static get observedAttributes() {
             return ["data-data", "data-feed", "data-trades"];
