@@ -23,7 +23,7 @@
     "dependencies": {
         "async": "^2.6.1",
         "body-parser": "^1.18.3",
-        "d3": "^5.7.0",
+        "d3": "^5.8.0",
         "d3fc": "^14.0.25",
         "document-register-element": "^1.13.1",
         "express": "^4.16.4",
@@ -36,7 +36,7 @@
         "tachyons": "^4.11.1"
     },
     "optionalDependencies": {
-        "electron": "^4.0.2"
+        "electron": "^4.0.3"
     },
     "scripts": {
         "test": "npm run lint && npm run electron -- index-spec.html",
