@@ -23,7 +23,7 @@
     "dependencies": {
         "async": "^2.6.1",
         "body-parser": "^1.18.3",
-        "d3": "^5.8.0",
+        "d3": "^5.9.0",
         "d3fc": "^14.0.25",
         "document-register-element": "^1.13.1",
         "express": "^4.16.4",
