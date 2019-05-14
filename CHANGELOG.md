@@ -1,3 +1,12 @@
+## [6.2.3](https://github.com/albertosantini/argo/compare/v6.2.2...v6.2.3) (2019-05-14)
+
+
+### Bug Fixes
+
+* **quotes:** fix spread value when pips are null ([fa5d9bc](https://github.com/albertosantini/argo/commit/fa5d9bc))
+
+
+
 <a name="6.2.2"></a>
 ## [6.2.2](https://github.com/albertosantini/argo/compare/v6.2.1...v6.2.2) (2018-09-14)
 
