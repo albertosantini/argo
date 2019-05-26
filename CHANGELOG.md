@@ -1,3 +1,12 @@
+## [6.2.4](https://github.com/albertosantini/argo/compare/v6.2.3...v6.2.4) (2019-05-26)
+
+
+### Bug Fixes
+
+* **electron:** use nodeIntegration: true ([3029e82](https://github.com/albertosantini/argo/commit/3029e82))
+
+
+
 ## [6.2.3](https://github.com/albertosantini/argo/compare/v6.2.2...v6.2.3) (2019-05-14)
 
 
