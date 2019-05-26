@@ -36,7 +36,7 @@
         "tachyons": "^4.11.1"
     },
     "optionalDependencies": {
-        "electron": "^5.0.1"
+        "electron": "^5.0.2"
     },
     "scripts": {
         "test": "npm run lint && npm run electron -- index-spec.html",
