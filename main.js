@@ -8,7 +8,10 @@ function createWindow() {
         height: 850,
         icon: "src/client/img/favicon.ico",
         show: false,
-        width: 1450
+        width: 1450,
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
 
     mainWindow.once("ready-to-show", () => {
