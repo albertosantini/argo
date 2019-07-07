@@ -8,7 +8,7 @@ env:
     node: true
 
 extends:
-    "eslint:recommended"
+    - "eslint:recommended"
 
 rules:
     array-bracket-spacing: "error"
