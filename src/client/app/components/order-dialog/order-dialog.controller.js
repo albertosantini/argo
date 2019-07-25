@@ -29,7 +29,7 @@ export class OrderDialogController {
 
         const price = QuotesService.getQuotes()[instrument],
             fixed = ((this.pips[this.state.selectedInstrument].toString())
-                .match(/0/g) || []).length;
+                .match(/0/ug) || []).length;
 
         this.state.measure = "price";
         this.state.step = parseFloat(this.pips[this.state.selectedInstrument]);
