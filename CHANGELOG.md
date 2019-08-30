@@ -1,3 +1,12 @@
+## [6.2.5](https://github.com/albertosantini/argo/compare/v6.2.4...v6.2.5) (2019-08-30)
+
+
+### Bug Fixes
+
+* **plugins:** update plugins when browser restarts ([39397cb](https://github.com/albertosantini/argo/commit/39397cb)), closes [#18](https://github.com/albertosantini/argo/issues/18)
+
+
+
 ## [6.2.4](https://github.com/albertosantini/argo/compare/v6.2.3...v6.2.4) (2019-05-26)
 
 
