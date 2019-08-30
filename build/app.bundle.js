@@ -1843,6 +1843,7 @@
                 })
             }).then(() => {
                 StreamingService.getStream();
+                PluginsService.refresh();
             }).catch(err => {
                 ToastsService.addToast(`streaming ${err.message}`);
             });
