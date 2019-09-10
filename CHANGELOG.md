@@ -1,3 +1,12 @@
+## [6.2.6](https://github.com/albertosantini/argo/compare/v6.2.5...v6.2.6) (2019-09-10)
+
+
+### Bug Fixes
+
+* **charts:** render trades in different timeframes ([34ebc61](https://github.com/albertosantini/argo/commit/34ebc61))
+
+
+
 ## [6.2.5](https://github.com/albertosantini/argo/compare/v6.2.4...v6.2.5) (2019-08-30)
 
 
