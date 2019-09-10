@@ -173,7 +173,7 @@ export class OhlcChartTemplate {
                 }
 
                 myTrades.forEach((trade, tradeIndex) => {
-                    const tradeDate = OhlcChartTemplate.getLastHistUpdate("M5", {
+                    const tradeDate = OhlcChartTemplate.getLastHistUpdate(myState.myGranularity, {
                         time: trade.date.getTime()
                     });
 
