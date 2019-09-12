@@ -24,4 +24,4 @@ jobs:
         npm test
       env:
         CI: true
-        DISPLAY: ":99.0"
+        DISPLAY: 127.0.0.1:10.0
