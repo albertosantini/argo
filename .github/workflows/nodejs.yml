@@ -18,11 +18,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
-      env:
-        DISPLAY: ":99.0"
       run: |
         npm install
         npm run build --if-present
         npm test
       env:
         CI: true
+        DISPLAY: ":99.0"
