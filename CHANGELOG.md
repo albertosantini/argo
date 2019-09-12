@@ -1,3 +1,12 @@
+# [6.3.0](https://github.com/albertosantini/argo/compare/v6.2.6...v6.3.0) (2019-09-12)
+
+
+### Features
+
+* **server:** enable remote argo instance ([9fe184c](https://github.com/albertosantini/argo/commit/9fe184c))
+
+
+
 ## [6.2.6](https://github.com/albertosantini/argo/compare/v6.2.5...v6.2.6) (2019-09-10)
 
 
