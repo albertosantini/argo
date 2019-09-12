@@ -20,9 +20,11 @@ app.use("/node_modules", staticFiles(routes.config.vendorFiles));
 app.use("/build", staticFiles(routes.config.buildFiles));
 app.use(apiUrl, routes.apis);
 
-app.listen(port, () => {
-    util.log(`Argo listening on http://localhost:${port}`);
-    util.log(`Argo listening apis on http://localhost:${port}${apiUrl}`);
+app.listen(port, async() => {
+    const ipaddress = await util.getIP();
+
+    util.log(`Argo listening on http://${ipaddress}:${port}`);
+    util.log(`Argo listening apis on http://${ipaddress}:${port}${apiUrl}`);
 }).on("upgrade", (request, socket, body) => {
     routes.stream.run(request, socket, body);
 

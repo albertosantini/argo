@@ -1,7 +1,12 @@
 "use strict";
 
+const os = require("os");
+const dns = require("dns");
+const util = require("util");
+
 exports.log = log;
 exports.request = request;
+exports.getIP = getIP;
 
 function log(...args) {
     const now = new Date().toLocaleString("en-US", {
@@ -83,4 +88,12 @@ function request({
     req.end();
 
     return ee;
+}
+
+const lookup = util.promisify(dns.lookup);
+
+async function getIP() {
+    const { address } = await lookup(os.hostname());
+
+    return address;
 }
