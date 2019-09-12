@@ -19,7 +19,7 @@ async function createWindow() {
 
     mainWindow.once("ready-to-show", () => {
         mainWindow.show();
-    });
+    })
 
     ipc.on("mocha-done", (event, count) => {
         mainWindow.webContents.once("destroyed", () => {
