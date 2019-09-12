@@ -1841,16 +1841,16 @@
                     accountId: data.accountId,
                     instruments: data.instruments
                 })
-            }).then(() => {
-                StreamingService.getStream();
+            }).then(res => res.json()).then(({ ipaddress, port }) => {
+                StreamingService.getStream(ipaddress, port);
                 PluginsService.refresh();
             }).catch(err => {
                 ToastsService.addToast(`streaming ${err.message}`);
             });
         }
 
-        static getStream() {
-            const ws = new WebSocket("ws://localhost:8000/stream");
+        static getStream(ipaddress, port) {
+            const ws = new WebSocket(`ws://${ipaddress}:${port}/stream`);
 
             ws.onmessage = event => {
                 let data,

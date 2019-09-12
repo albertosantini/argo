@@ -2,7 +2,10 @@
 
 const { app, BrowserWindow, ipcMain: ipc } = require("electron");
 
-function createWindow() {
+const util = require("./src/server/util");
+const config = require("./src/server/routes/config");
+
+async function createWindow() {
     const mainWindow = new BrowserWindow({
         frame: false,
         height: 850,
@@ -27,7 +30,10 @@ function createWindow() {
     });
 
     const indexFile = process.argv[2] || "index.html";
-    const url = `http://localhost:8000/${indexFile}`;
+
+    const ipaddress = await util.getIP();
+    const port = config.port;
+    const url = `http://${ipaddress}:${port}/${indexFile}`;
 
     mainWindow.loadURL(url);
 }

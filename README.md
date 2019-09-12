@@ -24,6 +24,8 @@ $ argo-trading
 ```
 Eventually point your web brower to `http://localhost:8000`.
 
+Finally you need to point to the `host` and `port` defined by `ARGO_PORT` environment variable (`8000` is the default) where you started `argo` 
+
 ## Starting Standalone App
 
 ```

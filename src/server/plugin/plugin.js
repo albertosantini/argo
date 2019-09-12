@@ -6,10 +6,9 @@ exports.shoutStreaming = shoutStreaming;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-const flic = require("flic"),
-    async = require("async"),
-    routes = require("../routes");
-
+const flic = require("flic");
+const async = require("async");
+const routes = require("../routes");
 const util = require("../util");
 
 const nodeName = "master",
@@ -26,10 +25,12 @@ const masterNode = flic.createNode({
     }
 });
 
-masterNode.on("argo.register", (pluginName, done) => {
+masterNode.on("argo.register", async(pluginName, done) => {
+    const ipaddress = await util.getIP();
+
     plugins[pluginName] = true;
     util.log("Argo plugin registered", pluginName);
-    done(null, `http://localhost:${routes.config.port}`);
+    done(null, `http://${ipaddress}:${routes.config.port}`);
     refreshPlugins();
 });
 

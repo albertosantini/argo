@@ -17,11 +17,10 @@ exports.closeTrade = closeTrade;
 exports.getPlugins = getPlugins;
 exports.engagePlugins = engagePlugins;
 
-const RateLimiter = require("limiter").RateLimiter,
-    config = require("./config"),
-    stream = require("./stream"),
-    plugin = require("../plugin/plugin");
-
+const RateLimiter = require("limiter").RateLimiter;
+const config = require("./config");
+const stream = require("./stream");
+const plugin = require("../plugin/plugin");
 const util = require("../util");
 
 const limiter = new RateLimiter(1, 500); // at most 1 request every 500ms
@@ -38,9 +37,12 @@ function startStream(req, res) {
     if (!req.body) {
         res.sendStatus(400);
     } else {
-        stream.start(req.body, err => {
+        stream.start(req.body, async err => {
+            const ipaddress = await util.getIP();
+            const port = config.port;
+
             if (!err) {
-                res.sendStatus(200);
+                res.json({ ipaddress, port });
             }
         });
     }
