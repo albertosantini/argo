@@ -1,7 +1,7 @@
 # ARGO
 
 [![NPM version](https://badge.fury.io/js/argo-trading.svg)](http://badge.fury.io/js/argo-trading)
-![](https://github.com/albertosantini/argo/workflows/Node%20CI/badge.svg)
+![](https://github.com/albertosantini/argo/workflows/CI/badge.svg)
 
 **Argo** is an open source trading platform, connecting directly with [OANDA][]
 through the powerful [API][] to develop trading strategies.
