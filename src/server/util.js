@@ -93,7 +93,8 @@ function request({
 const lookup = util.promisify(dns.lookup);
 
 async function getIP() {
-    const { address } = { address: process.env.ARGO_IP } || await lookup(os.hostname());
+    const { address } = process.env.ARGO_IP
+        ? { address: process.env.ARGO_IP } : await lookup(os.hostname());
 
     return address;
 }
