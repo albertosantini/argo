@@ -1,3 +1,12 @@
+## [6.3.1](https://github.com/albertosantini/argo/compare/v6.3.0...v6.3.1) (2019-09-17)
+
+
+### Bug Fixes
+
+* **server:** add ARGO_IP when you need to force ip ([f7c7277](https://github.com/albertosantini/argo/commit/f7c7277))
+
+
+
 # [6.3.0](https://github.com/albertosantini/argo/compare/v6.2.6...v6.3.0) (2019-09-12)
 
 
