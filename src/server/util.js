@@ -71,7 +71,11 @@ function request({
             rawData += chunk;
         });
 
-        res.on("end", () => callback(null, res, rawData));
+        res.on("end", () => {
+            if (typeof callback === "function") {
+                callback(null, res, rawData); // eslint-disable-line callback-return
+            }
+        });
     }
 
     if (process.env.https_proxy) {
