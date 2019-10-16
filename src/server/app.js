@@ -12,7 +12,6 @@ const staticFiles = express.static;
 const apiUrl = routes.config.apiUrl;
 
 process.on("uncaughtException", err => {
-    util.log(err.message);
     util.log(err.stack);
 });
 
