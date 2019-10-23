@@ -2,8 +2,8 @@
 
 "use strict";
 
-var child = require("child_process");
-var path = require("path");
+const child = require("child_process");
+const path = require("path");
 
 child.execSync("npm run electron", {
     cwd: path.join(__dirname, "..")
