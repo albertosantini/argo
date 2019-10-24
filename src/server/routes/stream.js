@@ -29,7 +29,8 @@ function start({
     request({
         url: pricesUrl,
         qs: {
-            instruments: instruments.join(",")
+            instruments: typeof instruments === "string"
+                ? JSON.parse(instruments).join(",") : instruments.join(",")
         },
         headers: authHeader
     }).on("response", () => {

@@ -23,6 +23,7 @@ function log(...args) {
 
 const urlParse = require("url").parse;
 const https = require("https");
+const http = require("http");
 const querystring = require("querystring");
 const EventEmitter = require("events");
 const HttpsProxyAgent = require("https-proxy-agent");
@@ -36,8 +37,9 @@ function request({
 } = {}, callback) {
     const ee = new EventEmitter();
     const reqUrl = urlParse(url);
+    const isHttps = reqUrl.protocol === "https:";
     const host = reqUrl.hostname;
-    const port = reqUrl.port || 443;
+    const port = reqUrl.port || (isHttps ? 443 : 80);
 
     let path = reqUrl.path;
 
@@ -81,7 +83,14 @@ function request({
     if (process.env.https_proxy) {
         requestOptions.agent = new HttpsProxyAgent(process.env.https_proxy);
     }
-    const req = https.request(requestOptions, requestResponse);
+
+    let req;
+
+    if (isHttps) {
+        req = https.request(requestOptions, requestResponse);
+    } else {
+        req = http.request(requestOptions, requestResponse);
+    }
 
     req.on("error", err => callback(err));
 
