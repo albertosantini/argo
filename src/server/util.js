@@ -34,7 +34,9 @@ function request({
     headers = {},
     body = null,
     qs = {}
-} = {}, callback) {
+} = {}, callback = (err = null, response = null, rawData = null) => { // eslint-disable-line no-unused-vars
+    log("request method requires a callback");
+}) {
     const ee = new EventEmitter();
     const reqUrl = urlParse(url);
     const isHttps = reqUrl.protocol === "https:";
