@@ -78,6 +78,8 @@ function request({
         res.on("end", () => {
             if (typeof callback === "function") {
                 callback(null, res, rawData); // eslint-disable-line callback-return
+            } else {
+                log(callback);
             }
         });
     }
@@ -94,7 +96,13 @@ function request({
         req = http.request(requestOptions, requestResponse);
     }
 
-    req.on("error", err => callback(err));
+    req.on("error", err => {
+        if (typeof callback === "function") {
+            callback(err); // eslint-disable-line callback-return
+        } else {
+            log(err, callback);
+        }
+    });
 
     if (body) {
         req.write(JSON.stringify(body));
