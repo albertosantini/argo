@@ -36,7 +36,7 @@
         "tachyons": "^4.11.1"
     },
     "optionalDependencies": {
-        "electron": "^7.0.0"
+        "electron": "^7.1.1"
     },
     "scripts": {
         "test": "npm run lint && npm run electron -- index-spec.html",
@@ -49,9 +49,9 @@
     },
     "devDependencies": {
         "chai": "^4.2.0",
-        "conventional-changelog-cli": "^2.0.25",
+        "conventional-changelog-cli": "^2.0.27",
         "eslint": "^6.6.0",
         "mocha": "^6.2.2",
-        "rollup": "^1.26.3"
+        "rollup": "^1.26.5"
     }
 }
