@@ -30,7 +30,7 @@
         "faye-websocket": "^0.11.3",
         "flic": "^1.3.7",
         "https-proxy-agent": "^3.0.1",
-        "hyperhtml": "^2.31.5",
+        "hyperhtml": "^2.31.6",
         "introspected": "^0.2.6",
         "limiter": "^1.1.4",
         "tachyons": "^4.11.1"
