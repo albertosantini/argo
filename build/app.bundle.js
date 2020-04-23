@@ -1,8 +1,8 @@
 (function (hyperHTML, Introspected, d3, fc) {
     'use strict';
 
-    hyperHTML = hyperHTML && hyperHTML.hasOwnProperty('default') ? hyperHTML['default'] : hyperHTML;
-    Introspected = Introspected && Introspected.hasOwnProperty('default') ? Introspected['default'] : Introspected;
+    hyperHTML = hyperHTML && Object.prototype.hasOwnProperty.call(hyperHTML, 'default') ? hyperHTML['default'] : hyperHTML;
+    Introspected = Introspected && Object.prototype.hasOwnProperty.call(Introspected, 'default') ? Introspected['default'] : Introspected;
 
     class Util {
         static query(selector) {
