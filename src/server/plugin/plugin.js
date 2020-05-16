@@ -25,7 +25,7 @@ const masterNode = flic.createNode({
     }
 });
 
-masterNode.on("argo.register", async(pluginName, done) => {
+masterNode.on("argo.register", async (pluginName, done) => {
     const ipaddress = await util.getIP();
 
     plugins[pluginName] = true;
