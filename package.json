@@ -24,7 +24,7 @@
         "async": "^3.2.0",
         "body-parser": "^1.19.0",
         "d3": "^5.16.0",
-        "d3fc": "^15.0.4",
+        "d3fc": "^15.0.6",
         "document-register-element": "^1.14.3",
         "express": "^4.17.1",
         "faye-websocket": "^0.11.3",
@@ -50,8 +50,8 @@
     "devDependencies": {
         "chai": "^4.2.0",
         "conventional-changelog-cli": "^2.0.34",
-        "eslint": "^7.0.0",
-        "mocha": "^7.1.2",
-        "rollup": "^2.10.2"
+        "eslint": "^7.1.0",
+        "mocha": "^7.2.0",
+        "rollup": "^2.13.1"
     }
 }
