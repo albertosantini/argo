@@ -1,8 +1,10 @@
 (function (hyperHTML, Introspected, d3, fc) {
     'use strict';
 
-    hyperHTML = hyperHTML && Object.prototype.hasOwnProperty.call(hyperHTML, 'default') ? hyperHTML['default'] : hyperHTML;
-    Introspected = Introspected && Object.prototype.hasOwnProperty.call(Introspected, 'default') ? Introspected['default'] : Introspected;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+    var hyperHTML__default = /*#__PURE__*/_interopDefaultLegacy(hyperHTML);
+    var Introspected__default = /*#__PURE__*/_interopDefaultLegacy(Introspected);
 
     class Util {
         static query(selector) {
@@ -98,7 +100,7 @@
 
     class RootComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("root"));
+            const render = hyperHTML__default['default'].bind(Util.query("root"));
 
             RootTemplate.update(render);
         }
@@ -179,7 +181,7 @@
 
     class AppController {
         constructor(render, template) {
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 tabSelectedIndex: 0
             }, state => template.update(render, state));
         }
@@ -187,7 +189,7 @@
 
     class AppComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("app"));
+            const render = hyperHTML__default['default'].bind(Util.query("app"));
 
             this.appController = new AppController(render, AppTemplate);
         }
@@ -402,7 +404,7 @@
     class AccountController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 account: {}
             }, state => template.update(render, state));
 
@@ -412,7 +414,7 @@
 
     class AccountComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("account"));
+            const render = hyperHTML__default['default'].bind(Util.query("account"));
 
             this.accountController = new AccountController(render, AccountTemplate);
         }
@@ -451,7 +453,7 @@
                             const highlight = classes +
                                 (activity.pl >= 0 ? " highlight-green" : " highlight-red");
 
-                            return hyperHTML.wire(activity, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(activity, ":tr")`<tr>
                                 <td class="${classes}"> ${activity.id} </td>
                                 <td class="${classes}"> ${activity.type} </td>
                                 <td class="${classes}"> ${activity.instrument} </td>
@@ -533,7 +535,7 @@
     class ActivityController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 activities: []
             }, state => template.update(render, state));
 
@@ -543,7 +545,7 @@
 
     class ActivityComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("activity"));
+            const render = hyperHTML__default['default'].bind(Util.query("activity"));
 
             this.activityController = new ActivityController(render, ActivityTemplate);
         }
@@ -572,7 +574,7 @@
                         }
                     }}">${
 
-                    state.account.streamingInstruments.map(instrument => hyperHTML.wire()`
+                    state.account.streamingInstruments.map(instrument => hyperHTML__default['default'].wire()`
                     <option value="${instrument}">
                         ${instrument}
                     </option>
@@ -589,7 +591,7 @@
                         }
                     }}">${
 
-                    state.granularities.map(granularity => hyperHTML.wire()`
+                    state.granularities.map(granularity => hyperHTML__default['default'].wire()`
                     <option value="${granularity}">
                         ${granularity}
                     </option>
@@ -757,7 +759,7 @@
                                     <select id="market" onchange="${e => events(e,
                                             e.target.value.trim())}">${
 
-                                        state.orderInfo.instruments.map(instrument => hyperHTML.wire()`
+                                        state.orderInfo.instruments.map(instrument => hyperHTML__default['default'].wire()`
                                         <option value="${instrument}" selected="${state.orderInfo.selectedInstrument === instrument}">
                                             ${instrument}
                                         </option>
@@ -785,7 +787,7 @@
                                     <select id="expire" onchange="${e => events(e,
                                             e.target.value.trim())}">${
 
-                                        state.orderInfo.expires.map(expiry => hyperHTML.wire()`
+                                        state.orderInfo.expires.map(expiry => hyperHTML__default['default'].wire()`
                                         <option value="${expiry.value}" selected="${state.orderInfo.selectedExpire === expiry.value}">
                                             ${expiry.label}
                                         </option>
@@ -1071,7 +1073,7 @@
         constructor(render, template, bindings) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected.observe(bindings,
+            this.state = Introspected__default['default'].observe(bindings,
                 state => template.update(render, state, events));
 
             const account = AccountsService.getAccount();
@@ -1254,7 +1256,7 @@
 
     class OrderDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML.bind(Util.query("order-dialog"));
+            const render = hyperHTML__default['default'].bind(Util.query("order-dialog"));
 
             this.orderDialogController = new OrderDialogController(render, OrderDialogTemplate, state);
         }
@@ -1399,7 +1401,7 @@
         constructor(render, template) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 candles: { csv: "" },
                 account: AccountsService.getAccount(),
                 selectedGranularity: "M5",
@@ -1473,13 +1475,13 @@
                 trades: ""
             };
 
-            Introspected.observe(QuotesService.getQuotes(), state => {
+            Introspected__default['default'].observe(QuotesService.getQuotes(), state => {
                 if (Object.keys(state).length) {
                     this.state.ohlcInfo.feed = JSON.stringify(state.quotes[this.state.selectedInstrument]);
                 }
             });
 
-            Introspected.observe(TradesService.getTrades(), state => {
+            Introspected__default['default'].observe(TradesService.getTrades(), state => {
                 if (Object.keys(state.trades).length) {
                     this.state.ohlcInfo.trades = JSON.stringify(state.trades.value);
                 }
@@ -1530,7 +1532,7 @@
 
     class ChartsComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("charts"));
+            const render = hyperHTML__default['default'].bind(Util.query("charts"));
 
             this.chartsController = new ChartsController(render, ChartsTemplate);
         }
@@ -1559,7 +1561,7 @@
                         state.exposure.map(exposure => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML.wire(exposure, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(exposure, ":tr")`<tr>
                                 <td class="${classes}">${exposure.type}</td>
                                 <td class="${classes}">${exposure.market}</td>
                                 <td class="${classes}">${Util.formatNumber(exposure.units)}</td>
@@ -1575,7 +1577,7 @@
     class ExposureController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 exposure: []
             }, state => template.update(render, state));
 
@@ -1585,7 +1587,7 @@
 
     class ExposureComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("exposure"));
+            const render = hyperHTML__default['default'].bind(Util.query("exposure"));
 
             this.exposureController = new ExposureController(render, ExposureTemplate);
         }
@@ -1668,7 +1670,7 @@
                             Object.keys(state.instrs).map(instrument => {
                                 const value = !!state.instrs[instrument];
 
-                                return hyperHTML.wire()`<span class="flex flex-row justify-center justify-around code">
+                                return hyperHTML__default['default'].wire()`<span class="flex flex-row justify-center justify-around code">
                                         <input id="toggleInstrumentSettings" type="checkbox"
                                             onchange="${e => {
                                                 state.instrs[instrument] = e.target.checked;
@@ -1910,7 +1912,7 @@
         constructor(render, template, bindings) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected.observe(bindings,
+            this.state = Introspected__default['default'].observe(bindings,
                 state => template.update(render, state, events));
         }
 
@@ -1940,7 +1942,7 @@
 
     class SettingsDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML.bind(Util.query("settings-dialog"));
+            const render = hyperHTML__default['default'].bind(Util.query("settings-dialog"));
 
             this.settingsDialogController = new SettingsDialogController(render, SettingsDialogTemplate, state);
         }
@@ -2032,7 +2034,7 @@
                     </fieldset>
 
                     <div class="flex flex-row items-center justify-around">${
-                        state.accounts.map((account, index) => hyperHTML.wire(account, ":li")`
+                        state.accounts.map((account, index) => hyperHTML__default['default'].wire(account, ":li")`
                             <input id="${`selectAccount-${index}`}"
                                 class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                                 type="button" value="${account.id}"
@@ -2085,7 +2087,7 @@
         constructor(render, template, bindings) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected.observe(bindings,
+            this.state = Introspected__default['default'].observe(bindings,
                 state => template.update(render, state, events));
         }
 
@@ -2155,7 +2157,7 @@
 
     class TokenDialogComponent {
         static bootstrap(state) {
-            const render = hyperHTML.bind(Util.query("token-dialog"));
+            const render = hyperHTML__default['default'].bind(Util.query("token-dialog"));
 
             this.tokenDialogController = new TokenDialogController(render, TokenDialogTemplate, state);
         }
@@ -2180,7 +2182,7 @@
                 GBP_JPY: true
             };
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 spinner: {
                     isLoadingView: false
                 },
@@ -2216,7 +2218,7 @@
 
     class HeaderComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("header"));
+            const render = hyperHTML__default['default'].bind(Util.query("header"));
 
             this.HeaderController = new HeaderController(render, HeaderTemplate);
         }
@@ -2251,7 +2253,7 @@
                         state.news.map(news => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML.wire(news, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(news, ":tr")`<tr>
                                 <td class="${classes}">${Util.formatDate(news.timestamp)}</td>
                                 <td class="${classes}">${news.currency}</td>
                                 <td class="${classes}">${news.title}</td>
@@ -2271,7 +2273,7 @@
     class NewsController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 news: []
             }, state => template.update(render, state));
 
@@ -2281,7 +2283,7 @@
 
     class NewsComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("news"));
+            const render = hyperHTML__default['default'].bind(Util.query("news"));
 
             this.newsController = new NewsController(render, NewsTemplate);
         }
@@ -2649,7 +2651,7 @@
                         state.orders.map(order => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML.wire(order, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(order, ":tr")`<tr>
                                 <td class="${classes}">${order.side || order.type}</td>
                                 <td class="${classes}">
                                     <a href="#" onclick="${() => {
@@ -2716,14 +2718,14 @@
 
     class YesNoDialogController {
         constructor(render, template, bindings, events) {
-            Introspected.observe(bindings,
+            Introspected__default['default'].observe(bindings,
                 state => template.update(render, state, events));
         }
     }
 
     class YesNoDialogComponent {
         static bootstrap(state, events) {
-            const render = hyperHTML.bind(Util.query("yesno-dialog"));
+            const render = hyperHTML__default['default'].bind(Util.query("yesno-dialog"));
 
             this.yesnoDialogController = new YesNoDialogController(render, YesNoDialogTemplate, state, events);
         }
@@ -2733,7 +2735,7 @@
         constructor(render, template) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 orders: [],
                 yesnoModalIsOpen: false,
                 yesnoModalText: "Are you sure to close the order?",
@@ -2772,7 +2774,7 @@
 
     class OrdersComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("orders"));
+            const render = hyperHTML__default['default'].bind(Util.query("orders"));
 
             this.ordersController = new OrdersController(render, OrdersTemplate);
         }
@@ -2804,7 +2806,7 @@
                         pluginsKeys.map((plugin, index) => {
                             const value = !!state.plugins[plugin];
 
-                            return hyperHTML.wire()`<tr>
+                            return hyperHTML__default['default'].wire()`<tr>
                                 <td class="pv1 pr1 bb b--black-20 tr">
                                     <input id="${`togglePlugin-${index}`}" type="checkbox"
                                         onchange="${e => events(e, plugin)}"
@@ -2825,7 +2827,7 @@
         constructor(render, template) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 plugins: {},
                 pluginsInfo: {
                     count: 0
@@ -2846,7 +2848,7 @@
 
     class PluginsComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("plugins"));
+            const render = hyperHTML__default['default'].bind(Util.query("plugins"));
 
             this.pluginsController = new PluginsController(render, PluginsTemplate);
         }
@@ -2878,7 +2880,7 @@
                         state.positions.map(position => {
                             const classes = "pv1 pr1 bb b--black-20 tr";
 
-                            return hyperHTML.wire(position, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(position, ":tr")`<tr>
                                 <td class="${classes}">${position.side}</td>
                                 <td class="${classes}">${position.instrument}</td>
                                 <td class="${classes}">${Util.formatNumber(position.units)}</td>
@@ -2895,7 +2897,7 @@
     class PositionsController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 positions: []
             }, state => template.update(render, state));
 
@@ -2905,7 +2907,7 @@
 
     class PositionsComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("positions"));
+            const render = hyperHTML__default['default'].bind(Util.query("positions"));
 
             this.positionsController = new PositionsController(render, PositionsTemplate);
         }
@@ -2929,7 +2931,7 @@
                         Object.keys(state.quotes).map(instrument => {
                             const quote = state.quotes[instrument];
 
-                            return hyperHTML.wire(quote, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(quote, ":tr")`<tr>
                                 <td class="pv1 pr1 bb b--black-20"> ${instrument} </td>
                                 <td class="pv1 pr1 bb b--black-20">
                                     <sl-chart data-instrument="${instrument}" data-quote="${JSON.stringify(quote)}" length="100">
@@ -2995,7 +2997,7 @@
     class QuotesController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 quotes: {}
             }, state => template.update(render, state));
 
@@ -3005,7 +3007,7 @@
 
     class QuotesComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("quotes"));
+            const render = hyperHTML__default['default'].bind(Util.query("quotes"));
 
             this.quotesController = new QuotesController(render, QuotesTemplate);
         }
@@ -3166,7 +3168,7 @@
     class ToastsController {
         constructor(render, template) {
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 toasts: []
             }, state => template.update(render, state));
 
@@ -3176,7 +3178,7 @@
 
     class ToastsComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("toasts"));
+            const render = hyperHTML__default['default'].bind(Util.query("toasts"));
 
             this.toastsController = new ToastsController(render, ToastsTemplate);
         }
@@ -3216,7 +3218,7 @@
                             const highlight = classes +
                                 (trade.profitPips >= 0 ? " highlight-green" : " highlight-red");
 
-                            return hyperHTML.wire(trade, ":tr")`<tr>
+                            return hyperHTML__default['default'].wire(trade, ":tr")`<tr>
                                 <td class="${classes}">${trade.side}</td>
                                 <td class="${classes}">
                                     <a href="#" onclick="${() => {
@@ -3247,7 +3249,7 @@
         constructor(render, template) {
             const events = (e, payload) => Util.handleEvent(this, e, payload);
 
-            this.state = Introspected({
+            this.state = Introspected__default['default']({
                 trades: {
                     value: []
                 },
@@ -3293,7 +3295,7 @@
 
     class TradesComponent {
         static bootstrap() {
-            const render = hyperHTML.bind(Util.query("trades"));
+            const render = hyperHTML__default['default'].bind(Util.query("trades"));
 
             this.tradesController = new TradesController(render, TradesTemplate);
         }
