@@ -1,3 +1,13 @@
+# [6.5.0](https://github.com/albertosantini/argo/compare/v6.4.0...v6.5.0) (2020-12-08)
+
+
+### Features
+
+* **bin:** restart streaming once a day ([a3ec265](https://github.com/albertosantini/argo/commit/a3ec2657d0d422c867269b8e8b54170f1a678fd2))
+* **pm2:** add pm2 management ([a930b78](https://github.com/albertosantini/argo/commit/a930b780dfde46073e1946f0e535d56bc91bb819))
+
+
+
 # [6.4.0](https://github.com/albertosantini/argo/compare/v6.3.2...v6.4.0) (2020-10-12)
 
 
