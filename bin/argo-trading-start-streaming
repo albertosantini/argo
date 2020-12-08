@@ -1,51 +1,51 @@
 #!/usr/bin/env node
 
-/* eslint no-console: "off" */
-
 "use strict";
+
+exports.run = run;
+
+const CronJob = require("cron").CronJob;
 
 const { request } = require("../src/server/util.js");
 
-// export ARGO_IP=192.168.254.167
-const hasIp = Object.prototype.hasOwnProperty.call(process.env, "ARGO_IP");
+function testEnv() {
+    const environmentVars = [
+        "ARGO_IP", // export ARGO_IP=192.168.254.167
+        "ARGO_PORT", // export ARGO_PORT=8000
+        "ARGO_ENVIRONMENT", // export ARGO_ENVIRONMENT=practice
+        "ARGO_ACCESSTOKEN",
+        "ARGO_ACCOUNTID",
+        "ARGO_INSTRUMENTS" // export ARGO_INSTRUMENTS='["EUR_USD","USD_JPY","GBP_USD","EUR_GBP","USD_CHF","EUR_JPY","EUR_CHF","USD_CAD","AUD_USD","GBP_JPY"]'
+    ];
 
-// export ARGO_PORT=8000
-const hasPort = Object.prototype.hasOwnProperty.call(process.env, "ARGO_PORT");
-
-// export ARGO_ENVIRONMENT=practice
-const hasEnvironment = Object.prototype.hasOwnProperty.call(process.env, "ARGO_ENVIRONMENT");
-
-const hasAccessToken = Object.prototype.hasOwnProperty.call(process.env, "ARGO_ACCESSTOKEN");
-const hasAccountId = Object.prototype.hasOwnProperty.call(process.env, "ARGO_ACCOUNTID");
-
-// export ARGO_INSTRUMENTS='["EUR_USD","USD_JPY","GBP_USD","EUR_GBP","USD_CHF","EUR_JPY","EUR_CHF","USD_CAD","AUD_USD","GBP_JPY"]'
-const hasInstruments = Object.prototype.hasOwnProperty.call(process.env, "ARGO_INSTRUMENTS");
-
-const loginInfo = hasIp && hasPort && hasEnvironment && hasAccessToken && hasAccountId && hasInstruments;
-
-
-if (!loginInfo) {
-    console.log(`Has IP: ${hasIp}`);
-    console.log(`Has PORT: ${hasPort}`);
-    console.log(`Has Environment: ${hasEnvironment}`);
-    console.log(`Has Access Token: ${hasAccessToken}`);
-    console.log(`Has Account Id: ${hasAccountId}`);
-    console.log(`Has Instruments: ${hasInstruments}`);
-
-    throw new Error("Missing Login Info");
+    environmentVars.forEach(envVar => {
+        if (!process.env[envVar]) {
+            throw new Error(`No enviroment variable available: ${envVar}`);
+        }
+    });
 }
 
-request({
-    url: `http://${process.env.ARGO_IP}:${process.env.ARGO_PORT}/api/startstream`,
-    method: "POST",
-    body: {
-        environment: process.env.ARGO_ENVIRONMENT,
-        accessToken: process.env.ARGO_ACCESSTOKEN,
-        accountId: process.env.ARGO_ACCOUNTID,
-        instruments: process.env.ARGO_INSTRUMENTS
-    }
-}, err => {
-    if (err) {
-        console.log(err);
-    }
-});
+function run() {
+    testEnv();
+
+    request({
+        url: `http://${process.env.ARGO_IP}:${process.env.ARGO_PORT}/api/startstream`,
+        method: "POST",
+        body: {
+            environment: process.env.ARGO_ENVIRONMENT,
+            accessToken: process.env.ARGO_ACCESSTOKEN,
+            accountId: process.env.ARGO_ACCOUNTID,
+            instruments: process.env.ARGO_INSTRUMENTS
+        }
+    }, err => {
+        if (err) {
+            console.log(err); // eslint-disable-line
+        }
+    });
+}
+
+const job = new CronJob("0 50 23 * * *", () => {
+    run();
+}, null, false, "Europe/Rome");
+
+job.start();
