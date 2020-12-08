@@ -46,7 +46,17 @@
         "electron": "electron .",
         "lint": "eslint main.js src/**/*.js",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-        "rollup": "rollup -c"
+        "rollup": "rollup -c",
+        "pm2-start-trading": "pm2 start bin/argo-trading --name trading --time",
+        "pm2-stop-trading": "pm2 stop trading && pm2 delete trading",
+        "pm2-restart-trading": "npm run pm2-stop-trading && npm run pm2-start-trading",
+        "deploy-setup-trading": "pm2 deploy trading setup",
+        "deploy-update-trading": "pm2 deploy trading update --force",
+        "pm2-start-streaming": "pm2 start bin/argo-trading-start-streaming --name streaming --time",
+        "pm2-stop-streaming": "pm2 stop streaming && pm2 delete streaming",
+        "pm2-restart-streaming": "npm run pm2-stop-streaming && npm run pm2-start-streaming",
+        "deploy-setup-streaming": "pm2 deploy streaming setup",
+        "deploy-update-streaming": "pm2 deploy streaming update --force"
     },
     "devDependencies": {
         "chai": "^4.2.0",
