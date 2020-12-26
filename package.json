@@ -44,7 +44,7 @@
         "start": "node src/server/app.js",
         "debug": "node --inspect src/server/app.js",
         "electron": "electron .",
-        "lint": "eslint main.js src/**/*.js",
+        "lint": "eslint main.js 'src/**/*.js'",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
         "rollup": "rollup -c",
         "pm2-start-trading": "pm2 start bin/argo-trading --name trading --time",
