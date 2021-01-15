@@ -61,8 +61,8 @@
     "devDependencies": {
         "chai": "^4.2.0",
         "conventional-changelog-cli": "^2.1.1",
-        "eslint": "^7.16.0",
+        "eslint": "^7.17.0",
         "mocha": "^8.2.1",
-        "rollup": "^2.35.1"
+        "rollup": "^2.36.1"
     }
 }
