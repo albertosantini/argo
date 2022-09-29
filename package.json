@@ -24,7 +24,7 @@
         "async": "^3.2.0",
         "body-parser": "^1.19.0",
         "cron": "^1.8.2",
-        "d3": "^6.3.1",
+        "d3": "^7.6.1",
         "d3fc": "^15.1.2",
         "document-register-element": "^1.14.10",
         "electron": "^11.5.0",
